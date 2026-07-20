@@ -1,0 +1,38 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/galileo-technologies-openapi-original.json
+summary:
+  types:
+  - apiKey
+  - http
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - password
+schemes:
+- name: ClassicAPIKeyHeader
+  type: apiKey
+  in: header
+  parameter: Galileo-API-Key
+  sources:
+  - openapi/galileo-technologies-openapi-original.json
+- name: APIKeyHeader
+  type: apiKey
+  in: header
+  parameter: Splunk-AO-API-Key
+  sources:
+  - openapi/galileo-technologies-openapi-original.json
+- name: OAuth2PasswordBearer
+  type: oauth2
+  flows:
+  - flow: password
+    tokenUrl: https://api.galileo.ai/login
+    scopes: 0
+  sources:
+  - openapi/galileo-technologies-openapi-original.json
+- name: HTTPBasic
+  type: http
+  scheme: basic
+  sources:
+  - openapi/galileo-technologies-openapi-original.json
