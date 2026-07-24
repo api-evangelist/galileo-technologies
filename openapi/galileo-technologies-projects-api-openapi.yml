@@ -1,0 +1,3879 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation projects API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: projects
+paths:
+  /projects/{project_id}/bookmark:
+    put:
+      tags:
+      - projects
+      summary: Bookmark Project
+      operationId: bookmark_project_projects__project_id__bookmark_put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Unbookmark Project
+      operationId: unbookmark_project_projects__project_id__bookmark_delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/paginated:
+    post:
+      tags:
+      - projects
+      summary: Get Projects Paginated
+      description: 'Gets projects for a user with pagination.
+
+
+        If provided, filters on project_name and project_type.'
+      operationId: get_projects_paginated_projects_paginated_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api__schemas__project__ProjectCollectionParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api__schemas__project__GetProjectsPaginatedResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/count:
+    post:
+      tags:
+      - projects
+      summary: Get Projects Count
+      description: Gets total count of projects for a user with applied filters.
+      operationId: get_projects_count_projects_count_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api__schemas__project__ProjectCollectionParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: integer
+                title: Response Get Projects Count Projects Count Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /projects/all:
+    get:
+      tags:
+      - projects
+      summary: Get All Projects
+      description: 'Gets all public projects and all private projects that the user has access to.
+
+
+        For Enterprise SaaS Clusters, this will return all projects in the cluster.
+
+
+        DEPRECATED in favor of `get_projects_paginated`.'
+      operationId: get_all_projects_projects_all_get
+      deprecated: true
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+          title: Type
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectDBThin'
+                title: Response Get All Projects Projects All Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects:
+    get:
+      tags:
+      - projects
+      summary: Get Projects
+      description: 'Gets projects for a user.
+
+
+        If provided, filters on project_name and project_type.
+
+
+        DEPRECATED in favor of `get_projects_paginated`.'
+      operationId: get_projects_projects_get
+      deprecated: true
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_name
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Name
+      - name: type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+          title: Type
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectDB'
+                title: Response Get Projects Projects Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - projects
+      summary: Create Project
+      description: Create a new project.
+      operationId: create_project_projects_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+              examples:
+              - name: my_first_project
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCreateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /collaborator_roles:
+    get:
+      tags:
+      - projects
+      summary: Get Collaborator Roles
+      operationId: get_collaborator_roles_collaborator_roles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CollaboratorRoleInfo'
+                type: array
+                title: Response Get Collaborator Roles Collaborator Roles Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /projects/{project_id}:
+    get:
+      tags:
+      - projects
+      summary: Get Project
+      operationId: get_project_projects__project_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - projects
+      summary: Update Project
+      operationId: update_project_projects__project_id__put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+              examples:
+              - name: my_updated_project
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectUpdateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete Project
+      description: 'Deletes a project and all associated runs and objects.
+
+
+        Any user with project access can delete a project.
+
+        Note that `get_project_by_id` calls `user_can_access_project`.'
+      operationId: delete_project_projects__project_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/users:
+    post:
+      tags:
+      - projects
+      summary: Create User Project Collaborators
+      description: Share a project with users.
+      operationId: create_user_project_collaborators_projects__project_id__users_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCollaborator'
+                title: Response Create User Project Collaborators Projects  Project Id  Users Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - projects
+      summary: List User Project Collaborators
+      description: List the users with which the project has been shared.
+      operationId: list_user_project_collaborators_projects__project_id__users_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/groups:
+    post:
+      tags:
+      - projects
+      summary: Create Group Project Collaborators
+      description: Share a project with groups.
+      operationId: create_group_project_collaborators_projects__project_id__groups_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCollaborator'
+                title: Response Create Group Project Collaborators Projects  Project Id  Groups Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - projects
+      summary: List Group Project Collaborators
+      description: List the groups with which the project has been shared.
+      operationId: list_group_project_collaborators_projects__project_id__groups_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/users/{user_id}:
+    patch:
+      tags:
+      - projects
+      summary: Update User Project Collaborator
+      description: Update the sharing permissions of a user on a project.
+      operationId: update_user_project_collaborator_projects__project_id__users__user_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete User Project Collaborator
+      description: Remove a user's access to a project.
+      operationId: delete_user_project_collaborator_projects__project_id__users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/groups/{group_id}:
+    patch:
+      tags:
+      - projects
+      summary: Update Group Project Collaborator
+      description: Update the sharing permissions of a group on a project.
+      operationId: update_group_project_collaborator_projects__project_id__groups__group_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete Group Project Collaborator
+      description: Remove a group's access to a project.
+      operationId: delete_group_project_collaborator_projects__project_id__groups__group_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/collaborator_roles:
+    get:
+      tags:
+      - projects
+      summary: Get Collaborator Roles
+      operationId: get_collaborator_roles_v2_collaborator_roles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CollaboratorRoleInfo'
+                type: array
+                title: Response Get Collaborator Roles V2 Collaborator Roles Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /v2/projects:
+    post:
+      tags:
+      - projects
+      summary: Create Project
+      description: Create a new project.
+      operationId: create_project_v2_projects_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+              examples:
+              - name: my_first_project
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCreateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /v2/projects/{project_id}:
+    get:
+      tags:
+      - projects
+      summary: Get Project
+      operationId: get_project_v2_projects__project_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - projects
+      summary: Update Project
+      operationId: update_project_v2_projects__project_id__put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+              examples:
+              - name: my_updated_project
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectUpdateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete Project
+      description: 'Deletes a project and all associated runs and objects.
+
+
+        Any user with project access can delete a project.
+
+        Note that `get_project_by_id` calls `user_can_access_project`.'
+      operationId: delete_project_v2_projects__project_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/users:
+    post:
+      tags:
+      - projects
+      summary: Create User Project Collaborators
+      description: Share a project with users.
+      operationId: create_user_project_collaborators_v2_projects__project_id__users_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCollaborator'
+                title: Response Create User Project Collaborators V2 Projects  Project Id  Users Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - projects
+      summary: List User Project Collaborators
+      description: List the users with which the project has been shared.
+      operationId: list_user_project_collaborators_v2_projects__project_id__users_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/groups:
+    post:
+      tags:
+      - projects
+      summary: Create Group Project Collaborators
+      description: Share a project with groups.
+      operationId: create_group_project_collaborators_v2_projects__project_id__groups_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCollaborator'
+                title: Response Create Group Project Collaborators V2 Projects  Project Id  Groups Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - projects
+      summary: List Group Project Collaborators
+      description: List the groups with which the project has been shared.
+      operationId: list_group_project_collaborators_v2_projects__project_id__groups_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/users/{user_id}:
+    patch:
+      tags:
+      - projects
+      summary: Update User Project Collaborator
+      description: Update the sharing permissions of a user on a project.
+      operationId: update_user_project_collaborator_v2_projects__project_id__users__user_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete User Project Collaborator
+      description: Remove a user's access to a project.
+      operationId: delete_user_project_collaborator_v2_projects__project_id__users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/groups/{group_id}:
+    patch:
+      tags:
+      - projects
+      summary: Update Group Project Collaborator
+      description: Update the sharing permissions of a group on a project.
+      operationId: update_group_project_collaborator_v2_projects__project_id__groups__group_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete Group Project Collaborator
+      description: Remove a group's access to a project.
+      operationId: delete_group_project_collaborator_v2_projects__project_id__groups__group_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/paginated:
+    post:
+      tags:
+      - projects
+      summary: Get Projects V2
+      description: Gets projects optimized for V2 with pagination and server-side run counts.
+      operationId: get_projects_v2_v2_projects_paginated_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: include_logstreams
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: When true, include log streams (id and name) for each project.
+          default: false
+          title: Include Logstreams
+        description: When true, include log streams (id and name) for each project.
+      - name: metric_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          description: Filters logstreams to those with this metric enabled. Affects both the log_streams list (when include_logstreams=true) and the num_logstreams count.
+          title: Metric Id
+        description: Filters logstreams to those with this metric enabled. Affects both the log_streams list (when include_logstreams=true) and the num_logstreams count.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api__schemas__project_v2__ProjectCollectionParams'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api__schemas__project_v2__GetProjectsPaginatedResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/collaborator_roles:
+    get:
+      tags:
+      - projects
+      summary: Get Collaborator Roles
+      operationId: get_collaborator_roles_public_v2_collaborator_roles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CollaboratorRoleInfo'
+                type: array
+                title: Response Get Collaborator Roles Public V2 Collaborator Roles Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /public/v2/projects:
+    post:
+      tags:
+      - projects
+      summary: Create Project
+      description: Create a new project.
+      operationId: create_project_public_v2_projects_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+              examples:
+              - name: my_first_project
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCreateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /public/v2/projects/{project_id}:
+    get:
+      tags:
+      - projects
+      summary: Get Project
+      operationId: get_project_public_v2_projects__project_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - projects
+      summary: Update Project
+      operationId: update_project_public_v2_projects__project_id__put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+              examples:
+              - name: my_updated_project
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectUpdateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete Project
+      description: 'Deletes a project and all associated runs and objects.
+
+
+        Any user with project access can delete a project.
+
+        Note that `get_project_by_id` calls `user_can_access_project`.'
+      operationId: delete_project_public_v2_projects__project_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/users:
+    post:
+      tags:
+      - projects
+      summary: Create User Project Collaborators
+      description: Share a project with users.
+      operationId: create_user_project_collaborators_public_v2_projects__project_id__users_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCollaborator'
+                title: Response Create User Project Collaborators Public V2 Projects  Project Id  Users Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - projects
+      summary: List User Project Collaborators
+      description: List the users with which the project has been shared.
+      operationId: list_user_project_collaborators_public_v2_projects__project_id__users_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/groups:
+    post:
+      tags:
+      - projects
+      summary: Create Group Project Collaborators
+      description: Share a project with groups.
+      operationId: create_group_project_collaborators_public_v2_projects__project_id__groups_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCollaborator'
+                title: Response Create Group Project Collaborators Public V2 Projects  Project Id  Groups Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - projects
+      summary: List Group Project Collaborators
+      description: List the groups with which the project has been shared.
+      operationId: list_group_project_collaborators_public_v2_projects__project_id__groups_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/users/{user_id}:
+    patch:
+      tags:
+      - projects
+      summary: Update User Project Collaborator
+      description: Update the sharing permissions of a user on a project.
+      operationId: update_user_project_collaborator_public_v2_projects__project_id__users__user_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete User Project Collaborator
+      description: Remove a user's access to a project.
+      operationId: delete_user_project_collaborator_public_v2_projects__project_id__users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/groups/{group_id}:
+    patch:
+      tags:
+      - projects
+      summary: Update Group Project Collaborator
+      description: Update the sharing permissions of a group on a project.
+      operationId: update_group_project_collaborator_public_v2_projects__project_id__groups__group_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete Group Project Collaborator
+      description: Remove a group's access to a project.
+      operationId: delete_group_project_collaborator_public_v2_projects__project_id__groups__group_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/paginated:
+    post:
+      tags:
+      - projects
+      summary: Get Projects V2
+      description: Gets projects optimized for V2 with pagination and server-side run counts.
+      operationId: get_projects_v2_public_v2_projects_paginated_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: include_logstreams
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: When true, include log streams (id and name) for each project.
+          default: false
+          title: Include Logstreams
+        description: When true, include log streams (id and name) for each project.
+      - name: metric_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          description: Filters logstreams to those with this metric enabled. Affects both the log_streams list (when include_logstreams=true) and the num_logstreams count.
+          title: Metric Id
+        description: Filters logstreams to those with this metric enabled. Affects both the log_streams list (when include_logstreams=true) and the num_logstreams count.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api__schemas__project_v2__ProjectCollectionParams'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api__schemas__project_v2__GetProjectsPaginatedResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    LogStreamInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: LogStreamInfo
+      description: Minimal log stream representation (id and name only).
+    ProjectRunsFilter:
+      properties:
+        name:
+          type: string
+          const: runs
+          title: Name
+          default: runs
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectRunsFilter
+    api__schemas__project__ProjectNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNameSortV1
+    api__schemas__project_v2__ProjectCreatorFilter:
+      properties:
+        name:
+          type: string
+          const: creator
+          title: Name
+          default: creator
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: ProjectCreatorFilterV2
+    CollaboratorUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+      type: object
+      required:
+      - role
+      title: CollaboratorUpdate
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    ProjectAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    RunTagDB:
+      properties:
+        key:
+          type: string
+          maxLength: 256
+          title: Key
+        value:
+          type: string
+          maxLength: 256
+          title: Value
+        tag_type:
+          type: string
+          title: Tag Type
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - key
+      - value
+      - tag_type
+      - project_id
+      - run_id
+      - created_by
+      - id
+      - created_at
+      - updated_at
+      title: RunTagDB
+    ProjectNumLogstreamsSort:
+      properties:
+        name:
+          type: string
+          const: num_logstreams
+          title: Name
+          default: num_logstreams
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNumLogstreamsSort
+    ListGroupCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/GroupCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListGroupCollaboratorsResponse
+    api__schemas__project_v2__ProjectUpdatedAtSort:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectUpdatedAtSortV2
+    GroupCollaborator:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+        group_name:
+          type: string
+          title: Group Name
+      type: object
+      required:
+      - id
+      - role
+      - created_at
+      - group_id
+      - group_name
+      title: GroupCollaborator
+    ProjectTypeSort:
+      properties:
+        name:
+          type: string
+          const: type
+          title: Name
+          default: type
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectTypeSort
+    ProjectType:
+      type: string
+      enum:
+      - prompt_evaluation
+      - llm_monitor
+      - protect
+      - gen_ai
+      title: ProjectType
+    api__schemas__project_v2__ProjectCollectionParams:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectNameFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatorFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtFilter'
+            - $ref: '#/components/schemas/ProjectNumLogstreamsFilter'
+            - $ref: '#/components/schemas/ProjectNumExperimentsFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectBookmarkFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                bookmark: '#/components/schemas/api__schemas__project_v2__ProjectBookmarkFilter'
+                created_at: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtFilter'
+                creator: '#/components/schemas/api__schemas__project_v2__ProjectCreatorFilter'
+                name: '#/components/schemas/api__schemas__project_v2__ProjectNameFilter'
+                num_experiments: '#/components/schemas/ProjectNumExperimentsFilter'
+                num_logstreams: '#/components/schemas/ProjectNumLogstreamsFilter'
+                updated_at: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectNameSort'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtSort'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtSort'
+            - $ref: '#/components/schemas/ProjectNumLogstreamsSort'
+            - $ref: '#/components/schemas/ProjectNumExperimentsSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtSort'
+                name: '#/components/schemas/api__schemas__project_v2__ProjectNameSort'
+                num_experiments: '#/components/schemas/ProjectNumExperimentsSort'
+                num_logstreams: '#/components/schemas/ProjectNumLogstreamsSort'
+                updated_at: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: ProjectCollectionParams
+    api__schemas__project__ProjectCollectionParams:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ProjectIDFilter'
+            - $ref: '#/components/schemas/api__schemas__project__ProjectNameFilter'
+            - $ref: '#/components/schemas/ProjectTypeFilter'
+            - $ref: '#/components/schemas/api__schemas__project__ProjectCreatorFilter'
+            - $ref: '#/components/schemas/api__schemas__project__ProjectCreatedAtFilter'
+            - $ref: '#/components/schemas/api__schemas__project__ProjectUpdatedAtFilter'
+            - $ref: '#/components/schemas/ProjectRunsFilter'
+            - $ref: '#/components/schemas/api__schemas__project__ProjectBookmarkFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                bookmark: '#/components/schemas/api__schemas__project__ProjectBookmarkFilter'
+                created_at: '#/components/schemas/api__schemas__project__ProjectCreatedAtFilter'
+                creator: '#/components/schemas/api__schemas__project__ProjectCreatorFilter'
+                id: '#/components/schemas/ProjectIDFilter'
+                name: '#/components/schemas/api__schemas__project__ProjectNameFilter'
+                runs: '#/components/schemas/ProjectRunsFilter'
+                type: '#/components/schemas/ProjectTypeFilter'
+                updated_at: '#/components/schemas/api__schemas__project__ProjectUpdatedAtFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/api__schemas__project__ProjectNameSort'
+            - $ref: '#/components/schemas/ProjectTypeSort'
+            - $ref: '#/components/schemas/api__schemas__project__ProjectCreatedAtSort'
+            - $ref: '#/components/schemas/api__schemas__project__ProjectUpdatedAtSort'
+            - $ref: '#/components/schemas/ProjectRunsSort'
+            - $ref: '#/components/schemas/ProjectBookmarkSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                bookmark: '#/components/schemas/ProjectBookmarkSort'
+                created_at: '#/components/schemas/api__schemas__project__ProjectCreatedAtSort'
+                name: '#/components/schemas/api__schemas__project__ProjectNameSort'
+                runs: '#/components/schemas/ProjectRunsSort'
+                type: '#/components/schemas/ProjectTypeSort'
+                updated_at: '#/components/schemas/api__schemas__project__ProjectUpdatedAtSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: ProjectCollectionParams
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ProjectCreateResponse:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      title: ProjectCreateResponse
+    api__schemas__project__ProjectCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectCreatedAtSortV1
+    CollaboratorRoleInfo:
+      properties:
+        name:
+          $ref: '#/components/schemas/CollaboratorRole'
+          examples:
+          - owner
+        display_name:
+          type: string
+          title: Display Name
+          examples:
+          - Owner
+        description:
+          type: string
+          title: Description
+          examples:
+          - Can do anything with the resource.
+      type: object
+      required:
+      - name
+      - display_name
+      - description
+      title: CollaboratorRoleInfo
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      title: UserRole
+    GroupAction:
+      type: string
+      enum:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    RunDBThin:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        num_samples:
+          type: integer
+          title: Num Samples
+        winner:
+          type: boolean
+          title: Winner
+        dataset_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset Hash
+        dataset_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Dataset Version Id
+        prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Prompt Template Version Id
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        task_type:
+          anyOf:
+          - $ref: '#/components/schemas/TaskType'
+          - type: 'null'
+        last_updated_by:
+          type: string
+          format: uuid4
+          title: Last Updated By
+        run_tags:
+          items:
+            $ref: '#/components/schemas/RunTagDB'
+          type: array
+          title: Run Tags
+        example_content_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Example Content Id
+        creator:
+          $ref: '#/components/schemas/UserDB'
+        logged_splits:
+          items:
+            type: string
+          type: array
+          title: Logged Splits
+        logged_inference_names:
+          items:
+            type: string
+          type: array
+          title: Logged Inference Names
+      type: object
+      required:
+      - created_by
+      - num_samples
+      - winner
+      - id
+      - created_at
+      - updated_at
+      - last_updated_by
+      - creator
+      title: RunDBThin
+    api__schemas__project__GetProjectsPaginatedResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        projects:
+          items:
+            $ref: '#/components/schemas/ProjectDB'
+          type: array
+          title: Projects
+      type: object
+      required:
+      - projects
+      title: GetProjectsPaginatedResponse
+    api__schemas__project_v2__ProjectCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectCreatedAtFilterV2
+    api__schemas__project__ProjectNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectNameFilter
+    ProjectNumExperimentsSort:
+      properties:
+        name:
+          type: string
+          const: num_experiments
+          title: Name
+          default: num_experiments
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNumExperimentsSort
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      title: CollaboratorRole
+    ProjectRunsSort:
+      properties:
+        name:
+          type: string
+          const: runs
+          title: Name
+          default: runs
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: ProjectRunsSort
+    api__schemas__project__ProjectBookmarkFilter:
+      properties:
+        name:
+          type: string
+          const: bookmark
+          title: Name
+          default: bookmark
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: ProjectBookmarkFilter
+    DatasetAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
+    api__schemas__project_v2__ProjectNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectNameFilterV2
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    api__schemas__project__ProjectUpdatedAtSort:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectUpdatedAtSortV1
+    api__schemas__project__ProjectCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectCreatedAtFilter
+    api__schemas__project__ProjectUpdatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectUpdatedAtFilter
+    ProjectTypeFilter:
+      properties:
+        name:
+          type: string
+          const: type
+          title: Name
+          default: type
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectTypeFilter
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    TaskType:
+      type: integer
+      enum:
+      - 7
+      - 9
+      - 12
+      - 13
+      - 15
+      - 16
+      - 17
+      - 18
+      title: TaskType
+      description: 'Valid task types for modeling.
+
+
+        We store these as ints instead of strings because we will be looking this up in the database frequently.'
+    api__schemas__project_v2__GetProjectsPaginatedResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        projects:
+          items:
+            $ref: '#/components/schemas/ProjectItem'
+          type: array
+          title: Projects
+        total_count:
+          type: integer
+          title: Total Count
+          description: Total number of projects matching the filters.
+      type: object
+      required:
+      - projects
+      - total_count
+      title: GetProjectsPaginatedResponse
+      description: Response model for the V2 projects paginated endpoint.
+    RunDB:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        num_samples:
+          type: integer
+          title: Num Samples
+        winner:
+          type: boolean
+          title: Winner
+        dataset_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset Hash
+        dataset_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Dataset Version Id
+        prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Prompt Template Version Id
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        task_type:
+          anyOf:
+          - $ref: '#/components/schemas/TaskType'
+          - type: 'null'
+        last_updated_by:
+          type: string
+          format: uuid4
+          title: Last Updated By
+        run_tags:
+          items:
+            $ref: '#/components/schemas/RunTagDB'
+          type: array
+          title: Run Tags
+        example_content_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Example Content Id
+        creator:
+          $ref: '#/components/schemas/UserDB'
+        logged_splits:
+          items:
+            type: string
+          type: array
+          title: Logged Splits
+        logged_inference_names:
+          items:
+            type: string
+          type: array
+          title: Logged Inference Names
+      type: object
+      required:
+      - created_by
+      - num_samples
+      - winner
+      - id
+      - created_at
+      - updated_at
+      - last_updated_by
+      - creator
+      title: RunDB
+    UserDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      title: UserDB
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
+    ProjectBookmarkSort:
+      properties:
+        name:
+          type: string
+          const: bookmark
+          title: Name
+          default: bookmark
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: ProjectBookmarkSort
+    api__schemas__project_v2__ProjectNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNameSortV2
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    UserCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: User Id
+        user_email:
+          anyOf:
+          - type: string
+            format: email
+          - type: 'null'
+          title: User Email
+      type: object
+      title: UserCollaboratorCreate
+      description: 'Create a user collaborator using either user_id or email.
+
+
+        When using email, if the user doesn''t exist in the organization,
+
+        they will be invited automatically.'
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    api__schemas__project_v2__ProjectCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectCreatedAtSortV2
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    api__schemas__project__ProjectCreatorFilter:
+      properties:
+        name:
+          type: string
+          const: creator
+          title: Name
+          default: creator
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: ProjectCreatorFilter
+    ProjectLabels:
+      type: string
+      enum:
+      - sample
+      title: ProjectLabels
+      description: Enum for project labels used in the UI.
+    AuthMethod:
+      type: string
+      enum:
+      - email
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      - invite
+      title: AuthMethod
+    ListUserCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/UserCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListUserCollaboratorsResponse
+    ProjectDeleteResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: ProjectDeleteResponse
+    UserCollaborator:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        user_id:
+          type: string
+          format: uuid4
+          title: User Id
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - id
+      - role
+      - created_at
+      - user_id
+      - first_name
+      - last_name
+      - email
+      title: UserCollaborator
+    api__schemas__project_v2__ProjectUpdatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectUpdatedAtFilterV2
+    Permission:
+      properties:
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - action
+      - allowed
+      title: Permission
+    ProjectIDFilter:
+      properties:
+        name:
+          type: string
+          const: id
+          title: Name
+          default: id
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: ProjectIDFilter
+    ProjectNumLogstreamsFilter:
+      properties:
+        name:
+          type: string
+          const: num_logstreams
+          title: Name
+          default: num_logstreams
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectNumLogstreamsFilterV2
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    ProjectDBThin:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        runs:
+          items:
+            $ref: '#/components/schemas/RunDBThin'
+          type: array
+          title: Runs
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        bookmark:
+          type: boolean
+          title: Bookmark
+          default: false
+      type: object
+      required:
+      - id
+      - created_by
+      - runs
+      - created_at
+      - updated_at
+      title: ProjectDBThin
+    ProjectUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        labels:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Labels
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      additionalProperties: false
+      type: object
+      title: ProjectUpdate
+    api__schemas__project_v2__ProjectBookmarkFilter:
+      properties:
+        name:
+          type: string
+          const: bookmark
+          title: Name
+          default: bookmark
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: ProjectBookmarkFilterV2
+    ProjectUpdateResponse:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        labels:
+          items:
+            $ref: '#/components/schemas/ProjectLabels'
+          type: array
+          title: Labels
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      title: ProjectUpdateResponse
+    ProjectDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        created_by_user:
+          $ref: '#/components/schemas/UserInfo'
+        runs:
+          items:
+            $ref: '#/components/schemas/RunDB'
+          type: array
+          title: Runs
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        bookmark:
+          type: boolean
+          title: Bookmark
+          default: false
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        labels:
+          items:
+            $ref: '#/components/schemas/ProjectLabels'
+          type: array
+          title: Labels
+      type: object
+      required:
+      - id
+      - created_by
+      - created_by_user
+      - runs
+      - created_at
+      - updated_at
+      title: ProjectDB
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    ProjectNumExperimentsFilter:
+      properties:
+        name:
+          type: string
+          const: num_experiments
+          title: Name
+          default: num_experiments
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectNumExperimentsFilterV2
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    GroupCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+      type: object
+      required:
+      - group_id
+      title: GroupCollaboratorCreate
+    ProjectCreate:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        type:
+          $ref: '#/components/schemas/ProjectType'
+          default: gen_ai
+        create_example_templates:
+          type: boolean
+          title: Create Example Templates
+          default: false
+      type: object
+      required:
+      - name
+      title: ProjectCreate
+    ProjectItem:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          type: string
+          title: Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        bookmark:
+          type: boolean
+          title: Bookmark
+          default: false
+        num_logstreams:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Logstreams
+          description: Count of runs with task_type=15
+        num_experiments:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Experiments
+          description: Count of runs with task_type=16
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        labels:
+          items:
+            $ref: '#/components/schemas/ProjectLabels'
+          type: array
+          title: Labels
+          description: List of labels associated with the project.
+        log_streams:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LogStreamInfo'
+            type: array
+          - type: 'null'
+          title: Log Streams
+          description: Log streams for this project. Only populated when include_logstreams=True.
+      type: object
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      title: ProjectItem
+      description: Represents a single project item for the UI list.
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

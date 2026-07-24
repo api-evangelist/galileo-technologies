@@ -1,0 +1,1145 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation playground_prompts API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: playground_prompts
+paths:
+  /projects/{project_id}/playgrounds/{playground_id}/prompts:
+    post:
+      tags:
+      - playground_prompts
+      summary: Create Playground Prompt
+      operationId: create_playground_prompt_projects__project_id__playgrounds__playground_id__prompts_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlaygroundPromptRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaygroundPromptResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/playgrounds/{playground_id}/prompts/{prompt_id}:
+    patch:
+      tags:
+      - playground_prompts
+      summary: Update Playground Prompt
+      operationId: update_playground_prompt_projects__project_id__playgrounds__playground_id__prompts__prompt_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: prompt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Prompt Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePlaygroundPromptRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaygroundPromptResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - playground_prompts
+      summary: Delete Playground Prompt
+      operationId: delete_playground_prompt_projects__project_id__playgrounds__playground_id__prompts__prompt_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: prompt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Prompt Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/playgrounds/{playground_id}/prompts/query:
+    post:
+      tags:
+      - playground_prompts
+      summary: Query Playground Prompts
+      operationId: query_playground_prompts_projects__project_id__playgrounds__playground_id__prompts_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPlaygroundPromptsParams'
+              default:
+                sort:
+                  name: position
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPlaygroundPromptsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/playgrounds/{playground_id}/prompts/reorder:
+    post:
+      tags:
+      - playground_prompts
+      summary: Reorder Playground Prompts
+      operationId: reorder_playground_prompts_projects__project_id__playgrounds__playground_id__prompts_reorder_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReorderRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PlaygroundPromptPositionSort:
+      properties:
+        name:
+          type: string
+          const: position
+          title: Name
+          default: position
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: PlaygroundPromptPositionSort
+    ReorderRequest:
+      properties:
+        ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Ids
+      type: object
+      required:
+      - ids
+      title: ReorderRequest
+    RunParamsMap:
+      properties:
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+        temperature:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Max Tokens
+        stop_sequences:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top K
+        frequency_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Presence Penalty
+        echo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Echo
+        logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logprobs
+        top_logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top Logprobs
+        n:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: N
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        tools:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+        reasoning_effort:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Effort
+        verbosity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verbosity
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+      type: object
+      title: RunParamsMap
+      description: 'Maps the internal settings parameters (left) to the serialized parameters (right) we want to send in the API
+
+        requests.'
+    OutputMap:
+      properties:
+        response:
+          type: string
+          title: Response
+        token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Count
+        input_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input Token Count
+        output_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Token Count
+        completion_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Completion Reason
+      type: object
+      required:
+      - response
+      title: OutputMap
+    PromptRunSettings-Input:
+      properties:
+        logprobs:
+          type: boolean
+          title: Logprobs
+          default: true
+        top_logprobs:
+          type: integer
+          title: Top Logprobs
+          default: 5
+        echo:
+          type: boolean
+          title: Echo
+          default: false
+        n:
+          type: integer
+          title: N
+          default: 1
+        reasoning_effort:
+          type: string
+          title: Reasoning Effort
+          default: medium
+        verbosity:
+          type: string
+          title: Verbosity
+          default: medium
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+        model_alias:
+          type: string
+          title: Model Alias
+          default: gpt-5.1
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          type: integer
+          title: Max Tokens
+          default: 4096
+        stop_sequences:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          type: number
+          title: Top P
+          default: 1.0
+        top_k:
+          type: integer
+          title: Top K
+          default: 40
+        frequency_penalty:
+          type: number
+          title: Frequency Penalty
+          default: 0.0
+        presence_penalty:
+          type: number
+          title: Presence Penalty
+          default: 0.0
+        tools:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/OpenAIToolChoice'
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Response Format
+        known_models:
+          items:
+            $ref: '#/components/schemas/Model'
+          type: array
+          title: Known Models
+      type: object
+      title: PromptRunSettings
+      description: Prompt run settings.
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    ProjectAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Model:
+      properties:
+        name:
+          type: string
+          title: Name
+        alias:
+          type: string
+          title: Alias
+        integration:
+          $ref: '#/components/schemas/LLMIntegration'
+          default: openai
+        user_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Role
+        assistant_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assistant Role
+        system_supported:
+          type: boolean
+          title: System Supported
+          default: false
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+          description: Input modalities that the model can accept.
+        alternative_names:
+          items:
+            type: string
+          type: array
+          title: Alternative Names
+          description: Alternative names for the model, used for matching with various current, versioned or legacy names.
+        input_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Input Token Limit
+        output_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Token Limit
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        cost_by:
+          $ref: '#/components/schemas/ModelCostBy'
+          default: tokens
+        is_chat:
+          type: boolean
+          title: Is Chat
+          default: false
+        provides_log_probs:
+          type: boolean
+          title: Provides Log Probs
+          default: false
+        formatting_tokens:
+          type: integer
+          title: Formatting Tokens
+          default: 0
+        response_prefix_tokens:
+          type: integer
+          title: Response Prefix Tokens
+          default: 0
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        legacy_mistral_prompt_format:
+          type: boolean
+          title: Legacy Mistral Prompt Format
+          default: false
+        requires_max_tokens:
+          type: boolean
+          title: Requires Max Tokens
+          default: false
+        max_top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max Top P
+        params_map:
+          $ref: '#/components/schemas/RunParamsMap'
+        output_map:
+          anyOf:
+          - $ref: '#/components/schemas/OutputMap'
+          - type: 'null'
+        input_map:
+          anyOf:
+          - $ref: '#/components/schemas/InputMap'
+          - type: 'null'
+      type: object
+      required:
+      - name
+      - alias
+      title: Model
+    ListPlaygroundPromptsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        prompts:
+          items:
+            $ref: '#/components/schemas/PlaygroundPromptResponse'
+          type: array
+          title: Prompts
+      type: object
+      required:
+      - prompts
+      title: ListPlaygroundPromptsResponse
+    GroupAction:
+      type: string
+      enum:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    OpenAIToolChoice:
+      properties:
+        type:
+          type: string
+          title: Type
+          default: function
+        function:
+          $ref: '#/components/schemas/OpenAIFunction'
+      type: object
+      required:
+      - function
+      title: OpenAIToolChoice
+    DatasetAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
+    InputMap:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+        prefix:
+          type: string
+          title: Prefix
+          default: ''
+        suffix:
+          type: string
+          title: Suffix
+          default: ''
+      type: object
+      required:
+      - prompt
+      title: InputMap
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    OpenAIFunction:
+      properties:
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - name
+      title: OpenAIFunction
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    UpdatePlaygroundPromptRequest:
+      properties:
+        base_prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Base Prompt Template Version Id
+        template:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Template
+        settings:
+          anyOf:
+          - $ref: '#/components/schemas/PromptRunSettings-Input'
+          - type: 'null'
+        raw:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Raw
+      type: object
+      title: UpdatePlaygroundPromptRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PlaygroundPromptResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        base_prompt:
+          anyOf:
+          - $ref: '#/components/schemas/BasePrompt'
+          - type: 'null'
+        template:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Template
+          description: Overrides the base prompt template if set.
+        settings:
+          $ref: '#/components/schemas/PromptRunSettings-Output'
+          description: Overrides the base prompt settings if set.
+        raw:
+          type: boolean
+          title: Raw
+        position:
+          type: integer
+          title: Position
+        run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Run Id
+      type: object
+      required:
+      - id
+      - base_prompt
+      - raw
+      - position
+      title: PlaygroundPromptResponse
+    ModelCostBy:
+      type: string
+      enum:
+      - tokens
+      - characters
+      title: ModelCostBy
+    BasePrompt:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        version:
+          type: integer
+          title: Version
+        version_id:
+          type: string
+          format: uuid4
+          title: Version Id
+        name:
+          type: string
+          title: Name
+        template:
+          type: string
+          title: Template
+        settings:
+          $ref: '#/components/schemas/PromptRunSettings-Output'
+        raw:
+          type: boolean
+          title: Raw
+          default: false
+      type: object
+      required:
+      - id
+      - version
+      - version_id
+      - name
+      - template
+      title: BasePrompt
+    Permission:
+      properties:
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - action
+      - allowed
+      title: Permission
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    ListPlaygroundPromptsParams:
+      properties:
+        sort:
+          anyOf:
+          - $ref: '#/components/schemas/PlaygroundPromptPositionSort'
+          - type: 'null'
+          default:
+            name: position
+            ascending: false
+            sort_type: column
+      type: object
+      title: ListPlaygroundPromptsParams
+    CreatePlaygroundPromptRequest:
+      properties:
+        playground_prompt_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Playground Prompt Id
+          description: If provided, the new prompt will be a copy of the existing one.
+      type: object
+      title: CreatePlaygroundPromptRequest
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    PromptRunSettings-Output:
+      properties:
+        logprobs:
+          type: boolean
+          title: Logprobs
+          default: true
+        top_logprobs:
+          type: integer
+          title: Top Logprobs
+          default: 5
+        echo:
+          type: boolean
+          title: Echo
+          default: false
+        n:
+          type: integer
+          title: N
+          default: 1
+        reasoning_effort:
+          type: string
+          title: Reasoning Effort
+          default: medium
+        verbosity:
+          type: string
+          title: Verbosity
+          default: medium
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+        model_alias:
+          type: string
+          title: Model Alias
+          default: gpt-5.1
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          type: integer
+          title: Max Tokens
+          default: 4096
+        stop_sequences:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          type: number
+          title: Top P
+          default: 1.0
+        top_k:
+          type: integer
+          title: Top K
+          default: 40
+        frequency_penalty:
+          type: number
+          title: Frequency Penalty
+          default: 0.0
+        presence_penalty:
+          type: number
+          title: Presence Penalty
+          default: 0.0
+        tools:
+          type: string
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/OpenAIToolChoice'
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Response Format
+      type: object
+      title: PromptRunSettings
+      description: Prompt run settings.
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

@@ -1,0 +1,491 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation log_stream_alert_settings API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: log_stream_alert_settings
+paths:
+  /projects/{project_id}/log_streams/{log_stream_id}/alert_settings:
+    get:
+      tags:
+      - log_stream_alert_settings
+      summary: Get Alert Settings
+      description: Retrieve alert settings for a specific log stream.
+      operationId: get_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/RunAlertSettingsResponse'
+                - type: 'null'
+                title: Response Get Alert Settings Projects  Project Id  Log Streams  Log Stream Id  Alert Settings Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - log_stream_alert_settings
+      summary: Create Or Update Alert Settings
+      description: Create or update alert settings for a specific log stream.
+      operationId: create_or_update_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunAlertSettingsBase'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunAlertSettingsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - log_stream_alert_settings
+      summary: Update Alert Settings
+      description: Update alert settings for a specific log stream.
+      operationId: update_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunAlertSettingsBase'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunAlertSettingsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - log_stream_alert_settings
+      summary: Patch Alert Settings
+      description: Partially update alert settings. Only provided fields are written; absent fields preserve existing values.
+      operationId: patch_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunAlertSettingsPatch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunAlertSettingsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/log_streams/{log_stream_id}/alert_settings/test:
+    post:
+      tags:
+      - log_stream_alert_settings
+      summary: Send Test Generic Webhook
+      description: 'Send a synthetic test event to all active generic webhooks on this log stream.
+
+
+        Returns per-destination results so the caller knows which URLs succeeded.
+
+        Used by the UI ''Send test event'' button.'
+      operationId: send_test_generic_webhook_projects__project_id__log_streams__log_stream_id__alert_settings_test_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Send Test Generic Webhook Projects  Project Id  Log Streams  Log Stream Id  Alert Settings Test Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    RunAlertSettingsPatch:
+      properties:
+        emails:
+          anyOf:
+          - items:
+              type: string
+              format: email
+            type: array
+          - type: 'null'
+          title: Emails
+        webhooks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Webhook'
+            type: array
+          - type: 'null'
+          title: Webhooks
+        generic_webhooks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GenericWebhook'
+            type: array
+            maxItems: 10
+          - type: 'null'
+          title: Generic Webhooks
+      type: object
+      title: RunAlertSettingsPatch
+      description: 'Partial update: only provided fields are written; absent fields preserve existing DB values.'
+    Webhook:
+      properties:
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+          default: untested
+        notes:
+          type: string
+          maxLength: 255
+          title: Notes
+          default: ''
+      type: object
+      required:
+      - url
+      title: Webhook
+    RunAlertSettingsBase:
+      properties:
+        emails:
+          items:
+            type: string
+            format: email
+          type: array
+          title: Emails
+        webhooks:
+          items:
+            $ref: '#/components/schemas/Webhook'
+          type: array
+          title: Webhooks
+        generic_webhooks:
+          items:
+            $ref: '#/components/schemas/GenericWebhook'
+          type: array
+          maxItems: 10
+          title: Generic Webhooks
+      type: object
+      title: RunAlertSettingsBase
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RunAlertSettingsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        emails:
+          items:
+            type: string
+            format: email
+          type: array
+          title: Emails
+        webhooks:
+          items:
+            $ref: '#/components/schemas/Webhook'
+          type: array
+          title: Webhooks
+        generic_webhooks:
+          items:
+            $ref: '#/components/schemas/GenericWebhookResponse'
+          type: array
+          title: Generic Webhooks
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - run_id
+      - created_at
+      - updated_at
+      title: RunAlertSettingsResponse
+      description: 'API response shape: identical to RunAlertSettingsDB but auth_value masked in generic_webhooks.'
+    GenericWebhookResponse:
+      properties:
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+          default: untested
+        auth_type:
+          $ref: '#/components/schemas/GenericWebhookAuthType'
+          default: none
+        auth_username:
+          type: string
+          title: Auth Username
+          default: ''
+        name:
+          type: string
+          title: Name
+          default: ''
+        metadata:
+          additionalProperties:
+            type: string
+          type: object
+          title: Metadata
+      type: object
+      required:
+      - url
+      title: GenericWebhookResponse
+      description: 'Read-only view of GenericWebhook: auth_value is omitted (write-only).'
+    GenericWebhookAuthType:
+      type: string
+      enum:
+      - none
+      - header_token
+      - basic
+      title: GenericWebhookAuthType
+    GenericWebhook:
+      properties:
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+          default: untested
+        auth_type:
+          $ref: '#/components/schemas/GenericWebhookAuthType'
+          default: none
+        auth_username:
+          type: string
+          maxLength: 255
+          title: Auth Username
+          default: ''
+        auth_value:
+          anyOf:
+          - type: string
+            format: password
+            writeOnly: true
+          - type: 'null'
+          title: Auth Value
+        name:
+          type: string
+          maxLength: 255
+          title: Name
+          default: ''
+        metadata:
+          additionalProperties:
+            type: string
+            maxLength: 1024
+          propertyNames:
+            maxLength: 64
+          type: object
+          title: Metadata
+      type: object
+      required:
+      - url
+      title: GenericWebhook
+    WebhookStatus:
+      type: string
+      enum:
+      - active
+      - untested
+      - failed
+      - paused
+      title: WebhookStatus
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

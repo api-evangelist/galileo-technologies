@@ -1,0 +1,210 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation Audit Logs API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: Audit Logs
+paths:
+  /v2/audit-logs:
+    get:
+      summary: List Audit Logs
+      description: 'Query audit logs with filtering and cursor-based pagination.
+
+
+        System-admin-only endpoint for retrieving audit logs.
+
+        Use `cursor_id` from the previous response''s `next_cursor_id` to get the next page.'
+      operationId: list_audit_logs_v2_audit_logs_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Start
+      - name: end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: End
+      - name: action
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/AuditAction'
+          - type: 'null'
+          title: Action
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Id
+      - name: path_contains
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Path Contains
+      - name: cursor_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - type: 'null'
+          title: Cursor Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Audit Logs
+components:
+  schemas:
+    AuditLogListResponse:
+      properties:
+        records:
+          items:
+            $ref: '#/components/schemas/AuditLogRecord'
+          type: array
+          title: Records
+        next_cursor_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Cursor Id
+      type: object
+      required:
+      - records
+      title: AuditLogListResponse
+      description: Response for audit log list endpoint.
+    AuditAction:
+      type: string
+      enum:
+      - http_request
+      - login
+      - logout
+      - resource
+      - refresh_token
+      - failed_login
+      - account_lockout
+      title: AuditAction
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AuditLogRecord:
+      properties:
+        id:
+          type: integer
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        user_id:
+          type: string
+          title: User Id
+        ip_address:
+          type: string
+          title: Ip Address
+          default: ''
+        action:
+          $ref: '#/components/schemas/AuditAction'
+        raw_event:
+          type: string
+          title: Raw Event
+      type: object
+      required:
+      - id
+      - created_at
+      - user_id
+      - action
+      - raw_event
+      title: AuditLogRecord
+      description: Single audit log record for query responses.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

@@ -1,0 +1,213 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation usage_limits API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: usage_limits
+paths:
+  /usage_limits:
+    get:
+      tags:
+      - usage_limits
+      summary: Get Usage Limits
+      operationId: get_usage_limits_usage_limits_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsageLimitsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /usage_limits/{usage_limit_name}:
+    patch:
+      tags:
+      - usage_limits
+      summary: Update Usage Limit
+      operationId: update_usage_limit_usage_limits__usage_limit_name__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: usage_limit_name
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/UsageLimitNames'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUsageLimitRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageLimit'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ListUsageLimitsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        usage_limits:
+          items:
+            $ref: '#/components/schemas/UsageLimitResponse'
+          type: array
+          title: Usage Limits
+      type: object
+      required:
+      - usage_limits
+      title: ListUsageLimitsResponse
+    UsageLimit:
+      properties:
+        name:
+          $ref: '#/components/schemas/UsageLimitNames'
+        limit:
+          type: integer
+          title: Limit
+      type: object
+      required:
+      - name
+      - limit
+      title: UsageLimit
+    CreateUsageLimitRequest:
+      properties:
+        limit:
+          type: integer
+          exclusiveMinimum: 0.0
+          title: Limit
+      type: object
+      required:
+      - limit
+      title: CreateUsageLimitRequest
+    UsageLimitResponse:
+      properties:
+        name:
+          $ref: '#/components/schemas/UsageLimitNames'
+        limit:
+          type: integer
+          title: Limit
+        current_usage:
+          type: integer
+          title: Current Usage
+      type: object
+      required:
+      - name
+      - limit
+      - current_usage
+      title: UsageLimitResponse
+    UsageLimitNames:
+      type: string
+      enum:
+      - traces_per_month
+      - orgs_per_user
+      - users_per_org
+      title: UsageLimitNames
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

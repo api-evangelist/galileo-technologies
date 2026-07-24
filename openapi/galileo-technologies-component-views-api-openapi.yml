@@ -1,0 +1,618 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation component_views API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: component_views
+paths:
+  /projects/{project_id}/views:
+    get:
+      tags:
+      - component_views
+      summary: List Views
+      description: 'List all views the user can see for a component.
+
+
+        Returns:
+
+        - User''s user views
+
+        - All project-visible views (if visibility filter allows)
+
+
+        Note: If no project views exist for the scope, a default project-visible view
+
+        is automatically created. This ensures every user sees at least one shared view.'
+      operationId: list_views_projects__project_id__views_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: component
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/ComponentType'
+          description: Component type (e.g. 'logstream_table')
+        description: Component type (e.g. 'logstream_table')
+      - name: run_id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+          description: Required run ID
+          title: Run Id
+        description: Required run ID
+      - name: visibility
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/ViewVisibility'
+          - type: 'null'
+          description: 'Filter by visibility: ''user'', ''project'', or null for all'
+          title: Visibility
+        description: 'Filter by visibility: ''user'', ''project'', or null for all'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComponentViewResponse'
+                title: Response List Views Projects  Project Id  Views Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - component_views
+      summary: Create View
+      description: 'Create a new component view.
+
+
+        If this is the first view for the scope, it will automatically be set as default.
+
+
+        Permissions:
+
+        - User views: Any project collaborator can create
+
+        - Project views: Only owner/editor can create'
+      operationId: create_view_projects__project_id__views_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentViewCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentViewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/views/{view_id}:
+    get:
+      tags:
+      - component_views
+      summary: Get View
+      description: 'Get a specific view by ID.
+
+
+        Permissions:
+
+        - User views: Only creator can view
+
+        - Project views: Any project collaborator can view'
+      operationId: get_view_projects__project_id__views__view_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: View Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentViewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - component_views
+      summary: Update View
+      description: 'Update an existing component view (name, description, view_data, visibility).
+
+
+        Note: To set a view as default, use a separate endpoint/mechanism.
+
+
+        Permissions:
+
+        - User views: Only creator can update
+
+        - Project views: Owner/editor can update
+
+        - Changing from PROJECT to USER visibility: Not allowed (blocked)
+
+        - Changing visibility of a default view: Not allowed (must set another view as default first)
+
+        - Changing to PROJECT visibility: Requires editor+ permission'
+      operationId: update_view_projects__project_id__views__view_id__put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: View Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentViewUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentViewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - component_views
+      summary: Delete View
+      description: 'Delete a component view.
+
+
+        Permissions:
+
+        - User views: Only creator can delete
+
+        - Project views: Only owner/editor can delete'
+      operationId: delete_view_projects__project_id__views__view_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: View Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/views/{view_id}/set-default:
+    post:
+      tags:
+      - component_views
+      summary: Set View As Default
+      description: 'Set a view as the default for its scope.
+
+
+        This will automatically unset any other default in the same scope.
+
+
+        Permissions:
+
+        - User views: Only creator can set as default
+
+        - Project views: Owner/editor can set as default'
+      operationId: set_view_as_default_projects__project_id__views__view_id__set_default_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: View Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentViewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/views/{view_id}/duplicate:
+    post:
+      tags:
+      - component_views
+      summary: Duplicate View
+      description: 'Duplicate a view.
+
+
+        Creates a new view owned by the current user with copied view_data.
+
+
+        Permissions:
+
+        - Any user who can VIEW the view can duplicate it
+
+        - If duplicating as project-visible, need owner/editor permission'
+      operationId: duplicate_view_projects__project_id__views__view_id__duplicate_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: View Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentViewDuplicate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentViewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ViewVisibility:
+      type: string
+      enum:
+      - user
+      - project
+      title: ViewVisibility
+      description: Visibility levels for views.
+    ComponentViewUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        view_data:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: View Data
+        visibility:
+          anyOf:
+          - $ref: '#/components/schemas/ViewVisibility'
+          - type: 'null'
+          description: Promote visibility from user to project. Project to user is not allowed.
+      type: object
+      title: ComponentViewUpdate
+      description: Schema for updating an existing component view.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ComponentViewResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Run Id
+        component:
+          $ref: '#/components/schemas/ComponentType'
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        view_data:
+          additionalProperties: true
+          type: object
+          title: View Data
+        is_default:
+          type: boolean
+          title: Is Default
+        can_edit:
+          type: boolean
+          title: Can Edit
+          default: false
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - created_by
+      - project_id
+      - run_id
+      - component
+      - visibility
+      - name
+      - description
+      - view_data
+      - is_default
+      - created_at
+      - updated_at
+      title: ComponentViewResponse
+      description: Response schema for component view with computed fields.
+    ComponentViewDuplicate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: Name for the duplicated view
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+          description: Visibility for the duplicated view (always creates as selected visibility)
+          default: user
+      type: object
+      required:
+      - name
+      title: ComponentViewDuplicate
+      description: Schema for duplicating a view.
+    ComponentViewCreate:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Run Id
+        component:
+          $ref: '#/components/schemas/ComponentType'
+          description: Component type (e.g. 'logstream_table')
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+          default: user
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: Name of the view
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        view_data:
+          additionalProperties: true
+          type: object
+          title: View Data
+          description: JSON view configuration
+      type: object
+      required:
+      - project_id
+      - component
+      - name
+      - view_data
+      title: ComponentViewCreate
+      description: Schema for creating a new component view.
+    ComponentType:
+      type: string
+      enum:
+      - logstream_table
+      - experiments_table
+      title: ComponentType
+      description: Types of components that can have saved views.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

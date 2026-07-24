@@ -1,0 +1,1711 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation logstream-insights API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: logstream-insights
+paths:
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights:
+    delete:
+      tags:
+      - logstream-insights
+      summary: Delete Logstream Insights
+      description: Delete logstream insights for a specific project and log stream.
+      operationId: delete_logstream_insights_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Logstream Insights
+      description: Get logstream insights for a specific project and log stream.
+      operationId: get_logstream_insights_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogstreamInsightsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - logstream-insights
+      summary: Create Or Update Logstream Insights
+      description: Create or update logstream insights for a specific project and run.
+      operationId: create_or_update_logstream_insights_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogstreamInsightsCreateOrUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/experiments/{experiment_id}/insights/create_insights_job:
+    post:
+      tags:
+      - logstream-insights
+      summary: Create Experiment Insights Job
+      description: 'Create an insights job for an experiment.
+
+        Endpoint: POST /experimental/projects/{project_id}/experiments/{experiment_id}/insights/create_insights_job'
+      operationId: create_experiment_insights_job_experimental_projects__project_id__experiments__experiment_id__insights_create_insights_job_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: experiment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Experiment Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/LogstreamInsightsCreateJobRequest'
+              - type: 'null'
+              title: Request
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogstreamInsightsResponseCreateJobResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/experiments/{experiment_id}/insights/job_status:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Experiment Insights Job Status
+      description: Get the latest insights job status for an experiment.
+      operationId: get_experiment_insights_job_status_experimental_projects__project_id__experiments__experiment_id__insights_job_status_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: experiment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Experiment Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsJobStatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/experiments/{experiment_id}/insights:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Experiment Insights
+      description: Get insights for a specific experiment.
+      operationId: get_experiment_insights_experimental_projects__project_id__experiments__experiment_id__insights_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: experiment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Experiment Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogstreamInsightsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/experiments/{experiment_id}/insights/job_statuses:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Experiment Job Statuses
+      description: Get job statuses for a specific experiment, optionally filtered by status.
+      operationId: get_experiment_job_statuses_experimental_projects__project_id__experiments__experiment_id__insights_job_statuses_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: experiment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Experiment Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+          title: Status
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsightsJobStatusResponse'
+                title: Response Get Experiment Job Statuses Experimental Projects  Project Id  Experiments  Experiment Id  Insights Job Statuses Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/create_insights_job:
+    post:
+      tags:
+      - logstream-insights
+      summary: Create Insights Job
+      description: Create an insights job for a specific project and log stream.
+      operationId: create_insights_job_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_create_insights_job_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/LogstreamInsightsCreateJobRequest'
+              - type: 'null'
+              title: Request
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogstreamInsightsResponseCreateJobResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/job_status:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Log Stream Insights Job Status
+      description: Get the latest insights job status for a logstream.
+      operationId: get_log_stream_insights_job_status_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_job_status_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsJobStatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/job_statuses:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Job Statuses
+      description: Get job statuses for a specific project and log stream, optionally filtered by status.
+      operationId: get_job_statuses_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_job_statuses_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+          title: Status
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsightsJobStatusResponse'
+                title: Response Get Job Statuses Experimental Projects  Project Id  Log Streams  Log Stream Id  Logstream Insights Job Statuses Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/trace_notes:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Trace Notes
+      description: Get trace notes for a specific project and log stream.
+      operationId: get_trace_notes_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_trace_notes_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceNotesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/trace_notes/{trace_id}:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Trace Notes For Trace
+      description: Get trace notes for a specific trace in a project and log stream.
+      operationId: get_trace_notes_for_trace_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_trace_notes__trace_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Trace Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceNotesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/session_notes:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Session Notes
+      description: Get session notes for a specific project and log stream.
+      operationId: get_session_notes_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_session_notes_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionNotesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/session_notes/{session_id}:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Session Notes For Session
+      description: Get session notes for a specific session in a project and log stream.
+      operationId: get_session_notes_for_session_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_session_notes__session_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Session Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionNotesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/session_titles:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Session Titles
+      description: Get session titles for a specific project and log stream.
+      operationId: get_session_titles_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_session_titles_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionTitlesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/session_titles/{session_id}:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Session Titles For Session
+      description: Get session titles for a specific session in a project and log stream.
+      operationId: get_session_titles_for_session_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_session_titles__session_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Session Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionTitlesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/trace_titles:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Trace Titles
+      description: Get trace titles for a specific project and log stream.
+      operationId: get_trace_titles_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_trace_titles_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceTitlesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/trace_titles/{trace_id}:
+    get:
+      tags:
+      - logstream-insights
+      summary: Get Trace Titles For Trace
+      description: Get trace titles for a specific trace in a project and log stream.
+      operationId: get_trace_titles_for_trace_experimental_projects__project_id__log_streams__log_stream_id__logstream_insights_trace_titles__trace_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Trace Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceTitlesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/token_usage:
+    post:
+      tags:
+      - logstream-insights
+      summary: Get Logstream Insights Token Usages
+      description: Get token usage records for a logstream insight.
+      operationId: get_logstream_insights_token_usages_projects__project_id__log_streams__log_stream_id__logstream_insights_token_usage_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogstreamInsightTokenUsageRequest'
+              default:
+                starting_token: 0
+                limit: 100
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogstreamInsightTokenUsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/token_usage:
+    post:
+      tags:
+      - logstream-insights
+      summary: Get Logstream Insights Token Usages
+      description: Get token usage records for a logstream insight.
+      operationId: get_logstream_insights_token_usages_v2_projects__project_id__log_streams__log_stream_id__logstream_insights_token_usage_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogstreamInsightTokenUsageRequest'
+              default:
+                starting_token: 0
+                limit: 100
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogstreamInsightTokenUsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/log_streams/{log_stream_id}/logstream_insights/token_usage:
+    post:
+      tags:
+      - logstream-insights
+      summary: Get Logstream Insights Token Usages
+      description: Get token usage records for a logstream insight.
+      operationId: get_logstream_insights_token_usages_public_v2_projects__project_id__log_streams__log_stream_id__logstream_insights_token_usage_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogstreamInsightTokenUsageRequest'
+              default:
+                starting_token: 0
+                limit: 100
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogstreamInsightTokenUsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    LogstreamInsightsResponse:
+      properties:
+        insights:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/InsightDBV2'
+            type: array
+          - items:
+              $ref: '#/components/schemas/InsightDB'
+            type: array
+          - type: 'null'
+          title: Insights
+        job_status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+        is_update_job:
+          type: boolean
+          title: Is Update Job
+        job_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Job Updated At
+        job_run_summary:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Job Run Summary
+      type: object
+      required:
+      - insights
+      - job_status
+      - is_update_job
+      - job_updated_at
+      title: LogstreamInsightsResponse
+    LogstreamInsightsResponseCreateJobResponse:
+      properties:
+        job_created:
+          type: boolean
+          title: Job Created
+        is_update_job:
+          type: boolean
+          title: Is Update Job
+      type: object
+      required:
+      - job_created
+      - is_update_job
+      title: LogstreamInsightsResponseCreateJobResponse
+    LogstreamInsightTokenUsageResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        token_usages:
+          items:
+            $ref: '#/components/schemas/LogStreamInsightTokenUsageDB'
+          type: array
+          title: Token Usages
+      type: object
+      title: LogstreamInsightTokenUsageResponse
+    SessionNote:
+      properties:
+        note_text:
+          type: string
+          title: Note Text
+        spans_involved:
+          items:
+            $ref: '#/components/schemas/SpanNoteV2'
+          type: array
+          title: Spans Involved
+      type: object
+      required:
+      - note_text
+      - spans_involved
+      title: SessionNote
+    Insight:
+      properties:
+        title:
+          type: string
+          title: Title
+        observation:
+          type: string
+          title: Observation
+        details:
+          type: string
+          title: Details
+        suggested_action:
+          type: string
+          title: Suggested Action
+        all_occurrences:
+          items:
+            $ref: '#/components/schemas/InsightOccurrence'
+          type: array
+          title: All Occurrences
+        example_occurrences:
+          items:
+            $ref: '#/components/schemas/InsightExampleOccurrence'
+          type: array
+          title: Example Occurrences
+        priority:
+          type: integer
+          title: Priority
+        priority_category:
+          anyOf:
+          - type: string
+            enum:
+            - error
+            - warning
+            - info
+          - type: 'null'
+          title: Priority Category
+        input_data_latest_updated_ts:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Input Data Latest Updated Ts
+      type: object
+      required:
+      - title
+      - observation
+      - details
+      - suggested_action
+      - all_occurrences
+      - example_occurrences
+      - priority
+      title: Insight
+    InsightDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        insight:
+          $ref: '#/components/schemas/Insight'
+      type: object
+      required:
+      - insight
+      title: InsightDB
+    TraceTitlesResponse:
+      properties:
+        trace_id_to_trace_title:
+          anyOf:
+          - additionalProperties:
+              type: string
+            propertyNames:
+              format: uuid4
+            type: object
+          - type: 'null'
+          title: Trace Id To Trace Title
+      type: object
+      title: TraceTitlesResponse
+    JobStatus:
+      type: string
+      enum:
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
+    SpanLink:
+      properties:
+        span_id:
+          type: string
+          title: Span Id
+        span_sub_narrative:
+          type: string
+          title: Span Sub Narrative
+      type: object
+      required:
+      - span_id
+      - span_sub_narrative
+      title: SpanLink
+    InsightsJobStatusResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+        is_update_job:
+          type: boolean
+          title: Is Update Job
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+        job_run_summary:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Job Run Summary
+      type: object
+      required:
+      - id
+      - status
+      - is_update_job
+      - updated_at
+      title: InsightsJobStatusResponse
+    TraceNote:
+      properties:
+        note_text:
+          type: string
+          title: Note Text
+        spans_involved:
+          items:
+            $ref: '#/components/schemas/SpanNote'
+          type: array
+          title: Spans Involved
+      type: object
+      required:
+      - note_text
+      - spans_involved
+      title: TraceNote
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TokenUsage:
+      properties:
+        input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Input Tokens
+        output_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Tokens
+        cache_read_input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Cache Read Input Tokens
+        cache_creation_input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Cache Creation Input Tokens
+      type: object
+      title: TokenUsage
+      description: Token usage information for insights generation.
+    EmptyResponse:
+      properties: {}
+      type: object
+      title: EmptyResponse
+    SessionNotesResponse:
+      properties:
+        session_id_to_session_notes:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/SessionNote'
+            type: array
+          propertyNames:
+            format: uuid4
+          type: object
+          title: Session Id To Session Notes
+      type: object
+      required:
+      - session_id_to_session_notes
+      title: SessionNotesResponse
+    LogstreamInsightsCreateJobRequest:
+      properties:
+        model_alias:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Model Alias
+          description: Optional model alias to use for this insights generation job.
+      type: object
+      title: LogstreamInsightsCreateJobRequest
+    TraceNotesResponse:
+      properties:
+        trace_id_to_trace_notes:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/TraceNote'
+            type: array
+          propertyNames:
+            format: uuid4
+          type: object
+          title: Trace Id To Trace Notes
+      type: object
+      required:
+      - trace_id_to_trace_notes
+      title: TraceNotesResponse
+    SessionTitlesResponse:
+      properties:
+        session_id_to_session_title:
+          anyOf:
+          - additionalProperties:
+              type: string
+            propertyNames:
+              format: uuid4
+            type: object
+          - type: 'null'
+          title: Session Id To Session Title
+      type: object
+      title: SessionTitlesResponse
+    SpanLinkV2:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        span_id:
+          type: string
+          title: Span Id
+        span_sub_narrative:
+          type: string
+          title: Span Sub Narrative
+      type: object
+      required:
+      - trace_id
+      - span_id
+      - span_sub_narrative
+      title: SpanLinkV2
+    InsightOccurrenceV2:
+      properties:
+        session_id:
+          type: string
+          title: Session Id
+        spans_involved:
+          items:
+            $ref: '#/components/schemas/SpanInvolved'
+          type: array
+          title: Spans Involved
+        session_created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Session Created At
+      type: object
+      required:
+      - session_id
+      - spans_involved
+      title: InsightOccurrenceV2
+    SpanNoteV2:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        span_id:
+          type: string
+          title: Span Id
+        span_note:
+          type: string
+          title: Span Note
+        unique_span_identifying_substring:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Unique Span Identifying Substring
+      type: object
+      required:
+      - trace_id
+      - span_id
+      - span_note
+      title: SpanNoteV2
+    InsightExampleOccurrence:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        example_narrative:
+          type: string
+          title: Example Narrative
+        span_links:
+          items:
+            $ref: '#/components/schemas/SpanLink'
+          type: array
+          title: Span Links
+      type: object
+      required:
+      - trace_id
+      - example_narrative
+      - span_links
+      title: InsightExampleOccurrence
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SpanInvolved:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        span_id:
+          type: string
+          title: Span Id
+      type: object
+      required:
+      - trace_id
+      - span_id
+      title: SpanInvolved
+    SpanNote:
+      properties:
+        span_id:
+          type: string
+          title: Span Id
+        span_note:
+          type: string
+          title: Span Note
+        unique_span_identifying_substring:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Unique Span Identifying Substring
+      type: object
+      required:
+      - span_id
+      - span_note
+      title: SpanNote
+    InsightV2:
+      properties:
+        title:
+          type: string
+          title: Title
+        observation:
+          type: string
+          title: Observation
+        details:
+          type: string
+          title: Details
+        suggested_action:
+          type: string
+          title: Suggested Action
+        all_occurrences:
+          items:
+            $ref: '#/components/schemas/InsightOccurrenceV2'
+          type: array
+          title: All Occurrences
+        example_occurrences:
+          items:
+            $ref: '#/components/schemas/InsightExampleOccurrenceV2'
+          type: array
+          title: Example Occurrences
+        priority:
+          type: integer
+          title: Priority
+        priority_category:
+          anyOf:
+          - type: string
+            enum:
+            - error
+            - warning
+            - info
+          - type: 'null'
+          title: Priority Category
+        input_data_latest_updated_ts:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Input Data Latest Updated Ts
+      type: object
+      required:
+      - title
+      - observation
+      - details
+      - suggested_action
+      - all_occurrences
+      - example_occurrences
+      - priority
+      title: InsightV2
+    LogstreamInsightTokenUsageUpdatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: LogstreamInsightTokenUsageUpdatedAtFilter
+    LogstreamInsightsCreateOrUpdate:
+      properties:
+        insights:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/InsightDBV2'
+            type: array
+          - items:
+              $ref: '#/components/schemas/InsightDB'
+            type: array
+          title: Insights
+      type: object
+      required:
+      - insights
+      title: LogstreamInsightsCreateOrUpdate
+    LogstreamInsightTokenUsageCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: LogstreamInsightTokenUsageCreatedAtFilter
+    LogStreamInsightTokenUsageDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        token_usage:
+          $ref: '#/components/schemas/TokenUsage'
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - project_id
+      - log_stream_id
+      title: LogStreamInsightTokenUsageDB
+    LogstreamInsightTokenUsageRequest:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtFilter'
+            - $ref: '#/components/schemas/LogstreamInsightTokenUsageUpdatedAtFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtFilter'
+                updated_at: '#/components/schemas/LogstreamInsightTokenUsageUpdatedAtFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - $ref: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtSort'
+          - type: 'null'
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: LogstreamInsightTokenUsageRequest
+    InsightExampleOccurrenceV2:
+      properties:
+        session_id:
+          type: string
+          title: Session Id
+        example_narrative:
+          type: string
+          title: Example Narrative
+        span_links:
+          items:
+            $ref: '#/components/schemas/SpanLinkV2'
+          type: array
+          title: Span Links
+      type: object
+      required:
+      - session_id
+      - example_narrative
+      - span_links
+      title: InsightExampleOccurrenceV2
+    LogstreamInsightTokenUsageCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: LogstreamInsightTokenUsageCreatedAtSort
+    InsightDBV2:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        insight:
+          $ref: '#/components/schemas/InsightV2'
+      type: object
+      required:
+      - insight
+      title: InsightDBV2
+    InsightOccurrence:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        span_ids:
+          items:
+            type: string
+          type: array
+          title: Span Ids
+      type: object
+      required:
+      - trace_id
+      - span_ids
+      title: InsightOccurrence
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

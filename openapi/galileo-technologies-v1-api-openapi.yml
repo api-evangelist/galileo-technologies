@@ -1,0 +1,479 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation v1 API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: v1
+paths:
+  /v1/scorers:
+    get:
+      tags:
+      - v1
+      summary: List Scorers V1
+      description: 'List scorers visible to the caller''s organization.
+
+
+        Supports both user-session (JWT) and API-key (Galileo-API-Key) authentication.
+
+        Org-scoped, read-only. No Cerbos query plan and no project-level row filtering
+
+        so preset scorers remain visible to API-key callers.'
+      operationId: list_scorers_v1_v1_scorers_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: scorer_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/ScorerTypes'
+          - type: 'null'
+          description: Filter by scorer type. Repeat the query param for multiple values, e.g. ?scorer_type=preset&scorer_type=luna.
+          title: Scorer Type
+        description: Filter by scorer type. Repeat the query param for multiple values, e.g. ?scorer_type=preset&scorer_type=luna.
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 256
+          - type: 'null'
+          title: Search
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ListScorersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/datasets:
+    get:
+      tags:
+      - v1
+      summary: List Datasets V1
+      description: 'List datasets visible to the caller''s organization.
+
+
+        Supports both user-session (JWT) and API-key (Galileo-API-Key) authentication.
+
+        Admins see all org datasets; non-admins see datasets shared with them via
+
+        project membership, direct share, or group share. API keys scoped to a
+
+        project are constrained to that project''s datasets.'
+      operationId: list_datasets_v1_v1_datasets_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          description: Filter datasets linked to this project.
+          title: Project Id
+        description: Filter datasets linked to this project.
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 256
+          - type: 'null'
+          title: Search
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1ListDatasetsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    V1ScorerVersionEntry:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        version:
+          type: integer
+          title: Version
+        finetuned_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/V1FinetunedScorerEntry'
+          - type: 'null'
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
+      type: object
+      required:
+      - id
+      - version
+      title: V1ScorerVersionEntry
+    V1ScorerEntry:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        scorer_type:
+          $ref: '#/components/schemas/ScorerTypes'
+        model_type:
+          anyOf:
+          - $ref: '#/components/schemas/ModelType'
+          - type: 'null'
+        tags:
+          items:
+            type: string
+          type: array
+          title: Tags
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+        input_type:
+          anyOf:
+          - $ref: '#/components/schemas/InputTypeEnum'
+          - type: 'null'
+        multimodal_capabilities:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/MultimodalCapability'
+            type: array
+          - type: 'null'
+          title: Multimodal Capabilities
+        default_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Default Version Id
+        default_version:
+          anyOf:
+          - $ref: '#/components/schemas/V1ScorerVersionEntry'
+          - type: 'null'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
+        deprecated:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Deprecated
+        latest_version:
+          anyOf:
+          - $ref: '#/components/schemas/V1ScorerVersionEntry'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - name
+      - scorer_type
+      title: V1ScorerEntry
+    ModelType:
+      type: string
+      enum:
+      - slm
+      - llm
+      - code
+      title: ModelType
+    InputTypeEnum:
+      type: string
+      enum:
+      - basic
+      - llm_spans
+      - retriever_spans
+      - sessions_normalized
+      - sessions_trace_io_only
+      - tool_spans
+      - trace_input_only
+      - trace_io_only
+      - trace_normalized
+      - trace_output_only
+      - agent_spans
+      - workflow_spans
+      title: InputTypeEnum
+      description: Enumeration of input types.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    MultimodalCapability:
+      type: string
+      enum:
+      - vision
+      - audio
+      title: MultimodalCapability
+    LunaOutputTypeEnum:
+      type: string
+      enum:
+      - float
+      - string
+      - string_list
+      - bool_list
+      title: LunaOutputTypeEnum
+    V1ListScorersResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        scorers:
+          items:
+            $ref: '#/components/schemas/V1ScorerEntry'
+          type: array
+          title: Scorers
+      type: object
+      title: V1ListScorersResponse
+    V1FinetunedScorerEntry:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        lora_task_id:
+          type: integer
+          title: Lora Task Id
+        luna_input_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaInputTypeEnum'
+          - type: 'null'
+        luna_output_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaOutputTypeEnum'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - lora_task_id
+      title: V1FinetunedScorerEntry
+    V1DatasetEntry:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        row_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Row Count
+        project_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Project Ids
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - name
+      - created_at
+      title: V1DatasetEntry
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
+    LunaInputTypeEnum:
+      type: string
+      enum:
+      - span
+      - trace_object
+      - trace_input_output_only
+      title: LunaInputTypeEnum
+    ScorerTypes:
+      type: string
+      enum:
+      - llm
+      - code
+      - luna
+      - preset
+      title: ScorerTypes
+    V1ListDatasetsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        datasets:
+          items:
+            $ref: '#/components/schemas/V1DatasetEntry'
+          type: array
+          title: Datasets
+      type: object
+      title: V1ListDatasetsResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

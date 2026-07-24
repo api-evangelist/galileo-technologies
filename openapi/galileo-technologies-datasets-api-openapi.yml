@@ -1,0 +1,5933 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation datasets API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: datasets
+paths:
+  /datasets:
+    post:
+      tags:
+      - datasets
+      summary: Create Dataset
+      description: Creates a standalone dataset.
+      operationId: create_dataset_datasets_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/DatasetFormat'
+          default: csv
+      - name: hidden
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Hidden
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_dataset_datasets_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List Datasets
+      operationId: list_datasets_datasets_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/bulk_delete:
+    delete:
+      tags:
+      - datasets
+      summary: Bulk Delete Datasets
+      description: "Delete multiple datasets in bulk.\n\nThis endpoint allows efficient deletion of multiple datasets at once.\nIt validates permissions for each dataset in the service and provides detailed feedback about\nsuccessful and failed deletions for each dataset.\n\nParameters\n----------\ndelete_request : BulkDeleteDatasetsRequest\n    Request containing list of dataset IDs to delete (max 100)\nctx : Context\n    Request context including authentication information\n\nReturns\n-------\nBulkDeleteDatasetsResponse\n    Details about the bulk deletion operation including:\n    - Number of successfully deleted datasets\n    - List of failed deletions with reasons\n    - Summary message"
+      operationId: bulk_delete_datasets_datasets_bulk_delete_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteDatasetsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDeleteDatasetsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /datasets/{dataset_id}:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset
+      operationId: get_dataset_datasets__dataset_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset
+      operationId: update_dataset_datasets__dataset_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete Dataset
+      operationId: delete_dataset_datasets__dataset_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Datasets
+      operationId: query_datasets_datasets_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasetParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/content:
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset Content
+      description: 'Update the content of a dataset.
+
+
+        The `index` and `column_name` fields are treated as keys tied to a specific version of the dataset.
+
+        As such, these values are considered immutable identifiers for the dataset''s structure.
+
+
+        Edits are applied sequentially in list order, and each edit sees the table state left by the
+
+        previous one. For example, after a `rename_column` edit renames `col_a` to `col_b`, any
+
+        subsequent `update_row` in the same request must reference the column as `col_b`, not `col_a`.
+
+
+        The `If-Match` header is used to ensure that updates are only applied if the client''s version of the dataset
+
+        matches the server''s version. This prevents conflicts from simultaneous updates. The `ETag` header in the response
+
+        provides the new version identifier after a successful update.'
+      operationId: update_dataset_content_datasets__dataset_id__content_patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: If-Match
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: ETag of the dataset as a version identifier.
+          title: If-Match
+        description: ETag of the dataset as a version identifier.
+        example: d89cce33-549d-4b6d-b220-afb641d859c8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetContentRequest'
+      responses:
+        '204':
+          description: Dataset content updated successfully
+          headers:
+            ETag:
+              description: New version identifier for the dataset
+              schema:
+                type: string
+        '404':
+          description: Dataset not found
+        '412':
+          description: ETag mismatch; client's If-Match does not match current resource version
+        '422':
+          description: Validation error in request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '423':
+          description: Resource lock could not be acquired; another update may be in progress
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Content
+      operationId: get_dataset_content_datasets__dataset_id__content_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - datasets
+      summary: Upsert Dataset Content
+      description: Rollback the content of a dataset to a previous version.
+      operationId: upsert_dataset_content_datasets__dataset_id__content_put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/RollbackRequest'
+              - $ref: '#/components/schemas/UpsertDatasetContentRequest'
+              title: Body
+      responses:
+        '204':
+          description: Dataset content upserted successfully
+        '404':
+          description: Dataset not found
+        '422':
+          description: Validation error in request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '423':
+          description: Resource lock could not be acquired; another update may be in progress
+  /datasets/{dataset_id}/download:
+    get:
+      tags:
+      - datasets
+      summary: Download Dataset
+      operationId: download_dataset_datasets__dataset_id__download_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/preview:
+    post:
+      tags:
+      - datasets
+      summary: Preview Dataset
+      operationId: preview_dataset_datasets__dataset_id__preview_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewDatasetRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/content/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Dataset Content
+      operationId: query_dataset_content_datasets__dataset_id__content_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryDatasetParams'
+              default:
+                filters: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/users:
+    post:
+      tags:
+      - datasets
+      summary: Create User Dataset Collaborators
+      operationId: create_user_dataset_collaborators_datasets__dataset_id__users_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCollaborator'
+                title: Response Create User Dataset Collaborators Datasets  Dataset Id  Users Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List User Dataset Collaborators
+      description: List the users with which the dataset has been shared.
+      operationId: list_user_dataset_collaborators_datasets__dataset_id__users_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/groups:
+    post:
+      tags:
+      - datasets
+      summary: Create Group Dataset Collaborators
+      description: Share a dataset with groups.
+      operationId: create_group_dataset_collaborators_datasets__dataset_id__groups_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCollaborator'
+                title: Response Create Group Dataset Collaborators Datasets  Dataset Id  Groups Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List Group Dataset Collaborators
+      description: List the groups with which the dataset has been shared.
+      operationId: list_group_dataset_collaborators_datasets__dataset_id__groups_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/users/{user_id}:
+    patch:
+      tags:
+      - datasets
+      summary: Update User Dataset Collaborator
+      description: Update the sharing permissions of a user on a dataset.
+      operationId: update_user_dataset_collaborator_datasets__dataset_id__users__user_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete User Dataset Collaborator
+      description: Remove a user's access to a dataset.
+      operationId: delete_user_dataset_collaborator_datasets__dataset_id__users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/groups/{group_id}:
+    patch:
+      tags:
+      - datasets
+      summary: Update Group Dataset Collaborator
+      description: Update the sharing permissions of a group on a dataset.
+      operationId: update_group_dataset_collaborator_datasets__dataset_id__groups__group_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete Group Dataset Collaborator
+      description: Remove a group's access to a dataset.
+      operationId: delete_group_dataset_collaborator_datasets__dataset_id__groups__group_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/versions/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Dataset Versions
+      operationId: query_dataset_versions_datasets__dataset_id__versions_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasetVersionParams'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetVersionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/versions/{version_index}/content:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Version Content
+      operationId: get_dataset_version_content_datasets__dataset_id__versions__version_index__content_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: version_index
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Version Index
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/versions/{version_index}:
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset Version
+      operationId: update_dataset_version_datasets__dataset_id__versions__version_index__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: version_index
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Version Index
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetVersionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetVersionDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/{dataset_id}/projects:
+    get:
+      tags:
+      - datasets
+      summary: List Dataset Projects
+      operationId: list_dataset_projects_datasets__dataset_id__projects_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetProjectsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/extend:
+    post:
+      tags:
+      - datasets
+      summary: Extend Dataset Content
+      description: Extends the dataset content
+      operationId: extend_dataset_content_datasets_extend_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyntheticDatasetExtensionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyntheticDatasetExtensionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /datasets/extend/{dataset_id}:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Synthetic Extend Status
+      operationId: get_dataset_synthetic_extend_status_datasets_extend__dataset_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobProgress'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /datasets/query/count:
+    post:
+      tags:
+      - datasets
+      summary: Count Datasets
+      description: Count datasets visible to the current user with filtering.
+      operationId: count_datasets_datasets_query_count_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasetParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: integer
+                title: Response Count Datasets Datasets Query Count Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /datasets/{dataset_id}/variable_preview:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Variable Preview
+      description: Return a variable preview derived from the sampled dataset input rows.
+      operationId: get_dataset_variable_preview_datasets__dataset_id__variable_preview_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatasetInputJsonField'
+                title: Response Get Dataset Variable Preview Datasets  Dataset Id  Variable Preview Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets:
+    post:
+      tags:
+      - datasets
+      summary: Create Dataset
+      description: Creates a standalone dataset.
+      operationId: create_dataset_v2_datasets_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/DatasetFormat'
+          default: csv
+      - name: hidden
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Hidden
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_dataset_v2_datasets_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List Datasets
+      operationId: list_datasets_v2_datasets_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/bulk_delete:
+    delete:
+      tags:
+      - datasets
+      summary: Bulk Delete Datasets
+      description: "Delete multiple datasets in bulk.\n\nThis endpoint allows efficient deletion of multiple datasets at once.\nIt validates permissions for each dataset in the service and provides detailed feedback about\nsuccessful and failed deletions for each dataset.\n\nParameters\n----------\ndelete_request : BulkDeleteDatasetsRequest\n    Request containing list of dataset IDs to delete (max 100)\nctx : Context\n    Request context including authentication information\n\nReturns\n-------\nBulkDeleteDatasetsResponse\n    Details about the bulk deletion operation including:\n    - Number of successfully deleted datasets\n    - List of failed deletions with reasons\n    - Summary message"
+      operationId: bulk_delete_datasets_v2_datasets_bulk_delete_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteDatasetsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDeleteDatasetsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /v2/datasets/{dataset_id}:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset
+      operationId: get_dataset_v2_datasets__dataset_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset
+      operationId: update_dataset_v2_datasets__dataset_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete Dataset
+      operationId: delete_dataset_v2_datasets__dataset_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Datasets
+      operationId: query_datasets_v2_datasets_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasetParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/content:
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset Content
+      description: 'Update the content of a dataset.
+
+
+        The `index` and `column_name` fields are treated as keys tied to a specific version of the dataset.
+
+        As such, these values are considered immutable identifiers for the dataset''s structure.
+
+
+        Edits are applied sequentially in list order, and each edit sees the table state left by the
+
+        previous one. For example, after a `rename_column` edit renames `col_a` to `col_b`, any
+
+        subsequent `update_row` in the same request must reference the column as `col_b`, not `col_a`.
+
+
+        The `If-Match` header is used to ensure that updates are only applied if the client''s version of the dataset
+
+        matches the server''s version. This prevents conflicts from simultaneous updates. The `ETag` header in the response
+
+        provides the new version identifier after a successful update.'
+      operationId: update_dataset_content_v2_datasets__dataset_id__content_patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: If-Match
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: ETag of the dataset as a version identifier.
+          title: If-Match
+        description: ETag of the dataset as a version identifier.
+        example: d89cce33-549d-4b6d-b220-afb641d859c8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetContentRequest'
+      responses:
+        '204':
+          description: Dataset content updated successfully
+          headers:
+            ETag:
+              description: New version identifier for the dataset
+              schema:
+                type: string
+        '404':
+          description: Dataset not found
+        '412':
+          description: ETag mismatch; client's If-Match does not match current resource version
+        '422':
+          description: Validation error in request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '423':
+          description: Resource lock could not be acquired; another update may be in progress
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Content
+      operationId: get_dataset_content_v2_datasets__dataset_id__content_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - datasets
+      summary: Upsert Dataset Content
+      description: Rollback the content of a dataset to a previous version.
+      operationId: upsert_dataset_content_v2_datasets__dataset_id__content_put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/RollbackRequest'
+              - $ref: '#/components/schemas/UpsertDatasetContentRequest'
+              title: Body
+      responses:
+        '204':
+          description: Dataset content upserted successfully
+        '404':
+          description: Dataset not found
+        '422':
+          description: Validation error in request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '423':
+          description: Resource lock could not be acquired; another update may be in progress
+  /v2/datasets/{dataset_id}/download:
+    get:
+      tags:
+      - datasets
+      summary: Download Dataset
+      operationId: download_dataset_v2_datasets__dataset_id__download_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/preview:
+    post:
+      tags:
+      - datasets
+      summary: Preview Dataset
+      operationId: preview_dataset_v2_datasets__dataset_id__preview_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewDatasetRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/content/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Dataset Content
+      operationId: query_dataset_content_v2_datasets__dataset_id__content_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryDatasetParams'
+              default:
+                filters: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/users:
+    post:
+      tags:
+      - datasets
+      summary: Create User Dataset Collaborators
+      operationId: create_user_dataset_collaborators_v2_datasets__dataset_id__users_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCollaborator'
+                title: Response Create User Dataset Collaborators V2 Datasets  Dataset Id  Users Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List User Dataset Collaborators
+      description: List the users with which the dataset has been shared.
+      operationId: list_user_dataset_collaborators_v2_datasets__dataset_id__users_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/groups:
+    post:
+      tags:
+      - datasets
+      summary: Create Group Dataset Collaborators
+      description: Share a dataset with groups.
+      operationId: create_group_dataset_collaborators_v2_datasets__dataset_id__groups_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCollaborator'
+                title: Response Create Group Dataset Collaborators V2 Datasets  Dataset Id  Groups Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List Group Dataset Collaborators
+      description: List the groups with which the dataset has been shared.
+      operationId: list_group_dataset_collaborators_v2_datasets__dataset_id__groups_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/users/{user_id}:
+    patch:
+      tags:
+      - datasets
+      summary: Update User Dataset Collaborator
+      description: Update the sharing permissions of a user on a dataset.
+      operationId: update_user_dataset_collaborator_v2_datasets__dataset_id__users__user_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete User Dataset Collaborator
+      description: Remove a user's access to a dataset.
+      operationId: delete_user_dataset_collaborator_v2_datasets__dataset_id__users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/groups/{group_id}:
+    patch:
+      tags:
+      - datasets
+      summary: Update Group Dataset Collaborator
+      description: Update the sharing permissions of a group on a dataset.
+      operationId: update_group_dataset_collaborator_v2_datasets__dataset_id__groups__group_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete Group Dataset Collaborator
+      description: Remove a group's access to a dataset.
+      operationId: delete_group_dataset_collaborator_v2_datasets__dataset_id__groups__group_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/versions/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Dataset Versions
+      operationId: query_dataset_versions_v2_datasets__dataset_id__versions_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasetVersionParams'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetVersionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/versions/{version_index}/content:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Version Content
+      operationId: get_dataset_version_content_v2_datasets__dataset_id__versions__version_index__content_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: version_index
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Version Index
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/versions/{version_index}:
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset Version
+      operationId: update_dataset_version_v2_datasets__dataset_id__versions__version_index__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: version_index
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Version Index
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetVersionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetVersionDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/{dataset_id}/projects:
+    get:
+      tags:
+      - datasets
+      summary: List Dataset Projects
+      operationId: list_dataset_projects_v2_datasets__dataset_id__projects_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetProjectsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/datasets/extend:
+    post:
+      tags:
+      - datasets
+      summary: Extend Dataset Content
+      description: Extends the dataset content
+      operationId: extend_dataset_content_v2_datasets_extend_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyntheticDatasetExtensionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyntheticDatasetExtensionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /v2/datasets/extend/{dataset_id}:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Synthetic Extend Status
+      operationId: get_dataset_synthetic_extend_status_v2_datasets_extend__dataset_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobProgress'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets:
+    post:
+      tags:
+      - datasets
+      summary: Create Dataset
+      description: Creates a standalone dataset.
+      operationId: create_dataset_public_v2_datasets_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/DatasetFormat'
+          default: csv
+      - name: hidden
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Hidden
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_dataset_public_v2_datasets_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List Datasets
+      operationId: list_datasets_public_v2_datasets_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/bulk_delete:
+    delete:
+      tags:
+      - datasets
+      summary: Bulk Delete Datasets
+      description: "Delete multiple datasets in bulk.\n\nThis endpoint allows efficient deletion of multiple datasets at once.\nIt validates permissions for each dataset in the service and provides detailed feedback about\nsuccessful and failed deletions for each dataset.\n\nParameters\n----------\ndelete_request : BulkDeleteDatasetsRequest\n    Request containing list of dataset IDs to delete (max 100)\nctx : Context\n    Request context including authentication information\n\nReturns\n-------\nBulkDeleteDatasetsResponse\n    Details about the bulk deletion operation including:\n    - Number of successfully deleted datasets\n    - List of failed deletions with reasons\n    - Summary message"
+      operationId: bulk_delete_datasets_public_v2_datasets_bulk_delete_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteDatasetsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDeleteDatasetsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /public/v2/datasets/{dataset_id}:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset
+      operationId: get_dataset_public_v2_datasets__dataset_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset
+      operationId: update_dataset_public_v2_datasets__dataset_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete Dataset
+      operationId: delete_dataset_public_v2_datasets__dataset_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Datasets
+      operationId: query_datasets_public_v2_datasets_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: actions
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetAction'
+          description: Actions to include in the 'permissions' field.
+          title: Actions
+        description: Actions to include in the 'permissions' field.
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasetParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/content:
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset Content
+      description: 'Update the content of a dataset.
+
+
+        The `index` and `column_name` fields are treated as keys tied to a specific version of the dataset.
+
+        As such, these values are considered immutable identifiers for the dataset''s structure.
+
+
+        Edits are applied sequentially in list order, and each edit sees the table state left by the
+
+        previous one. For example, after a `rename_column` edit renames `col_a` to `col_b`, any
+
+        subsequent `update_row` in the same request must reference the column as `col_b`, not `col_a`.
+
+
+        The `If-Match` header is used to ensure that updates are only applied if the client''s version of the dataset
+
+        matches the server''s version. This prevents conflicts from simultaneous updates. The `ETag` header in the response
+
+        provides the new version identifier after a successful update.'
+      operationId: update_dataset_content_public_v2_datasets__dataset_id__content_patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: If-Match
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: ETag of the dataset as a version identifier.
+          title: If-Match
+        description: ETag of the dataset as a version identifier.
+        example: d89cce33-549d-4b6d-b220-afb641d859c8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetContentRequest'
+      responses:
+        '204':
+          description: Dataset content updated successfully
+          headers:
+            ETag:
+              description: New version identifier for the dataset
+              schema:
+                type: string
+        '404':
+          description: Dataset not found
+        '412':
+          description: ETag mismatch; client's If-Match does not match current resource version
+        '422':
+          description: Validation error in request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '423':
+          description: Resource lock could not be acquired; another update may be in progress
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Content
+      operationId: get_dataset_content_public_v2_datasets__dataset_id__content_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - datasets
+      summary: Upsert Dataset Content
+      description: Rollback the content of a dataset to a previous version.
+      operationId: upsert_dataset_content_public_v2_datasets__dataset_id__content_put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/RollbackRequest'
+              - $ref: '#/components/schemas/UpsertDatasetContentRequest'
+              title: Body
+      responses:
+        '204':
+          description: Dataset content upserted successfully
+        '404':
+          description: Dataset not found
+        '422':
+          description: Validation error in request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '423':
+          description: Resource lock could not be acquired; another update may be in progress
+  /public/v2/datasets/{dataset_id}/download:
+    get:
+      tags:
+      - datasets
+      summary: Download Dataset
+      operationId: download_dataset_public_v2_datasets__dataset_id__download_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/preview:
+    post:
+      tags:
+      - datasets
+      summary: Preview Dataset
+      operationId: preview_dataset_public_v2_datasets__dataset_id__preview_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewDatasetRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/content/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Dataset Content
+      operationId: query_dataset_content_public_v2_datasets__dataset_id__content_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryDatasetParams'
+              default:
+                filters: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/users:
+    post:
+      tags:
+      - datasets
+      summary: Create User Dataset Collaborators
+      operationId: create_user_dataset_collaborators_public_v2_datasets__dataset_id__users_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCollaborator'
+                title: Response Create User Dataset Collaborators Public V2 Datasets  Dataset Id  Users Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List User Dataset Collaborators
+      description: List the users with which the dataset has been shared.
+      operationId: list_user_dataset_collaborators_public_v2_datasets__dataset_id__users_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/groups:
+    post:
+      tags:
+      - datasets
+      summary: Create Group Dataset Collaborators
+      description: Share a dataset with groups.
+      operationId: create_group_dataset_collaborators_public_v2_datasets__dataset_id__groups_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroupCollaboratorCreate'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCollaborator'
+                title: Response Create Group Dataset Collaborators Public V2 Datasets  Dataset Id  Groups Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - datasets
+      summary: List Group Dataset Collaborators
+      description: List the groups with which the dataset has been shared.
+      operationId: list_group_dataset_collaborators_public_v2_datasets__dataset_id__groups_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGroupCollaboratorsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/users/{user_id}:
+    patch:
+      tags:
+      - datasets
+      summary: Update User Dataset Collaborator
+      description: Update the sharing permissions of a user on a dataset.
+      operationId: update_user_dataset_collaborator_public_v2_datasets__dataset_id__users__user_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete User Dataset Collaborator
+      description: Remove a user's access to a dataset.
+      operationId: delete_user_dataset_collaborator_public_v2_datasets__dataset_id__users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/groups/{group_id}:
+    patch:
+      tags:
+      - datasets
+      summary: Update Group Dataset Collaborator
+      description: Update the sharing permissions of a group on a dataset.
+      operationId: update_group_dataset_collaborator_public_v2_datasets__dataset_id__groups__group_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaboratorUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollaborator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - datasets
+      summary: Delete Group Dataset Collaborator
+      description: Remove a group's access to a dataset.
+      operationId: delete_group_dataset_collaborator_public_v2_datasets__dataset_id__groups__group_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/versions/query:
+    post:
+      tags:
+      - datasets
+      summary: Query Dataset Versions
+      operationId: query_dataset_versions_public_v2_datasets__dataset_id__versions_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasetVersionParams'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetVersionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/versions/{version_index}/content:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Version Content
+      operationId: get_dataset_version_content_public_v2_datasets__dataset_id__versions__version_index__content_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: version_index
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Version Index
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetContent'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/versions/{version_index}:
+    patch:
+      tags:
+      - datasets
+      summary: Update Dataset Version
+      operationId: update_dataset_version_public_v2_datasets__dataset_id__versions__version_index__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: version_index
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Version Index
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetVersionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetVersionDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/{dataset_id}/projects:
+    get:
+      tags:
+      - datasets
+      summary: List Dataset Projects
+      operationId: list_dataset_projects_public_v2_datasets__dataset_id__projects_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetProjectsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/datasets/extend:
+    post:
+      tags:
+      - datasets
+      summary: Extend Dataset Content
+      description: Extends the dataset content
+      operationId: extend_dataset_content_public_v2_datasets_extend_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyntheticDatasetExtensionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyntheticDatasetExtensionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /public/v2/datasets/extend/{dataset_id}:
+    get:
+      tags:
+      - datasets
+      summary: Get Dataset Synthetic Extend Status
+      operationId: get_dataset_synthetic_extend_status_public_v2_datasets_extend__dataset_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: dataset_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobProgress'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    BulkDeleteDatasetsResponse:
+      properties:
+        deleted_count:
+          type: integer
+          title: Deleted Count
+        failed_deletions:
+          items:
+            $ref: '#/components/schemas/api__schemas__content__dataset__BulkDeleteFailure'
+          type: array
+          title: Failed Deletions
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - deleted_count
+      - message
+      title: BulkDeleteDatasetsResponse
+      description: Response from bulk deletion operation.
+    SyntheticDataSourceDataset:
+      properties:
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+        dataset_version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Dataset Version Index
+        row_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid4
+            type: array
+          - type: 'null'
+          title: Row Ids
+      type: object
+      required:
+      - dataset_id
+      title: SyntheticDataSourceDataset
+      description: Configuration for dataset examples in synthetic data generation.
+    PromptRunSettings-Input:
+      properties:
+        logprobs:
+          type: boolean
+          title: Logprobs
+          default: true
+        top_logprobs:
+          type: integer
+          title: Top Logprobs
+          default: 5
+        echo:
+          type: boolean
+          title: Echo
+          default: false
+        n:
+          type: integer
+          title: N
+          default: 1
+        reasoning_effort:
+          type: string
+          title: Reasoning Effort
+          default: medium
+        verbosity:
+          type: string
+          title: Verbosity
+          default: medium
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+        model_alias:
+          type: string
+          title: Model Alias
+          default: gpt-5.1
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          type: integer
+          title: Max Tokens
+          default: 4096
+        stop_sequences:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          type: number
+          title: Top P
+          default: 1.0
+        top_k:
+          type: integer
+          title: Top K
+          default: 40
+        frequency_penalty:
+          type: number
+          title: Frequency Penalty
+          default: 0.0
+        presence_penalty:
+          type: number
+          title: Presence Penalty
+          default: 0.0
+        tools:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/OpenAIToolChoice'
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Response Format
+        known_models:
+          items:
+            $ref: '#/components/schemas/Model'
+          type: array
+          title: Known Models
+      type: object
+      title: PromptRunSettings
+      description: Prompt run settings.
+    CollaboratorUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+      type: object
+      required:
+      - role
+      title: CollaboratorUpdate
+    UpdateDatasetVersionRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: UpdateDatasetVersionRequest
+    Model:
+      properties:
+        name:
+          type: string
+          title: Name
+        alias:
+          type: string
+          title: Alias
+        integration:
+          $ref: '#/components/schemas/LLMIntegration'
+          default: openai
+        user_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Role
+        assistant_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assistant Role
+        system_supported:
+          type: boolean
+          title: System Supported
+          default: false
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+          description: Input modalities that the model can accept.
+        alternative_names:
+          items:
+            type: string
+          type: array
+          title: Alternative Names
+          description: Alternative names for the model, used for matching with various current, versioned or legacy names.
+        input_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Input Token Limit
+        output_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Token Limit
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        cost_by:
+          $ref: '#/components/schemas/ModelCostBy'
+          default: tokens
+        is_chat:
+          type: boolean
+          title: Is Chat
+          default: false
+        provides_log_probs:
+          type: boolean
+          title: Provides Log Probs
+          default: false
+        formatting_tokens:
+          type: integer
+          title: Formatting Tokens
+          default: 0
+        response_prefix_tokens:
+          type: integer
+          title: Response Prefix Tokens
+          default: 0
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        legacy_mistral_prompt_format:
+          type: boolean
+          title: Legacy Mistral Prompt Format
+          default: false
+        requires_max_tokens:
+          type: boolean
+          title: Requires Max Tokens
+          default: false
+        max_top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max Top P
+        params_map:
+          $ref: '#/components/schemas/RunParamsMap'
+        output_map:
+          anyOf:
+          - $ref: '#/components/schemas/OutputMap'
+          - type: 'null'
+        input_map:
+          anyOf:
+          - $ref: '#/components/schemas/InputMap'
+          - type: 'null'
+      type: object
+      required:
+      - name
+      - alias
+      title: Model
+    DatasetProjectLastUsedAtSort:
+      properties:
+        name:
+          type: string
+          const: project_last_used_at
+          title: Name
+          default: project_last_used_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom_uuid
+          title: Sort Type
+          default: custom_uuid
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetProjectLastUsedAtSort
+    DatasetFormat:
+      type: string
+      enum:
+      - csv
+      - feather
+      - json
+      - jsonl
+      title: DatasetFormat
+    SyntheticDataTypes:
+      type: string
+      enum:
+      - General Query
+      - Prompt Injection
+      - Off-Topic Query
+      - Toxic Content in Query
+      - Multiple Questions in Query
+      - Sexist Content in Query
+      title: SyntheticDataTypes
+    DatasetRow:
+      properties:
+        row_id:
+          type: string
+          format: uuid4
+          title: Row Id
+        index:
+          type: integer
+          title: Index
+        values:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: number
+            - additionalProperties:
+                anyOf:
+                - type: string
+                - type: integer
+                - type: number
+                - type: 'null'
+              type: object
+            - type: 'null'
+          type: array
+          title: Values
+        values_dict:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: number
+            - additionalProperties:
+                anyOf:
+                - type: string
+                - type: integer
+                - type: number
+                - type: 'null'
+              type: object
+            - type: 'null'
+          type: object
+          title: Values Dict
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/DatasetRowMetadata'
+          - type: 'null'
+      type: object
+      required:
+      - row_id
+      - index
+      - values
+      - values_dict
+      - metadata
+      title: DatasetRow
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      title: CollaboratorRole
+    InputMap:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+        prefix:
+          type: string
+          title: Prefix
+          default: ''
+        suffix:
+          type: string
+          title: Suffix
+          default: ''
+      type: object
+      required:
+      - prompt
+      title: InputMap
+    ColumnMappingConfig:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        flatten:
+          type: boolean
+          title: Flatten
+          default: false
+      type: object
+      required:
+      - columns
+      title: ColumnMappingConfig
+    DatasetInputJsonField:
+      properties:
+        key:
+          type: string
+          title: Key
+        values:
+          items:
+            $ref: '#/components/schemas/JsonValue'
+          type: array
+          title: Values
+      type: object
+      required:
+      - key
+      - values
+      title: DatasetInputJsonField
+    Body_create_dataset_datasets_post:
+      properties:
+        draft:
+          type: boolean
+          title: Draft
+          default: false
+        hidden:
+          type: boolean
+          title: Hidden
+          default: false
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        append_suffix_if_duplicate:
+          type: boolean
+          title: Append Suffix If Duplicate
+          default: false
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        copy_from_dataset_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy From Dataset Id
+        copy_from_dataset_version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Copy From Dataset Version Index
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        column_mapping:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Column Mapping
+      type: object
+      title: Body_create_dataset_datasets_post
+    UserCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: User Id
+        user_email:
+          anyOf:
+          - type: string
+            format: email
+          - type: 'null'
+          title: User Email
+      type: object
+      title: UserCollaboratorCreate
+      description: 'Create a user collaborator using either user_id or email.
+
+
+        When using email, if the user doesn''t exist in the organization,
+
+        they will be invited automatically.'
+    DatasetFilterRows:
+      properties:
+        edit_type:
+          type: string
+          const: filter_rows
+          title: Edit Type
+          default: filter_rows
+        row_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          minItems: 1
+          title: Row Ids
+      type: object
+      required:
+      - row_ids
+      title: DatasetFilterRows
+      description: This global operation filters a set of rows and discard the rest.
+    DatasetRowMetadata:
+      properties:
+        created_in_version:
+          type: integer
+          title: Created In Version
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        updated_in_version:
+          type: integer
+          title: Updated In Version
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        updated_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+      type: object
+      required:
+      - created_in_version
+      - created_at
+      - created_by_user
+      - updated_in_version
+      - updated_at
+      - updated_by_user
+      title: DatasetRowMetadata
+    ListUserCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/UserCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListUserCollaboratorsResponse
+    api__schemas__content__dataset__BulkDeleteFailure:
+      properties:
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+        dataset_name:
+          type: string
+          title: Dataset Name
+        reason:
+          type: string
+          title: Reason
+      type: object
+      required:
+      - dataset_id
+      - dataset_name
+      - reason
+      title: BulkDeleteFailure
+      description: Details about a failed deletion.
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    DatasetProject:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        name:
+          type: string
+          title: Name
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - created_by_user
+      title: DatasetProject
+    PreviewDatasetRequest:
+      properties:
+        column_mapping:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMapping'
+          - type: 'null'
+      type: object
+      title: PreviewDatasetRequest
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    DatasetCopyRecordData:
+      properties:
+        edit_type:
+          type: string
+          const: copy_record_data
+          title: Edit Type
+          default: copy_record_data
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        queue_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Queue Id
+        ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Ids
+          description: List of trace or span IDs to copy data from
+        prepend:
+          type: boolean
+          title: Prepend
+          description: A flag to control appending vs prepending
+          default: true
+        use_generated_output_column:
+          type: boolean
+          title: Use Generated Output Column
+          description: If True, write trace output to generated_output column; if False, write to output column (backward compatible)
+          default: false
+      type: object
+      required:
+      - ids
+      title: DatasetCopyRecordData
+      description: Prepend or append trace or span data to dataset.
+    DatasetNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: DatasetNameFilter
+    RunParamsMap:
+      properties:
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+        temperature:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Max Tokens
+        stop_sequences:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top K
+        frequency_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Presence Penalty
+        echo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Echo
+        logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logprobs
+        top_logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top Logprobs
+        n:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: N
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        tools:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+        reasoning_effort:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Effort
+        verbosity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verbosity
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+      type: object
+      title: RunParamsMap
+      description: 'Maps the internal settings parameters (left) to the serialized parameters (right) we want to send in the API
+
+        requests.'
+    SyntheticDatasetExtensionResponse:
+      properties:
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      type: object
+      required:
+      - dataset_id
+      title: SyntheticDatasetExtensionResponse
+      description: Response for synthetic dataset extension requests.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpsertDatasetContentRequest:
+      properties:
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+          description: The ID of the dataset to copy content from.
+        version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Version Index
+          description: The version index of the dataset to copy content from. If not provided, the content will be copied from the latest version of the dataset.
+      type: object
+      required:
+      - dataset_id
+      title: UpsertDatasetContentRequest
+    ColumnMapping:
+      properties:
+        input:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Input
+        output:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Output
+        generated_output:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Generated Output
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Metadata
+        mgt:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/ColumnMappingConfig'
+            type: object
+          - type: 'null'
+          title: Mgt
+      additionalProperties: true
+      type: object
+      title: ColumnMapping
+    ListDatasetResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        datasets:
+          items:
+            $ref: '#/components/schemas/DatasetDB'
+          type: array
+          title: Datasets
+      type: object
+      title: ListDatasetResponse
+    DatasetDeleteRow:
+      properties:
+        row_id:
+          type: string
+          format: uuid4
+          title: Row Id
+        edit_type:
+          type: string
+          const: delete_row
+          title: Edit Type
+          default: delete_row
+      type: object
+      required:
+      - row_id
+      title: DatasetDeleteRow
+    QueryDatasetParams:
+      properties:
+        filters:
+          items:
+            $ref: '#/components/schemas/DatasetContentFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - $ref: '#/components/schemas/DatasetContentSortClause'
+          - type: 'null'
+      type: object
+      title: QueryDatasetParams
+    DatasetAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    OpenAIFunction:
+      properties:
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - name
+      title: OpenAIFunction
+    JsonPrimitive-Output:
+      anyOf:
+      - type: string
+      - type: integer
+      - type: number
+      - type: boolean
+      - type: 'null'
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    DatasetContent:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        column_names:
+          items:
+            type: string
+          type: array
+          title: Column Names
+        warning_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Warning Message
+        rows:
+          items:
+            $ref: '#/components/schemas/DatasetRow'
+          type: array
+          title: Rows
+      type: object
+      title: DatasetContent
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    ListDatasetVersionResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        versions:
+          items:
+            $ref: '#/components/schemas/DatasetVersionDB'
+          type: array
+          title: Versions
+      type: object
+      required:
+      - versions
+      title: ListDatasetVersionResponse
+    DatasetUpdatedAtSort:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetUpdatedAtSort
+    ListDatasetParams:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DatasetNameFilter'
+            - $ref: '#/components/schemas/DatasetDraftFilter'
+            - $ref: '#/components/schemas/DatasetUsedInProjectFilter'
+            - $ref: '#/components/schemas/DatasetIDFilter'
+            - $ref: '#/components/schemas/DatasetNotInProjectFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                draft: '#/components/schemas/DatasetDraftFilter'
+                id: '#/components/schemas/DatasetIDFilter'
+                name: '#/components/schemas/DatasetNameFilter'
+                not_in_project: '#/components/schemas/DatasetNotInProjectFilter'
+                used_in_project: '#/components/schemas/DatasetUsedInProjectFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/DatasetNameSort'
+            - $ref: '#/components/schemas/DatasetCreatedAtSort'
+            - $ref: '#/components/schemas/DatasetUpdatedAtSort'
+            - $ref: '#/components/schemas/DatasetProjectLastUsedAtSort'
+            - $ref: '#/components/schemas/DatasetProjectsSort'
+            - $ref: '#/components/schemas/DatasetRowsSort'
+            - $ref: '#/components/schemas/DatasetLastEditedByUserAtSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/DatasetCreatedAtSort'
+                last_edited_by_user_at: '#/components/schemas/DatasetLastEditedByUserAtSort'
+                name: '#/components/schemas/DatasetNameSort'
+                num_rows: '#/components/schemas/DatasetRowsSort'
+                project_count: '#/components/schemas/DatasetProjectsSort'
+                project_last_used_at: '#/components/schemas/DatasetProjectLastUsedAtSort'
+                updated_at: '#/components/schemas/DatasetUpdatedAtSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: ListDatasetParams
+    DatasetNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetNameSort
+    DatasetCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetCreatedAtSort
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    DatasetDraftFilter:
+      properties:
+        name:
+          type: string
+          const: draft
+          title: Name
+          default: draft
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetDraftFilter
+    DatasetVersionIndexSort:
+      properties:
+        name:
+          type: string
+          const: version_index
+          title: Name
+          default: version_index
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetVersionIndexSort
+    DatasetNotInProjectFilter:
+      properties:
+        name:
+          type: string
+          const: not_in_project
+          title: Name
+          default: not_in_project
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetNotInProjectFilter
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    DatasetDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          type: string
+          title: Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        project_count:
+          type: integer
+          title: Project Count
+        num_rows:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Rows
+        column_names:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Column Names
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        current_version_index:
+          type: integer
+          title: Current Version Index
+        draft:
+          type: boolean
+          title: Draft
+      type: object
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      - project_count
+      - num_rows
+      - column_names
+      - created_by_user
+      - current_version_index
+      - draft
+      title: DatasetDB
+    DatasetRemoveColumn:
+      properties:
+        edit_type:
+          type: string
+          const: remove_column
+          title: Edit Type
+          default: remove_column
+        column_name:
+          type: string
+          maxLength: 255
+          title: Column Name
+      type: object
+      required:
+      - column_name
+      title: DatasetRemoveColumn
+      description: Drop a column from the dataset schema.
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    ProjectAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    ListGroupCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/GroupCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListGroupCollaboratorsResponse
+    ListDatasetProjectsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        projects:
+          items:
+            $ref: '#/components/schemas/DatasetProject'
+          type: array
+          title: Projects
+      type: object
+      title: ListDatasetProjectsResponse
+    DatasetContentSortClause:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+      type: object
+      required:
+      - column_name
+      title: DatasetContentSortClause
+    GroupAction:
+      type: string
+      enum:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    Body_create_dataset_public_v2_datasets_post:
+      properties:
+        draft:
+          type: boolean
+          title: Draft
+          default: false
+        hidden:
+          type: boolean
+          title: Hidden
+          default: false
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        append_suffix_if_duplicate:
+          type: boolean
+          title: Append Suffix If Duplicate
+          default: false
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        copy_from_dataset_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy From Dataset Id
+        copy_from_dataset_version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Copy From Dataset Version Index
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        column_mapping:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Column Mapping
+      type: object
+      title: Body_create_dataset_public_v2_datasets_post
+    RollbackRequest:
+      properties:
+        rollback_version:
+          type: integer
+          title: Rollback Version
+      type: object
+      required:
+      - rollback_version
+      title: RollbackRequest
+    DatasetContentFilter:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        value:
+          type: string
+          title: Value
+        operator:
+          $ref: '#/components/schemas/DatasetContentFilterOperator'
+          default: contains
+      type: object
+      required:
+      - column_name
+      - value
+      title: DatasetContentFilter
+    DatasetIDFilter:
+      properties:
+        name:
+          type: string
+          const: id
+          title: Name
+          default: id
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetIDFilter
+    UserCollaborator:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        user_id:
+          type: string
+          format: uuid4
+          title: User Id
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - id
+      - role
+      - created_at
+      - user_id
+      - first_name
+      - last_name
+      - email
+      title: UserCollaborator
+    Permission:
+      properties:
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - action
+      - allowed
+      title: Permission
+    DatasetProjectsSort:
+      properties:
+        name:
+          type: string
+          const: project_count
+          title: Name
+          default: project_count
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: DatasetProjectsSort
+    DatasetContentFilterOperator:
+      type: string
+      enum:
+      - eq
+      - ne
+      - contains
+      title: DatasetContentFilterOperator
+    DatasetPrependRow:
+      properties:
+        edit_type:
+          type: string
+          const: prepend_row
+          title: Edit Type
+          default: prepend_row
+        values:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: number
+            - additionalProperties:
+                anyOf:
+                - type: string
+                - type: integer
+                - type: number
+                - type: 'null'
+              type: object
+            - type: 'null'
+          type: object
+          title: Values
+        row_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Row Id
+      type: object
+      required:
+      - values
+      title: DatasetPrependRow
+    DatasetRowsSort:
+      properties:
+        name:
+          type: string
+          const: num_rows
+          title: Name
+          default: num_rows
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetRowsSort
+    SyntheticDatasetExtensionRequest:
+      properties:
+        prompt_settings:
+          $ref: '#/components/schemas/PromptRunSettings-Input'
+          description: Only the model is used.
+        prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        examples:
+          items:
+            type: string
+          type: array
+          title: Examples
+        source_dataset:
+          anyOf:
+          - $ref: '#/components/schemas/SyntheticDataSourceDataset'
+          - type: 'null'
+        data_types:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/SyntheticDataTypes'
+            type: array
+          - type: 'null'
+          title: Data Types
+        count:
+          type: integer
+          title: Count
+          default: 10
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+      type: object
+      title: SyntheticDatasetExtensionRequest
+      description: Request for a synthetic dataset run job.
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    JsonValue:
+      anyOf:
+      - $ref: '#/components/schemas/JsonPrimitive-Output'
+      - items:
+          $ref: '#/components/schemas/JsonValue'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonValue'
+        type: object
+    OutputMap:
+      properties:
+        response:
+          type: string
+          title: Response
+        token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Count
+        input_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input Token Count
+        output_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Token Count
+        completion_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Completion Reason
+      type: object
+      required:
+      - response
+      title: OutputMap
+    DatasetVersionDB:
+      properties:
+        version_index:
+          type: integer
+          title: Version Index
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        num_rows:
+          type: integer
+          title: Num Rows
+        column_names:
+          items:
+            type: string
+          type: array
+          title: Column Names
+        rows_added:
+          type: integer
+          title: Rows Added
+        rows_removed:
+          type: integer
+          title: Rows Removed
+        rows_edited:
+          type: integer
+          title: Rows Edited
+        columns_added:
+          type: integer
+          title: Columns Added
+        columns_removed:
+          type: integer
+          title: Columns Removed
+        columns_renamed:
+          type: integer
+          title: Columns Renamed
+      type: object
+      required:
+      - version_index
+      - name
+      - created_at
+      - created_by_user
+      - num_rows
+      - column_names
+      - rows_added
+      - rows_removed
+      - rows_edited
+      - columns_added
+      - columns_removed
+      - columns_renamed
+      title: DatasetVersionDB
+    Body_create_dataset_v2_datasets_post:
+      properties:
+        draft:
+          type: boolean
+          title: Draft
+          default: false
+        hidden:
+          type: boolean
+          title: Hidden
+          default: false
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        append_suffix_if_duplicate:
+          type: boolean
+          title: Append Suffix If Duplicate
+          default: false
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        copy_from_dataset_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy From Dataset Id
+        copy_from_dataset_version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Copy From Dataset Version Index
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        column_mapping:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Column Mapping
+      type: object
+      title: Body_create_dataset_v2_datasets_post
+    GroupCollaborator:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+        group_name:
+          type: string
+          title: Group Name
+      type: object
+      required:
+      - id
+      - role
+      - created_at
+      - group_id
+      - group_name
+      title: GroupCollaborator
+    UpdateDatasetRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/Name'
+          - type: 'null'
+          title: Name
+        column_mapping:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMapping'
+          - type: 'null'
+        draft:
+          anyOf:
+          - type: boolean
+            const: false
+          - type: 'null'
+          title: Draft
+      type: object
+      title: UpdateDatasetRequest
+    Name:
+      properties:
+        value:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Value
+        append_suffix_if_duplicate:
+          type: boolean
+          title: Append Suffix If Duplicate
+          default: false
+      type: object
+      required:
+      - value
+      title: Name
+      description: Global name class for handling unique naming across the application.
+    DatasetRenameColumn:
+      properties:
+        edit_type:
+          type: string
+          const: rename_column
+          title: Edit Type
+          default: rename_column
+        column_name:
+          type: string
+          maxLength: 255
+          title: Column Name
+        new_column_name:
+          type: string
+          maxLength: 255
+          title: New Column Name
+      type: object
+      required:
+      - column_name
+      - new_column_name
+      title: DatasetRenameColumn
+      description: Rename a column in the dataset schema, preserving values.
+    DatasetUpdateRow:
+      properties:
+        row_id:
+          type: string
+          format: uuid4
+          title: Row Id
+        edit_type:
+          type: string
+          const: update_row
+          title: Edit Type
+          default: update_row
+        values:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: number
+            - additionalProperties:
+                anyOf:
+                - type: string
+                - type: integer
+                - type: number
+                - type: 'null'
+              type: object
+            - type: 'null'
+          type: object
+          title: Values
+      type: object
+      required:
+      - row_id
+      - values
+      title: DatasetUpdateRow
+    DatasetLastEditedByUserAtSort:
+      properties:
+        name:
+          type: string
+          const: last_edited_by_user_at
+          title: Name
+          default: last_edited_by_user_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom_uuid
+          title: Sort Type
+          default: custom_uuid
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetLastEditedByUserAtSort
+    OpenAIToolChoice:
+      properties:
+        type:
+          type: string
+          title: Type
+          default: function
+        function:
+          $ref: '#/components/schemas/OpenAIFunction'
+      type: object
+      required:
+      - function
+      title: OpenAIToolChoice
+    DatasetUsedInProjectFilter:
+      properties:
+        name:
+          type: string
+          const: used_in_project
+          title: Name
+          default: used_in_project
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetUsedInProjectFilter
+    ListDatasetVersionParams:
+      properties:
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/DatasetVersionIndexSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                version_index: '#/components/schemas/DatasetVersionIndexSort'
+          - type: 'null'
+          title: Sort
+      type: object
+      title: ListDatasetVersionParams
+    DatasetAppendRow:
+      properties:
+        edit_type:
+          type: string
+          const: append_row
+          title: Edit Type
+          default: append_row
+        values:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: number
+            - additionalProperties:
+                anyOf:
+                - type: string
+                - type: integer
+                - type: number
+                - type: 'null'
+              type: object
+            - type: 'null'
+          type: object
+          title: Values
+        row_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Row Id
+      type: object
+      required:
+      - values
+      title: DatasetAppendRow
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    JobProgress:
+      properties:
+        progress_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Progress Message
+        steps_completed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Steps Completed
+        steps_total:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Steps Total
+      type: object
+      title: JobProgress
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UpdateDatasetContentRequest:
+      properties:
+        edits:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DatasetPrependRow'
+            - $ref: '#/components/schemas/DatasetAppendRow'
+            - $ref: '#/components/schemas/DatasetUpdateRow'
+            - $ref: '#/components/schemas/DatasetDeleteRow'
+            - $ref: '#/components/schemas/DatasetFilterRows'
+            - $ref: '#/components/schemas/DatasetCopyRecordData'
+            - $ref: '#/components/schemas/DatasetRemoveColumn'
+            - $ref: '#/components/schemas/DatasetRenameColumn'
+            discriminator:
+              propertyName: edit_type
+              mapping:
+                append_row: '#/components/schemas/DatasetAppendRow'
+                copy_record_data: '#/components/schemas/DatasetCopyRecordData'
+                delete_row: '#/components/schemas/DatasetDeleteRow'
+                filter_rows: '#/components/schemas/DatasetFilterRows'
+                prepend_row: '#/components/schemas/DatasetPrependRow'
+                remove_column: '#/components/schemas/DatasetRemoveColumn'
+                rename_column: '#/components/schemas/DatasetRenameColumn'
+                update_row: '#/components/schemas/DatasetUpdateRow'
+          type: array
+          minItems: 1
+          title: Edits
+          error: Edits list cannot be empty.
+      type: object
+      required:
+      - edits
+      title: UpdateDatasetContentRequest
+      description: "This structure represent the valid edits operations that can be performed on a dataset.\nThere edit operations are:\n- Row edits: These edits are performed on a specific row of the dataset.\n    - EditMode.id: The edit is performed on the index (numeric index). DEPRECATED\n    - EditMode.row_id: The edit is performed on the row_id of the row.\n- Global edits: These edits are performed on the entire dataset and should not be mixed with row edits.\n    - EditMode.global_edit"
+    ModelCostBy:
+      type: string
+      enum:
+      - tokens
+      - characters
+      title: ModelCostBy
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    BulkDeleteDatasetsRequest:
+      properties:
+        dataset_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Dataset Ids
+      type: object
+      required:
+      - dataset_ids
+      title: BulkDeleteDatasetsRequest
+      description: Request to delete multiple datasets.
+    GroupCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+      type: object
+      required:
+      - group_id
+      title: GroupCollaboratorCreate
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

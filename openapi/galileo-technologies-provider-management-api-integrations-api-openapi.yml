@@ -1,0 +1,469 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation provider-management-api-integrations API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: provider-management-api-integrations
+paths:
+  /provider-management-api-integrations:
+    get:
+      tags:
+      - provider-management-api-integrations
+      summary: List Provider Management Api Integrations
+      operationId: list_provider_management_api_integrations_provider_management_api_integrations_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProviderManagementAPIIntegrationResponse'
+                type: array
+                title: Response List Provider Management Api Integrations Provider Management Api Integrations Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+    post:
+      tags:
+      - provider-management-api-integrations
+      summary: Create Provider Management Api Integration
+      operationId: create_provider_management_api_integration_provider_management_api_integrations_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/CodexProviderManagementAPIIntegrationCreate'
+              - $ref: '#/components/schemas/ClaudeCodeProviderManagementAPIIntegrationCreate'
+              - $ref: '#/components/schemas/CursorProviderManagementAPIIntegrationCreate'
+              - $ref: '#/components/schemas/GitHubCopilotProviderManagementAPIIntegrationCreate'
+              - $ref: '#/components/schemas/WindsurfProviderManagementAPIIntegrationCreate'
+              title: Integration Create
+              discriminator:
+                propertyName: provider
+                mapping:
+                  codex: '#/components/schemas/CodexProviderManagementAPIIntegrationCreate'
+                  claude_code: '#/components/schemas/ClaudeCodeProviderManagementAPIIntegrationCreate'
+                  cursor: '#/components/schemas/CursorProviderManagementAPIIntegrationCreate'
+                  github_copilot: '#/components/schemas/GitHubCopilotProviderManagementAPIIntegrationCreate'
+                  windsurf: '#/components/schemas/WindsurfProviderManagementAPIIntegrationCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderManagementAPIIntegrationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /provider-management-api-integrations/{provider_management_api_id}:
+    patch:
+      tags:
+      - provider-management-api-integrations
+      summary: Update Provider Management Api Integration Metadata
+      operationId: update_provider_management_api_integration_metadata_provider_management_api_integrations__provider_management_api_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: provider_management_api_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Provider Management Api Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProviderManagementAPIIntegrationMetadataUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderManagementAPIIntegrationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - provider-management-api-integrations
+      summary: Get Provider Management Api Integration
+      operationId: get_provider_management_api_integration_provider_management_api_integrations__provider_management_api_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: provider_management_api_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Provider Management Api Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderManagementAPIIntegrationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - provider-management-api-integrations
+      summary: Delete Provider Management Api Integration
+      operationId: delete_provider_management_api_integration_provider_management_api_integrations__provider_management_api_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: provider_management_api_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Provider Management Api Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ProviderManagementAPIIntegrationMetadataUpdate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+      additionalProperties: false
+      type: object
+      title: ProviderManagementAPIIntegrationMetadataUpdate
+    ClaudeCodeProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: claude_code
+          title: Provider
+        provider_organization_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Organization Id
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      - provider_organization_id
+      title: ClaudeCodeProviderManagementAPIIntegrationCreate
+    ProviderManagementAPIAuthenticationType:
+      type: string
+      enum:
+      - api_key
+      title: ProviderManagementAPIAuthenticationType
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ProviderManagementAPIIntegrationResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        provider:
+          $ref: '#/components/schemas/ProviderManagementAPIProvider'
+        provider_scope_id:
+          type: string
+          title: Provider Scope Id
+        provider_account_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Account Name
+        provider_workspace_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Workspace Id
+        provider_organization_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Organization Id
+        provider_team_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Team Id
+        provider_organization_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Organization Slug
+        provider_enterprise_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Enterprise Slug
+        authentication_type:
+          $ref: '#/components/schemas/ProviderManagementAPIAuthenticationType'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+      type: object
+      required:
+      - id
+      - provider
+      - provider_scope_id
+      - authentication_type
+      - created_at
+      - updated_at
+      title: ProviderManagementAPIIntegrationResponse
+    GitHubCopilotProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: github_copilot
+          title: Provider
+        provider_organization_slug:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Organization Slug
+        provider_enterprise_slug:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Enterprise Slug
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      title: GitHubCopilotProviderManagementAPIIntegrationCreate
+    ProviderManagementAPIProvider:
+      type: string
+      enum:
+      - cursor
+      - claude_code
+      - codex
+      - github_copilot
+      - windsurf
+      title: ProviderManagementAPIProvider
+    CodexProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: codex
+          title: Provider
+        provider_workspace_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Workspace Id
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      - provider_workspace_id
+      title: CodexProviderManagementAPIIntegrationCreate
+    WindsurfProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: windsurf
+          title: Provider
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      title: WindsurfProviderManagementAPIIntegrationCreate
+    CursorProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: cursor
+          title: Provider
+        provider_organization_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Organization Id
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      - provider_organization_id
+      title: CursorProviderManagementAPIIntegrationCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

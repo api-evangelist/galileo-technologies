@@ -1,0 +1,378 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation metric_roll_up API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: metric_roll_up
+paths:
+  /scorers/{scorer_id}/metric-roll-up-config:
+    post:
+      tags:
+      - metric_roll_up
+      summary: Create Metric Roll Up Config
+      description: "Create or update a metric roll up configuration for a scorer.\n\nThe metric name is derived from the scorer name.\n\nThe scorer must have a compatible output type for the roll up methods:\n- Numeric roll up methods (average, sum, max, min) require numeric output types\n  (boolean, percentage, number, discrete, count)\n- Categorical roll up methods (category_count) require categorical output types\n  (categorical, freeform, multilabel)\n\nIf a configuration already exists for this scorer, it will be updated."
+      operationId: create_metric_roll_up_config_scorers__scorer_id__metric_roll_up_config_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: scorer_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Scorer Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMetricRollUpConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricRollUpConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - metric_roll_up
+      summary: Get Metric Roll Up Configs By Scorer
+      description: Get all metric roll up configurations for a specific scorer.
+      operationId: get_metric_roll_up_configs_by_scorer_scorers__scorer_id__metric_roll_up_config_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: scorer_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Scorer Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricRollUpConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - metric_roll_up
+      summary: Update Metric Roll Up Color Threshold
+      description: 'Update only the color_threshold_config on an existing MetricRollUpConfig.
+
+
+        Does not alter roll_up_methods. Pass null to clear the color thresholds.
+
+        Omitting the field entirely is a no-op.'
+      operationId: update_metric_roll_up_color_threshold_scorers__scorer_id__metric_roll_up_config_patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: scorer_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Scorer Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMetricRollUpColorThresholdRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricRollUpConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /metric-roll-up-configs/{config_id}:
+    delete:
+      tags:
+      - metric_roll_up
+      summary: Delete Metric Roll Up Config
+      description: Delete a metric roll up configuration.
+      operationId: delete_metric_roll_up_config_metric_roll_up_configs__config_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Config Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteMetricRollUpConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    MetricColorPickerNumeric:
+      properties:
+        type:
+          type: string
+          const: numeric
+          title: Type
+          default: numeric
+        constraints:
+          items:
+            $ref: '#/components/schemas/NumericColorConstraint'
+          type: array
+          minItems: 1
+          title: Constraints
+      type: object
+      required:
+      - constraints
+      title: MetricColorPickerNumeric
+      description: "Color picker configuration for numeric metrics.\n\nEach constraint maps a numeric condition to a color. The UI uses these\nconstraints to color-code metric values (e.g. green for high scores,\nred for low scores).\n\nExample:\n    {\n        \"type\": \"numeric\",\n        \"constraints\": [\n            {\"color\": \"green\", \"operator\": \"gte\", \"value\": 0.8},\n            {\"color\": \"yellow\", \"operator\": \"between\", \"value\": [0.3, 0.8]},\n            {\"color\": \"red\", \"operator\": \"lt\", \"value\": 0.3}\n        ]\n    }"
+    MetricColor:
+      type: string
+      enum:
+      - red
+      - yellow
+      - green
+      title: MetricColor
+      description: Allowed colors for metric threshold visualization in the UI.
+    DeleteMetricRollUpConfigResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: DeleteMetricRollUpConfigResponse
+      description: Response for deleting a metric roll up configuration.
+    NumericRollUpMethod:
+      type: string
+      enum:
+      - average
+      - sum
+      - max
+      - min
+      title: NumericRollUpMethod
+      description: Roll up methods for aggregating numeric metrics up the session/trace/span hierarchy.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    MetricRollUpConfigResponse:
+      properties:
+        roll_up_methods:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/NumericRollUpMethod'
+            type: array
+          - items:
+              $ref: '#/components/schemas/CategoricalRollUpMethod'
+            type: array
+          minLength: 1
+          title: Roll Up Methods
+          description: List of roll up methods to apply to the metric. For numeric scorers we support doing multiple roll up types per metric.
+        color_threshold_config:
+          anyOf:
+          - $ref: '#/components/schemas/MetricColorPickerNumeric'
+          - type: 'null'
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+        metric_name:
+          type: string
+          title: Metric Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - roll_up_methods
+      - id
+      - organization_id
+      - scorer_id
+      - metric_name
+      - created_at
+      - updated_at
+      title: MetricRollUpConfigResponse
+      description: Response for a metric roll up configuration.
+    CreateMetricRollUpConfigRequest:
+      properties:
+        roll_up_methods:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/NumericRollUpMethod'
+            type: array
+          - items:
+              $ref: '#/components/schemas/CategoricalRollUpMethod'
+            type: array
+          minLength: 1
+          title: Roll Up Methods
+          description: List of roll up methods to apply to the metric. For numeric scorers we support doing multiple roll up types per metric.
+        color_threshold_config:
+          anyOf:
+          - $ref: '#/components/schemas/MetricColorPickerNumeric'
+          - type: 'null'
+      type: object
+      required:
+      - roll_up_methods
+      title: CreateMetricRollUpConfigRequest
+      description: Request to create a metric roll up configuration.
+    UpdateMetricRollUpColorThresholdRequest:
+      properties:
+        color_threshold_config:
+          anyOf:
+          - $ref: '#/components/schemas/MetricColorPickerNumeric'
+          - type: 'null'
+      type: object
+      title: UpdateMetricRollUpColorThresholdRequest
+      description: 'Request to update only the color_threshold_config on an existing MetricRollUpConfig.
+
+
+        Omitting `color_threshold_config` is a no-op — only an explicitly sent field (even if
+
+        null) is written. Send null to clear the stored threshold.'
+    CategoricalRollUpMethod:
+      type: string
+      enum:
+      - category_count
+      title: CategoricalRollUpMethod
+      description: Roll up methods for aggregating categorical metrics up the session/trace/span hierarchy.
+    NumericColorConstraint:
+      properties:
+        color:
+          $ref: '#/components/schemas/MetricColor'
+        operator:
+          type: string
+          enum:
+          - eq
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: number
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - color
+      - operator
+      - value
+      title: NumericColorConstraint
+      description: "A color constraint for numeric metric values.\n\nAssigns a color when a numeric score matches the given operator and value.\n\nOperators and expected value shapes:\n  - eq, gt, gte, lt, lte: value must be a single float.\n  - between: value must be a list of exactly 2 floats [low, high] where low < high.\n    The range is inclusive on both ends.\n\nExample:\n    {\"color\": \"green\", \"operator\": \"gte\", \"value\": 0.8}\n    {\"color\": \"yellow\", \"operator\": \"between\", \"value\": [0.3, 0.7]}"
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

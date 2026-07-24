@@ -1,0 +1,948 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation experiment_group API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: experiment_group
+paths:
+  /projects/{project_id}/experiment-groups:
+    post:
+      tags:
+      - experiment_group
+      summary: Create Experiment Group
+      description: Create an empty experiment group.
+      operationId: create_experiment_group_projects__project_id__experiment_groups_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentGroupCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentGroupResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/experiment-groups/query:
+    post:
+      tags:
+      - experiment_group
+      summary: List Experiment Groups
+      description: List experiment groups for a project with filtering, sorting, and pagination.
+      operationId: list_experiment_groups_projects__project_id__experiment_groups_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentGroupSearchRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentGroupListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/experiment-groups/{group_id}:
+    patch:
+      tags:
+      - experiment_group
+      summary: Update Experiment Group
+      description: Update an experiment group's name or description.
+      operationId: update_experiment_group_projects__project_id__experiment_groups__group_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentGroupUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentGroupResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - experiment_group
+      summary: Delete Experiment Group
+      description: Delete an experiment group. Permanently deletes all experiments within the group.
+      operationId: delete_experiment_group_projects__project_id__experiment_groups__group_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/experiment-groups/{group_id}/metric-settings:
+    get:
+      tags:
+      - experiment_group
+      summary: Get Experiment Group Metric Settings
+      description: Get per-group ranking weights. None means the group inherits project-level defaults.
+      operationId: get_experiment_group_metric_settings_projects__project_id__experiment_groups__group_id__metric_settings_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentGroupMetricSettingsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - experiment_group
+      summary: Update Experiment Group Metric Settings
+      description: Set per-group ranking weights. Replaces the full configuration; None = inherit project-level defaults.
+      operationId: update_experiment_group_metric_settings_projects__project_id__experiment_groups__group_id__metric_settings_patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Group Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentGroupMetricSettingsRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentGroupMetricSettingsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/experiment/move:
+    post:
+      tags:
+      - experiment_group
+      summary: Bulk Move Experiments
+      description: Move one or more experiments to a different experiment group.
+      operationId: bulk_move_experiments_projects__project_id__experiment_move_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkMoveExperimentsRequest'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    api__schemas__experiment_group__ExperimentGroupNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: ExperimentGroupNameFilter
+    ExperimentGroupMetricSettingsRequest:
+      properties:
+        metric_weights_configuration:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MetricWeight'
+            type: object
+          - type: 'null'
+          title: Metric Weights Configuration
+      type: object
+      title: ExperimentGroupMetricSettingsRequest
+      description: 'Request to set per-group ranking weights. Replaces the full configuration.
+
+
+        Pass None to clear a group override and inherit project-level defaults.
+
+        Mirrors `ProjectSettingsUpdate.metric_weights_configuration` in api/routers/project_settings.py.'
+    ExperimentGroupUpdateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      title: ExperimentGroupUpdateRequest
+      description: Request to update an experiment group name/description.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ExperimentGroupSearchRequest:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/api__schemas__experiment_group__ExperimentGroupIDFilter'
+            - $ref: '#/components/schemas/api__schemas__experiment_group__ExperimentGroupNameFilter'
+            - $ref: '#/components/schemas/ExperimentGroupCreatedAtFilter'
+            - $ref: '#/components/schemas/ExperimentGroupLatestActivityFilter'
+            - $ref: '#/components/schemas/ExperimentGroupCreatedByFilter'
+            - $ref: '#/components/schemas/ExperimentGroupIsSystemFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/ExperimentGroupCreatedAtFilter'
+                created_by: '#/components/schemas/ExperimentGroupCreatedByFilter'
+                id: '#/components/schemas/api__schemas__experiment_group__ExperimentGroupIDFilter'
+                is_system: '#/components/schemas/ExperimentGroupIsSystemFilter'
+                latest_activity: '#/components/schemas/ExperimentGroupLatestActivityFilter'
+                name: '#/components/schemas/api__schemas__experiment_group__ExperimentGroupNameFilter'
+          type: array
+          maxItems: 20
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/ExperimentGroupNameSort'
+            - $ref: '#/components/schemas/ExperimentGroupCreatedAtSort'
+            - $ref: '#/components/schemas/ExperimentGroupLatestActivitySort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/ExperimentGroupCreatedAtSort'
+                latest_activity: '#/components/schemas/ExperimentGroupLatestActivitySort'
+                name: '#/components/schemas/ExperimentGroupNameSort'
+          - type: 'null'
+          title: Sort
+      type: object
+      title: ExperimentGroupSearchRequest
+      description: Search/list experiment groups with filtering, sorting, and pagination.
+    ExperimentGroupCreatedByFilter:
+      properties:
+        name:
+          type: string
+          const: created_by
+          title: Name
+          default: created_by
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: ExperimentGroupCreatedByFilter
+    api__schemas__experiment_group__ExperimentGroupIDFilter:
+      properties:
+        name:
+          type: string
+          const: id
+          title: Name
+          default: id
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: ExperimentGroupIDFilter
+    MetricWeight:
+      properties:
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        group_label:
+          anyOf:
+          - $ref: '#/components/schemas/GroupLabel'
+          - type: 'null'
+        description:
+          anyOf:
+          - $ref: '#/components/schemas/MetricDescriptions'
+          - type: 'null'
+        weight:
+          type: number
+          title: Weight
+          default: 0.5
+      type: object
+      title: MetricWeight
+    ExperimentGroupListResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        experiment_groups:
+          items:
+            $ref: '#/components/schemas/ExperimentGroupResponse'
+          type: array
+          title: Experiment Groups
+      type: object
+      title: ExperimentGroupListResponse
+      description: Paginated response for listing experiment groups.
+    GroupLabel:
+      type: string
+      enum:
+      - Input Quality
+      - Output Quality
+      - Configuration
+      - LLM Parameters
+      - RAG Quality
+      - RAG Parameters
+      - Generic Parameters
+      - Safety Metrics
+      - Protect
+      - System Metrics
+      - Rating Summary
+      - Annotation Agreement
+      - Custom Metrics
+      - Security
+      - Dataset
+      - Agent Quality
+      - Text to SQL Metrics
+      title: GroupLabel
+      description: Group labels for prompt rows.
+    ExperimentGroupLatestActivityFilter:
+      properties:
+        name:
+          type: string
+          const: latest_activity
+          title: Name
+          default: latest_activity
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ExperimentGroupLatestActivityFilter
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ExperimentGroupResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        name:
+          type: string
+          title: Name
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        is_system:
+          type: boolean
+          title: Is System
+          default: false
+        experiment_count:
+          type: integer
+          title: Experiment Count
+          default: 0
+        latest_run_date:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Latest Run Date
+        datasets:
+          items:
+            $ref: '#/components/schemas/ExperimentGroupDatasetResponse'
+          type: array
+          title: Datasets
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - project_id
+      title: ExperimentGroupResponse
+      description: Response for a single experiment group.
+    ExperimentGroupDatasetResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: ExperimentGroupDatasetResponse
+      description: Distinct dataset summary associated with an experiment group.
+    MetricDescriptions:
+      type: string
+      enum:
+      - 'Measures whether the LLM''s response is supported by (or baked in) the context provided. '
+      - Measures whether the LLM's response is supported by the provided context, including images and documents.
+      - Measures whether the LLM's response is supported by the provided context, including audio.
+      - Measures how well the LLM follows the system instructions provided in the prompt.
+      - Measures how well the workflow's response aligns with the ground truth provided.
+      - Measures how well the workflow's response aligns with ground truth that includes images or documents.
+      - Measures how well the workflow's response aligns with ground truth that includes audio.
+      - Detects whether the model selected the right Tool with the right arguments.
+      - Detects whether the Tool executed successfully (i.e. without errors).
+      - Measures whether the retrieved context has enough information to answer the user's query.
+      - Measures the potential presence of factual errors or inconsistencies in the model's response.
+      - Measures the potential presence of factual errors or inconsistencies in the model's response, including image or document content.
+      - Measures the potential presence of factual errors or inconsistencies in the model's response, including audio content.
+      - Classifies the sentiment of the user's input into one of joy, love, fear, surprise, sadness, anger, annoyance, confusion or neutral.
+      - Measures how 'sexist' a user's input might be perceived ranging in the values of 0-1 (1 being more sexist).
+      - Measures the presence and severity of harmful, offensive, or abusive language
+      - Measures the presence and severity of harmful, offensive, or abusive content in image or document inputs.
+      - Measures the presence and severity of harmful, offensive, or abusive content in audio inputs.
+      - Tracks the presence of personal identifiable information in the user's input
+      - Classifies the sentiment in the model's response into one of joy, love, fear, surprise, sadness, anger, annoyance, confusion or neutral.
+      - Measures how 'sexist' a response might be perceived ranging in the values of 0-1 (1 being more sexist).
+      - Measures the presence and severity of harmful, offensive, or abusive language in the model's response
+      - Measures the presence and severity of harmful, offensive, or abusive content in the model's image or document responses.
+      - Measures the presence and severity of harmful, offensive, or abusive content in the model's audio responses.
+      - Tracks the presence of personal identifiable information in the LLM's responses
+      - Measures the presence of prompt injection attacks in inputs to the LLM.
+      - Precision of top-K retrieved chunks, measuring the proportion of relevant chunks among the first K results.
+      - Measures which documents or chunks retrieved were used by the model to generate a response.
+      - Measures how much of the text in the retrieved chunks was used by the model to compose its response.
+      - Evaluates whether each retrieved chunk is relevant to the query.
+      - Position-weighted relevance score that accounts for the order of retrieved chunks.
+      - A response-level metric measuring 'out of all the information in the context pertinent to the question, how much was covered in the answer?'
+      - Cost of executing the run and does not include any costs incurred for metric calculation.
+      - Cost of all the metrics that call the OpenAI API.
+      - Detects whether the user successfully accomplished or advanced towards their goal.
+      - Detects whether the user successfully accomplished all of their goals.
+      - Detects whether the user successfully accomplished all of their goals in a session that includes images or documents.
+      - Detects whether the user successfully accomplished all of their goals in a session that includes audio.
+      - Measures which documents or chunks retrieved were used by the model to generate a response, and how much of the text in the retrieved chunks was used by the model to compose its response.
+      - Detects whether the agent followed the most efficient path to accomplish the user's goal.
+      - Measures the correctness and coherence of an agentic trajectory by validating it against user-specified natural language tests.
+      - Assesses whether a chatbot interaction left the user feeling satisfied and positive, or frustrated and dissatisfied, based on tone, engagement, and overall experience.
+      - Detects a significant shift in the user's primary conversational goal or workflow during a session, relative to their initial stated intent.
+      - Detects a significant shift in the user's primary conversational goal or workflow during a session that includes images or documents.
+      - Detects a significant shift in the user's primary conversational goal or workflow during a session that includes audio.
+      - Evaluates whether the SQL query semantically adheres to the natural language query.
+      - 'Evaluates the SQL query on two independent binary dimensions: syntactic correctness and schematic adherence.'
+      - Evaluates whether the SQL query is structurally efficient and free of common performance anti-patterns.
+      - Detects SQL injection risks and other security exploits in the query.
+      - Measures the coherence of the reasoning process by evaluating the consistency and logical flow of the reasoning steps.
+      - Measures the coherence of the reasoning process by evaluating the consistency and logical flow of reasoning steps with image or document context.
+      - Measures the coherence of the reasoning process by evaluating the consistency and logical flow of reasoning steps with audio context.
+      - Determines whether the input image / PDF is of sufficient quality to complete the given task.
+      - Evaluates whether the generated image / PDF complies with the provided rules.
+      - Identifies barge-ins by the user or the LLM in an audio conversation.
+      title: MetricDescriptions
+    ExperimentGroupLatestActivitySort:
+      properties:
+        name:
+          type: string
+          const: latest_activity
+          title: Name
+          default: latest_activity
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ExperimentGroupLatestActivitySort
+    ExperimentGroupCreateRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - name
+      title: ExperimentGroupCreateRequest
+      description: Request to create an empty experiment group.
+    ExperimentGroupIsSystemFilter:
+      properties:
+        name:
+          type: string
+          const: is_system
+          title: Name
+          default: is_system
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: ExperimentGroupIsSystemFilter
+    ExperimentGroupCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ExperimentGroupCreatedAtFilter
+    ExperimentGroupCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ExperimentGroupCreatedAtSort
+    ExperimentGroupMetricSettingsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        metric_weights_configuration:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MetricWeight'
+            type: object
+          - type: 'null'
+          title: Metric Weights Configuration
+      type: object
+      required:
+      - id
+      title: ExperimentGroupMetricSettingsResponse
+      description: Response for the metric-settings sub-resource.
+    ExperimentGroupNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ExperimentGroupNameSort
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    BulkMoveExperimentsRequest:
+      properties:
+        experiment_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          minItems: 1
+          title: Experiment Ids
+          description: List of experiment IDs to move
+        target_experiment_group_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Target Experiment Group Id
+          description: ID of the target experiment group (mutually exclusive with target_experiment_group_name)
+        target_experiment_group_name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Target Experiment Group Name
+          description: Name of the target experiment group; created if it does not exist (mutually exclusive with target_experiment_group_id)
+      type: object
+      required:
+      - experiment_ids
+      title: BulkMoveExperimentsRequest
+      description: Request to move experiments between experiment groups.
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

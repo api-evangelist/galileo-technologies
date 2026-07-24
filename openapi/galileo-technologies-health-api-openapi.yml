@@ -1,0 +1,148 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation health API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: health
+paths:
+  /healthcheck:
+    get:
+      tags:
+      - health
+      summary: Healthcheck
+      operationId: healthcheck_healthcheck_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthcheckResponse'
+  /healthcheck/postgres:
+    get:
+      tags:
+      - health
+      summary: Postgres Healthcheck
+      description: 'PostgreSQL health check for external monitoring.
+
+
+        Executes SELECT 1 query to verify database connectivity.
+
+        Returns 200 if healthy, 503 if unhealthy.'
+      operationId: postgres_healthcheck_healthcheck_postgres_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /healthcheck/clickhouse:
+    get:
+      tags:
+      - health
+      summary: Clickhouse Healthcheck
+      description: 'ClickHouse health check for external monitoring.
+
+
+        Executes SELECT 1 query to verify database connectivity.
+
+        Returns 200 if healthy, 503 if unhealthy.'
+      operationId: clickhouse_healthcheck_healthcheck_clickhouse_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /v1/healthcheck:
+    get:
+      tags:
+      - health
+      summary: Healthcheck
+      operationId: healthcheck_v1_healthcheck_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthcheckResponse'
+  /v2/healthcheck:
+    get:
+      tags:
+      - health
+      summary: Healthcheck
+      operationId: healthcheck_v2_healthcheck_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthcheckResponse'
+  /public/v1/healthcheck:
+    get:
+      tags:
+      - health
+      summary: Healthcheck
+      operationId: healthcheck_public_v1_healthcheck_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthcheckResponse'
+  /public/v2/healthcheck:
+    get:
+      tags:
+      - health
+      summary: Healthcheck
+      operationId: healthcheck_public_v2_healthcheck_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthcheckResponse'
+components:
+  schemas:
+    HealthcheckResponse:
+      properties:
+        api_version:
+          type: string
+          title: Api Version
+        message:
+          type: string
+          title: Message
+        version:
+          type: string
+          title: Version
+      type: object
+      required:
+      - api_version
+      - message
+      - version
+      title: HealthcheckResponse
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

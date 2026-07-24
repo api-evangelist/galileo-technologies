@@ -1,0 +1,2872 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation users API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: users
+paths:
+  /user_roles:
+    get:
+      tags:
+      - users
+      summary: Get User Roles
+      description: Get all user roles.
+      operationId: get_user_roles_user_roles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserRoleInfo'
+                type: array
+                title: Response Get User Roles User Roles Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /request_access:
+    post:
+      tags:
+      - users
+      summary: Request Access
+      description: 'Endpoint for a user to request access to the console.
+
+
+        This is often the first step for a user to sign up for the console. The user record is created with
+
+        `email_is_verified=None`, which signifies that the user has requested access but hasn''t been invited yet.'
+      operationId: request_access_request_access_post
+      parameters:
+      - name: user_email
+        in: query
+        required: true
+        schema:
+          type: string
+          format: email
+          title: User Email
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /signup_link:
+    post:
+      tags:
+      - users
+      summary: Generate Signup Link
+      description: 'Generate a signup link for a new user and send it via email.
+
+
+        This endpoint is used by admins in the console Command Center.
+
+        We create an unverified user entry and send a signup email to the new user.
+
+
+        When the show_invitation_link_and_reset_password feature flag is enabled,
+
+        the signup URL is also returned in the API response. Otherwise, it is
+
+        sent exclusively via email.
+
+
+        The user is then verified via one of the following endpoints:
+
+        - POST /users
+
+        - POST /users/social'
+      operationId: generate_signup_link_signup_link_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_email
+        in: query
+        required: true
+        schema:
+          type: string
+          format: email
+          title: User Email
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSignupLinkResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /invite_users:
+    post:
+      tags:
+      - users
+      summary: Invite Users
+      operationId: invite_users_invite_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteUsersRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /users:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User
+      description: 'Create a new system user with an email and password.
+
+
+        If no admin exists (first user), the user will be created as an admin.
+
+
+        Otherwise:
+
+        - User record was already created when the admin invited the user
+
+        - We should verify the user''s email'
+      operationId: create_or_verify_user_users_post
+      deprecated: true
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+              examples:
+              - email: user@example.com
+                first_name: Alice
+                last_name: Appleseed
+                auth_method: email
+                password: Th3secret_
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - users
+      summary: List Users
+      operationId: list_users_users_get
+      deprecated: true
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - users
+      summary: Delete User Self
+      operationId: delete_user_self_users_delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+  /system_users:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User
+      description: 'Create a new system user with an email and password.
+
+
+        If no admin exists (first user), the user will be created as an admin.
+
+
+        Otherwise:
+
+        - User record was already created when the admin invited the user
+
+        - We should verify the user''s email'
+      operationId: create_or_verify_user_system_users_post
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+              examples:
+              - email: user@example.com
+                first_name: Alice
+                last_name: Appleseed
+                auth_method: email
+                password: Th3secret_
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/social:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User Social
+      description: 'Create a user using a social login provider.
+
+
+        All social users are created with `email_is_verified=True`, don''t need to be invited and are by default read-only
+
+        (unless they are the first user, in which case they are set to admin).'
+      operationId: create_or_verify_user_social_users_social_post
+      deprecated: true
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialLoginRequest'
+              examples:
+              - id_token: token1234
+                provider: google
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /system_users/social:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User Social
+      description: 'Create a user using a social login provider.
+
+
+        All social users are created with `email_is_verified=True`, don''t need to be invited and are by default read-only
+
+        (unless they are the first user, in which case they are set to admin).'
+      operationId: create_or_verify_user_social_system_users_social_post
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialLoginRequest'
+              examples:
+              - id_token: token1234
+                provider: google
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/all:
+    post:
+      tags:
+      - users
+      summary: List Users Paginated
+      operationId: list_users_paginated_users_all_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryUserParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - users
+      summary: List All Users
+      description: 'List all users in the system.
+
+
+        This endpoint is optimized to count project and runs for each user. This endpoint must be placed before
+
+        `/users/{user_id}` so that "all" is not interpreted as a UUID4.'
+      operationId: list_all_users_users_all_get
+      deprecated: true
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetUserResponse'
+                title: Response List All Users Users All Get
+  /users/{user_id}:
+    get:
+      tags:
+      - users
+      summary: Get User
+      operationId: get_user_users__user_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - users
+      summary: Update User
+      operationId: update_user_users__user_id__put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+              examples:
+              - first_name: Tony
+                last_name: Newname
+                email: bigtony@rungalileo.io
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - users
+      summary: Delete User
+      operationId: delete_user_users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/{user_id}/runs/latest:
+    get:
+      tags:
+      - users
+      summary: Get Latest User Run
+      description: Gets the most recent run for a User, ordered by last updated.
+      operationId: get_latest_user_run_users__user_id__runs_latest_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      - name: project_type
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ProjectType'
+          default: gen_ai
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserLatestRunsDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/{user_id}/runs:
+    get:
+      tags:
+      - users
+      summary: Get Project Runs For User
+      description: 'Get all user created runs across all projects they can access.
+
+
+        This returns a filtered list of projects with only runs created by this user.'
+      operationId: get_project_runs_for_user_users__user_id__runs_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      - name: project_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+          title: Project Type
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectDB'
+                title: Response Get Project Runs For User Users  User Id  Runs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /generate_password_reset:
+    get:
+      tags:
+      - users
+      summary: Generate Password Reset Link
+      operationId: generate_password_reset_link_generate_password_reset_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_email
+        in: query
+        required: true
+        schema:
+          type: string
+          title: User Email
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/{user_id}/transfer:
+    post:
+      tags:
+      - users
+      summary: Transfer User Data
+      description: Transfers all projects, runs, and edits created by a user to another user.
+      operationId: transfer_user_data_users__user_id__transfer_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      - name: new_user_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: New User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /current_user:
+    get:
+      tags:
+      - users
+      summary: Current User
+      operationId: current_user_current_user_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentUserDB'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /v2/system_users:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User
+      description: 'Create a new system user with an email and password.
+
+
+        If no admin exists (first user), the user will be created as an admin.
+
+
+        Otherwise:
+
+        - User record was already created when the admin invited the user
+
+        - We should verify the user''s email'
+      operationId: create_or_verify_user_v2_system_users_post
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+              examples:
+              - email: user@example.com
+                first_name: Alice
+                last_name: Appleseed
+                auth_method: email
+                password: Th3secret_
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/system_users/social:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User Social
+      description: 'Create a user using a social login provider.
+
+
+        All social users are created with `email_is_verified=True`, don''t need to be invited and are by default read-only
+
+        (unless they are the first user, in which case they are set to admin).'
+      operationId: create_or_verify_user_social_v2_system_users_social_post
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialLoginRequest'
+              examples:
+              - id_token: token1234
+                provider: google
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/user_roles:
+    get:
+      tags:
+      - users
+      summary: Get User Roles
+      description: Get all user roles.
+      operationId: get_user_roles_v2_user_roles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserRoleInfo'
+                type: array
+                title: Response Get User Roles V2 User Roles Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /v2/invite_users:
+    post:
+      tags:
+      - users
+      summary: Invite Users
+      operationId: invite_users_v2_invite_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteUsersRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /v2/users/all:
+    post:
+      tags:
+      - users
+      summary: List Users Paginated
+      operationId: list_users_paginated_v2_users_all_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryUserParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/users/{user_id}:
+    get:
+      tags:
+      - users
+      summary: Get User
+      operationId: get_user_v2_users__user_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - users
+      summary: Update User
+      operationId: update_user_v2_users__user_id__put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+              examples:
+              - first_name: Tony
+                last_name: Newname
+                email: bigtony@rungalileo.io
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - users
+      summary: Delete User
+      operationId: delete_user_v2_users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/current_user:
+    get:
+      tags:
+      - users
+      summary: Current User
+      operationId: current_user_v2_current_user_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentUserDB'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /public/v2/system_users:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User
+      description: 'Create a new system user with an email and password.
+
+
+        If no admin exists (first user), the user will be created as an admin.
+
+
+        Otherwise:
+
+        - User record was already created when the admin invited the user
+
+        - We should verify the user''s email'
+      operationId: create_or_verify_user_public_v2_system_users_post
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+              examples:
+              - email: user@example.com
+                first_name: Alice
+                last_name: Appleseed
+                auth_method: email
+                password: Th3secret_
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/system_users/social:
+    post:
+      tags:
+      - users
+      summary: Create Or Verify User Social
+      description: 'Create a user using a social login provider.
+
+
+        All social users are created with `email_is_verified=True`, don''t need to be invited and are by default read-only
+
+        (unless they are the first user, in which case they are set to admin).'
+      operationId: create_or_verify_user_social_public_v2_system_users_social_post
+      parameters:
+      - name: signup_token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialLoginRequest'
+              examples:
+              - id_token: token1234
+                provider: google
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemUserDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/user_roles:
+    get:
+      tags:
+      - users
+      summary: Get User Roles
+      description: Get all user roles.
+      operationId: get_user_roles_public_v2_user_roles_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserRoleInfo'
+                type: array
+                title: Response Get User Roles Public V2 User Roles Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /public/v2/invite_users:
+    post:
+      tags:
+      - users
+      summary: Invite Users
+      operationId: invite_users_public_v2_invite_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteUsersRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /public/v2/users/all:
+    post:
+      tags:
+      - users
+      summary: List Users Paginated
+      operationId: list_users_paginated_public_v2_users_all_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryUserParams'
+              default:
+                filters: []
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/users/{user_id}:
+    get:
+      tags:
+      - users
+      summary: Get User
+      operationId: get_user_public_v2_users__user_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - users
+      summary: Update User
+      operationId: update_user_public_v2_users__user_id__put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+              examples:
+              - first_name: Tony
+                last_name: Newname
+                email: bigtony@rungalileo.io
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - users
+      summary: Delete User
+      operationId: delete_user_public_v2_users__user_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/current_user:
+    get:
+      tags:
+      - users
+      summary: Current User
+      operationId: current_user_public_v2_current_user_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentUserDB'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+components:
+  schemas:
+    SocialProvider:
+      type: string
+      enum:
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      title: SocialProvider
+    CreateSignupLinkResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+        signup_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Signup Url
+      type: object
+      required:
+      - message
+      title: CreateSignupLinkResponse
+    UserUpdatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: UserUpdatedAtFilter
+    GenericPermission:
+      properties:
+        resource:
+          $ref: '#/components/schemas/ResourceKind'
+        action:
+          $ref: '#/components/schemas/GenericAction'
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - resource
+      - action
+      - allowed
+      title: GenericPermission
+      description: 'Generic permissions describe what a user GENERALLY can and cannot do.
+
+
+        The actions are not specific to a resource instance (e.g. create). More fine-grained permissions should also be set
+
+        in the authorization policies.'
+    TransferUserResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: TransferUserResponse
+    RunDBThinWithProjectName:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        num_samples:
+          type: integer
+          title: Num Samples
+        winner:
+          type: boolean
+          title: Winner
+        dataset_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset Hash
+        dataset_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Dataset Version Id
+        prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Prompt Template Version Id
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        task_type:
+          anyOf:
+          - $ref: '#/components/schemas/TaskType'
+          - type: 'null'
+        last_updated_by:
+          type: string
+          format: uuid4
+          title: Last Updated By
+        run_tags:
+          items:
+            $ref: '#/components/schemas/RunTagDB'
+          type: array
+          title: Run Tags
+        example_content_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Example Content Id
+        creator:
+          $ref: '#/components/schemas/UserDB'
+        logged_splits:
+          items:
+            type: string
+          type: array
+          title: Logged Splits
+        logged_inference_names:
+          items:
+            type: string
+          type: array
+          title: Logged Inference Names
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - created_by
+      - num_samples
+      - winner
+      - id
+      - created_at
+      - updated_at
+      - last_updated_by
+      - creator
+      - project_name
+      title: RunDBThinWithProjectName
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    ProjectAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    GenericAction:
+      type: string
+      enum:
+      - generic_create
+      - generic_read
+      - generic_update
+      - generic_delete
+      title: GenericAction
+    RunTagDB:
+      properties:
+        key:
+          type: string
+          maxLength: 256
+          title: Key
+        value:
+          type: string
+          maxLength: 256
+          title: Value
+        tag_type:
+          type: string
+          title: Tag Type
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - key
+      - value
+      - tag_type
+      - project_id
+      - run_id
+      - created_by
+      - id
+      - created_at
+      - updated_at
+      title: RunTagDB
+    UserUpdate:
+      properties:
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        role:
+          anyOf:
+          - $ref: '#/components/schemas/UserRole'
+          - type: 'null'
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+      type: object
+      title: UserUpdate
+    UserFirstNameFilter:
+      properties:
+        name:
+          type: string
+          const: first_name
+          title: Name
+          default: first_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: UserFirstNameFilter
+    UserCreate:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+          default: false
+        password:
+          anyOf:
+          - type: string
+            format: password
+            writeOnly: true
+          - type: 'null'
+          title: Password
+      type: object
+      required:
+      - email
+      title: UserCreate
+    ProjectType:
+      type: string
+      enum:
+      - prompt_evaluation
+      - llm_monitor
+      - protect
+      - gen_ai
+      title: ProjectType
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SystemUserDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        status:
+          $ref: '#/components/schemas/SystemUserStatus'
+        role:
+          $ref: '#/components/schemas/SystemRole'
+        auth_method:
+          type: string
+          title: Auth Method
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - email
+      - status
+      - role
+      - auth_method
+      title: SystemUserDB
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      title: UserRole
+    UserVerifiedSort:
+      properties:
+        name:
+          type: string
+          const: verified
+          title: Name
+          default: verified
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: UserVerifiedSort
+    GroupAction:
+      type: string
+      enum:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    PasswordResetResponse:
+      properties:
+        pathname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pathname
+      type: object
+      title: PasswordResetResponse
+    UserRoleInfo:
+      properties:
+        name:
+          $ref: '#/components/schemas/UserRole'
+          examples:
+          - admin
+        display_name:
+          type: string
+          title: Display Name
+          examples:
+          - Admin
+        description:
+          type: string
+          title: Description
+          examples:
+          - Full access
+      type: object
+      required:
+      - name
+      - display_name
+      - description
+      title: UserRoleInfo
+    GetUsersResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        users:
+          items:
+            $ref: '#/components/schemas/GetUserResponse'
+          type: array
+          title: Users
+      type: object
+      required:
+      - users
+      title: GetUsersResponse
+    InviteUsersRequest:
+      properties:
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        emails:
+          items:
+            type: string
+          type: array
+          minItems: 1
+          title: Emails
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: user
+        group_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Group Ids
+          default: []
+        send_email:
+          type: boolean
+          title: Send Email
+          default: true
+      type: object
+      required:
+      - emails
+      title: InviteUsersRequest
+    DatasetAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
+    SocialLoginRequest:
+      properties:
+        id_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id Token
+        access_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Access Token
+        provider:
+          $ref: '#/components/schemas/SocialProvider'
+      type: object
+      required:
+      - provider
+      title: SocialLoginRequest
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    UserCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: UserCreatedAtSort
+    DeleteUserResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: DeleteUserResponse
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    TaskType:
+      type: integer
+      enum:
+      - 7
+      - 9
+      - 12
+      - 13
+      - 15
+      - 16
+      - 17
+      - 18
+      title: TaskType
+      description: 'Valid task types for modeling.
+
+
+        We store these as ints instead of strings because we will be looking this up in the database frequently.'
+    GetUserLatestRunsDB:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        runs:
+          items:
+            $ref: '#/components/schemas/RunDBThinWithProjectName'
+          type: array
+          title: Runs
+      type: object
+      title: GetUserLatestRunsDB
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
+    RunDB:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        num_samples:
+          type: integer
+          title: Num Samples
+        winner:
+          type: boolean
+          title: Winner
+        dataset_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset Hash
+        dataset_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Dataset Version Id
+        prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Prompt Template Version Id
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        task_type:
+          anyOf:
+          - $ref: '#/components/schemas/TaskType'
+          - type: 'null'
+        last_updated_by:
+          type: string
+          format: uuid4
+          title: Last Updated By
+        run_tags:
+          items:
+            $ref: '#/components/schemas/RunTagDB'
+          type: array
+          title: Run Tags
+        example_content_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Example Content Id
+        creator:
+          $ref: '#/components/schemas/UserDB'
+        logged_splits:
+          items:
+            type: string
+          type: array
+          title: Logged Splits
+        logged_inference_names:
+          items:
+            type: string
+          type: array
+          title: Logged Inference Names
+      type: object
+      required:
+      - created_by
+      - num_samples
+      - winner
+      - id
+      - created_at
+      - updated_at
+      - last_updated_by
+      - creator
+      title: RunDB
+    UserDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      title: UserDB
+    UserVerifiedFilter:
+      properties:
+        name:
+          type: string
+          const: verified
+          title: Name
+          default: verified
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: UserVerifiedFilter
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    UpdateUserResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      title: UpdateUserResponse
+    UserEmailFilter:
+      properties:
+        name:
+          type: string
+          const: email
+          title: Name
+          default: email
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: UserEmailFilter
+    UserLastNameFilter:
+      properties:
+        name:
+          type: string
+          const: last_name
+          title: Name
+          default: last_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: UserLastNameFilter
+    UserCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: UserCreatedAtFilter
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ProjectLabels:
+      type: string
+      enum:
+      - sample
+      title: ProjectLabels
+      description: Enum for project labels used in the UI.
+    AuthMethod:
+      type: string
+      enum:
+      - email
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      - invite
+      title: AuthMethod
+    Permission:
+      properties:
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - action
+      - allowed
+      title: Permission
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    GetUserResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        projects_count:
+          type: integer
+          title: Projects Count
+        runs_count:
+          type: integer
+          title: Runs Count
+      type: object
+      required:
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      - projects_count
+      - runs_count
+      title: GetUserResponse
+    ProjectDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        created_by_user:
+          $ref: '#/components/schemas/UserInfo'
+        runs:
+          items:
+            $ref: '#/components/schemas/RunDB'
+          type: array
+          title: Runs
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        bookmark:
+          type: boolean
+          title: Bookmark
+          default: false
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        labels:
+          items:
+            $ref: '#/components/schemas/ProjectLabels'
+          type: array
+          title: Labels
+      type: object
+      required:
+      - id
+      - created_by
+      - created_by_user
+      - runs
+      - created_at
+      - updated_at
+      title: ProjectDB
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    SystemRole:
+      type: string
+      enum:
+      - system_admin
+      - system_user
+      title: SystemRole
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    QueryUserParams:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/UserFirstNameFilter'
+            - $ref: '#/components/schemas/UserLastNameFilter'
+            - $ref: '#/components/schemas/UserEmailFilter'
+            - $ref: '#/components/schemas/UserVerifiedFilter'
+            - $ref: '#/components/schemas/UserCreatedAtFilter'
+            - $ref: '#/components/schemas/UserUpdatedAtFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/UserCreatedAtFilter'
+                email: '#/components/schemas/UserEmailFilter'
+                first_name: '#/components/schemas/UserFirstNameFilter'
+                last_name: '#/components/schemas/UserLastNameFilter'
+                updated_at: '#/components/schemas/UserUpdatedAtFilter'
+                verified: '#/components/schemas/UserVerifiedFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/UserVerifiedSort'
+            - $ref: '#/components/schemas/UserCreatedAtSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/UserCreatedAtSort'
+                verified: '#/components/schemas/UserVerifiedSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: QueryUserParams
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    CurrentUserDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        generic_permissions:
+          items:
+            $ref: '#/components/schemas/GenericPermission'
+          type: array
+          title: Generic Permissions
+          default: []
+      type: object
+      required:
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      title: CurrentUserDB
+    ResourceKind:
+      type: string
+      enum:
+      - audit_log
+      - system_user
+      - user
+      - group
+      - group_member
+      - project
+      - integration
+      - provider_management_api_integration
+      - scorer
+      - registered_scorer
+      - finetuned_scorer
+      - generated_scorer
+      - api_key
+      - dataset
+      - stage
+      - stage_version
+      - organization
+      - usage_limit
+      - prompt_template
+      - annotation_queue
+      - log_stream
+      - experiment
+      - experiment_group
+      - user_integration
+      - group_integration
+      - user_integration_selection
+      - trace
+      - control
+      title: ResourceKind
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

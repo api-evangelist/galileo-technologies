@@ -1,0 +1,322 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation Organization Jobs API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: Organization Jobs
+paths:
+  /v2/org-jobs/{job_id}:
+    get:
+      tags:
+      - Organization Jobs
+      summary: Get Org Job Status
+      description: 'Get the status of an organization-level job.
+
+
+        This endpoint retrieves the status of jobs that operate at the organization level,
+
+        such as org-wide data deletion jobs.
+
+
+        **Authorization**: The job''s organization_id must match the user''s organization.'
+      operationId: get_org_job_status_v2_org_jobs__job_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Job Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgJobDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/org-jobs/delete-by-metadata:
+    post:
+      tags:
+      - Organization Jobs
+      summary: Delete By Metadata
+      description: 'Delete traces/sessions across all projects in the organization by metadata filters.
+
+
+        This endpoint allows organization administrators to delete traces or sessions
+
+        that match specific metadata key-value pairs across all projects in their
+
+        organization.'
+      operationId: delete_by_metadata_v2_org_jobs_delete_by_metadata_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: immediate
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Immediate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgMetadataDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgMetadataDeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/org-jobs/{job_id}:
+    get:
+      tags:
+      - Organization Jobs
+      summary: Get Org Job Status
+      description: 'Get the status of an organization-level job.
+
+
+        This endpoint retrieves the status of jobs that operate at the organization level,
+
+        such as org-wide data deletion jobs.
+
+
+        **Authorization**: The job''s organization_id must match the user''s organization.'
+      operationId: get_org_job_status_public_v2_org_jobs__job_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Job Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgJobDB'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/org-jobs/delete-by-metadata:
+    post:
+      tags:
+      - Organization Jobs
+      summary: Delete By Metadata
+      description: 'Delete traces/sessions across all projects in the organization by metadata filters.
+
+
+        This endpoint allows organization administrators to delete traces or sessions
+
+        that match specific metadata key-value pairs across all projects in their
+
+        organization.'
+      operationId: delete_by_metadata_public_v2_org_jobs_delete_by_metadata_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: immediate
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Immediate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgMetadataDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgMetadataDeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    OrgMetadataDeleteRequest:
+      properties:
+        metadata_key:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Metadata Key
+        metadata_value:
+          type: string
+          title: Metadata Value
+      type: object
+      required:
+      - metadata_key
+      - metadata_value
+      title: OrgMetadataDeleteRequest
+      description: Request body for organization-wide metadata-based deletion.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OrgMetadataDeleteResponse:
+      properties:
+        job_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Job Id
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - job_id
+      - message
+      title: OrgMetadataDeleteResponse
+      description: Response for organization-wide metadata-based deletion.
+    OrgJobDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        job_name:
+          type: string
+          title: Job Name
+        status:
+          type: string
+          title: Status
+        request_data:
+          additionalProperties: true
+          type: object
+          title: Request Data
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - organization_id
+      - job_name
+      - status
+      - request_data
+      - created_at
+      - updated_at
+      title: OrgJobDB
+      description: Response schema for org jobs.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

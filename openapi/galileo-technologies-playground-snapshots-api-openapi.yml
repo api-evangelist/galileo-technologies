@@ -1,0 +1,1032 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation playground_snapshots API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: playground_snapshots
+paths:
+  /projects/{project_id}/playgrounds/{playground_id}/snapshots/query:
+    post:
+      tags:
+      - playground_snapshots
+      summary: Query Snapshots
+      operationId: query_snapshots_projects__project_id__playgrounds__playground_id__snapshots_query_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPlaygroundSnapshotsParams'
+              default:
+                sort:
+                  name: created_at
+                  ascending: false
+                  sort_type: column
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPlaygroundSnapshotsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/playgrounds/{playground_id}/snapshots/{snapshot_id}:
+    delete:
+      tags:
+      - playground_snapshots
+      summary: Delete Playground Snapshot
+      operationId: delete_playground_snapshot_projects__project_id__playgrounds__playground_id__snapshots__snapshot_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: snapshot_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Snapshot Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/playgrounds/{playground_id}/snapshots/{snapshot_id}/load:
+    post:
+      tags:
+      - playground_snapshots
+      summary: Load Playground Snapshot
+      operationId: load_playground_snapshot_projects__project_id__playgrounds__playground_id__snapshots__snapshot_id__load_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: playground_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Playground Id
+      - name: snapshot_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Snapshot Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaygroundResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PlaygroundDataset:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        version_index:
+          type: integer
+          title: Version Index
+      type: object
+      required:
+      - id
+      - version_index
+      title: PlaygroundDataset
+    InputTypeEnum:
+      type: string
+      enum:
+      - basic
+      - llm_spans
+      - retriever_spans
+      - sessions_normalized
+      - sessions_trace_io_only
+      - tool_spans
+      - trace_input_only
+      - trace_io_only
+      - trace_normalized
+      - trace_output_only
+      - agent_spans
+      - workflow_spans
+      title: InputTypeEnum
+      description: Enumeration of input types.
+    PlaygroundSnapshotCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: PlaygroundSnapshotCreatedAtSort
+    BaseGeneratedScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        chain_poll_template:
+          $ref: '#/components/schemas/ChainPollTemplate'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
+      type: object
+      required:
+      - id
+      - name
+      - chain_poll_template
+      title: BaseGeneratedScorerDB
+    BaseScorerVersionDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        version:
+          type: integer
+          title: Version
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+        generated_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseGeneratedScorerDB'
+          - type: 'null'
+        registered_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseRegisteredScorerDB'
+          - type: 'null'
+        finetuned_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseFinetunedScorerDB'
+          - type: 'null'
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+        num_judges:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Judges
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
+        cot_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Cot Enabled
+          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: What type of output to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
+        input_type:
+          anyOf:
+          - $ref: '#/components/schemas/InputTypeEnum'
+          - type: 'null'
+          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
+      type: object
+      required:
+      - id
+      - version
+      - scorer_id
+      title: BaseScorerVersionDB
+      description: Scorer version from the scorer_versions table.
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
+    PlaygroundSnapshotDataset:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        version_index:
+          type: integer
+          title: Version Index
+      type: object
+      required:
+      - id
+      - name
+      - version_index
+      title: PlaygroundSnapshotDataset
+    ListPlaygroundSnapshotsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        snapshots:
+          items:
+            $ref: '#/components/schemas/PlaygroundSnapshotResponse'
+          type: array
+          title: Snapshots
+      type: object
+      required:
+      - snapshots
+      title: ListPlaygroundSnapshotsResponse
+    RollUpMethodDisplayOptions:
+      type: string
+      enum:
+      - average
+      - sum
+      - max
+      - min
+      - category_count
+      - percentage_true
+      - percentage_false
+      title: RollUpMethodDisplayOptions
+      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
+
+
+        Separates display intent from computation methods. The computation methods
+
+        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
+
+        This enum controls how the UI displays the selected roll-up value for a scorer.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    NodeNameFilter:
+      properties:
+        name:
+          type: string
+          const: node_name
+          title: Name
+          default: node_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: NodeNameFilter
+      description: Filters on node names in scorer jobs.
+    FewShotExample:
+      properties:
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
+      type: object
+      required:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
+    ModelType:
+      type: string
+      enum:
+      - slm
+      - llm
+      - code
+      title: ModelType
+    MultimodalCapability:
+      type: string
+      enum:
+      - vision
+      - audio
+      title: MultimodalCapability
+    PlaygroundSnapshotResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        experiment_id:
+          type: string
+          format: uuid4
+          title: Experiment Id
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        num_rows:
+          type: integer
+          title: Num Rows
+        scorers:
+          items:
+            $ref: '#/components/schemas/PlaygroundSnapshotScorer'
+          type: array
+          title: Scorers
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/PlaygroundSnapshotDataset'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - created_at
+      - experiment_id
+      - created_by_user
+      - num_rows
+      - scorers
+      - dataset
+      title: PlaygroundSnapshotResponse
+    LunaOutputTypeEnum:
+      type: string
+      enum:
+      - float
+      - string
+      - string_list
+      - bool_list
+      title: LunaOutputTypeEnum
+    galileo_core__schemas__shared__scorers__scorer_name__ScorerName:
+      type: string
+      enum:
+      - action_completion_luna
+      - action_advancement_luna
+      - agentic_session_success
+      - agentic_session_success
+      - action_completion_vision
+      - action_completion_audio
+      - agentic_workflow_success
+      - agentic_workflow_success
+      - agent_efficiency
+      - agent_flow
+      - chunk_attribution_utilization_luna
+      - chunk_attribution_utilization
+      - chunk_relevance
+      - chunk_relevance_luna
+      - context_precision
+      - precision_at_k
+      - completeness_luna
+      - completeness
+      - context_adherence
+      - context_adherence_luna
+      - context_adherence_vision
+      - context_adherence_audio
+      - context_relevance
+      - context_relevance_luna
+      - conversation_quality
+      - correctness
+      - correctness_vision
+      - correctness_audio
+      - ground_truth_adherence
+      - ground_truth_adherence_vision
+      - ground_truth_adherence_audio
+      - visual_fidelity
+      - visual_quality
+      - input_pii
+      - input_pii_gpt
+      - input_sexist
+      - input_sexist
+      - input_sexist_luna
+      - input_sexist_luna
+      - input_tone
+      - input_tone_gpt
+      - input_toxicity
+      - input_toxicity_luna
+      - input_toxicity_vision
+      - input_toxicity_audio
+      - instruction_adherence
+      - output_pii
+      - output_pii_gpt
+      - output_sexist
+      - output_sexist
+      - output_sexist_luna
+      - output_sexist_luna
+      - output_tone
+      - output_tone_gpt
+      - output_toxicity
+      - output_toxicity_luna
+      - output_toxicity_vision
+      - output_toxicity_audio
+      - prompt_injection
+      - prompt_injection_luna
+      - reasoning_coherence
+      - reasoning_coherence_vision
+      - reasoning_coherence_audio
+      - sql_efficiency
+      - sql_adherence
+      - sql_injection
+      - sql_correctness
+      - tool_error_rate
+      - tool_error_rate_luna
+      - tool_selection_quality
+      - tool_selection_quality_luna
+      - user_intent_change
+      - user_intent_change_vision
+      - user_intent_change_audio
+      - interruption_detection
+      title: ScorerName
+    BaseFinetunedScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        lora_task_id:
+          type: integer
+          title: Lora Task Id
+        lora_weights_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lora Weights Path
+        prompt:
+          type: string
+          title: Prompt
+        luna_input_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaInputTypeEnum'
+          - type: 'null'
+        luna_output_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaOutputTypeEnum'
+          - type: 'null'
+        class_name_to_vocab_ix:
+          anyOf:
+          - additionalProperties:
+              items:
+                type: integer
+              type: array
+              uniqueItems: true
+            type: object
+          - additionalProperties:
+              type: integer
+            type: object
+          - type: 'null'
+          title: Class Name To Vocab Ix
+        executor:
+          anyOf:
+          - $ref: '#/components/schemas/galileo_core__schemas__shared__scorers__scorer_name__ScorerName'
+          - type: 'null'
+          description: Executor pipeline. Defaults to finetuned scorer pipeline but can run custom galileo score pipelines.
+      type: object
+      required:
+      - id
+      - name
+      - lora_task_id
+      - prompt
+      title: BaseFinetunedScorerDB
+    PlaygroundSnapshotScorer:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: PlaygroundSnapshotScorer
+    ListPlaygroundSnapshotsParams:
+      properties:
+        sort:
+          $ref: '#/components/schemas/PlaygroundSnapshotCreatedAtSort'
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: ListPlaygroundSnapshotsParams
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChainPollTemplate:
+      properties:
+        metric_system_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric System Prompt
+          description: System prompt for the metric.
+        metric_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Description
+          description: Description of what the metric should do.
+        value_field_name:
+          type: string
+          title: Value Field Name
+          description: Field name to look for in the chainpoll response, for the rating.
+          default: rating
+        explanation_field_name:
+          type: string
+          title: Explanation Field Name
+          description: Field name to look for in the chainpoll response, for the explanation.
+          default: explanation
+        template:
+          type: string
+          title: Template
+          description: Chainpoll prompt template.
+        metric_few_shot_examples:
+          items:
+            $ref: '#/components/schemas/FewShotExample'
+          type: array
+          title: Metric Few Shot Examples
+          description: Few-shot examples for the metric.
+        response_schema:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Response Schema
+          description: Response schema for the output
+      type: object
+      required:
+      - template
+      title: ChainPollTemplate
+      description: 'Template for a chainpoll metric prompt,
+
+        containing all the info necessary to send a chainpoll prompt.'
+    MetadataFilter:
+      properties:
+        name:
+          type: string
+          const: metadata
+          title: Name
+          default: metadata
+        operator:
+          type: string
+          enum:
+          - one_of
+          - not_in
+          - eq
+          - ne
+          title: Operator
+        key:
+          type: string
+          title: Key
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - key
+      - value
+      title: MetadataFilter
+      description: Filters on metadata key-value pairs in scorer jobs.
+    BaseRegisteredScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
+      type: object
+      required:
+      - id
+      - name
+      title: BaseRegisteredScorerDB
+    ModalityFilter:
+      properties:
+        name:
+          type: string
+          const: modality
+          title: Name
+          default: modality
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ModalityFilter
+      description: 'Filters on content modalities in scorer jobs.
+
+        Matches if at least one of the specified modalities is present.'
+    ScorerConfig:
+      properties:
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+        num_judges:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Judges
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
+        cot_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Cot Enabled
+          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: What type of output to use for model-based scorers (boolean, categorical, etc.).
+        input_type:
+          anyOf:
+          - $ref: '#/components/schemas/InputTypeEnum'
+          - type: 'null'
+          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc..).
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        scorer_type:
+          $ref: '#/components/schemas/ScorerTypes'
+        model_type:
+          anyOf:
+          - $ref: '#/components/schemas/ModelType'
+          - type: 'null'
+          description: Type of model to use for this scorer. slm maps to luna, and llm maps to plus
+        scorer_version:
+          anyOf:
+          - $ref: '#/components/schemas/BaseScorerVersionDB'
+          - type: 'null'
+          description: ScorerVersion to use for this scorer. If not provided, the latest version will be used.
+        multimodal_capabilities:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/MultimodalCapability'
+            type: array
+          - type: 'null'
+          title: Multimodal Capabilities
+          description: Multimodal capabilities which this scorer can utilize in its evaluation.
+        roll_up_method:
+          anyOf:
+          - $ref: '#/components/schemas/RollUpMethodDisplayOptions'
+          - type: 'null'
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
+          description: Return type of code scorers (e.g., 'bool', 'int', 'float', 'str').
+      type: object
+      required:
+      - id
+      - scorer_type
+      title: ScorerConfig
+      description: Used for configuring a scorer for a scorer job.
+    PlaygroundResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/PlaygroundDataset'
+          - type: 'null'
+        scratch_dataset_id:
+          type: string
+          format: uuid4
+          title: Scratch Dataset Id
+        scorers:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ScorerConfig'
+            type: array
+          - type: 'null'
+          title: Scorers
+      type: object
+      required:
+      - id
+      - name
+      - created_by_user
+      - created_at
+      - updated_at
+      - dataset
+      - scratch_dataset_id
+      - scorers
+      title: PlaygroundResponse
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    ScorerTypes:
+      type: string
+      enum:
+      - llm
+      - code
+      - luna
+      - preset
+      title: ScorerTypes
+    LunaInputTypeEnum:
+      type: string
+      enum:
+      - span
+      - trace_object
+      - trace_input_output_only
+      title: LunaInputTypeEnum
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

@@ -1,0 +1,1438 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation assistant API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: assistant
+paths:
+  /assistant/mentions:
+    get:
+      tags:
+      - assistant
+      summary: Search Mentions
+      description: 'Search entities by name for @-mention autocomplete in the assistant.
+
+
+        Returns up to 20 results per entity type. Logstreams and experiments are only
+
+        returned when project_id is provided.'
+      operationId: search_mentions_assistant_mentions_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 0
+          maxLength: 200
+          description: Name search query. Empty string returns up to 20 results per type.
+          title: Q
+        description: Name search query. Empty string returns up to 20 results per type.
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          description: Scope to a specific project. Required for logstream and experiment results.
+          title: Project Id
+        description: Scope to a specific project. Required for logstream and experiment results.
+      - name: types
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/AssistantContextType'
+          - type: 'null'
+          description: Entity types to include. Defaults to all applicable for the given scope.
+          title: Types
+        description: Entity types to include. Defaults to all applicable for the given scope.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentionsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/suggested-questions:
+    get:
+      tags:
+      - assistant
+      summary: Get Suggested Questions
+      description: Return suggested questions for the assistant panel given the active context.
+      operationId: get_suggested_questions_assistant_suggested_questions_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          description: Active project ID.
+          title: Project Id
+        description: Active project ID.
+      - name: logstream_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          description: Active logstream ID.
+          title: Logstream Id
+        description: Active logstream ID.
+      - name: experiment_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          description: Active experiment ID.
+          title: Experiment Id
+        description: Active experiment ID.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuggestedQuestionsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/warmup:
+    post:
+      tags:
+      - assistant
+      summary: Warmup
+      description: 'Warm up the assistant for a project, logstream or experiment.
+
+
+        Call this when the user opens the assistant panel, before they send their first message.
+
+        Returns 204. Safe to call multiple times.'
+      operationId: warmup_assistant_warmup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WarmupRequest'
+        required: true
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /assistant/background-tasks:
+    post:
+      tags:
+      - assistant
+      summary: Upsert Background Task
+      description: Create or update an assistant background task and linkage row.
+      operationId: upsert_background_task_assistant_background_tasks_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAssistantBackgroundTaskRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssistantBackgroundTaskResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - assistant
+      summary: List Background Tasks
+      description: List the caller's background task linkage rows plus read-time derived statuses.
+      operationId: list_background_tasks_assistant_background_tasks_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: task_name
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/AssistantBackgroundTaskName'
+          - type: 'null'
+          title: Task Name
+      - name: target_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/AssistantBackgroundTaskTargetType'
+          - type: 'null'
+          title: Target Type
+      - name: target_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Target Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssistantBackgroundTasksResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/background-tasks/{task_name}/{target_type}/{target_id}:
+    get:
+      tags:
+      - assistant
+      summary: Get Background Task
+      description: Return the caller's background task linkage row plus read-time derived status.
+      operationId: get_background_task_assistant_background_tasks__task_name___target_type___target_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: task_name
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/AssistantBackgroundTaskName'
+      - name: target_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/AssistantBackgroundTaskTargetType'
+      - name: target_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Target Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssistantBackgroundTaskResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/conversations:
+    get:
+      tags:
+      - assistant
+      summary: List Conversations
+      description: List the caller's conversations, most recently updated first.
+      operationId: list_conversations_assistant_conversations_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ConversationResponse'
+                type: array
+                title: Response List Conversations Assistant Conversations Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+    post:
+      tags:
+      - assistant
+      summary: Create Conversation
+      description: Create a new conversation owned by the caller.
+      operationId: create_conversation_assistant_conversations_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConversationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /assistant/conversations/{conversation_id}:
+    patch:
+      tags:
+      - assistant
+      summary: Update Conversation
+      description: Rename a conversation. 404 if it does not exist in the caller's org.
+      operationId: update_conversation_assistant_conversations__conversation_id__patch
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Conversation Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConversationRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - assistant
+      summary: Delete Conversation
+      description: Delete a conversation (cascades to its messages). 404 if it does not exist.
+      operationId: delete_conversation_assistant_conversations__conversation_id__delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Conversation Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/conversations/{conversation_id}/messages:
+    get:
+      tags:
+      - assistant
+      summary: List Messages
+      description: 'List a conversation''s messages, latest first, cursor-paginated.
+
+
+        Pass `next_cursor` from a prior response back as `cursor` to load older messages.
+
+        Cursor pagination is stable under concurrent writes - new messages can land at the
+
+        head while the caller is scrolling back without causing duplicates or skipped rows.'
+      operationId: list_messages_assistant_conversations__conversation_id__messages_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Conversation Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Cursor
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationMessagesPage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - assistant
+      summary: Send Message
+      description: 'Send a message to the conversation and stream the assistant''s response as SSE events.
+
+
+        404s if the conversation does not exist or is not owned by the caller. 409s if
+
+        `message_id` was already submitted (the field is the client-side idempotency key).'
+      operationId: send_message_assistant_conversations__conversation_id__messages_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Conversation Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '200':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/conversations/{conversation_id}/messages/{assistant_message_id}/stream:
+    get:
+      tags:
+      - assistant
+      summary: Resume Message Stream
+      description: Resume an assistant response stream by replaying the turn's Redis stream.
+      operationId: resume_message_stream_assistant_conversations__conversation_id__messages__assistant_message_id__stream_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Conversation Id
+      - name: assistant_message_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Assistant Message Id
+      responses:
+        '200':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/conversations/{conversation_id}/messages/{message_id}/stop-response:
+    post:
+      tags:
+      - assistant
+      summary: Stop Response
+      description: 'Stop the in-progress assistant response started by `message_id`.
+
+
+        Returns 204. The call is idempotent and is a no-op if the turn has already
+
+        finished. 404s if the conversation does not exist or is not owned by the caller.'
+      operationId: stop_response_assistant_conversations__conversation_id__messages__message_id__stop_response_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Conversation Id
+      - name: message_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Message Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /assistant/messages/{message_id}/feedback:
+    post:
+      tags:
+      - assistant
+      summary: Record Message Feedback
+      description: 'Record feedback on an assistant message.
+
+
+        Feedback can be positive or negative and optionally include a comment.
+
+        Calling this endpoint again replaces any previous feedback on the same message.
+
+        404s if the message does not exist or was not created by the authenticated user.'
+      operationId: record_message_feedback_assistant_messages__message_id__feedback_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: message_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Message Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageFeedbackRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationMessageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - assistant
+      summary: Delete Message Feedback
+      description: 'Remove feedback from an assistant message.
+
+
+        No-ops gracefully if feedback was already absent.
+
+        404s if the message does not exist or was not created by the authenticated user.'
+      operationId: delete_message_feedback_assistant_messages__message_id__feedback_delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: message_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Message Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ExperimentContext:
+      properties:
+        type:
+          type: string
+          const: experiment
+          title: Type
+        id:
+          type: string
+          format: uuid4
+          title: Id
+          description: Experiment ID.
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: Project the experiment belongs to.
+        start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start Time
+          description: Start of the active time window (UTC).
+        end_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End Time
+          description: End of the active time window (UTC).
+      type: object
+      required:
+      - type
+      - id
+      - project_id
+      title: ExperimentContext
+      description: Active experiment scope for the assistant turn.
+    ConversationMessageFinishReason:
+      type: string
+      enum:
+      - stop
+      - interrupted
+      - max_tokens
+      title: ConversationMessageFinishReason
+      description: Why an assistant turn ended.
+    AssistantBackgroundTaskResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        conversation_id:
+          type: string
+          format: uuid4
+          title: Conversation Id
+        task_name:
+          type: string
+          title: Task Name
+        target_type:
+          type: string
+          title: Target Type
+        target_id:
+          type: string
+          format: uuid4
+          title: Target Id
+        operation_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Operation Id
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: string
+            const: unknown
+          title: Status
+        job_run_summary:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Job Run Summary
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - conversation_id
+      - task_name
+      - target_type
+      - target_id
+      - operation_id
+      - status
+      - created_at
+      - updated_at
+      title: AssistantBackgroundTaskResponse
+      description: Background task linkage row plus response-only derived status.
+    MentionsResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/MentionResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: MentionsResponse
+      description: Response for the mentions search endpoint.
+    PageContext:
+      properties:
+        type:
+          type: string
+          const: page
+          title: Type
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Id
+          description: Page identifier.
+        path:
+          type: string
+          maxLength: 2048
+          minLength: 1
+          pattern: ^/
+          title: Path
+          description: Current route path.
+        view:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: View
+          description: Optional page view or sub-view identifier.
+      type: object
+      required:
+      - type
+      - id
+      - path
+      title: PageContext
+      description: Current application page for the assistant turn.
+    AssistantBackgroundTasksResponse:
+      properties:
+        tasks:
+          items:
+            $ref: '#/components/schemas/AssistantBackgroundTaskListItem'
+          type: array
+          title: Tasks
+      type: object
+      required:
+      - tasks
+      title: AssistantBackgroundTasksResponse
+      description: Background task linkage rows for the caller.
+    WarmupRequest:
+      properties:
+        context:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PageContext'
+            - $ref: '#/components/schemas/ProjectContext'
+            - $ref: '#/components/schemas/LogstreamContext'
+            - $ref: '#/components/schemas/ExperimentContext'
+            - $ref: '#/components/schemas/TraceContext'
+            - $ref: '#/components/schemas/SpanContext'
+            discriminator:
+              propertyName: type
+              mapping:
+                experiment: '#/components/schemas/ExperimentContext'
+                logstream: '#/components/schemas/LogstreamContext'
+                page: '#/components/schemas/PageContext'
+                project: '#/components/schemas/ProjectContext'
+                span: '#/components/schemas/SpanContext'
+                trace: '#/components/schemas/TraceContext'
+          type: array
+          maxItems: 50
+          title: Context
+          description: Active surfaces to pre-fetch context for. Logstream and experiment items trigger schema prefetch; other types are ignored.
+      type: object
+      title: WarmupRequest
+      description: Request body for warming up the assistant.
+    SpanContext:
+      properties:
+        type:
+          type: string
+          const: span
+          title: Type
+        id:
+          type: string
+          format: uuid4
+          title: Id
+          description: Span ID.
+        trace_id:
+          type: string
+          format: uuid4
+          title: Trace Id
+          description: Trace the span belongs to.
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: Project the trace belongs to.
+      type: object
+      required:
+      - type
+      - id
+      - trace_id
+      - project_id
+      title: SpanContext
+      description: A specific span within a trace the user is viewing.
+    JobStatus:
+      type: string
+      enum:
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ProjectContext:
+      properties:
+        type:
+          type: string
+          const: project
+          title: Type
+        id:
+          type: string
+          format: uuid4
+          title: Id
+          description: Project ID.
+      type: object
+      required:
+      - type
+      - id
+      title: ProjectContext
+      description: Active project scope for the assistant turn.
+    AssistantContextType:
+      type: string
+      enum:
+      - page
+      - project
+      - logstream
+      - experiment
+      - trace
+      - span
+      title: AssistantContextType
+      description: Discriminator for the active surface attached to an assistant turn.
+    UpdateConversationRequest:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Title
+          description: New title; null clears the title.
+      type: object
+      title: UpdateConversationRequest
+      description: Request body for renaming a conversation.
+    ConversationMessagesPage:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/ConversationMessageResponse'
+          type: array
+          title: Messages
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+      type: object
+      required:
+      - messages
+      title: ConversationMessagesPage
+      description: 'A cursor-paginated slice of a conversation''s messages, latest first.
+
+
+        `next_cursor` is an opaque token to pass back as `cursor` on the next request.
+
+        It is null when the caller has reached the start of the conversation.'
+    AssistantBackgroundTaskListItem:
+      properties:
+        conversation_id:
+          type: string
+          format: uuid4
+          title: Conversation Id
+        task_name:
+          type: string
+          title: Task Name
+        target_type:
+          type: string
+          title: Target Type
+        target_id:
+          type: string
+          format: uuid4
+          title: Target Id
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: string
+            const: unknown
+          title: Status
+        job_run_summary:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Job Run Summary
+      type: object
+      required:
+      - conversation_id
+      - task_name
+      - target_type
+      - target_id
+      - status
+      title: AssistantBackgroundTaskListItem
+      description: Background task fields needed by the assistant UI list/reload path.
+    CreateConversationRequest:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Title
+          description: Optional human-readable title.
+      type: object
+      title: CreateConversationRequest
+      description: Request body for creating a new conversation.
+    UpsertAssistantBackgroundTaskRequest:
+      properties:
+        conversation_id:
+          type: string
+          format: uuid4
+          title: Conversation Id
+        task_name:
+          $ref: '#/components/schemas/AssistantBackgroundTaskName'
+        target_type:
+          $ref: '#/components/schemas/AssistantBackgroundTaskTargetType'
+        target_id:
+          type: string
+          format: uuid4
+          title: Target Id
+        params:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/GenerateSignalsAssistantBackgroundTaskParams'
+            discriminator:
+              propertyName: task_name
+              mapping:
+                generate-signals: '#/components/schemas/GenerateSignalsAssistantBackgroundTaskParams'
+          - type: 'null'
+          title: Params
+      type: object
+      required:
+      - conversation_id
+      - task_name
+      - target_type
+      - target_id
+      title: UpsertAssistantBackgroundTaskRequest
+      description: Request body for linking an assistant conversation to a product background task.
+    MessageFeedbackRequest:
+      properties:
+        rating:
+          $ref: '#/components/schemas/MessageFeedbackRating'
+        comment:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Comment
+          description: Optional free-text comment.
+      type: object
+      required:
+      - rating
+      title: MessageFeedbackRequest
+      description: Request body for submitting feedback on an assistant message.
+    SuggestedQuestionsResponse:
+      properties:
+        questions:
+          items:
+            type: string
+          type: array
+          title: Questions
+      type: object
+      required:
+      - questions
+      title: SuggestedQuestionsResponse
+      description: Suggested questions the user can ask the assistant given the active context.
+    TraceContext:
+      properties:
+        type:
+          type: string
+          const: trace
+          title: Type
+        id:
+          type: string
+          format: uuid4
+          title: Id
+          description: Trace ID.
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: Project the trace belongs to.
+      type: object
+      required:
+      - type
+      - id
+      - project_id
+      title: TraceContext
+      description: A specific trace the user is viewing.
+    GenerateSignalsAssistantBackgroundTaskParams:
+      properties:
+        task_name:
+          type: string
+          const: generate-signals
+          title: Task Name
+        model_alias:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Model Alias
+          description: Optional model alias to use when creating the background task.
+      type: object
+      required:
+      - task_name
+      title: GenerateSignalsAssistantBackgroundTaskParams
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ConversationMessageRole:
+      type: string
+      enum:
+      - user
+      - assistant
+      title: ConversationMessageRole
+      description: 'Author of a conversation message.
+
+
+        `user` is sent by the human, `assistant` is generated by the Galileo Assistant runner.'
+    ConversationMessageResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        conversation_id:
+          type: string
+          format: uuid4
+          title: Conversation Id
+        parent_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Parent Id
+        role:
+          $ref: '#/components/schemas/ConversationMessageRole'
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+        context:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Context
+        content:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Content
+        tool_calls:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Tool Calls
+        status:
+          $ref: '#/components/schemas/ConversationMessageStatus'
+        finish_reason:
+          anyOf:
+          - $ref: '#/components/schemas/ConversationMessageFinishReason'
+          - type: 'null'
+        feedback:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Feedback
+        command_result:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Command Result
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - conversation_id
+      - parent_id
+      - role
+      - model
+      - context
+      - content
+      - tool_calls
+      - status
+      - finish_reason
+      - feedback
+      - created_at
+      - updated_at
+      title: ConversationMessageResponse
+      description: One row from `conversation_messages` as the chat UI consumes it.
+    LogstreamContext:
+      properties:
+        type:
+          type: string
+          const: logstream
+          title: Type
+        id:
+          type: string
+          format: uuid4
+          title: Id
+          description: Logstream (run) ID.
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: Project the logstream belongs to.
+        start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start Time
+          description: Start of the active time window (UTC).
+        end_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End Time
+          description: End of the active time window (UTC).
+      type: object
+      required:
+      - type
+      - id
+      - project_id
+      title: LogstreamContext
+      description: Active logstream scope for the assistant turn.
+    ConversationMessageStatus:
+      type: string
+      enum:
+      - in_progress
+      - success
+      - failed
+      title: ConversationMessageStatus
+      description: 'Runner-reported state of an assistant message turn.
+
+
+        `content` may be NULL while `in_progress` and after `failed`. On `success`, inspect
+
+        `finish_reason` for *why* the turn ended.'
+    AssistantBackgroundTaskTargetType:
+      type: string
+      enum:
+      - experiment
+      - logstream
+      title: AssistantBackgroundTaskTargetType
+    SendMessageRequest:
+      properties:
+        message_id:
+          type: string
+          format: uuid4
+          title: Message Id
+          description: Client-generated UUID for this user message. Echoed back in the SSE start event as message_id.
+        message:
+          type: string
+          maxLength: 32000
+          minLength: 1
+          title: Message
+          description: The user's message text.
+        parent_message_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Parent Message Id
+          description: ID of the message this branches from. Null for the first message in a conversation.
+        model:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Model
+          description: LLM model to use. Overrides the conversation default for this turn.
+        context:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PageContext'
+            - $ref: '#/components/schemas/ProjectContext'
+            - $ref: '#/components/schemas/LogstreamContext'
+            - $ref: '#/components/schemas/ExperimentContext'
+            - $ref: '#/components/schemas/TraceContext'
+            - $ref: '#/components/schemas/SpanContext'
+            discriminator:
+              propertyName: type
+              mapping:
+                experiment: '#/components/schemas/ExperimentContext'
+                logstream: '#/components/schemas/LogstreamContext'
+                page: '#/components/schemas/PageContext'
+                project: '#/components/schemas/ProjectContext'
+                span: '#/components/schemas/SpanContext'
+                trace: '#/components/schemas/TraceContext'
+          type: array
+          maxItems: 50
+          title: Context
+          description: 'Active surfaces scoping this turn: project, logstream, experiment, trace, span, and current page.'
+      type: object
+      required:
+      - message_id
+      - message
+      title: SendMessageRequest
+      description: Request body for sending a message to the assistant.
+    AssistantBackgroundTaskName:
+      type: string
+      enum:
+      - generate-signals
+      title: AssistantBackgroundTaskName
+    MessageFeedbackRating:
+      type: string
+      enum:
+      - positive
+      - negative
+      title: MessageFeedbackRating
+      description: Positive or Negative rating for an assistant message.
+    ConversationResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - title
+      - created_by
+      - created_at
+      - updated_at
+      title: ConversationResponse
+      description: 'Conversation row returned by the conversation CRUD endpoints.
+
+
+        `created_by` is non-null on the wire: the column is nullable on the model
+
+        (`ondelete=SET NULL`), but the lookup path filters by `created_by == caller`, so any
+
+        row that reaches the response by definition has a creator.'
+    MentionResult:
+      properties:
+        type:
+          $ref: '#/components/schemas/AssistantContextType'
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+          description: Parent project ID. Present for logstream and experiment.
+      type: object
+      required:
+      - type
+      - id
+      - name
+      title: MentionResult
+      description: A single entity result from the mentions search.
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

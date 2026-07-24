@@ -1,0 +1,403 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation models API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: models
+paths:
+  /prompts/models/all:
+    get:
+      tags:
+      - models
+      summary: Get All Models
+      operationId: get_all_models_prompts_models_all_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: with_custom_models
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: With Custom Models
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModelInfo'
+                title: Response Get All Models Prompts Models All Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /models/price_overrides:
+    get:
+      tags:
+      - models
+      summary: List Price Overrides
+      description: List only models that have price overrides.
+      operationId: list_price_overrides_models_price_overrides_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ModelWithPriceOverrides'
+                type: array
+                title: Response List Price Overrides Models Price Overrides Get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /models:
+    get:
+      tags:
+      - models
+      summary: List Models
+      description: 'Lists models and their prices.
+
+
+        Notes:
+
+        - The list of models used in the organization is cached and refreshed periodically.
+
+        - All models with price overrides are listed, even if they have not been used.'
+      operationId: list_models_models_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          description: Filter by model name substring
+          title: Search
+        description: Filter by model name substring
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModelWithPrices'
+                title: Response List Models Models Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /models/{model_name}/prices:
+    get:
+      tags:
+      - models
+      summary: Get Model Prices
+      description: Retrieve prices for a specific model.
+      operationId: get_model_prices_models__model_name__prices_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: model_name
+        in: path
+        required: true
+        schema:
+          type: string
+          maxLength: 200
+          description: URL-encoded model name
+          title: Model Name
+        description: URL-encoded model name
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelPricesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /models/{model_name}/price_overrides:
+    put:
+      tags:
+      - models
+      summary: Upsert Model Prices
+      description: Create or update pricing for a model.
+      operationId: upsert_model_prices_models__model_name__price_overrides_put
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: model_name
+        in: path
+        required: true
+        schema:
+          type: string
+          maxLength: 200
+          description: URL-encoded model name
+          title: Model Name
+        description: URL-encoded model name
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelPriceEntry'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelPriceEntry'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - models
+      summary: Delete Model Prices
+      description: Remove pricing for a model.
+      operationId: delete_model_prices_models__model_name__price_overrides_delete
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: model_name
+        in: path
+        required: true
+        schema:
+          type: string
+          maxLength: 200
+          description: URL-encoded model name
+          title: Model Name
+        description: URL-encoded model name
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ModelInfo:
+      properties:
+        name:
+          type: string
+          title: Name
+        alias:
+          type: string
+          title: Alias
+        integration:
+          $ref: '#/components/schemas/LLMIntegration'
+          default: openai
+        user_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Role
+        assistant_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assistant Role
+        system_supported:
+          type: boolean
+          title: System Supported
+          default: false
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+          description: Input modalities that the model can accept.
+      type: object
+      required:
+      - name
+      - alias
+      title: ModelInfo
+      description: 'Model information that is useful to surface to the UI and in other contexts.
+
+
+        This is a subset of all of the information we store about the model. We need a lot more
+
+        information to actually execute requests against the model, but that is not necessary
+
+        to surface to the user.'
+    ModelWithPrices:
+      properties:
+        name:
+          type: string
+          title: Name
+        prices:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPricesResponse'
+          - type: 'null'
+      type: object
+      required:
+      - name
+      title: ModelWithPrices
+      description: Single item in GET /models response.
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    ModelPriceEntry:
+      properties:
+        input_price:
+          type: number
+          minimum: 0.0
+          title: Input Price
+          description: Price in USD per 1M tokens
+        output_price:
+          type: number
+          minimum: 0.0
+          title: Output Price
+          description: Price in USD per 1M tokens
+      type: object
+      required:
+      - input_price
+      - output_price
+      title: ModelPriceEntry
+      description: A pair of input/output prices — used for requests and responses.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ModelPricesResponse:
+      properties:
+        override:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+        default:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+      type: object
+      title: ModelPricesResponse
+      description: Response for GET /models/{model_name}/prices.
+    ModelWithPriceOverrides:
+      properties:
+        name:
+          type: string
+          title: Name
+        price_overrides:
+          $ref: '#/components/schemas/ModelPriceEntry'
+      type: object
+      required:
+      - name
+      - price_overrides
+      title: ModelWithPriceOverrides
+      description: Single item in GET /models/price_overrides response.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

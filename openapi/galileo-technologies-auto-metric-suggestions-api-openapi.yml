@@ -1,0 +1,328 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation auto-metric-suggestions API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: auto-metric-suggestions
+paths:
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/auto_metric_suggestions:
+    post:
+      tags:
+      - auto-metric-suggestions
+      summary: Get Metric Suggestions
+      description: Get metric suggestions for a given project and log stream.
+      operationId: get_metric_suggestions_experimental_projects__project_id__log_streams__log_stream_id__auto_metric_suggestions_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutoMetricSuggestionGetRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoMetricSuggestionGetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /experimental/projects/{project_id}/log_streams/{log_stream_id}/auto_metric_suggestions/chat:
+    post:
+      tags:
+      - auto-metric-suggestions
+      summary: Chat With Metric Suggestions
+      description: Process a chat query and create a job for metric suggestions.
+      operationId: chat_with_metric_suggestions_experimental_projects__project_id__log_streams__log_stream_id__auto_metric_suggestions_chat_post
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: log_stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatWithMetricRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatWithMetricResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AutoMetricSuggestionLabel:
+      type: string
+      enum:
+      - Retriever Augmented Generation (RAG)
+      - Agent
+      - Code Generation
+      - Multi-turn dialogue system
+      title: AutoMetricSuggestionLabel
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatWithMetricRequest:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        metric_name:
+          type: string
+          title: Metric Name
+        chat_query:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chat Query
+        is_restart:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Restart
+          default: false
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      - metric_name
+      title: ChatWithMetricRequest
+    AutoMetricSuggestionGetRequest:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        label:
+          anyOf:
+          - $ref: '#/components/schemas/AutoMetricSuggestionLabel'
+          - type: 'null'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        is_restart:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Restart
+          default: false
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      title: AutoMetricSuggestionGetRequest
+    ChatWithMetricResponse:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        label:
+          anyOf:
+          - $ref: '#/components/schemas/AutoMetricSuggestionLabel'
+          - type: 'null'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        chat_query:
+          type: string
+          title: Chat Query
+        chat_response:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chat Response
+        metric_name:
+          type: string
+          title: Metric Name
+        job_status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      - chat_query
+      - metric_name
+      title: ChatWithMetricResponse
+    AutoMetricSuggestionGetResponse:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        metrics:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/AutoMetric'
+            type: array
+          - type: 'null'
+          title: Metrics
+        job_status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      title: AutoMetricSuggestionGetResponse
+    AutoMetric:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        implementation:
+          type: string
+          title: Implementation
+          default: galileo
+        code:
+          type: string
+          title: Code
+          default: ''
+      type: object
+      required:
+      - name
+      - description
+      title: AutoMetric
+    JobStatus:
+      type: string
+      enum:
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

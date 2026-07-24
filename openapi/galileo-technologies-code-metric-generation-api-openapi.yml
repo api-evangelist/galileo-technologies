@@ -1,0 +1,231 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation code-metric-generation API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: code-metric-generation
+paths:
+  /code-metric-generations:
+    post:
+      tags:
+      - code-metric-generation
+      summary: Create Code Metric Generation
+      description: 'Generate scorer code from a user message (natural language, existing code, or combination).
+
+
+        Creates a background job that calls an LLM with the code metric generation system prompt.
+
+        Returns a generation ID for polling.
+
+
+        **Response:** 202 Accepted with generation ID.'
+      operationId: create_code_metric_generation_code_metric_generations_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCodeMetricGenerationRequest'
+        required: true
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCodeMetricGenerationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /code-metric-generations/{generation_id}/status:
+    get:
+      tags:
+      - code-metric-generation
+      summary: Get Code Metric Generation Status
+      description: 'Lightweight endpoint for polling code metric generation status.
+
+
+        Returns status, generated code (if complete), or error message (if failed).'
+      operationId: get_code_metric_generation_status_code_metric_generations__generation_id__status_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: generation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Generation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodeMetricGenerationStatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CreateCodeMetricGenerationRequest:
+      properties:
+        user_message:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: User Message
+          description: Natural language, code, or combination
+        node_type:
+          anyOf:
+          - type: string
+            maxLength: 64
+          - type: 'null'
+          title: Node Type
+          description: Selected scoreable node type (llm, retriever, trace, agent, workflow, tool, session)
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: Selected output type (boolean, percentage, count, discrete, categorical, multilabel, freeform)
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Model Name
+          description: Model alias to use for generation. Defaults to best available.
+      type: object
+      required:
+      - user_message
+      title: CreateCodeMetricGenerationRequest
+      description: Request to generate scorer code from a user message.
+    CodeMetricGenerationStatus:
+      type: string
+      enum:
+      - generating
+      - completed
+      - failed
+      title: CodeMetricGenerationStatus
+    CodeMetricGenerationStatusResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        status:
+          $ref: '#/components/schemas/CodeMetricGenerationStatus'
+        generated_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Generated Code
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+      type: object
+      required:
+      - id
+      - status
+      title: CodeMetricGenerationStatusResponse
+      description: Lightweight polling response.
+    CreateCodeMetricGenerationResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        status:
+          $ref: '#/components/schemas/CodeMetricGenerationStatus'
+      type: object
+      required:
+      - id
+      - status
+      title: CreateCodeMetricGenerationResponse
+      description: Response with generation ID for polling.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

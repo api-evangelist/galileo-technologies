@@ -1,0 +1,405 @@
+openapi: 3.1.0
+info:
+  title: Galileo API Server annotation llm_integrations API
+  version: 1.1085.0
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: llm_integrations
+paths:
+  /llm_integrations/{llm_integration}/models:
+    get:
+      tags:
+      - llm_integrations
+      summary: Get Available Models
+      description: Get the list of supported models for the LLM integration.
+      operationId: get_available_models_llm_integrations__llm_integration__models_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: llm_integration
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LLMIntegration'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                title: Response Get Available Models Llm Integrations  Llm Integration  Models Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /llm_integrations/{llm_integration}/scorer_models:
+    get:
+      tags:
+      - llm_integrations
+      summary: Get Available Scorer Models
+      description: Get the list of supported scorer models for the LLM integration.
+      operationId: get_available_scorer_models_llm_integrations__llm_integration__scorer_models_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: llm_integration
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LLMIntegration'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                title: Response Get Available Scorer Models Llm Integrations  Llm Integration  Scorer Models Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /llm_integrations/recommended_models:
+    get:
+      tags:
+      - llm_integrations
+      summary: Get Recommended Models
+      description: Get recommended models for all purposes, grouped by integration.
+      operationId: get_recommended_models_llm_integrations_recommended_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedModelsResponse'
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /llm_integrations:
+    get:
+      tags:
+      - llm_integrations
+      summary: Get Integrations And Model Info
+      description: Get the list of supported scorer models for the user's llm integrations.
+      operationId: get_integrations_and_model_info_llm_integrations_get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: multimodal_capabilities
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/MultimodalCapability'
+          - type: 'null'
+          title: Multimodal Capabilities
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/IntegrationModelsResponse'
+                title: Response Get Integrations And Model Info Llm Integrations Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /llm_integrations/projects/{project_id}/runs/{run_id}:
+    get:
+      tags:
+      - llm_integrations
+      summary: Get Integrations And Model Info For Run
+      description: Get the list of supported scorer models for the run owner's llm integrations.
+      operationId: get_integrations_and_model_info_for_run_llm_integrations_projects__project_id__runs__run_id__get
+      security:
+      - ClassicAPIKeyHeader: []
+      - APIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: multimodal_capabilities
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/MultimodalCapability'
+          - type: 'null'
+          title: Multimodal Capabilities
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/IntegrationModelsResponse'
+                title: Response Get Integrations And Model Info For Run Llm Integrations Projects  Project Id  Runs  Run Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    IntegrationModelsResponse:
+      properties:
+        integration_name:
+          type: string
+          title: Integration Name
+        integration_id:
+          type: string
+          format: uuid4
+          title: Integration Id
+        provider:
+          $ref: '#/components/schemas/IntegrationProvider'
+        models:
+          items:
+            type: string
+          type: array
+          title: Models
+        scorer_models:
+          items:
+            type: string
+          type: array
+          title: Scorer Models
+        recommended_models:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          propertyNames:
+            $ref: '#/components/schemas/RecommendedModelPurpose'
+          type: object
+          title: Recommended Models
+        supports_num_judges:
+          type: boolean
+          title: Supports Num Judges
+          default: true
+        supports_file_uploads:
+          type: boolean
+          title: Supports File Uploads
+          default: false
+        model_properties:
+          items:
+            $ref: '#/components/schemas/api__schemas__integration__llm_integration__ModelProperties'
+          type: array
+          title: Model Properties
+      type: object
+      required:
+      - integration_name
+      - integration_id
+      - provider
+      - models
+      - scorer_models
+      title: IntegrationModelsResponse
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    RecommendedModelPurpose:
+      type: string
+      enum:
+      - custom_metric_judge
+      - custom_metric_autogen
+      - autotune
+      - signals
+      - ai_assistant
+      title: RecommendedModelPurpose
+    MultimodalCapability:
+      type: string
+      enum:
+      - vision
+      - audio
+      title: MultimodalCapability
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    api__schemas__integration__llm_integration__ModelProperties:
+      properties:
+        alias:
+          type: string
+          title: Alias
+        name:
+          type: string
+          title: Name
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+        multimodal_capabilities:
+          items:
+            $ref: '#/components/schemas/MultimodalCapability'
+          type: array
+          title: Multimodal Capabilities
+      type: object
+      required:
+      - alias
+      - name
+      - input_modalities
+      title: ModelProperties
+    RecommendedModelsResponse:
+      properties:
+        supported:
+          additionalProperties:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+          propertyNames:
+            $ref: '#/components/schemas/RecommendedModelPurpose'
+          type: object
+          title: Supported
+        available:
+          additionalProperties:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+          propertyNames:
+            $ref: '#/components/schemas/RecommendedModelPurpose'
+          type: object
+          title: Available
+      type: object
+      required:
+      - supported
+      - available
+      title: RecommendedModelsResponse
+    IntegrationProvider:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: IntegrationProvider
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic
