@@ -1,0 +1,28 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/galileo-technologies-openapi-original.json
+spec_type: Webhooks
+summary: >-
+  Galileo does not publish an AsyncAPI document, but it exposes an outbound
+  webhook/alerting surface: per-log-stream alert settings can post to a generic
+  webhook when configured alert conditions fire. Webhook support for alerts shipped
+  in the 2026-07-07 release. This captures the webhook configuration surface grounded
+  in real OpenAPI operations (no fabricated event schema).
+docs: https://docs.galileo.ai/release-notes
+webhooks:
+- name: log-stream-alert-webhook
+  direction: outbound
+  transport: generic-webhook
+  description: Galileo POSTs an alert notification to a configured generic webhook URL when a log-stream alert condition is triggered.
+  configuration_operations:
+  - get_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_get
+  - create_or_update_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_post
+  - update_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_put
+  - patch_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_patch
+  test_operation: send_test_generic_webhook_projects__project_id__log_streams__log_stream_id__alert_settings_test_post
+  alert_config_operations:
+  - create_projects__project_id__log_streams__log_stream_id__alerts_post
+  - list_alerts_by_log_stream_projects__project_id__log_streams__log_stream_id__alerts_get
+  - update_projects__project_id__log_streams__log_stream_id__alerts__alert_config_id__put
+  - delete_alert_projects__project_id__log_streams__log_stream_id__alerts__alert_config_id__delete
+  - get_alert_by_id_projects__project_id__log_streams__log_stream_id__alerts__alert_config_id__get

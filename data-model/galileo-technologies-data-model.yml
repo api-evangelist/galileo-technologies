@@ -1,0 +1,84 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/galileo-technologies-openapi-original.json
+note: >-
+  Entity graph derived from OpenAPI path nesting and id-reference parameters
+  (project_id, log_stream_id, experiment_id, run_id, trace_id, span_id, dataset_id,
+  scorer_id, template_id, api_key_id). Project is the primary container.
+entities:
+- name: Project
+  description: Top-level container for observability and evaluation work.
+  relationships:
+  - has_many: LogStream
+    via: project_id
+  - has_many: Experiment
+    via: project_id
+  - has_many: Run
+    via: project_id
+  - has_many: Trace
+    via: project_id
+  - has_many: FeedbackTemplate
+    via: project_id
+- name: LogStream
+  description: Production trace stream monitored within a project.
+  relationships:
+  - belongs_to: Project
+    via: project_id
+  - has_many: Trace
+    via: log_stream_id
+  - has_many: AlertConfig
+    via: log_stream_id
+- name: Experiment
+  description: Offline evaluation run against a dataset within a project.
+  relationships:
+  - belongs_to: Project
+    via: project_id
+  - has_one: Dataset
+    via: dataset_id
+- name: Run
+  description: A logged execution grouping traces/records within a project.
+  relationships:
+  - belongs_to: Project
+    via: project_id
+- name: Trace
+  description: A single execution trace made up of spans.
+  relationships:
+  - belongs_to: Project
+    via: project_id
+  - has_many: Span
+    via: trace_id
+- name: Span
+  description: A unit of work within a trace.
+  relationships:
+  - belongs_to: Trace
+    via: trace_id
+- name: Dataset
+  description: Collection of records used for experiments and metric testing.
+  relationships:
+  - has_many: DatasetContent
+    via: dataset_id
+- name: Scorer
+  description: LLM, code, or preset metric definition, versioned.
+  relationships:
+  - has_many: ScorerVersion
+    via: scorer_id
+- name: FeedbackTemplate
+  description: Human-feedback rating template applied to run records.
+  relationships:
+  - belongs_to: Project
+    via: project_id
+- name: AlertConfig
+  description: Alert configuration on a log stream that triggers a generic webhook.
+  relationships:
+  - belongs_to: LogStream
+    via: log_stream_id
+- name: ApiKey
+  description: API key credential belonging to a user.
+  relationships:
+  - belongs_to: User
+    via: user_id
+- name: User
+  description: Platform user; may belong to groups.
+  relationships:
+  - has_many: ApiKey
+    via: user_id

@@ -1,0 +1,34 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/galileo-technologies-openapi-original.json
+format: openapi
+envelope:
+  note: >-
+    Galileo uses the FastAPI/Starlette error convention rather than RFC 9457. Most
+    error responses carry a JSON body with a "detail" field (string message), while
+    422 validation errors return HTTPValidationError { detail: [ ValidationError
+    { loc, msg, type, input, ctx } ] }.
+  detail_field: detail
+  validation_schema: HTTPValidationError
+problems:
+- status: 404
+  title: Not Found
+  description: The requested resource does not exist or is not accessible to the caller.
+  occurrences: 6
+- status: 412
+  title: Precondition Failed
+  description: A required precondition (e.g. resource state or version) was not met.
+  occurrences: 3
+- status: 422
+  title: Unprocessable Entity / Validation Error
+  description: Request failed schema validation; body is HTTPValidationError with a detail[] list of field-level errors.
+  schema: HTTPValidationError
+  occurrences: 903
+- status: 423
+  title: Locked
+  description: The resource is locked and cannot be modified in its current state.
+  occurrences: 6
+- status: 429
+  title: Too Many Requests
+  description: Rate limit exceeded for the caller.
+  occurrences: 1

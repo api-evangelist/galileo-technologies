@@ -1,0 +1,32 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/galileo-technologies-openapi-original.json
+standards:
+- id: oauth2
+  conforms: true
+  evidence: OpenAPI securityScheme OAuth2PasswordBearer (password flow, tokenUrl https://api.galileo.ai/login)
+- id: api-key-auth
+  conforms: true
+  evidence: OpenAPI apiKey schemes ClassicAPIKeyHeader (Galileo-API-Key) and APIKeyHeader (Splunk-AO-API-Key)
+- id: http-basic
+  conforms: true
+  evidence: OpenAPI securityScheme HTTPBasic (http basic)
+- id: saml2-sso
+  conforms: true
+  evidence: OpenAPI auth endpoints saml-login, saml-acs, saml-metadata
+- id: token-pagination
+  conforms: true
+  evidence: list/query operations use starting_token + limit parameters
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors use FastAPI-style {detail} / HTTPValidationError, not application/problem+json
+- id: oidc-discovery
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404
+- id: idempotency-keys
+  conforms: false
+  evidence: no Idempotency-Key header or parameter present in the spec
+- id: fhir-r4
+  conforms: false
+- id: scim2
+  conforms: false

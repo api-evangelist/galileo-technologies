@@ -1,0 +1,24 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/galileo-technologies-openapi-original.json
+note: >-
+  Agent Skills generated from real Galileo OpenAPI operationIds (grep-verified). Each
+  skill packages the auth + happy-path operations + Galileo conventions (Galileo-API-Key
+  header, token pagination, FastAPI error envelope) for one marquee flow.
+skills:
+- file: galileo-technologies-log-traces.md
+  name: Log LLM traces to a Galileo log stream
+  api: openapi/galileo-technologies-openapi-original.json
+  operations: [create_project_projects_post, create_log_stream_projects__project_id__log_streams_post, log_traces_projects__project_id__traces_post, get_trace_projects__project_id__traces__trace_id__get]
+- file: galileo-technologies-run-experiment.md
+  name: Run an offline evaluation experiment on a dataset
+  api: openapi/galileo-technologies-openapi-original.json
+  operations: [create_dataset_datasets_post, upsert_dataset_content_datasets__dataset_id__content_put, create_experiment_projects__project_id__experiments_post, get_experiment_metrics_projects__project_id__experiments__experiment_id__metrics_post]
+- file: galileo-technologies-create-scorer.md
+  name: Create and validate a custom LLM scorer/metric
+  api: openapi/galileo-technologies-openapi-original.json
+  operations: [create_scorers_post, create_llm_scorer_version_scorers__scorer_id__version_llm_post, manual_llm_validate_scorers_llm_validate_post]
+- file: galileo-technologies-alert-webhook.md
+  name: Configure a log-stream alert with a generic webhook
+  api: openapi/galileo-technologies-openapi-original.json
+  operations: [create_or_update_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_post, create_projects__project_id__log_streams__log_stream_id__alerts_post, send_test_generic_webhook_projects__project_id__log_streams__log_stream_id__alert_settings_test_post]

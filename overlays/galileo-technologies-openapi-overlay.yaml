@@ -1,0 +1,26 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Galileo API
+  version: 1.0.0
+extends: openapi/galileo-technologies-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: galileo-technologies
+    x-apievangelist-category: ai-observability-evaluation
+    x-apievangelist-auth: API key (Galileo-API-Key header) or OAuth2 password bearer token
+    x-apievangelist-pagination: token-based (starting_token + limit)
+    x-apievangelist-mcp: https://api.galileo.ai/mcp/http/mcp
+- target: $.info
+  update:
+    x-apievangelist-tags:
+    - AI Observability
+    - LLM Evaluation
+    - Agents
+    - Guardrails
+- target: $.info
+  update:
+    x-apievangelist-notes: >-
+      Enhancement overlay only — the original Galileo OpenAPI (3.1.0, galileo-v2) is
+      harvested verbatim and never mutated. This overlay records API Evangelist
+      classification and cross-links (auth model, pagination style, MCP endpoint).

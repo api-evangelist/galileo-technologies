@@ -1,0 +1,38 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/galileo-technologies-openapi-original.json
+authentication:
+  styles:
+  - API key in the Galileo-API-Key request header (ClassicAPIKeyHeader)
+  - OAuth2 password bearer token (tokenUrl https://api.galileo.ai/login)
+  - HTTP Basic
+  cross_ref: authentication/galileo-technologies-authentication.yml
+pagination:
+  style: token
+  request_params:
+  - starting_token
+  - limit
+  note: >-
+    List/query endpoints accept a starting_token cursor and a limit; paginated
+    variants are exposed as .../paginated and via POST .../query and .../search
+    bodies. Response payloads carry a next/continuation token to fetch subsequent
+    pages.
+idempotency:
+  supported: false
+  note: No Idempotency-Key header or parameter is documented in the OpenAPI.
+versioning:
+  style: path-prefix + server build version
+  detail: /v2/ and /public/v2/ prefixes; server reports info.version build number.
+  cross_ref: lifecycle/galileo-technologies-lifecycle.yml
+error_envelope:
+  shape: FastAPI/Starlette
+  detail_field: detail
+  validation_schema: HTTPValidationError
+  cross_ref: errors/galileo-technologies-problem-types.yml
+rate_limiting:
+  signal: HTTP 429 Too Many Requests
+  note: A 429 response is defined; no documented rate-limit response headers were found in the spec.
+webhooks:
+  supported: true
+  note: Generic outbound webhooks are configured per log stream via alert_settings; see the webhook/alert surface.
+  cross_ref: asyncapi/galileo-technologies-webhooks.yml
