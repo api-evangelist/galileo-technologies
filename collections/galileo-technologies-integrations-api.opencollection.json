@@ -1,0 +1,2367 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation integrations API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Available Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/available",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all of the available integrations to be created in Galileo."
+        },
+        {
+          "info": {
+            "name": "Get Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets the integration data formatted for the specified integration."
+        },
+        {
+          "info": {
+            "name": "Delete Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/integrations/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an integration. Admins can delete integrations created by other admins in the same org."
+        },
+        {
+          "info": {
+            "name": "Get Integration Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/:name/status",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Checks if the integration status is active or not."
+        },
+        {
+          "info": {
+            "name": "List User Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/:integration_id/users",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the users with which the integration has been shared."
+        },
+        {
+          "info": {
+            "name": "Create User Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/integrations/:integration_id/users",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create User Integration Collaborators"
+        },
+        {
+          "info": {
+            "name": "Update User Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/integrations/:integration_id/users/:user_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the sharing permissions of a user on an integration."
+        },
+        {
+          "info": {
+            "name": "Delete User Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/integrations/:integration_id/users/:user_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove a user's access to an integration."
+        },
+        {
+          "info": {
+            "name": "List Group Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/:integration_id/groups",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the groups with which the integration has been shared."
+        },
+        {
+          "info": {
+            "name": "Create Group Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/integrations/:integration_id/groups",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Share an integration with groups."
+        },
+        {
+          "info": {
+            "name": "Update Group Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/integrations/:integration_id/groups/:group_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the sharing permissions of a group on an integration."
+        },
+        {
+          "info": {
+            "name": "Delete Group Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/integrations/:integration_id/groups/:group_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove a group's access to an integration."
+        },
+        {
+          "info": {
+            "name": "Create Or Update Integration Selection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/:integration_id/select",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an integration selection for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Anthropic integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/anthropic",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Anthropic integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update AWS Bedrock integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/aws_bedrock",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an AWS integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update AWS SageMaker integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/aws_sagemaker",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an AWS integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Azure integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/azure",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Azure integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/custom",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update custom integration"
+        },
+        {
+          "info": {
+            "name": "Get a named custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/custom/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Slug identifying this named custom integration"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a named custom integration"
+        },
+        {
+          "info": {
+            "name": "Create or update a named custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/custom/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Slug identifying this named custom integration"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a named custom integration"
+        },
+        {
+          "info": {
+            "name": "Delete a named custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/integrations/custom/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Slug identifying this named custom integration"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a named custom integration"
+        },
+        {
+          "info": {
+            "name": "Create or update Databricks integration (legacy)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/databricks/unity-catalog/sql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a databricks integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Databricks integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/databricks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a databricks integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Get Databricks Catalogs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/databricks/catalogs",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Databricks Catalogs"
+        },
+        {
+          "info": {
+            "name": "Get Databases For Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/databricks/databases",
+            "params": [
+              {
+                "name": "catalog",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Databases For Cluster"
+        },
+        {
+          "info": {
+            "name": "Create or update Mistral integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/mistral",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Mistral integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update NVIDIA integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/nvidia",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an NVIDIA integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update OpenAI integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/openai",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an OpenAI integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Vegas Gateway integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/vegas_gateway",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Vegas Gateway integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Vertex AI integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/vertex_ai",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Google Vertex AI integration for a user."
+        },
+        {
+          "info": {
+            "name": "Create or update Writer integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/integrations/writer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Writer integration for a user."
+        },
+        {
+          "info": {
+            "name": "Get All Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/prompts/models/all",
+            "params": [
+              {
+                "name": "with_custom_models",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get All Models"
+        },
+        {
+          "info": {
+            "name": "List Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the created integrations for the requesting user."
+        },
+        {
+          "info": {
+            "name": "Get Integration Costs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/costs/summary",
+            "params": [
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of time range (UTC)"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of time range (UTC)"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation interval"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Integration Costs"
+        },
+        {
+          "info": {
+            "name": "Get Billing Usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/billing/usage/:metric",
+            "params": [
+              {
+                "name": "metric",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of time range (UTC)"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of time range (UTC)"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation interval"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query",
+                "description": "Optional project filter"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Billing Usage"
+        },
+        {
+          "info": {
+            "name": "Select Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/integrations/select",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Select an integration for this user."
+        },
+        {
+          "info": {
+            "name": "Disable Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/integrations/disable",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Disable an integration type for this user.\n\nCreates an opt-out record so no shared integration of this type is used."
+        },
+        {
+          "info": {
+            "name": "Get custom integration definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/custom/definition",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return the full JSON definition of the custom integration, including decrypted secrets.\n\nOnly users with edit permission on the integration (its creator and admins)\nare authorized to call this endpoint."
+        },
+        {
+          "info": {
+            "name": "Check status of a named custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/custom/:name/status",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Slug identifying this named custom integration"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check status of a named custom integration"
+        },
+        {
+          "info": {
+            "name": "Get definition of a named custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/integrations/custom/:name/definition",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Slug identifying this named custom integration"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return the full JSON definition of a named custom integration, including decrypted secrets."
+        },
+        {
+          "info": {
+            "name": "List Available Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/integrations/available",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all of the available integrations to be created in Galileo."
+        },
+        {
+          "info": {
+            "name": "Get Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/integrations/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets the integration data formatted for the specified integration."
+        },
+        {
+          "info": {
+            "name": "Get Integration Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/integrations/:name/status",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Checks if the integration status is active or not."
+        },
+        {
+          "info": {
+            "name": "List User Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/users",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the users with which the integration has been shared."
+        },
+        {
+          "info": {
+            "name": "Create User Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/users",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create User Integration Collaborators"
+        },
+        {
+          "info": {
+            "name": "Update User Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/users/:user_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the sharing permissions of a user on an integration."
+        },
+        {
+          "info": {
+            "name": "Delete User Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/users/:user_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove a user's access to an integration."
+        },
+        {
+          "info": {
+            "name": "List Group Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/groups",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the groups with which the integration has been shared."
+        },
+        {
+          "info": {
+            "name": "Create Group Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/groups",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Share an integration with groups."
+        },
+        {
+          "info": {
+            "name": "Update Group Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/groups/:group_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the sharing permissions of a group on an integration."
+        },
+        {
+          "info": {
+            "name": "Delete Group Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/groups/:group_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove a group's access to an integration."
+        },
+        {
+          "info": {
+            "name": "Create Or Update Integration Selection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/:integration_id/select",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an integration selection for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Anthropic integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/anthropic",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Anthropic integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update AWS Bedrock integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/aws_bedrock",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an AWS integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update AWS SageMaker integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/aws_sagemaker",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an AWS integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Azure integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/azure",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Azure integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/custom",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update custom integration"
+        },
+        {
+          "info": {
+            "name": "Create or update a named custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/custom/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Slug identifying this named custom integration"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a named custom integration"
+        },
+        {
+          "info": {
+            "name": "Create or update Databricks integration (legacy)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/databricks/unity-catalog/sql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a databricks integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Databricks integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/databricks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a databricks integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Get Databricks Catalogs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/integrations/databricks/catalogs",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Databricks Catalogs"
+        },
+        {
+          "info": {
+            "name": "Get Databases For Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/integrations/databricks/databases",
+            "params": [
+              {
+                "name": "catalog",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Databases For Cluster"
+        },
+        {
+          "info": {
+            "name": "Create or update Mistral integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/mistral",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Mistral integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update NVIDIA integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/nvidia",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an NVIDIA integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update OpenAI integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/openai",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an OpenAI integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Vegas Gateway integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/vegas_gateway",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Vegas Gateway integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Vertex AI integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/vertex_ai",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Google Vertex AI integration for a user."
+        },
+        {
+          "info": {
+            "name": "Create or update Writer integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/integrations/writer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Writer integration for a user."
+        },
+        {
+          "info": {
+            "name": "List Available Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/integrations/available",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all of the available integrations to be created in Galileo."
+        },
+        {
+          "info": {
+            "name": "Get Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/integrations/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets the integration data formatted for the specified integration."
+        },
+        {
+          "info": {
+            "name": "Get Integration Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/integrations/:name/status",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Checks if the integration status is active or not."
+        },
+        {
+          "info": {
+            "name": "List User Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/users",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the users with which the integration has been shared."
+        },
+        {
+          "info": {
+            "name": "Create User Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/users",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create User Integration Collaborators"
+        },
+        {
+          "info": {
+            "name": "Update User Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/users/:user_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the sharing permissions of a user on an integration."
+        },
+        {
+          "info": {
+            "name": "Delete User Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/users/:user_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove a user's access to an integration."
+        },
+        {
+          "info": {
+            "name": "List Group Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/groups",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the groups with which the integration has been shared."
+        },
+        {
+          "info": {
+            "name": "Create Group Integration Collaborators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/groups",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Share an integration with groups."
+        },
+        {
+          "info": {
+            "name": "Update Group Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/groups/:group_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the sharing permissions of a group on an integration."
+        },
+        {
+          "info": {
+            "name": "Delete Group Integration Collaborator",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/groups/:group_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove a group's access to an integration."
+        },
+        {
+          "info": {
+            "name": "Create Or Update Integration Selection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/:integration_id/select",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an integration selection for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Anthropic integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/anthropic",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Anthropic integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update AWS Bedrock integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/aws_bedrock",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an AWS integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update AWS SageMaker integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/aws_sagemaker",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an AWS integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Azure integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/azure",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Azure integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/custom",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update custom integration"
+        },
+        {
+          "info": {
+            "name": "Create or update a named custom integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/custom/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Slug identifying this named custom integration"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a named custom integration"
+        },
+        {
+          "info": {
+            "name": "Create or update Databricks integration (legacy)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/databricks/unity-catalog/sql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a databricks integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Databricks integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/databricks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a databricks integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Get Databricks Catalogs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/integrations/databricks/catalogs",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Databricks Catalogs"
+        },
+        {
+          "info": {
+            "name": "Get Databases For Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/integrations/databricks/databases",
+            "params": [
+              {
+                "name": "catalog",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Databases For Cluster"
+        },
+        {
+          "info": {
+            "name": "Create or update Mistral integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/mistral",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an Mistral integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update NVIDIA integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/nvidia",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an NVIDIA integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update OpenAI integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/openai",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an OpenAI integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Vegas Gateway integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/vegas_gateway",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Vegas Gateway integration for this user from Galileo."
+        },
+        {
+          "info": {
+            "name": "Create or update Vertex AI integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/vertex_ai",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Google Vertex AI integration for a user."
+        },
+        {
+          "info": {
+            "name": "Create or update Writer integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/integrations/writer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a Writer integration for a user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

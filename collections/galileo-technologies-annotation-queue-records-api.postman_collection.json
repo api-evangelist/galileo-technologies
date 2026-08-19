@@ -1,0 +1,2855 @@
+{
+  "item": [
+    {
+      "id": "b6c2387c-0dba-4f18-bf34-d5f363c2c8f2",
+      "name": "annotation_queue_records",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3028227f-c848-4bf4-848d-eccfaf174f8a",
+          "name": "Partial Search Annotation Queue Records",
+          "request": {
+            "name": "Partial Search Annotation Queue Records",
+            "description": {
+              "content": "Search records in an annotation queue with partial field selection.\n\nThis endpoint queries all project/run pairs associated with the queue and returns\nrecords that are in the annotation queue, with only the requested fields included.\n\nPermission checks:\n- User must have READ permission on the annotation queue\n\nNote: This endpoint queries across all projects/runs in the queue.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "partial_search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"select_columns\": {\n    \"column_ids\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"include_all_metrics\": false,\n    \"include_all_feedback\": false\n  },\n  \"starting_token\": 0,\n  \"limit\": 100,\n  \"previous_last_row_id\": \"<uuid4>\",\n  \"filter_tree\": {\n    \"filter\": {\n      \"column_id\": \"<string>\",\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"operator\": \"eq\",\n      \"type\": \"id\"\n    }\n  },\n  \"sort\": {\n    \"column_id\": \"<string>\",\n    \"ascending\": true,\n    \"sort_type\": \"column\"\n  },\n  \"truncate_fields\": false,\n  \"include_counts\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f64bdea8-8ec5-4c9f-95c2-fdc874213622",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "partial_search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"select_columns\": {\n    \"column_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"include_all_metrics\": false,\n    \"include_all_feedback\": false\n  },\n  \"starting_token\": 0,\n  \"limit\": 100,\n  \"previous_last_row_id\": \"<uuid4>\",\n  \"filter_tree\": {\n    \"filter\": {\n      \"column_id\": \"string\",\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"operator\": \"eq\",\n      \"type\": \"id\"\n    }\n  },\n  \"sort\": {\n    \"column_id\": \"string\",\n    \"ascending\": true,\n    \"sort_type\": \"column\"\n  },\n  \"truncate_fields\": false,\n  \"include_counts\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"num_records\": 4844,\n  \"starting_token\": 0,\n  \"limit\": 100,\n  \"paginated\": false,\n  \"next_starting_token\": 6200,\n  \"last_row_id\": \"string\",\n  \"records\": [\n    {\n      \"type\": \"trace\",\n      \"input\": \"string\",\n      \"redacted_input\": \"string\",\n      \"output\": \"string\",\n      \"redacted_output\": \"string\",\n      \"name\": \"\",\n      \"created_at\": \"2010-09-28T01:35:38.182Z\",\n      \"user_metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"status_code\": 8002,\n      \"metrics\": {\n        \"duration_ns\": 3631,\n        \"key_0\": 4411.013301314142,\n        \"key_1\": 2551\n      },\n      \"external_id\": \"string\",\n      \"dataset_input\": \"string\",\n      \"dataset_output\": \"string\",\n      \"dataset_metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"id\": \"b71d9f6c-eb36-a30b-a7fd-9ae68821e78b\",\n      \"session_id\": \"3d77f160-b7d4-da31-d74c-34392697bee6\",\n      \"trace_id\": \"d24dd4a0-0467-4ddd-3999-594d6d6a2cc5\",\n      \"project_id\": \"bcc9bf43-7145-14a3-0c20-054e78136f59\",\n      \"run_id\": \"3679b664-716d-8406-1cd5-4f04dd074f66\",\n      \"updated_at\": \"2000-01-11T13:15:31.702Z\",\n      \"has_children\": true,\n      \"metrics_batch_id\": \"string\",\n      \"session_batch_id\": \"string\",\n      \"feedback_rating_info\": {\n        \"key_0\": {\n          \"feedback_type\": \"choice\",\n          \"value\": true,\n          \"explanation\": \"string\"\n        }\n      },\n      \"annotations\": {\n        \"key_0\": {\n          \"key_0\": {\n            \"annotation_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"explanation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"key_1\": {\n          \"key_0\": {\n            \"annotation_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"explanation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"key_1\": {\n            \"annotation_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"explanation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      },\n      \"file_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"file_modalities\": [\n        \"text\",\n        \"audio\"\n      ],\n      \"annotation_aggregates\": {\n        \"key_0\": {\n          \"aggregate\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"annotation_agreement\": {\n        \"key_0\": 398.43846494818536,\n        \"key_1\": 3066.1074392694\n      },\n      \"overall_annotation_agreement\": 5494.415800103078,\n      \"annotation_queue_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"fully_annotated\": true,\n      \"progress_message\": \"\",\n      \"error_message\": \"\",\n      \"metric_info\": {\n        \"key_0\": {\n          \"status_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scorer_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"metric_key_alias\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"status_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scorer_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"metric_key_alias\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"files\": {\n        \"key_0\": {\n          \"file_id\": \"string\",\n          \"modality\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"source\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"content_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url_expires_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"filename\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"is_complete\": true,\n      \"num_spans\": 9025\n    },\n    {\n      \"type\": \"trace\",\n      \"input\": \"string\",\n      \"redacted_input\": \"string\",\n      \"output\": \"string\",\n      \"redacted_output\": \"string\",\n      \"name\": \"\",\n      \"created_at\": \"1962-07-03T17:21:21.576Z\",\n      \"user_metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"status_code\": 8760,\n      \"metrics\": {\n        \"duration_ns\": 6754,\n        \"key_0\": 9044.992581180186\n      },\n      \"external_id\": \"string\",\n      \"dataset_input\": \"string\",\n      \"dataset_output\": \"string\",\n      \"dataset_metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"id\": \"501c740c-7585-25ba-6f13-461515d0a474\",\n      \"session_id\": \"bbd428e2-7516-0c45-1a86-c5794498963a\",\n      \"trace_id\": \"a1242711-1047-c19a-0d1a-35739c664817\",\n      \"project_id\": \"852e0110-2e4e-894e-efa0-e57735cad4b7\",\n      \"run_id\": \"8f6a8465-880c-4d8d-5119-471eb38c5c06\",\n      \"updated_at\": \"1973-06-05T06:26:26.524Z\",\n      \"has_children\": false,\n      \"metrics_batch_id\": \"string\",\n      \"session_batch_id\": \"string\",\n      \"feedback_rating_info\": {\n        \"key_0\": {\n          \"feedback_type\": \"text\",\n          \"value\": false,\n          \"explanation\": \"string\"\n        },\n        \"key_1\": {\n          \"feedback_type\": \"tags\",\n          \"value\": true,\n          \"explanation\": \"string\"\n        },\n        \"key_2\": {\n          \"feedback_type\": \"tree_choice\",\n          \"value\": false,\n          \"explanation\": \"string\"\n        }\n      },\n      \"annotations\": {\n        \"key_0\": {\n          \"key_0\": {\n            \"annotation_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"explanation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"key_1\": {\n            \"annotation_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"explanation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"key_1\": {\n          \"key_0\": {\n            \"annotation_type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"explanation\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      },\n      \"file_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"file_modalities\": [\n        \"image\",\n        \"audio\"\n      ],\n      \"annotation_aggregates\": {\n        \"key_0\": {\n          \"aggregate\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"aggregate\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"annotation_agreement\": {\n        \"key_0\": 7337.526453410908,\n        \"key_1\": 1217.869437078053,\n        \"key_2\": 8674.670780495111\n      },\n      \"overall_annotation_agreement\": 2622.376981206068,\n      \"annotation_queue_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"fully_annotated\": true,\n      \"progress_message\": \"\",\n      \"error_message\": \"\",\n      \"metric_info\": {\n        \"key_0\": {\n          \"status_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scorer_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"metric_key_alias\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"files\": {\n        \"key_0\": {\n          \"file_id\": \"string\",\n          \"modality\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"source\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"content_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url_expires_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"filename\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"file_id\": \"string\",\n          \"modality\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"source\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"content_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"url_expires_at\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"filename\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"is_complete\": true,\n      \"num_spans\": 6180\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15423c95-712c-4425-9ce2-c28edbbdd2dd",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "partial_search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"select_columns\": {\n    \"column_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"include_all_metrics\": false,\n    \"include_all_feedback\": false\n  },\n  \"starting_token\": 0,\n  \"limit\": 100,\n  \"previous_last_row_id\": \"<uuid4>\",\n  \"filter_tree\": {\n    \"filter\": {\n      \"column_id\": \"string\",\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"operator\": \"eq\",\n      \"type\": \"id\"\n    }\n  },\n  \"sort\": {\n    \"column_id\": \"string\",\n    \"ascending\": true,\n    \"sort_type\": \"column\"\n  },\n  \"truncate_fields\": false,\n  \"include_counts\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "adbcac39-c3ab-4dda-a158-d9153713461d",
+          "name": "Add Records To Annotation Queue",
+          "request": {
+            "name": "Add Records To Annotation Queue",
+            "description": {
+              "content": "Add records to an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select records.\nAll specified records must exist within the given project and run.\n\nPermission checks:\n- User must have UPDATE permission on the annotation queue\n- User must have READ permission on the project containing the records\n\nReturns 200 OK with the count of records added on success.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": \"<uuid4>\",\n  \"run_id\": \"<uuid4>\",\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7c4414b9-6c22-49f5-885e-34cbb93148d2",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_id\": \"<uuid4>\",\n  \"run_id\": \"<uuid4>\",\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"num_records_added\": 2051\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96e7b1cd-27a7-4fc9-9696-2d30574e29be",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_id\": \"<uuid4>\",\n  \"run_id\": \"<uuid4>\",\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "152f7a29-7951-4da5-b2d1-ce34c12888c1",
+          "name": "Export Annotation Queue Records",
+          "request": {
+            "name": "Export Annotation Queue Records",
+            "description": {
+              "content": "Export selected records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a6223abc-a6ae-4c2b-9f32-ff0ba6aa79d8",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f68a4998-104b-4fb1-aa27-e5a0b6b0d65e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71549e2b-fbf3-4ba9-9695-23c36567d4d0",
+          "name": "Export Annotation Queue Records Url",
+          "request": {
+            "name": "Export Annotation Queue Records Url",
+            "description": {
+              "content": "Export selected records from an annotation queue and return a presigned download URL.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "export",
+                "url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bb017acd-76cf-4855-a9b2-f358d784e0fe",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export",
+                    "url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"string\",\n  \"url_expires_at\": \"1996-12-30T23:08:16.982Z\",\n  \"file_name\": \"string\",\n  \"content_type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c00e4d4f-8259-44c8-a0cc-b5055dcf3478",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export",
+                    "url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "343a2d3e-ad32-4fac-b5a9-32e8efb1a09c",
+          "name": "Remove Records From Annotation Queue",
+          "request": {
+            "name": "Remove Records From Annotation Queue",
+            "description": {
+              "content": "Remove records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select records.\nSelection is applied across all project/run pairs currently tracked in the queue.\n\nPermission checks:\n- User must have UPDATE permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "remove"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7cdc0113-2bfa-4ed1-a00e-b9e7edb4d1aa",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"num_records_removed\": 8598\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0eeee06-f505-46ca-b6ec-2d3824f79368",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2982a346-4790-4b50-88a8-4a344f55fcb2",
+          "name": "Count Annotation Queue Records",
+          "request": {
+            "name": "Count Annotation Queue Records",
+            "description": {
+              "content": "Count records in an annotation queue.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter_tree\": {\n    \"filter\": {\n      \"column_id\": \"<string>\",\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"operator\": \"eq\",\n      \"type\": \"id\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "10cd518a-8ec5-4f9c-8fa4-c8ce62e37733",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filter_tree\": {\n    \"filter\": {\n      \"column_id\": \"string\",\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"operator\": \"eq\",\n      \"type\": \"id\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 6270\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6909575a-d6d8-4708-89bc-4e901d938836",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filter_tree\": {\n    \"filter\": {\n      \"column_id\": \"string\",\n      \"value\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"operator\": \"eq\",\n      \"type\": \"id\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c067738f-1322-47af-bb46-9bbe20949cff",
+          "name": "Get Annotation Queue Record",
+          "request": {
+            "name": "Get Annotation Queue Record",
+            "description": {
+              "content": "Get a single record in an annotation queue.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                ":record_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "record_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "72e2ca14-bfa7-4d68-9585-1a78d3d397f6",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    ":record_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "record_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"trace\",\n  \"input\": \"string\",\n  \"redacted_input\": \"string\",\n  \"output\": \"string\",\n  \"redacted_output\": \"string\",\n  \"name\": \"\",\n  \"created_at\": \"1971-06-10T03:03:40.926Z\",\n  \"user_metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status_code\": 6363,\n  \"metrics\": {\n    \"duration_ns\": 5983\n  },\n  \"external_id\": \"string\",\n  \"dataset_input\": \"string\",\n  \"dataset_output\": \"string\",\n  \"dataset_metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\"\n  },\n  \"id\": \"c3b040b6-51b0-fed6-3368-d227f772f885\",\n  \"session_id\": \"15429229-5e22-2631-7fb4-2bb4649b50ee\",\n  \"trace_id\": \"dda63f67-4064-de72-fbd5-eb0c13339377\",\n  \"project_id\": \"a598efdd-55a4-99b1-9e68-232e1a262fde\",\n  \"run_id\": \"957ae957-fd44-f231-5d1b-160caa89c325\",\n  \"updated_at\": \"1952-05-20T11:57:25.011Z\",\n  \"has_children\": false,\n  \"metrics_batch_id\": \"string\",\n  \"session_batch_id\": \"string\",\n  \"feedback_rating_info\": {\n    \"key_0\": {\n      \"feedback_type\": \"star\",\n      \"value\": true,\n      \"explanation\": \"string\"\n    }\n  },\n  \"annotations\": {\n    \"key_0\": {\n      \"key_0\": {\n        \"annotation_type\": \"tags\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      },\n      \"key_1\": {\n        \"annotation_type\": \"like_dislike\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      }\n    },\n    \"key_1\": {\n      \"key_0\": {\n        \"annotation_type\": \"tree_choice\",\n        \"value\": false,\n        \"explanation\": \"string\"\n      },\n      \"key_1\": {\n        \"annotation_type\": \"text\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      },\n      \"key_2\": {\n        \"annotation_type\": \"tags\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      },\n      \"key_3\": {\n        \"annotation_type\": \"choice\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      }\n    },\n    \"key_2\": {\n      \"key_0\": {\n        \"annotation_type\": \"score\",\n        \"value\": false,\n        \"explanation\": \"string\"\n      },\n      \"key_1\": {\n        \"annotation_type\": \"tree_choice\",\n        \"value\": false,\n        \"explanation\": \"string\"\n      },\n      \"key_2\": {\n        \"annotation_type\": \"tags\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      },\n      \"key_3\": {\n        \"annotation_type\": \"score\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      },\n      \"key_4\": {\n        \"annotation_type\": \"star\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      }\n    },\n    \"key_3\": {\n      \"key_0\": {\n        \"annotation_type\": \"text\",\n        \"value\": false,\n        \"explanation\": \"string\"\n      },\n      \"key_1\": {\n        \"annotation_type\": \"star\",\n        \"value\": true,\n        \"explanation\": \"string\"\n      }\n    }\n  },\n  \"file_ids\": [\n    \"string\",\n    \"string\"\n  ],\n  \"file_modalities\": [\n    \"audio\",\n    \"document\"\n  ],\n  \"annotation_aggregates\": {\n    \"key_0\": {\n      \"aggregate\": {\n        \"like_count\": 8109,\n        \"dislike_count\": 7122,\n        \"unrated_count\": 2049,\n        \"annotation_type\": \"like_dislike\",\n        \"tie_count\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"key_1\": {\n      \"aggregate\": {\n        \"like_count\": 5392,\n        \"dislike_count\": 8305,\n        \"unrated_count\": 9912,\n        \"annotation_type\": \"like_dislike\",\n        \"tie_count\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"key_2\": {\n      \"aggregate\": {\n        \"like_count\": 7571,\n        \"dislike_count\": 8179,\n        \"unrated_count\": 966,\n        \"annotation_type\": \"like_dislike\",\n        \"tie_count\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    }\n  },\n  \"annotation_agreement\": {\n    \"key_0\": 6211.731845224411,\n    \"key_1\": 4673.742229174914\n  },\n  \"overall_annotation_agreement\": 8887.448929438742,\n  \"annotation_queue_ids\": [\n    \"string\",\n    \"string\"\n  ],\n  \"fully_annotated\": false,\n  \"progress_message\": \"\",\n  \"error_message\": \"\",\n  \"metric_info\": {\n    \"key_0\": {\n      \"status_type\": \"not_computed\",\n      \"scorer_type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"metric_key_alias\": \"string\",\n      \"message\": \"Metric not computed.\"\n    },\n    \"key_1\": {\n      \"status_type\": \"not_computed\",\n      \"scorer_type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"metric_key_alias\": \"string\",\n      \"message\": \"Metric not computed.\"\n    },\n    \"key_2\": {\n      \"status_type\": \"not_computed\",\n      \"scorer_type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"metric_key_alias\": \"string\",\n      \"message\": \"Metric not computed.\"\n    }\n  },\n  \"files\": {\n    \"key_0\": {\n      \"file_id\": \"string\",\n      \"modality\": \"document\",\n      \"source\": \"direct_upload\",\n      \"status\": \"pending\",\n      \"content_type\": \"string\",\n      \"url\": \"string\",\n      \"url_expires_at\": \"1991-07-17T09:01:54.955Z\",\n      \"size_bytes\": 2163,\n      \"filename\": \"string\"\n    },\n    \"key_1\": {\n      \"file_id\": \"string\",\n      \"modality\": \"video\",\n      \"source\": \"external_url\",\n      \"status\": \"pending\",\n      \"content_type\": \"string\",\n      \"url\": \"string\",\n      \"url_expires_at\": \"1946-12-05T17:57:59.548Z\",\n      \"size_bytes\": 2507,\n      \"filename\": \"string\"\n    }\n  },\n  \"is_complete\": true,\n  \"num_spans\": 6029\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e64d520d-6628-4e96-a68d-6056f3ff5558",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    ":record_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "record_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "676a2823-e6e8-486c-ad52-336c1014f933",
+          "name": "Create Annotation Queue Record Rating",
+          "request": {
+            "name": "Create Annotation Queue Record Rating",
+            "description": {
+              "content": "Create an annotation rating for a record in an annotation queue.\n\nThis endpoint is project-unaware and takes the template_id in the query params.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                ":record_id",
+                "rating"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "annotation_template_id",
+                  "value": "<uuid4>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "record_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": {\n    \"value\": \"<boolean>\",\n    \"annotation_type\": \"like_dislike\"\n  },\n  \"explanation\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8250d2b3-3753-43a9-a69d-fa58ab862a67",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    ":record_id",
+                    "rating"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "annotation_template_id",
+                      "value": "<uuid4>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "record_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rating\": {\n    \"value\": true,\n    \"annotation_type\": \"like_dislike\"\n  },\n  \"explanation\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"rating\": {\n    \"value\": false,\n    \"annotation_type\": \"like_dislike\"\n  },\n  \"created_at\": \"1997-12-31T20:31:56.721Z\",\n  \"created_by\": \"string\",\n  \"explanation\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08d8c704-01f7-46c6-af8c-3dc3787d4ae6",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    ":record_id",
+                    "rating"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "annotation_template_id",
+                      "value": "<uuid4>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "record_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rating\": {\n    \"value\": true,\n    \"annotation_type\": \"like_dislike\"\n  },\n  \"explanation\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4615c14-4431-4a1c-ba42-46dcb8f6dfdd",
+          "name": "Delete Annotation Queue Record Rating",
+          "request": {
+            "name": "Delete Annotation Queue Record Rating",
+            "description": {
+              "content": "Delete an annotation rating for a record in an annotation queue.\n\nThis soft-deletes the rating by inserting a new row with is_deleted=1.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                ":record_id",
+                "rating"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "annotation_template_id",
+                  "value": "<uuid4>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "record_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dabd5b85-a9fc-44be-af96-d919717ba90b",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    ":record_id",
+                    "rating"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "annotation_template_id",
+                      "value": "<uuid4>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "record_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0188e1b-dd4b-48dd-a930-404cac695e60",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    ":record_id",
+                    "rating"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "annotation_template_id",
+                      "value": "<uuid4>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "record_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1f391cc-c50f-447d-882c-f1448ea30b35",
+          "name": "Get Annotation Queue Records Available Columns",
+          "request": {
+            "name": "Get Annotation Queue Records Available Columns",
+            "description": {
+              "content": "Get available columns for records in an annotation queue.\n\nAnnotation queues can contain records from multiple projects/runs, so this endpoint\nreturns the standard columns common across all records plus any metric columns present\nin the queue's active project/run membership and any user metadata columns present\non those runs.\n\nPermission checks:\n- User must have READ permission on the annotation queue\n\nReturns:\n- Standard columns (id, created_at, input, output, etc.)\n- Metric columns available in the queue's active project/run pairs\n- User metadata columns available in the queue's active project/run pairs\n- Annotation aggregate feedback columns for queue owners/editors and org admins\n\nExcludes:\n- Dataset metadata columns (project/run-specific)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "available_columns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f791d4fe-5251-4fc1-9c42-d861f34877f3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "available_columns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"columns\": [\n    {\n      \"id\": \"string\",\n      \"category\": \"standard\",\n      \"data_type\": \"fully_annotated\",\n      \"label\": \"string\",\n      \"description\": \"string\",\n      \"group_label\": \"string\",\n      \"data_unit\": \"dollars\",\n      \"multi_valued\": false,\n      \"sortable\": true,\n      \"filterable\": true,\n      \"is_empty\": false,\n      \"applicable_types\": [\n        \"session\",\n        \"agent\"\n      ],\n      \"is_optional\": false,\n      \"roll_up_method\": \"string\",\n      \"metric_key_alias\": \"string\",\n      \"scorer_config\": {\n        \"id\": \"string\",\n        \"scorer_type\": \"code\",\n        \"model_name\": \"string\",\n        \"num_judges\": 8749,\n        \"filters\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"scoreable_node_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"cot_enabled\": true,\n        \"output_type\": \"discrete\",\n        \"input_type\": \"agent_spans\",\n        \"name\": \"string\",\n        \"model_type\": \"llm\",\n        \"scorer_version\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"version\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scorer_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"generated_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"registered_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"finetuned_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"model_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"num_judges\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scoreable_node_types\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cot_enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"output_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"input_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"multimodal_capabilities\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"roll_up_method\": \"percentage_true\",\n        \"score_type\": \"string\"\n      },\n      \"scorer_id\": \"string\",\n      \"insight_type\": \"horizontal_bar\",\n      \"filter_type\": \"id\",\n      \"threshold\": {\n        \"inverted\": false,\n        \"buckets\": [\n          5016,\n          4931\n        ],\n        \"display_value_levels\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"label_color\": \"negative\"\n    },\n    {\n      \"id\": \"string\",\n      \"category\": \"metric\",\n      \"data_type\": \"integer\",\n      \"label\": \"string\",\n      \"description\": \"string\",\n      \"group_label\": \"string\",\n      \"data_unit\": \"milli_seconds\",\n      \"multi_valued\": false,\n      \"sortable\": true,\n      \"filterable\": true,\n      \"is_empty\": false,\n      \"applicable_types\": [\n        \"control\",\n        \"trace\"\n      ],\n      \"is_optional\": false,\n      \"roll_up_method\": \"string\",\n      \"metric_key_alias\": \"string\",\n      \"scorer_config\": {\n        \"id\": \"string\",\n        \"scorer_type\": \"preset\",\n        \"model_name\": \"string\",\n        \"num_judges\": 1001,\n        \"filters\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"scoreable_node_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"cot_enabled\": true,\n        \"output_type\": \"count\",\n        \"input_type\": \"retriever_spans\",\n        \"name\": \"string\",\n        \"model_type\": \"slm\",\n        \"scorer_version\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"version\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scorer_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"generated_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"registered_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"finetuned_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"model_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"num_judges\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scoreable_node_types\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cot_enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"output_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"input_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"multimodal_capabilities\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"roll_up_method\": \"percentage_true\",\n        \"score_type\": \"string\"\n      },\n      \"scorer_id\": \"string\",\n      \"insight_type\": \"horizontal_bar\",\n      \"filter_type\": \"number\",\n      \"threshold\": {\n        \"inverted\": false,\n        \"buckets\": [\n          5347,\n          429\n        ],\n        \"display_value_levels\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"label_color\": \"positive\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d8d7a4c-eb20-4cf1-9b20-7a612c5dacf2",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "available_columns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "004d24e6-24b8-45e4-b30c-fdbbf422248e",
+          "name": "Export Annotation Queue Records",
+          "request": {
+            "name": "Export Annotation Queue Records",
+            "description": {
+              "content": "Export selected records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9543dfbd-a165-4140-b073-d17eecc73d40",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59fbbabe-6e93-47f2-944f-5f3a1daa9d6e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "396fe820-d5bf-4710-bfec-a95f229a92c2",
+          "name": "Export Annotation Queue Records Url",
+          "request": {
+            "name": "Export Annotation Queue Records Url",
+            "description": {
+              "content": "Export selected records from an annotation queue and return a presigned download URL.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "export",
+                "url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e069e406-1a9b-4089-9c77-9be1c2c56590",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export",
+                    "url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"string\",\n  \"url_expires_at\": \"1996-12-30T23:08:16.982Z\",\n  \"file_name\": \"string\",\n  \"content_type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b071874-2048-4be8-b69e-56187aae3c28",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export",
+                    "url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d7c49d9-9f88-421f-bc60-471b1908d936",
+          "name": "Export Annotation Queue Records",
+          "request": {
+            "name": "Export Annotation Queue Records",
+            "description": {
+              "content": "Export selected records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "public",
+                "v2",
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d8de307e-faeb-484f-a061-d1e258ce7a2f",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public",
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d9cf418-2d86-4b50-8163-9c8097d1d640",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public",
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9978997c-459d-4d10-8f78-3e04e1365abd",
+          "name": "Export Annotation Queue Records Url",
+          "request": {
+            "name": "Export Annotation Queue Records Url",
+            "description": {
+              "content": "Export selected records from an annotation queue and return a presigned download URL.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "public",
+                "v2",
+                "annotation_queues",
+                ":queue_id",
+                "records",
+                "export",
+                "url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"<uuid4>\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "51552b45-6b30-49d0-90d1-ded3f3fd9e28",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public",
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export",
+                    "url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"string\",\n  \"url_expires_at\": \"1996-12-30T23:08:16.982Z\",\n  \"file_name\": \"string\",\n  \"content_type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04fa4ea5-0bb2-4ea1-814b-eab83462616c",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public",
+                    "v2",
+                    "annotation_queues",
+                    ":queue_id",
+                    "records",
+                    "export",
+                    "url"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"record_selector\": {\n    \"record_ids\": [\n      \"string\"\n    ],\n    \"type\": \"record_ids\"\n  },\n  \"column_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"export_format\": \"jsonl\",\n  \"redact\": true,\n  \"file_name\": \"<string>\",\n  \"export_computed_metrics_only\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.galileo.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b0ce5c1f-39c6-424b-8719-3ee332a50f95",
+    "name": "Galileo API Server annotation annotation_queue_records API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

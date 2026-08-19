@@ -1,0 +1,1155 @@
+{
+  "item": [
+    {
+      "id": "b799a90c-068f-4d2d-876a-294b635b694a",
+      "name": "log_stream_alerts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c6855e0b-6088-4945-9e6d-e69dd4c52edb",
+          "name": "Create",
+          "request": {
+            "name": "Create",
+            "description": {
+              "content": "Create alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "log_streams",
+                ":log_stream_id",
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "log_stream_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conditions\": [\n    {\n      \"field\": \"<string>\",\n      \"aggregation\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<number>\",\n      \"window\": \"<integer>\",\n      \"filter_value\": \"<string>\",\n      \"filter_operator\": \"<string>\",\n      \"condition_type\": \"metric/numeric/1\",\n      \"metric_id\": \"<string>\",\n      \"legacy_metric_name\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"aggregation\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<number>\",\n      \"window\": \"<integer>\",\n      \"filter_value\": \"<string>\",\n      \"filter_operator\": \"<string>\",\n      \"condition_type\": \"metric/numeric/1\",\n      \"metric_id\": \"<string>\",\n      \"legacy_metric_name\": \"<string>\"\n    }\n  ],\n  \"interval\": \"<integer>\",\n  \"filters\": [\n    {\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"schema_version\": \"multi_condition/object/1\",\n  \"active\": true,\n  \"project_id\": \"<uuid4>\",\n  \"run_id\": \"<uuid4>\",\n  \"created_by\": \"<uuid4>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "18e777d9-4146-48d8-8312-9d1e458ecd82",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conditions\": [\n    {\n      \"field\": \"string\",\n      \"aggregation\": \"percentage_false\",\n      \"operator\": \"gte\",\n      \"value\": 3527.1265161308206,\n      \"window\": 2852,\n      \"filter_value\": \"string\",\n      \"filter_operator\": \"like\",\n      \"condition_type\": \"metric/numeric/1\",\n      \"metric_id\": \"string\",\n      \"legacy_metric_name\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"aggregation\": \"sum\",\n      \"operator\": \"in\",\n      \"value\": 5151.3628518263395,\n      \"window\": 7429,\n      \"filter_value\": \"string\",\n      \"filter_operator\": \"between\",\n      \"condition_type\": \"metric/numeric/1\",\n      \"metric_id\": \"string\",\n      \"legacy_metric_name\": \"string\"\n    }\n  ],\n  \"interval\": 6456,\n  \"filters\": [\n    {\n      \"operator\": \"one_of\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"ne\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"schema_version\": \"multi_condition/object/1\",\n  \"active\": true,\n  \"project_id\": \"string\",\n  \"run_id\": \"string\",\n  \"created_by\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conditions\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": true\n    },\n    {\n      \"key_0\": 441.665545027381\n    }\n  ],\n  \"interval\": 2046,\n  \"id\": \"string\",\n  \"created_by\": \"string\",\n  \"project_id\": \"string\",\n  \"run_id\": \"string\",\n  \"created_at\": \"2000-02-08T18:47:07.424Z\",\n  \"updated_at\": \"1950-06-14T22:27:32.122Z\",\n  \"filters\": [\n    {\n      \"operator\": \"ne\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"eq\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"schema_version\": \"multi_condition/object/1\",\n  \"active\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "af9d32ce-c21f-4f09-936a-b4024b430636",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conditions\": [\n    {\n      \"field\": \"string\",\n      \"aggregation\": \"percentage_false\",\n      \"operator\": \"gte\",\n      \"value\": 3527.1265161308206,\n      \"window\": 2852,\n      \"filter_value\": \"string\",\n      \"filter_operator\": \"like\",\n      \"condition_type\": \"metric/numeric/1\",\n      \"metric_id\": \"string\",\n      \"legacy_metric_name\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"aggregation\": \"sum\",\n      \"operator\": \"in\",\n      \"value\": 5151.3628518263395,\n      \"window\": 7429,\n      \"filter_value\": \"string\",\n      \"filter_operator\": \"between\",\n      \"condition_type\": \"metric/numeric/1\",\n      \"metric_id\": \"string\",\n      \"legacy_metric_name\": \"string\"\n    }\n  ],\n  \"interval\": 6456,\n  \"filters\": [\n    {\n      \"operator\": \"one_of\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"ne\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"schema_version\": \"multi_condition/object/1\",\n  \"active\": true,\n  \"project_id\": \"string\",\n  \"run_id\": \"string\",\n  \"created_by\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8dc38a83-5649-45ef-87ac-15a8eb732230",
+          "name": "List Alerts By Log Stream",
+          "request": {
+            "name": "List Alerts By Log Stream",
+            "description": {},
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "log_streams",
+                ":log_stream_id",
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "starting_token",
+                  "value": "0"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "log_stream_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "abb92485-1450-4a18-9d48-6ea435ebd05e",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_token",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"starting_token\": 0,\n  \"limit\": 100,\n  \"paginated\": false,\n  \"next_starting_token\": 2643,\n  \"alerts\": [\n    {\n      \"conditions\": [\n        {\n          \"key_0\": false\n        },\n        {\n          \"key_0\": 1775.5321585477236,\n          \"key_1\": \"string\"\n        }\n      ],\n      \"interval\": 5861,\n      \"id\": \"string\",\n      \"created_by\": \"string\",\n      \"project_id\": \"string\",\n      \"run_id\": \"string\",\n      \"created_at\": \"2021-05-19T01:12:08.905Z\",\n      \"updated_at\": \"2013-03-08T19:29:32.069Z\",\n      \"filters\": [\n        {\n          \"operator\": \"not_in\",\n          \"value\": \"string\",\n          \"name\": \"node_name\",\n          \"case_sensitive\": true\n        },\n        {\n          \"operator\": \"eq\",\n          \"value\": \"string\",\n          \"name\": \"node_name\",\n          \"case_sensitive\": true\n        }\n      ],\n      \"schema_version\": \"multi_condition/object/1\",\n      \"active\": true\n    },\n    {\n      \"conditions\": [\n        {\n          \"key_0\": 8811.510724183174,\n          \"key_1\": \"string\"\n        },\n        {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": 6885.716166237047\n        }\n      ],\n      \"interval\": 3905,\n      \"id\": \"string\",\n      \"created_by\": \"string\",\n      \"project_id\": \"string\",\n      \"run_id\": \"string\",\n      \"created_at\": \"1984-07-01T09:30:15.894Z\",\n      \"updated_at\": \"1967-03-29T00:26:30.322Z\",\n      \"filters\": [\n        {\n          \"operator\": \"not_in\",\n          \"value\": \"string\",\n          \"name\": \"node_name\",\n          \"case_sensitive\": true\n        },\n        {\n          \"operator\": \"not_in\",\n          \"value\": \"string\",\n          \"name\": \"node_name\",\n          \"case_sensitive\": true\n        }\n      ],\n      \"schema_version\": \"multi_condition/object/1\",\n      \"active\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d05bbff0-e7c0-4cc5-8ca0-ba457e5b2094",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_token",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51637a04-f9cc-49f8-a541-d51f7455f074",
+          "name": "Update",
+          "request": {
+            "name": "Update",
+            "description": {
+              "content": "Update alert configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "log_streams",
+                ":log_stream_id",
+                "alerts",
+                ":alert_config_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "log_stream_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "alert_config_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conditions\": [\n    {\n      \"key_0\": 3151\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": true\n    }\n  ],\n  \"filters\": [\n    {\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"interval\": \"<integer>\",\n  \"active\": \"<boolean>\",\n  \"processed_by\": \"<uuid4>\",\n  \"last_triggered\": \"<dateTime>\",\n  \"last_sent\": \"<dateTime>\",\n  \"alert_sent\": \"<boolean>\",\n  \"counter_since_last_sent\": \"<integer>\",\n  \"counter\": \"<integer>\",\n  \"schema_version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d9e2aa3c-455b-4946-b9c2-73a358744d6a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts",
+                    ":alert_config_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "alert_config_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conditions\": [\n    {\n      \"key_0\": 5798,\n      \"key_1\": 2361\n    },\n    {\n      \"key_0\": 7993,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"operator\": \"contains\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"not_in\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"interval\": \"<integer>\",\n  \"active\": \"<boolean>\",\n  \"processed_by\": \"<uuid4>\",\n  \"last_triggered\": \"<dateTime>\",\n  \"last_sent\": \"<dateTime>\",\n  \"alert_sent\": \"<boolean>\",\n  \"counter_since_last_sent\": \"<integer>\",\n  \"counter\": \"<integer>\",\n  \"schema_version\": \"multi_condition/object/1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conditions\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": true\n    },\n    {\n      \"key_0\": 441.665545027381\n    }\n  ],\n  \"interval\": 2046,\n  \"id\": \"string\",\n  \"created_by\": \"string\",\n  \"project_id\": \"string\",\n  \"run_id\": \"string\",\n  \"created_at\": \"2000-02-08T18:47:07.424Z\",\n  \"updated_at\": \"1950-06-14T22:27:32.122Z\",\n  \"filters\": [\n    {\n      \"operator\": \"ne\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"eq\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"schema_version\": \"multi_condition/object/1\",\n  \"active\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aff02cb9-29aa-414b-b6a7-83a1b7508044",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts",
+                    ":alert_config_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "alert_config_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conditions\": [\n    {\n      \"key_0\": 5798,\n      \"key_1\": 2361\n    },\n    {\n      \"key_0\": 7993,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"operator\": \"contains\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"not_in\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"interval\": \"<integer>\",\n  \"active\": \"<boolean>\",\n  \"processed_by\": \"<uuid4>\",\n  \"last_triggered\": \"<dateTime>\",\n  \"last_sent\": \"<dateTime>\",\n  \"alert_sent\": \"<boolean>\",\n  \"counter_since_last_sent\": \"<integer>\",\n  \"counter\": \"<integer>\",\n  \"schema_version\": \"multi_condition/object/1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b32c55f0-f35a-4f60-b03d-0df9a7cd584f",
+          "name": "Delete Alert",
+          "request": {
+            "name": "Delete Alert",
+            "description": {
+              "content": "Delete alert configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "log_streams",
+                ":log_stream_id",
+                "alerts",
+                ":alert_config_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "log_stream_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "alert_config_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6473250d-1b7e-4318-b18e-f61d2212793d",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts",
+                    ":alert_config_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "alert_config_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status\": \"string\",\n  \"id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9bfb712a-4d36-4e8f-b251-f101b1a0a260",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts",
+                    ":alert_config_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "alert_config_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a9ada7fb-1515-4ba2-bb84-16d03fc3715d",
+          "name": "Get Alert By Id",
+          "request": {
+            "name": "Get Alert By Id",
+            "description": {},
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "log_streams",
+                ":log_stream_id",
+                "alerts",
+                ":alert_config_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "log_stream_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "alert_config_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3bfed7d4-c23d-44ce-bf58-146d5d285563",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts",
+                    ":alert_config_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "alert_config_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conditions\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": true\n    },\n    {\n      \"key_0\": 441.665545027381\n    }\n  ],\n  \"interval\": 2046,\n  \"id\": \"string\",\n  \"created_by\": \"string\",\n  \"project_id\": \"string\",\n  \"run_id\": \"string\",\n  \"created_at\": \"2000-02-08T18:47:07.424Z\",\n  \"updated_at\": \"1950-06-14T22:27:32.122Z\",\n  \"filters\": [\n    {\n      \"operator\": \"ne\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    },\n    {\n      \"operator\": \"eq\",\n      \"value\": \"string\",\n      \"name\": \"node_name\",\n      \"case_sensitive\": true\n    }\n  ],\n  \"schema_version\": \"multi_condition/object/1\",\n  \"active\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed6c114e-9170-4fac-8c56-5ea12c26dec8",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "log_streams",
+                    ":log_stream_id",
+                    "alerts",
+                    ":alert_config_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "log_stream_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "alert_config_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.galileo.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "94309371-2f60-4453-a4dd-a0aec500acc9",
+    "name": "Galileo API Server annotation log_stream_alerts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

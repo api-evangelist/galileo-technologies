@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation system_users API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "system_users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Current System User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/current_system_user",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Current System User"
+        },
+        {
+          "info": {
+            "name": "Current System User Organizations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/current_system_user/organizations",
+            "params": [
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Current System User Organizations"
+        },
+        {
+          "info": {
+            "name": "Delete System User",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/system_users/:system_user_id",
+            "params": [
+              {
+                "name": "system_user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete System User"
+        },
+        {
+          "info": {
+            "name": "Create Or Verify User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/system_users",
+            "params": [
+              {
+                "name": "signup_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new system user with an email and password.\n\nIf no admin exists (first user), the user will be created as an admin.\n\nOtherwise:\n- User record was already created when the admin invited the user\n- We should verify the user's email"
+        },
+        {
+          "info": {
+            "name": "Create Or Verify User Social",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/system_users/social",
+            "params": [
+              {
+                "name": "signup_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a user using a social login provider.\n\nAll social users are created with `email_is_verified=True`, don't need to be invited and are by default read-only\n(unless they are the first user, in which case they are set to admin)."
+        },
+        {
+          "info": {
+            "name": "Create Or Verify User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/system_users",
+            "params": [
+              {
+                "name": "signup_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new system user with an email and password.\n\nIf no admin exists (first user), the user will be created as an admin.\n\nOtherwise:\n- User record was already created when the admin invited the user\n- We should verify the user's email"
+        },
+        {
+          "info": {
+            "name": "Create Or Verify User Social",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/system_users/social",
+            "params": [
+              {
+                "name": "signup_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a user using a social login provider.\n\nAll social users are created with `email_is_verified=True`, don't need to be invited and are by default read-only\n(unless they are the first user, in which case they are set to admin)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

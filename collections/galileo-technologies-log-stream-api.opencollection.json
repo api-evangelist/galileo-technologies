@@ -1,0 +1,849 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation log_stream API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "log_stream",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Log Streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_counts",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all log streams for a project.\n\nDEPRECATED in favor of `list_log_streams_paginated`."
+        },
+        {
+          "info": {
+            "name": "Create Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new log stream for a project."
+        },
+        {
+          "info": {
+            "name": "List Log Streams Paginated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams/paginated",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_counts",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all log streams for a project paginated."
+        },
+        {
+          "info": {
+            "name": "Search Log Streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams/search",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search log streams for a project."
+        },
+        {
+          "info": {
+            "name": "Get Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Update Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Delete Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Get Metric Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams/:log_stream_id/metric_settings",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Metric Settings"
+        },
+        {
+          "info": {
+            "name": "Update Metric Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/projects/:project_id/log_streams/:log_stream_id/metric_settings",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update Metric Settings"
+        },
+        {
+          "info": {
+            "name": "List Log Streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_counts",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all log streams for a project.\n\nDEPRECATED in favor of `list_log_streams_paginated`."
+        },
+        {
+          "info": {
+            "name": "Create Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new log stream for a project."
+        },
+        {
+          "info": {
+            "name": "List Log Streams Paginated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams/paginated",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_counts",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all log streams for a project paginated."
+        },
+        {
+          "info": {
+            "name": "Search Log Streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams/search",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search log streams for a project."
+        },
+        {
+          "info": {
+            "name": "Get Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Update Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Delete Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Get Metric Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams/:log_stream_id/metric_settings",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Metric Settings"
+        },
+        {
+          "info": {
+            "name": "Update Metric Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/v2/projects/:project_id/log_streams/:log_stream_id/metric_settings",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update Metric Settings"
+        },
+        {
+          "info": {
+            "name": "List Log Streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_counts",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all log streams for a project.\n\nDEPRECATED in favor of `list_log_streams_paginated`."
+        },
+        {
+          "info": {
+            "name": "Create Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new log stream for a project."
+        },
+        {
+          "info": {
+            "name": "List Log Streams Paginated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams/paginated",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_counts",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all log streams for a project paginated."
+        },
+        {
+          "info": {
+            "name": "Search Log Streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams/search",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search log streams for a project."
+        },
+        {
+          "info": {
+            "name": "Get Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Update Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Delete Log Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams/:log_stream_id",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific log stream."
+        },
+        {
+          "info": {
+            "name": "Get Metric Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams/:log_stream_id/metric_settings",
+            "params": [
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Metric Settings"
+        },
+        {
+          "info": {
+            "name": "Update Metric Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/public/v2/projects/:project_id/log_streams/:log_stream_id/metric_settings",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "log_stream_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update Metric Settings"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

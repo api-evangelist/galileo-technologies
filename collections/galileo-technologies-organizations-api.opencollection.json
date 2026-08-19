@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation organizations API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/organizations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create Organization"
+        },
+        {
+          "info": {
+            "name": "Query Organizations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/organizations/query",
+            "params": [
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Query Organizations"
+        },
+        {
+          "info": {
+            "name": "Update Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/organizations/:organization_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update Organization"
+        },
+        {
+          "info": {
+            "name": "Delete Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/organizations/:organization_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "confirm_slug",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "delete_user",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete Organization"
+        },
+        {
+          "info": {
+            "name": "List Organization Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/organizations/settings",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all settings for the current organization. Admin only."
+        },
+        {
+          "info": {
+            "name": "Update Organization Setting",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/organizations/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an organization setting. Admin only."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation dataset API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dataset",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Datasets V1",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v1/datasets",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter datasets linked to this project."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List datasets visible to the caller's organization.\n\nSupports both user-session (JWT) and API-key (Galileo-API-Key) authentication.\nAdmins see all org datasets; non-admins see datasets shared with them via\nproject membership, direct share, or group share. API keys scoped to a\nproject are constrained to that project's datasets."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

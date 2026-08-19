@@ -9,10 +9,12 @@ server:
   auth:
     type: apiKey
     header: Galileo-API-Key
-    note: Generate an API key at https://app.galileo.ai/settings/api-keys. Self-hosted deployments use a custom base URL.
+    note: Generate an API key at https://app.galileo.ai/settings/api-keys. Self-hosted deployments use
+      a custom base URL.
 tools:
 - name: create_datasets
-  description: Generate synthetic datasets or upload custom data to test and evaluate AI applications (general, prompt-injection, off-topic, and toxic-content scenarios).
+  description: Generate synthetic datasets or upload custom data to test and evaluate AI applications
+    (general, prompt-injection, off-topic, and toxic-content scenarios).
 - name: check_dataset_status
   description: Track dataset generation progress and preview content.
 - name: create_prompt_templates
@@ -27,3 +29,11 @@ tools:
   description: Enable Galileo tracing for LangChain applications.
 - name: search_documentation
   description: Query Galileo documentation for guides and examples.
+deployment:
+  mode: remote
+  endpoint: https://api.galileo.ai/mcp/http/mcp
+  verified: probed
+  probe: live
+  tools: 9
+  checked: '2026-08-12'
+  source: catalog MCP census

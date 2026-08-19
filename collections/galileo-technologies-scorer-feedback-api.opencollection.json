@@ -1,0 +1,315 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation scorer-feedback API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "scorer-feedback",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Scorer Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/scorer-feedbacks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new feedback item in the global queue for the specified scorer.\n\n**Validation:**\n- Validates both original_value and annotated_value against scorer's output_type\n- Validates scorer_version_id exists and user has access\n- Validates user has access to the specified project\n- Auto-creates new queue if no active queue exists for this scorer\n- If active queue exists, adds feedback to that queue\n\n**Errors:**\n- 422 - Invalid annotated_value/original_value format or validation failure\n- 404 - "
+        },
+        {
+          "info": {
+            "name": "Delete Scorer Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/scorer-feedbacks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes multiple feedback items by their IDs.\n\n**Validation:**\n- All feedback items must exist and user must have access\n- Feedback items must belong to queues that are not locked (not generating, reviewing, or completed)\n\n**Errors:**\n- 404 - One or more feedback items not found\n- 409 - One or more feedback items belong to a locked queue"
+        },
+        {
+          "info": {
+            "name": "Update Scorer Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/scorer-feedbacks/:feedback_id",
+            "params": [
+              {
+                "name": "feedback_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an existing feedback item in the queue.\n\nUseful for refining values or rationale while reviewing feedback before applying.\n\n**Validation:**\n- Queue must be in pending state (not locked or completed)\n- annotated_value (if provided) must be valid for the scorer's output_type\n- At least one field must be provided\n\n**Errors:**\n- 422 - Invalid annotated_value for scorer output_type, or no fields provided\n- 404 - Feedback item not found\n- 409 - Queue is currently processing or finished (locked"
+        },
+        {
+          "info": {
+            "name": "Get Scorer Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/scorer-feedbacks/scorer/:scorer_id",
+            "params": [
+              {
+                "name": "scorer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets all feedback items for the active queue of a scorer.\n\nReturns enriched feedback items including:\n- Basic feedback data (original/annotated values, rationale)\n- Project and run names\n- ClickHouse record data (input/output)\n- Queue metadata (status, id)\n\nIf no active queue exists for the scorer, returns empty list with null queue_id/status.\n\n**Validation:**\n- User has access to the scorer\n\n**Errors:**\n- 404 - Scorer not found or user doesn't have access"
+        },
+        {
+          "info": {
+            "name": "Get Applied Scorer Version Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/scorer-feedbacks/scorer_version/:scorer_version_id/applied",
+            "params": [
+              {
+                "name": "scorer_version_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets all feedback items that were applied to create a specific scorer version.\n\nReturns the historical feedback from the completed queue that produced this version,\nwith enriched data including:\n- Basic feedback data (original/annotated values, rationale)\n- Project and run names\n- ClickHouse record data (input/output)\n- Queue metadata (status=completed, queue_id)\n\n**Validation:**\n- User has access to the scorer version\n\n**Errors:**\n- 404 - Scorer version not found or no feedback was applied to c"
+        },
+        {
+          "info": {
+            "name": "Get Feedback Counts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/scorer-feedbacks/feedback-counts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the count of feedback items in each scorer's active feedback queue.\n\nReturns a map of scorer_id to feedback count. Scorers without an active\nqueue (or with no feedback items) return 0.\n\n**Errors:**\n- 422 - Empty scorer_ids list or invalid UUIDs"
+        },
+        {
+          "info": {
+            "name": "Generate Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/feedback-queues/scorer/:scorer_id/generate-prompt",
+            "params": [
+              {
+                "name": "scorer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate improved scorer prompt using Autotune (CLHF).\n\nThis endpoint:\n1. Fetches all feedback items from the active queue with ClickHouse context\n2. Assembles the current metric system prompt\n3. Constructs AutotuneInput with annotated examples\n4. Queues a background job to the runners service\n5. Returns task_id for polling\n\nThe API prepares all data internally - no request body needed.\n\n**Validation:**\n- Scorer exists and user has access\n- Active queue exists in 'pending' state\n- Queue has at l"
+        },
+        {
+          "info": {
+            "name": "Get Queue Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/feedback-queues/scorer/:scorer_id/status",
+            "params": [
+              {
+                "name": "scorer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Lightweight endpoint for polling queue generation status.\n\nReturns only queue metadata (status, error message, draft prompt) without\nfetching feedback items or ClickHouse data. Designed for efficient polling\nafter triggering prompt generation.\n\n**Errors:**\n- 404 - Scorer not found or no active queue exists"
+        },
+        {
+          "info": {
+            "name": "Update Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/feedback-queues/:queue_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a feedback queue by performing an action.\n\n**Supported actions:**\n- \"abort\": Abort the feedback application process and return the queue to pending state.\n  Used when user clicks \"Back\" or \"Cancel\" during generation or review.\n  Clears draft_prompt and generation_task_id. Same queue is reused.\n  Can be called during 'generating' or 'reviewing' state.\n\n- \"complete\": Complete the queue after saving a new scorer version.\n  Used when user saves a new version from the review flow.\n  Sets statu"
+        },
+        {
+          "info": {
+            "name": "Validate Autotune Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/feedback-queues/scorer/:scorer_id/validation-runs",
+            "params": [
+              {
+                "name": "scorer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Test a draft prompt against feedback records in the active queue.\n\nCreates a metrics testing run by copying the feedback records and running\ngenerated scorer validation with the provided prompt. Used in the AutoTune\nData tab for 3-column comparison: Original | Expected (Annotated) | New Result.\n\nWorks in any active queue state (pending, generating, or reviewing).\n\n**Response:**\n- 202 Accepted with metrics_testing_run_id for viewing results\n\n**Errors:**\n- 404 - Scorer not found or no active queue"
+        },
+        {
+          "info": {
+            "name": "Get Validation Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/feedback-queues/:queue_id/validation-results",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metrics_testing_run_id",
+                "value": "",
+                "type": "query",
+                "description": "Metrics testing run ID for fetching validation scores"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Poll autotune validation results for a feedback queue.\n\nReturns one row per feedback item with the new scorer output joined in from\nthe metrics testing run. Used by the UI for the 3-column comparison table:\nOriginal Value | Expected (Annotated) | New Result.\n\n**Pollable:** Returns status=pending with null scores while validation is running.\nTransitions through pending → in_progress → completed as scores arrive.\n\n**Args:**\n- metrics_testing_run_id: Optional metrics testing run ID (from validate r"
+        },
+        {
+          "info": {
+            "name": "Get Validation Columns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/feedback-queues/:queue_id/validation-columns",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get column definitions for the autotune validation results table.\n\nReturns the column metadata needed to render the validation results table,\nincluding input/output columns, feedback columns, and scorer metric columns.\n\n**Errors:**\n- 404 - Queue not found or user doesn't have access"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

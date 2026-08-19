@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation scorer API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "scorer",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Invoke",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/scorers/invoke",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Invoke"
+        },
+        {
+          "info": {
+            "name": "Prepare Finetuned Scorer Weights Upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/finetuned-scorers/weights/upload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Prepare Finetuned Scorer Weights Upload"
+        },
+        {
+          "info": {
+            "name": "Get Task Result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/generated-scorers/task-results/:task_result_id",
+            "params": [
+              {
+                "name": "task_result_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Task Result"
+        },
+        {
+          "info": {
+            "name": "List Scorers V1",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v1/scorers",
+            "params": [
+              {
+                "name": "scorer_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by scorer type. Repeat the query param for multiple values, e.g. ?scorer_type=preset&scorer_type=luna."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List scorers visible to the caller's organization.\n\nSupports both user-session (JWT) and API-key (Galileo-API-Key) authentication.\nOrg-scoped, read-only. No Cerbos query plan and no project-level row filtering\nso preset scorers remain visible to API-key callers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

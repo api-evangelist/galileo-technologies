@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation metric_roll_up API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "metric_roll_up",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Metric Roll Up Configs By Scorer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/scorers/:scorer_id/metric-roll-up-config",
+            "params": [
+              {
+                "name": "scorer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all metric roll up configurations for a specific scorer."
+        },
+        {
+          "info": {
+            "name": "Create Metric Roll Up Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/scorers/:scorer_id/metric-roll-up-config",
+            "params": [
+              {
+                "name": "scorer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update a metric roll up configuration for a scorer.\n\nThe metric name is derived from the scorer name.\n\nThe scorer must have a compatible output type for the roll up methods:\n- Numeric roll up methods (average, sum, max, min) require numeric output types\n  (boolean, percentage, number, discrete, count)\n- Categorical roll up methods (category_count) require categorical output types\n  (categorical, freeform, multilabel)\n\nIf a configuration already exists for this scorer, it will be update"
+        },
+        {
+          "info": {
+            "name": "Update Metric Roll Up Color Threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/scorers/:scorer_id/metric-roll-up-config",
+            "params": [
+              {
+                "name": "scorer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update only the color_threshold_config on an existing MetricRollUpConfig.\n\nDoes not alter roll_up_methods. Pass null to clear the color thresholds.\nOmitting the field entirely is a no-op."
+        },
+        {
+          "info": {
+            "name": "Delete Metric Roll Up Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/metric-roll-up-configs/:config_id",
+            "params": [
+              {
+                "name": "config_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a metric roll up configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

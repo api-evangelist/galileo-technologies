@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation Organization Jobs API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organization Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Org Job Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/org-jobs/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the status of an organization-level job.\n\nThis endpoint retrieves the status of jobs that operate at the organization level,\nsuch as org-wide data deletion jobs.\n\n**Authorization**: The job's organization_id must match the user's organization."
+        },
+        {
+          "info": {
+            "name": "Delete By Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/org-jobs/delete-by-metadata",
+            "params": [
+              {
+                "name": "immediate",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete traces/sessions across all projects in the organization by metadata filters.\n\nThis endpoint allows organization administrators to delete traces or sessions\nthat match specific metadata key-value pairs across all projects in their\norganization."
+        },
+        {
+          "info": {
+            "name": "Get Org Job Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/org-jobs/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the status of an organization-level job.\n\nThis endpoint retrieves the status of jobs that operate at the organization level,\nsuch as org-wide data deletion jobs.\n\n**Authorization**: The job's organization_id must match the user's organization."
+        },
+        {
+          "info": {
+            "name": "Delete By Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/org-jobs/delete-by-metadata",
+            "params": [
+              {
+                "name": "immediate",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete traces/sessions across all projects in the organization by metadata filters.\n\nThis endpoint allows organization administrators to delete traces or sessions\nthat match specific metadata key-value pairs across all projects in their\norganization."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

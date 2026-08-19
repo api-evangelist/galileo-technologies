@@ -1,0 +1,689 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation annotation_queue API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "annotation_queue",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create an annotation queue at the organization level.\n\nThe creator will automatically be granted the 'owner' role.\nOptionally accepts a list of annotator emails. Users that don't exist in the organization will be invited.\nOptionally copies templates from an existing queue if copy_templates_from_queue_id is provided."
+        },
+        {
+          "info": {
+            "name": "Get Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get an annotation queue by ID with templates and counts."
+        },
+        {
+          "info": {
+            "name": "Update Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an annotation queue."
+        },
+        {
+          "info": {
+            "name": "Delete Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an annotation queue."
+        },
+        {
+          "info": {
+            "name": "List Annotation Queue Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/users",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List users who have access to an annotation queue with pagination."
+        },
+        {
+          "info": {
+            "name": "Share Annotation Queue With Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/users",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Share an annotation queue with users by granting them specific roles.\n\nUsers can be specified by user_id or email. If using email and the user doesn't exist\nin the organization, they will be invited automatically with the 'user' role.\n\nRoles: owner, annotator"
+        },
+        {
+          "info": {
+            "name": "Update Annotation Queue User Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/users/:user_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a user's role for an annotation queue."
+        },
+        {
+          "info": {
+            "name": "Remove Annotation Queue User",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/users/:user_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove a user's access to an annotation queue."
+        },
+        {
+          "info": {
+            "name": "Queue Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/details",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Queue Details"
+        },
+        {
+          "info": {
+            "name": "Count Annotation Queues",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/count",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Count annotation queues in the user's organization with filtering."
+        },
+        {
+          "info": {
+            "name": "Query Annotation Queues",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/query",
+            "params": [
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Query annotation queues in the user's organization with filtering and sorting.\n\nResponse includes num_templates for each queue to support copy selection UI."
+        },
+        {
+          "info": {
+            "name": "Reorder Queue Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/templates/reorder",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Reorder templates within an annotation queue.\n\nThe ordering must include all and only the template IDs currently in the queue.\nTemplates will be assigned positions 1, 2, 3... based on their order in the list."
+        },
+        {
+          "info": {
+            "name": "Get Queue Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/templates",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all templates for an annotation queue.\n\nTemplates are returned ordered by position (ascending)."
+        },
+        {
+          "info": {
+            "name": "Create Queue Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/templates",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create template(s) in an annotation queue.\n\nSupports two scenarios:\n1. Create a single template: Provide 'template' field\n2. Copy all templates from source queue: Provide 'copy_from_queue_id' field"
+        },
+        {
+          "info": {
+            "name": "Update Queue Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/templates/:template_id",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing template in an annotation queue.\n\nCan update:\n- Template name (must be unique within the queue)\n- Template criteria\n\nNote: Constraints and other fields cannot be updated."
+        },
+        {
+          "info": {
+            "name": "Delete Queue Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/templates/:template_id",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a template from an annotation queue.\n\nValidates that:\n- Template exists\n- Template belongs to the specified queue\n- User has UPDATE permission on the queue\n\nAfter deletion, remaining templates are renumbered to maintain sequential positions."
+        },
+        {
+          "info": {
+            "name": "Get Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/annotation_queues/:queue_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get an annotation queue by ID with templates and counts."
+        },
+        {
+          "info": {
+            "name": "Query Annotation Queues",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/annotation_queues/query",
+            "params": [
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Query annotation queues in the user's organization with filtering and sorting.\n\nResponse includes num_templates for each queue to support copy selection UI."
+        },
+        {
+          "info": {
+            "name": "Get Queue Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/annotation_queues/:queue_id/templates",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all templates for an annotation queue.\n\nTemplates are returned ordered by position (ascending)."
+        },
+        {
+          "info": {
+            "name": "List Annotation Queue Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/v2/annotation_queues/:queue_id/users",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List users who have access to an annotation queue with pagination."
+        },
+        {
+          "info": {
+            "name": "Get Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/annotation_queues/:queue_id",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get an annotation queue by ID with templates and counts."
+        },
+        {
+          "info": {
+            "name": "Query Annotation Queues",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/annotation_queues/query",
+            "params": [
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Query annotation queues in the user's organization with filtering and sorting.\n\nResponse includes num_templates for each queue to support copy selection UI."
+        },
+        {
+          "info": {
+            "name": "Get Queue Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/annotation_queues/:queue_id/templates",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all templates for an annotation queue.\n\nTemplates are returned ordered by position (ascending)."
+        },
+        {
+          "info": {
+            "name": "List Annotation Queue Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/public/v2/annotation_queues/:queue_id/users",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List users who have access to an annotation queue with pagination."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

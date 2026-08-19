@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation pricing API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "pricing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Price Overrides",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/models/price_overrides",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List only models that have price overrides."
+        },
+        {
+          "info": {
+            "name": "List Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/models",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Filter by model name substring"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Lists models and their prices.\n\nNotes:\n- The list of models used in the organization is cached and refreshed periodically.\n- All models with price overrides are listed, even if they have not been used."
+        },
+        {
+          "info": {
+            "name": "Get Model Prices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/models/:model_name/prices",
+            "params": [
+              {
+                "name": "model_name",
+                "value": "",
+                "type": "path",
+                "description": "URL-encoded model name"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve prices for a specific model."
+        },
+        {
+          "info": {
+            "name": "Upsert Model Prices",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/models/:model_name/price_overrides",
+            "params": [
+              {
+                "name": "model_name",
+                "value": "",
+                "type": "path",
+                "description": "URL-encoded model name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update pricing for a model."
+        },
+        {
+          "info": {
+            "name": "Delete Model Prices",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/models/:model_name/price_overrides",
+            "params": [
+              {
+                "name": "model_name",
+                "value": "",
+                "type": "path",
+                "description": "URL-encoded model name"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove pricing for a model."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

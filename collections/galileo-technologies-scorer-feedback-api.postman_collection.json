@@ -1,0 +1,2146 @@
+{
+  "item": [
+    {
+      "id": "2f5cafc6-3709-4caf-a067-a3bfe1cd3602",
+      "name": "scorer-feedback",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fb844aa8-dd94-46f5-924d-6b98d8cb8a85",
+          "name": "Create Scorer Feedback",
+          "request": {
+            "name": "Create Scorer Feedback",
+            "description": {
+              "content": "Creates a new feedback item in the global queue for the specified scorer.\n\n**Validation:**\n- Validates both original_value and annotated_value against scorer's output_type\n- Validates scorer_version_id exists and user has access\n- Validates user has access to the specified project\n- Auto-creates new queue if no active queue exists for this scorer\n- If active queue exists, adds feedback to that queue\n\n**Errors:**\n- 422 - Invalid annotated_value/original_value format or validation failure\n- 404 - Project, run, scorer, or scorer_version not found\n- 409 - Queue is currently locked (generating, reviewing, or completed)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scorer-feedbacks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": \"<uuid4>\",\n  \"run_id\": \"<uuid4>\",\n  \"scorer_id\": \"<uuid4>\",\n  \"scorer_version_id\": \"<uuid4>\",\n  \"record_id\": \"<uuid4>\",\n  \"original_value\": \"<string>\",\n  \"annotated_value\": \"<string>\",\n  \"feedback_text\": \"<string>\",\n  \"rationale\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8f6c5971-2cc5-406d-99ec-27a1892752d6",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_id\": \"<uuid4>\",\n  \"run_id\": \"<uuid4>\",\n  \"scorer_id\": \"<uuid4>\",\n  \"scorer_version_id\": \"<uuid4>\",\n  \"record_id\": \"<uuid4>\",\n  \"original_value\": \"<string>\",\n  \"annotated_value\": \"<string>\",\n  \"feedback_text\": \"<string>\",\n  \"rationale\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"project_id\": \"string\",\n  \"run_id\": \"string\",\n  \"scorer_id\": \"string\",\n  \"source_scorer_version_id\": \"string\",\n  \"record_id\": \"string\",\n  \"original_value\": \"string\",\n  \"annotated_value\": \"string\",\n  \"feedback_text\": \"string\",\n  \"rationale\": \"string\",\n  \"queue_id\": \"string\",\n  \"created_by\": \"string\",\n  \"created_at\": \"1956-08-09T16:22:16.170Z\",\n  \"updated_at\": \"1949-09-16T23:28:14.140Z\",\n  \"created_by_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a7b6260-91ec-4194-ab95-9a4744868ef9",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_id\": \"<uuid4>\",\n  \"run_id\": \"<uuid4>\",\n  \"scorer_id\": \"<uuid4>\",\n  \"scorer_version_id\": \"<uuid4>\",\n  \"record_id\": \"<uuid4>\",\n  \"original_value\": \"<string>\",\n  \"annotated_value\": \"<string>\",\n  \"feedback_text\": \"<string>\",\n  \"rationale\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "72f1b70b-5a25-4426-bceb-218646ca7dcf",
+          "name": "Delete Scorer Feedback",
+          "request": {
+            "name": "Delete Scorer Feedback",
+            "description": {
+              "content": "Deletes multiple feedback items by their IDs.\n\n**Validation:**\n- All feedback items must exist and user must have access\n- Feedback items must belong to queues that are not locked (not generating, reviewing, or completed)\n\n**Errors:**\n- 404 - One or more feedback items not found\n- 409 - One or more feedback items belong to a locked queue",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scorer-feedbacks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"feedback_ids\": [\n    \"<uuid4>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7518bab5-0b6e-41db-9917-81f0c975b68b",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"feedback_ids\": [\n    \"<uuid4>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"deleted_count\": 5145,\n  \"deleted_ids\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "feb22e6d-a991-49e2-b116-c8a521d08d24",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"feedback_ids\": [\n    \"<uuid4>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9510b861-b481-4e25-b08e-22a5c0173d2d",
+          "name": "Update Scorer Feedback",
+          "request": {
+            "name": "Update Scorer Feedback",
+            "description": {
+              "content": "Updates an existing feedback item in the queue.\n\nUseful for refining values or rationale while reviewing feedback before applying.\n\n**Validation:**\n- Queue must be in pending state (not locked or completed)\n- annotated_value (if provided) must be valid for the scorer's output_type\n- At least one field must be provided\n\n**Errors:**\n- 422 - Invalid annotated_value for scorer output_type, or no fields provided\n- 404 - Feedback item not found\n- 409 - Queue is currently processing or finished (locked, cannot modify)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scorer-feedbacks",
+                ":feedback_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "feedback_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"annotated_value\": \"<string>\",\n  \"feedback_text\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7b4d8786-29a2-4e67-be5e-2bda46976c8d",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    ":feedback_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "feedback_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"annotated_value\": \"<string>\",\n  \"feedback_text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"project_id\": \"string\",\n  \"run_id\": \"string\",\n  \"scorer_id\": \"string\",\n  \"source_scorer_version_id\": \"string\",\n  \"record_id\": \"string\",\n  \"original_value\": \"string\",\n  \"annotated_value\": \"string\",\n  \"feedback_text\": \"string\",\n  \"rationale\": \"string\",\n  \"queue_id\": \"string\",\n  \"created_by\": \"string\",\n  \"created_at\": \"1956-08-09T16:22:16.170Z\",\n  \"updated_at\": \"1949-09-16T23:28:14.140Z\",\n  \"created_by_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53f8b548-6072-46f7-af2f-e3acb87e3d6e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    ":feedback_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "feedback_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"annotated_value\": \"<string>\",\n  \"feedback_text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ecfc958c-256c-4784-8ea6-1ac9690c0688",
+          "name": "Get Scorer Feedback",
+          "request": {
+            "name": "Get Scorer Feedback",
+            "description": {
+              "content": "Gets all feedback items for the active queue of a scorer.\n\nReturns enriched feedback items including:\n- Basic feedback data (original/annotated values, rationale)\n- Project and run names\n- ClickHouse record data (input/output)\n- Queue metadata (status, id)\n\nIf no active queue exists for the scorer, returns empty list with null queue_id/status.\n\n**Validation:**\n- User has access to the scorer\n\n**Errors:**\n- 404 - Scorer not found or user doesn't have access",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scorer-feedbacks",
+                "scorer",
+                ":scorer_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "scorer_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b2743391-01f3-4792-92ee-14d04ddc3294",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    "scorer",
+                    ":scorer_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 3170,\n  \"queue_id\": \"string\",\n  \"queue_status\": \"completed\",\n  \"generation_task_id\": \"string\",\n  \"generation_error_message\": \"string\",\n  \"feedback_items\": [\n    {\n      \"id\": \"string\",\n      \"project_id\": \"string\",\n      \"run_id\": \"string\",\n      \"scorer_id\": \"string\",\n      \"source_scorer_version_id\": \"string\",\n      \"record_id\": \"string\",\n      \"original_value\": \"string\",\n      \"annotated_value\": \"string\",\n      \"feedback_text\": \"string\",\n      \"rationale\": \"string\",\n      \"queue_id\": \"string\",\n      \"created_by\": \"string\",\n      \"created_at\": \"1971-06-26T05:45:50.849Z\",\n      \"updated_at\": \"2010-05-24T13:46:26.395Z\",\n      \"project_name\": \"string\",\n      \"run_name\": \"string\",\n      \"created_by_name\": \"string\",\n      \"input\": \"string\",\n      \"output\": \"string\",\n      \"can_submit\": true\n    },\n    {\n      \"id\": \"string\",\n      \"project_id\": \"string\",\n      \"run_id\": \"string\",\n      \"scorer_id\": \"string\",\n      \"source_scorer_version_id\": \"string\",\n      \"record_id\": \"string\",\n      \"original_value\": \"string\",\n      \"annotated_value\": \"string\",\n      \"feedback_text\": \"string\",\n      \"rationale\": \"string\",\n      \"queue_id\": \"string\",\n      \"created_by\": \"string\",\n      \"created_at\": \"2023-12-15T07:12:03.403Z\",\n      \"updated_at\": \"1947-07-22T13:52:54.263Z\",\n      \"project_name\": \"string\",\n      \"run_name\": \"string\",\n      \"created_by_name\": \"string\",\n      \"input\": \"string\",\n      \"output\": \"string\",\n      \"can_submit\": true\n    }\n  ],\n  \"restricted_feedback\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "432ecf92-a0e9-4394-8d6f-bfaaf67bf49b",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    "scorer",
+                    ":scorer_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa4c83cc-4b6b-4599-b449-8e384be7c663",
+          "name": "Get Applied Scorer Version Feedback",
+          "request": {
+            "name": "Get Applied Scorer Version Feedback",
+            "description": {
+              "content": "Gets all feedback items that were applied to create a specific scorer version.\n\nReturns the historical feedback from the completed queue that produced this version,\nwith enriched data including:\n- Basic feedback data (original/annotated values, rationale)\n- Project and run names\n- ClickHouse record data (input/output)\n- Queue metadata (status=completed, queue_id)\n\n**Validation:**\n- User has access to the scorer version\n\n**Errors:**\n- 404 - Scorer version not found or no feedback was applied to create this version",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scorer-feedbacks",
+                "scorer_version",
+                ":scorer_version_id",
+                "applied"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "scorer_version_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d07fdd30-89ca-49b1-8f68-b5f37d5a1417",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    "scorer_version",
+                    ":scorer_version_id",
+                    "applied"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_version_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 3170,\n  \"queue_id\": \"string\",\n  \"queue_status\": \"completed\",\n  \"generation_task_id\": \"string\",\n  \"generation_error_message\": \"string\",\n  \"feedback_items\": [\n    {\n      \"id\": \"string\",\n      \"project_id\": \"string\",\n      \"run_id\": \"string\",\n      \"scorer_id\": \"string\",\n      \"source_scorer_version_id\": \"string\",\n      \"record_id\": \"string\",\n      \"original_value\": \"string\",\n      \"annotated_value\": \"string\",\n      \"feedback_text\": \"string\",\n      \"rationale\": \"string\",\n      \"queue_id\": \"string\",\n      \"created_by\": \"string\",\n      \"created_at\": \"1971-06-26T05:45:50.849Z\",\n      \"updated_at\": \"2010-05-24T13:46:26.395Z\",\n      \"project_name\": \"string\",\n      \"run_name\": \"string\",\n      \"created_by_name\": \"string\",\n      \"input\": \"string\",\n      \"output\": \"string\",\n      \"can_submit\": true\n    },\n    {\n      \"id\": \"string\",\n      \"project_id\": \"string\",\n      \"run_id\": \"string\",\n      \"scorer_id\": \"string\",\n      \"source_scorer_version_id\": \"string\",\n      \"record_id\": \"string\",\n      \"original_value\": \"string\",\n      \"annotated_value\": \"string\",\n      \"feedback_text\": \"string\",\n      \"rationale\": \"string\",\n      \"queue_id\": \"string\",\n      \"created_by\": \"string\",\n      \"created_at\": \"2023-12-15T07:12:03.403Z\",\n      \"updated_at\": \"1947-07-22T13:52:54.263Z\",\n      \"project_name\": \"string\",\n      \"run_name\": \"string\",\n      \"created_by_name\": \"string\",\n      \"input\": \"string\",\n      \"output\": \"string\",\n      \"can_submit\": true\n    }\n  ],\n  \"restricted_feedback\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2bf6c55-101b-440d-91bd-c58f7b5eec96",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    "scorer_version",
+                    ":scorer_version_id",
+                    "applied"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_version_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fee6411e-1c54-4b49-8061-2e408c4da38a",
+          "name": "Get Feedback Counts",
+          "request": {
+            "name": "Get Feedback Counts",
+            "description": {
+              "content": "Get the count of feedback items in each scorer's active feedback queue.\n\nReturns a map of scorer_id to feedback count. Scorers without an active\nqueue (or with no feedback items) return 0.\n\n**Errors:**\n- 422 - Empty scorer_ids list or invalid UUIDs",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scorer-feedbacks",
+                "feedback-counts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scorer_ids\": [\n    \"<uuid4>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2a649078-9d5e-402b-8848-0e815a802ea4",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    "feedback-counts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"scorer_ids\": [\n    \"<uuid4>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"feedback_counts\": {\n    \"key_0\": 2393,\n    \"key_1\": 3430\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b417c67-2521-49b2-9393-6f68efb1f72a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "scorer-feedbacks",
+                    "feedback-counts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"scorer_ids\": [\n    \"<uuid4>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "104c0245-39cf-45d7-b91b-0009c59018b1",
+          "name": "Generate Prompt",
+          "request": {
+            "name": "Generate Prompt",
+            "description": {
+              "content": "Generate improved scorer prompt using Autotune (CLHF).\n\nThis endpoint:\n1. Fetches all feedback items from the active queue with ClickHouse context\n2. Assembles the current metric system prompt\n3. Constructs AutotuneInput with annotated examples\n4. Queues a background job to the runners service\n5. Returns task_id for polling\n\nThe API prepares all data internally - no request body needed.\n\n**Validation:**\n- Scorer exists and user has access\n- Active queue exists in 'pending' state\n- Queue has at least one feedback item\n\n**Response:**\n- 202 Accepted with task_id for polling\n\n**Errors:**\n- 404 - Scorer not found or no active pending queue exists\n- 409 - Queue is already locked (generating or reviewing)\n- 422 - Scorer missing required configuration or queue has no feedback items",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feedback-queues",
+                "scorer",
+                ":scorer_id",
+                "generate-prompt"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "scorer_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "38eef08f-5aa2-47bc-bff9-ddff20f83dec",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    "scorer",
+                    ":scorer_id",
+                    "generate-prompt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"task_id\": \"string\",\n  \"queue_id\": \"string\",\n  \"scorer_id\": \"string\",\n  \"feedback_count\": 3060,\n  \"status\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18289aa4-e4a5-4f00-b749-a2bfa7efbdb3",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    "scorer",
+                    ":scorer_id",
+                    "generate-prompt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "14a77c00-92b0-49b2-b374-e9d74e7d3127",
+          "name": "Get Queue Status",
+          "request": {
+            "name": "Get Queue Status",
+            "description": {
+              "content": "Lightweight endpoint for polling queue generation status.\n\nReturns only queue metadata (status, error message, draft prompt) without\nfetching feedback items or ClickHouse data. Designed for efficient polling\nafter triggering prompt generation.\n\n**Errors:**\n- 404 - Scorer not found or no active queue exists",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feedback-queues",
+                "scorer",
+                ":scorer_id",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "scorer_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "87ca2606-46dd-4de8-8f78-66565db7b29a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    "scorer",
+                    ":scorer_id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"queue_id\": \"string\",\n  \"queue_status\": \"reviewing\",\n  \"generation_error_message\": \"string\",\n  \"draft_prompt\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "384efcf8-5783-4d1c-88be-86b3abf29b3c",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    "scorer",
+                    ":scorer_id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6d8b72cd-e131-4f87-96be-bebe1aa133ae",
+          "name": "Update Queue",
+          "request": {
+            "name": "Update Queue",
+            "description": {
+              "content": "Update a feedback queue by performing an action.\n\n**Supported actions:**\n- \"abort\": Abort the feedback application process and return the queue to pending state.\n  Used when user clicks \"Back\" or \"Cancel\" during generation or review.\n  Clears draft_prompt and generation_task_id. Same queue is reused.\n  Can be called during 'generating' or 'reviewing' state.\n\n- \"complete\": Complete the queue after saving a new scorer version.\n  Used when user saves a new version from the review flow.\n  Sets status to completed (immutable) and links queue to the resulting version.\n  Requires target_scorer_version_id, result_scorer_id, and result_scorer_version_id.\n  Can only be called during 'reviewing' state.\n\n**Request body:**\n- action: The action to perform (\"abort\" or \"complete\")\n- target_scorer_version_id: Required for \"complete\" action - ID of the version feedback was applied to\n- result_scorer_id: Required for \"complete\" action - ID of the scorer that owns the result version.\n  For custom LLM scorers this is the same as the queue's scorer. For preset scorers this is the\n  new custom scorer duplicated from the preset.\n- result_scorer_version_id: Required for \"complete\" action - ID of the scorer version created\n\n**Response:**\n- 200 OK with queue details showing updated status\n\n**Errors:**\n- 404 - Queue not found or user doesn't have access\n- 409 - Queue is not in a valid state for the requested action\n- 422 - Invalid action or missing required parameters",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feedback-queues",
+                ":queue_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"target_scorer_version_id\": \"<uuid4>\",\n  \"result_scorer_id\": \"<uuid4>\",\n  \"result_scorer_version_id\": \"<uuid4>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "97bee098-ac8f-4c58-9cd6-bea1faef773c",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    ":queue_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"complete\",\n  \"target_scorer_version_id\": \"<uuid4>\",\n  \"result_scorer_id\": \"<uuid4>\",\n  \"result_scorer_version_id\": \"<uuid4>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"queue_id\": \"string\",\n  \"scorer_id\": \"string\",\n  \"target_scorer_version_id\": \"string\",\n  \"status\": \"string\",\n  \"message\": \"string\",\n  \"result_scorer_id\": \"string\",\n  \"result_scorer_version_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14603c84-9872-4d23-9176-5d189af8e67d",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    ":queue_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"complete\",\n  \"target_scorer_version_id\": \"<uuid4>\",\n  \"result_scorer_id\": \"<uuid4>\",\n  \"result_scorer_version_id\": \"<uuid4>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "29969450-2985-403e-99d7-229b230a0ea4",
+          "name": "Validate Autotune Queue",
+          "request": {
+            "name": "Validate Autotune Queue",
+            "description": {
+              "content": "Test a draft prompt against feedback records in the active queue.\n\nCreates a metrics testing run by copying the feedback records and running\ngenerated scorer validation with the provided prompt. Used in the AutoTune\nData tab for 3-column comparison: Original | Expected (Annotated) | New Result.\n\nWorks in any active queue state (pending, generating, or reviewing).\n\n**Response:**\n- 202 Accepted with metrics_testing_run_id for viewing results\n\n**Errors:**\n- 404 - Scorer not found or no active queue exists\n- 422 - Queue has no feedback items or scorer has no version\n- 500 - Record processing failure",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feedback-queues",
+                "scorer",
+                ":scorer_id",
+                "validation-runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid4>",
+                  "key": "scorer_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_prompt\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f69a76ef-bdbb-4ca2-8fec-0c3d8f19b4ad",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    "scorer",
+                    ":scorer_id",
+                    "validation-runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_prompt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metrics_testing_run_id\": \"string\",\n  \"project_id\": \"string\",\n  \"queue_id\": \"string\",\n  \"feedback_count\": 1813\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19080256-86fb-4a6a-8e57-706b0d43a29e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    "scorer",
+                    ":scorer_id",
+                    "validation-runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid4>",
+                      "key": "scorer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_prompt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7580a179-aca4-421e-9697-a1efc966c60f",
+          "name": "Get Validation Results",
+          "request": {
+            "name": "Get Validation Results",
+            "description": {
+              "content": "Poll autotune validation results for a feedback queue.\n\nReturns one row per feedback item with the new scorer output joined in from\nthe metrics testing run. Used by the UI for the 3-column comparison table:\nOriginal Value | Expected (Annotated) | New Result.\n\n**Pollable:** Returns status=pending with null scores while validation is running.\nTransitions through pending → in_progress → completed as scores arrive.\n\n**Args:**\n- metrics_testing_run_id: Optional metrics testing run ID (from validate response).\n  When provided, fetches scored records and joins with feedback items.\n\n**Errors:**\n- 404 - Queue not found or user doesn't have access",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feedback-queues",
+                ":queue_id",
+                "validation-results"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "metrics_testing_run_id",
+                  "value": "<uuid4>",
+                  "description": "Metrics testing run ID for fetching validation scores"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dc90e882-82c1-4c47-81d5-82fc694af047",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    ":queue_id",
+                    "validation-results"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "metrics_testing_run_id",
+                      "value": "<uuid4>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"queue_id\": \"string\",\n  \"status\": \"pending\",\n  \"total_count\": 4736,\n  \"scored_count\": 2297,\n  \"metrics_testing_run_id\": \"string\",\n  \"results\": [\n    {\n      \"feedback_id\": \"string\",\n      \"record_id\": \"string\",\n      \"original_value\": \"string\",\n      \"annotated_value\": \"string\",\n      \"input\": \"string\",\n      \"output\": \"string\",\n      \"feedback_text\": \"string\",\n      \"new_score\": \"string\",\n      \"new_score_rationale\": \"string\",\n      \"project_name\": \"string\",\n      \"run_name\": \"string\"\n    },\n    {\n      \"feedback_id\": \"string\",\n      \"record_id\": \"string\",\n      \"original_value\": \"string\",\n      \"annotated_value\": \"string\",\n      \"input\": \"string\",\n      \"output\": \"string\",\n      \"feedback_text\": \"string\",\n      \"new_score\": \"string\",\n      \"new_score_rationale\": \"string\",\n      \"project_name\": \"string\",\n      \"run_name\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2946801d-f3da-4967-a86d-b200a287bf97",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    ":queue_id",
+                    "validation-results"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "metrics_testing_run_id",
+                      "value": "<uuid4>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "af8d1391-d0b3-4225-8838-d112dffde05d",
+          "name": "Get Validation Columns",
+          "request": {
+            "name": "Get Validation Columns",
+            "description": {
+              "content": "Get column definitions for the autotune validation results table.\n\nReturns the column metadata needed to render the validation results table,\nincluding input/output columns, feedback columns, and scorer metric columns.\n\n**Errors:**\n- 404 - Queue not found or user doesn't have access",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feedback-queues",
+                ":queue_id",
+                "validation-columns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "queue_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Galileo-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e9d3d1ea-0b7f-4efd-9bf0-d8c3064d01cb",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    ":queue_id",
+                    "validation-columns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"columns\": [\n    {\n      \"id\": \"string\",\n      \"category\": \"dataset_metadata\",\n      \"data_type\": \"string_list\",\n      \"label\": \"string\",\n      \"description\": \"string\",\n      \"group_label\": \"string\",\n      \"data_unit\": \"milli_seconds\",\n      \"multi_valued\": false,\n      \"sortable\": false,\n      \"filterable\": false,\n      \"is_empty\": false,\n      \"applicable_types\": [\n        \"session\",\n        \"trace\"\n      ],\n      \"is_optional\": false,\n      \"roll_up_method\": \"string\",\n      \"metric_key_alias\": \"string\",\n      \"scorer_config\": {\n        \"id\": \"string\",\n        \"scorer_type\": \"preset\",\n        \"model_name\": \"string\",\n        \"num_judges\": 8571,\n        \"filters\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"scoreable_node_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"cot_enabled\": true,\n        \"output_type\": \"count\",\n        \"input_type\": \"basic\",\n        \"name\": \"string\",\n        \"model_type\": \"llm\",\n        \"scorer_version\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"version\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scorer_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"generated_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"registered_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"finetuned_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"model_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"num_judges\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scoreable_node_types\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cot_enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"output_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"input_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"multimodal_capabilities\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"roll_up_method\": \"sum\",\n        \"score_type\": \"string\"\n      },\n      \"scorer_id\": \"string\",\n      \"insight_type\": \"vertical_bar\",\n      \"filter_type\": \"id\",\n      \"threshold\": {\n        \"inverted\": false,\n        \"buckets\": [\n          1453,\n          6715\n        ],\n        \"display_value_levels\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"label_color\": \"positive\"\n    },\n    {\n      \"id\": \"string\",\n      \"category\": \"user_metadata\",\n      \"data_type\": \"rank\",\n      \"label\": \"string\",\n      \"description\": \"string\",\n      \"group_label\": \"string\",\n      \"data_unit\": \"count_and_total\",\n      \"multi_valued\": false,\n      \"sortable\": true,\n      \"filterable\": false,\n      \"is_empty\": false,\n      \"applicable_types\": [\n        \"workflow\",\n        \"llm\"\n      ],\n      \"is_optional\": false,\n      \"roll_up_method\": \"string\",\n      \"metric_key_alias\": \"string\",\n      \"scorer_config\": {\n        \"id\": \"string\",\n        \"scorer_type\": \"llm\",\n        \"model_name\": \"string\",\n        \"num_judges\": 6039,\n        \"filters\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"scoreable_node_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"cot_enabled\": true,\n        \"output_type\": \"count\",\n        \"input_type\": \"trace_input_only\",\n        \"name\": \"string\",\n        \"model_type\": \"code\",\n        \"scorer_version\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"version\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scorer_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"generated_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"registered_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"finetuned_scorer\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"model_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"num_judges\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scoreable_node_types\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cot_enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"output_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"input_type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"multimodal_capabilities\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"roll_up_method\": \"min\",\n        \"score_type\": \"string\"\n      },\n      \"scorer_id\": \"string\",\n      \"insight_type\": \"horizontal_bar\",\n      \"filter_type\": \"number\",\n      \"threshold\": {\n        \"inverted\": false,\n        \"buckets\": [\n          5481,\n          6640\n        ],\n        \"display_value_levels\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"label_color\": \"positive\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "669c2c5d-ab83-4f85-9e34-3c9acae52364",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feedback-queues",
+                    ":queue_id",
+                    "validation-columns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "queue_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Galileo-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.galileo.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "70e227cd-a8e1-42d9-aaa5-92ee006d0c49",
+    "name": "Galileo API Server annotation scorer-feedback API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

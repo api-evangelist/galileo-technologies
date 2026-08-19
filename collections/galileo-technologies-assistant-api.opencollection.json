@@ -1,0 +1,464 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation assistant API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "assistant",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Mentions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/assistant/mentions",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Name search query. Empty string returns up to 20 results per type."
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query",
+                "description": "Scope to a specific project. Required for logstream and experiment results."
+              },
+              {
+                "name": "types",
+                "value": "",
+                "type": "query",
+                "description": "Entity types to include. Defaults to all applicable for the given scope."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search entities by name for @-mention autocomplete in the assistant.\n\nReturns up to 20 results per entity type. Logstreams and experiments are only\nreturned when project_id is provided."
+        },
+        {
+          "info": {
+            "name": "Get Suggested Questions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/assistant/suggested-questions",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query",
+                "description": "Active project ID."
+              },
+              {
+                "name": "logstream_id",
+                "value": "",
+                "type": "query",
+                "description": "Active logstream ID."
+              },
+              {
+                "name": "experiment_id",
+                "value": "",
+                "type": "query",
+                "description": "Active experiment ID."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return suggested questions for the assistant panel given the active context."
+        },
+        {
+          "info": {
+            "name": "Warmup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/assistant/warmup",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Warm up the assistant for a project, logstream or experiment.\n\nCall this when the user opens the assistant panel, before they send their first message.\nReturns 204. Safe to call multiple times."
+        },
+        {
+          "info": {
+            "name": "List Background Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/assistant/background-tasks",
+            "params": [
+              {
+                "name": "task_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "target_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "target_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the caller's background task linkage rows plus read-time derived statuses."
+        },
+        {
+          "info": {
+            "name": "Upsert Background Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/assistant/background-tasks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create or update an assistant background task and linkage row."
+        },
+        {
+          "info": {
+            "name": "Get Background Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/assistant/background-tasks/:task_name/:target_type/:target_id",
+            "params": [
+              {
+                "name": "task_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "target_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "target_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Return the caller's background task linkage row plus read-time derived status."
+        },
+        {
+          "info": {
+            "name": "List Conversations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/assistant/conversations",
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the caller's conversations, most recently updated first."
+        },
+        {
+          "info": {
+            "name": "Create Conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/assistant/conversations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new conversation owned by the caller."
+        },
+        {
+          "info": {
+            "name": "Update Conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.galileo.ai/assistant/conversations/:conversation_id",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Rename a conversation. 404 if it does not exist in the caller's org."
+        },
+        {
+          "info": {
+            "name": "Delete Conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/assistant/conversations/:conversation_id",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a conversation (cascades to its messages). 404 if it does not exist."
+        },
+        {
+          "info": {
+            "name": "List Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/assistant/conversations/:conversation_id/messages",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List a conversation's messages, latest first, cursor-paginated.\n\nPass `next_cursor` from a prior response back as `cursor` to load older messages.\nCursor pagination is stable under concurrent writes - new messages can land at the\nhead while the caller is scrolling back without causing duplicates or skipped rows."
+        },
+        {
+          "info": {
+            "name": "Send Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/assistant/conversations/:conversation_id/messages",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Send a message to the conversation and stream the assistant's response as SSE events.\n\n404s if the conversation does not exist or is not owned by the caller. 409s if\n`message_id` was already submitted (the field is the client-side idempotency key)."
+        },
+        {
+          "info": {
+            "name": "Resume Message Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/assistant/conversations/:conversation_id/messages/:assistant_message_id/stream",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "assistant_message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Resume an assistant response stream by replaying the turn's Redis stream."
+        },
+        {
+          "info": {
+            "name": "Stop Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/assistant/conversations/:conversation_id/messages/:message_id/stop-response",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Stop the in-progress assistant response started by `message_id`.\n\nReturns 204. The call is idempotent and is a no-op if the turn has already\nfinished. 404s if the conversation does not exist or is not owned by the caller."
+        },
+        {
+          "info": {
+            "name": "Record Message Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/assistant/messages/:message_id/feedback",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Record feedback on an assistant message.\n\nFeedback can be positive or negative and optionally include a comment.\nCalling this endpoint again replaces any previous feedback on the same message.\n404s if the message does not exist or was not created by the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Delete Message Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/assistant/messages/:message_id/feedback",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove feedback from an assistant message.\n\nNo-ops gracefully if feedback was already absent.\n404s if the message does not exist or was not created by the authenticated user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

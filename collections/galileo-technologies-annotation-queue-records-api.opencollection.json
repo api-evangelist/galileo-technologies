@@ -1,0 +1,423 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation annotation_queue_records API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "annotation_queue_records",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Partial Search Annotation Queue Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/partial_search",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search records in an annotation queue with partial field selection.\n\nThis endpoint queries all project/run pairs associated with the queue and returns\nrecords that are in the annotation queue, with only the requested fields included.\n\nPermission checks:\n- User must have READ permission on the annotation queue\n\nNote: This endpoint queries across all projects/runs in the queue."
+        },
+        {
+          "info": {
+            "name": "Add Records To Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Add records to an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select records.\nAll specified records must exist within the given project and run.\n\nPermission checks:\n- User must have UPDATE permission on the annotation queue\n- User must have READ permission on the project containing the records\n\nReturns 200 OK with the count of records added on success."
+        },
+        {
+          "info": {
+            "name": "Export Annotation Queue Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/export",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Export selected records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Export Annotation Queue Records Url",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/export/url",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Export selected records from an annotation queue and return a presigned download URL.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Remove Records From Annotation Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/remove",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select records.\nSelection is applied across all project/run pairs currently tracked in the queue.\n\nPermission checks:\n- User must have UPDATE permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Count Annotation Queue Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/count",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Count records in an annotation queue.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Get Annotation Queue Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/:record_id",
+            "params": [
+              {
+                "name": "record_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a single record in an annotation queue.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Create Annotation Queue Record Rating",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/:record_id/rating",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "record_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "annotation_template_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create an annotation rating for a record in an annotation queue.\n\nThis endpoint is project-unaware and takes the template_id in the query params."
+        },
+        {
+          "info": {
+            "name": "Delete Annotation Queue Record Rating",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/:record_id/rating",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "record_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "annotation_template_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an annotation rating for a record in an annotation queue.\n\nThis soft-deletes the rating by inserting a new row with is_deleted=1."
+        },
+        {
+          "info": {
+            "name": "Get Annotation Queue Records Available Columns",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/annotation_queues/:queue_id/records/available_columns",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get available columns for records in an annotation queue.\n\nAnnotation queues can contain records from multiple projects/runs, so this endpoint\nreturns the standard columns common across all records plus any metric columns present\nin the queue's active project/run membership and any user metadata columns present\non those runs.\n\nPermission checks:\n- User must have READ permission on the annotation queue\n\nReturns:\n- Standard columns (id, created_at, input, output, etc.)\n- Metric columns available i"
+        },
+        {
+          "info": {
+            "name": "Export Annotation Queue Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/annotation_queues/:queue_id/records/export",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Export selected records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Export Annotation Queue Records Url",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/v2/annotation_queues/:queue_id/records/export/url",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Export selected records from an annotation queue and return a presigned download URL.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Export Annotation Queue Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/annotation_queues/:queue_id/records/export",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Export selected records from an annotation queue.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        },
+        {
+          "info": {
+            "name": "Export Annotation Queue Records Url",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/public/v2/annotation_queues/:queue_id/records/export/url",
+            "params": [
+              {
+                "name": "queue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Export selected records from an annotation queue and return a presigned download URL.\n\nThe request must specify either a list of record IDs or a filter tree to select queue records.\n\nPermission checks:\n- User must have READ permission on the annotation queue"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

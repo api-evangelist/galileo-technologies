@@ -1,0 +1,63 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation code-metric-generation API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "code-metric-generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Code Metric Generation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/code-metric-generations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate scorer code from a user message (natural language, existing code, or combination).\n\nCreates a background job that calls an LLM with the code metric generation system prompt.\nReturns a generation ID for polling.\n\n**Response:** 202 Accepted with generation ID."
+        },
+        {
+          "info": {
+            "name": "Get Code Metric Generation Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/code-metric-generations/:generation_id/status",
+            "params": [
+              {
+                "name": "generation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Lightweight endpoint for polling code metric generation status.\n\nReturns status, generated code (if complete), or error message (if failed)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

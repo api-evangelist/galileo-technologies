@@ -1,0 +1,241 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation component_views API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "component_views",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Views",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/projects/:project_id/views",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "component",
+                "value": "",
+                "type": "query",
+                "description": "Component type (e.g. 'logstream_table')"
+              },
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "query",
+                "description": "Required run ID"
+              },
+              {
+                "name": "visibility",
+                "value": "",
+                "type": "query",
+                "description": "Filter by visibility: 'user', 'project', or null for all"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all views the user can see for a component.\n\nReturns:\n- User's user views\n- All project-visible views (if visibility filter allows)\n\nNote: If no project views exist for the scope, a default project-visible view\nis automatically created. This ensures every user sees at least one shared view."
+        },
+        {
+          "info": {
+            "name": "Create View",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/projects/:project_id/views",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new component view.\n\nIf this is the first view for the scope, it will automatically be set as default.\n\nPermissions:\n- User views: Any project collaborator can create\n- Project views: Only owner/editor can create"
+        },
+        {
+          "info": {
+            "name": "Get View",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/projects/:project_id/views/:view_id",
+            "params": [
+              {
+                "name": "view_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a specific view by ID.\n\nPermissions:\n- User views: Only creator can view\n- Project views: Any project collaborator can view"
+        },
+        {
+          "info": {
+            "name": "Update View",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.galileo.ai/projects/:project_id/views/:view_id",
+            "params": [
+              {
+                "name": "view_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing component view (name, description, view_data, visibility).\n\nNote: To set a view as default, use a separate endpoint/mechanism.\n\nPermissions:\n- User views: Only creator can update\n- Project views: Owner/editor can update\n- Changing from PROJECT to USER visibility: Not allowed (blocked)\n- Changing visibility of a default view: Not allowed (must set another view as default first)\n- Changing to PROJECT visibility: Requires editor+ permission"
+        },
+        {
+          "info": {
+            "name": "Delete View",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.galileo.ai/projects/:project_id/views/:view_id",
+            "params": [
+              {
+                "name": "view_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a component view.\n\nPermissions:\n- User views: Only creator can delete\n- Project views: Only owner/editor can delete"
+        },
+        {
+          "info": {
+            "name": "Set View As Default",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/projects/:project_id/views/:view_id/set-default",
+            "params": [
+              {
+                "name": "view_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Set a view as the default for its scope.\n\nThis will automatically unset any other default in the same scope.\n\nPermissions:\n- User views: Only creator can set as default\n- Project views: Owner/editor can set as default"
+        },
+        {
+          "info": {
+            "name": "Duplicate View",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/projects/:project_id/views/:view_id/duplicate",
+            "params": [
+              {
+                "name": "view_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Duplicate a view.\n\nCreates a new view owned by the current user with copied view_data.\n\nPermissions:\n- Any user who can VIEW the view can duplicate it\n- If duplicating as project-visible, need owner/editor permission"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

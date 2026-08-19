@@ -1,0 +1,63 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Galileo API Server annotation llm API",
+    "version": "1.1085.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "llm",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Prepare Finetuned Scorer Weights Upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.galileo.ai/finetuned-scorers/weights/upload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Prepare Finetuned Scorer Weights Upload"
+        },
+        {
+          "info": {
+            "name": "Get Task Result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.galileo.ai/generated-scorers/task-results/:task_result_id",
+            "params": [
+              {
+                "name": "task_result_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Galileo-API-Key",
+              "value": "{{Galileo-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Task Result"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
