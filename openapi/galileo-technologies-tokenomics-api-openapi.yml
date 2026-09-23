@@ -1,17 +1,17 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation tokenomics API
+  title: Galileo API Server Tokenomics API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
 tags:
-- name: tokenomics
+- name: Tokenomics
 paths:
   /tokenomics/usage-metrics:
     post:
       tags:
-      - tokenomics
+      - Tokenomics
       summary: Get Tokenomics Metrics
       operationId: get_tokenomics_metrics_tokenomics_usage_metrics_post
       requestBody:
@@ -41,7 +41,7 @@ paths:
   /tokenomics/usage-trends:
     post:
       tags:
-      - tokenomics
+      - Tokenomics
       summary: Get Tokenomics Trends
       operationId: get_tokenomics_trends_tokenomics_usage_trends_post
       requestBody:
@@ -71,7 +71,7 @@ paths:
   /tokenomics/adoption:
     post:
       tags:
-      - tokenomics
+      - Tokenomics
       summary: Get Tokenomics Adoption
       operationId: get_tokenomics_adoption_tokenomics_adoption_post
       requestBody:
@@ -101,7 +101,7 @@ paths:
   /tokenomics/adoption-trends:
     post:
       tags:
-      - tokenomics
+      - Tokenomics
       summary: Get Tokenomics Adoption Trends
       operationId: get_tokenomics_adoption_trends_tokenomics_adoption_trends_post
       requestBody:
@@ -131,7 +131,7 @@ paths:
   /tokenomics/users:
     post:
       tags:
-      - tokenomics
+      - Tokenomics
       summary: Get Tokenomics Users
       operationId: get_tokenomics_users_tokenomics_users_post
       requestBody:
@@ -161,7 +161,7 @@ paths:
   /tokenomics/filter-options:
     post:
       tags:
-      - tokenomics
+      - Tokenomics
       summary: Get Tokenomics Filter Options
       operationId: get_tokenomics_filter_options_tokenomics_filter_options_post
       requestBody:
@@ -190,39 +190,62 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
-    TokenomicsPaginationRequest:
+    TokenomicsFilterOptionsRequest:
       properties:
-        limit:
-          type: integer
-          maximum: 500.0
-          minimum: 1.0
-          title: Limit
-          default: 50
-        cursor:
-          anyOf:
-          - type: string
-            maxLength: 1024
-            minLength: 1
-          - type: 'null'
-          title: Cursor
+        filters:
+          $ref: '#/components/schemas/TokenomicsFilters'
       additionalProperties: false
       type: object
-      title: TokenomicsPaginationRequest
-    TokenomicsDateRange:
+      title: TokenomicsFilterOptionsRequest
+    TokenomicsFilters:
       properties:
-        start_date:
+        time_range:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsTimeRange'
+          - type: 'null'
+        providers:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 50
+            minItems: 1
+          - type: 'null'
+          title: Providers
+        models:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Models
+      additionalProperties: false
+      type: object
+      title: TokenomicsFilters
+    TokenomicsAdoptionTrendBucket:
+      properties:
+        bucket_date:
           type: string
           format: date
-          title: Start Date
-        end_date:
+          title: Bucket Date
+        provider:
           type: string
-          format: date
-          title: End Date
+          title: Provider
+        active_users:
+          type: integer
+          title: Active Users
       type: object
       required:
-      - start_date
-      - end_date
-      title: TokenomicsDateRange
+      - bucket_date
+      - provider
+      - active_users
+      title: TokenomicsAdoptionTrendBucket
     TokenomicsUsageTrendsResponse:
       properties:
         date_range:
@@ -245,15 +268,29 @@ components:
       - bucket
       - series
       title: TokenomicsUsageTrendsResponse
-    TokenomicsFilterOptionsRequest:
+    TokenomicsProviderBreakdownRow:
       properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsFilters'
-      additionalProperties: false
+        key:
+          type: string
+          title: Key
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
       type: object
-      title: TokenomicsFilterOptionsRequest
-    TokenomicsUsageMetricsTotals:
+      required:
+      - key
+      title: TokenomicsProviderBreakdownRow
+    TokenomicsUsageTrendBucket:
       properties:
+        bucket_date:
+          type: string
+          format: date
+          title: Bucket Date
+        provider:
+          type: string
+          title: Provider
         usage_cost_usd:
           anyOf:
           - type: number
@@ -265,28 +302,72 @@ components:
           - type: 'null'
           title: Total Tokens
       type: object
-      title: TokenomicsUsageMetricsTotals
-    TokenomicsAdoptionResponse:
+      required:
+      - bucket_date
+      - provider
+      title: TokenomicsUsageTrendBucket
+    TokenomicsTimeRange:
       properties:
-        date_range:
-          $ref: '#/components/schemas/TokenomicsDateRange'
-        data_freshness:
-          $ref: '#/components/schemas/TokenomicsDataFreshness'
-        total_active_users:
-          type: integer
-          title: Total Active Users
-        providers:
-          items:
-            $ref: '#/components/schemas/TokenomicsAdoptionProviderRow'
-          type: array
-          title: Providers
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
       type: object
       required:
-      - date_range
-      - data_freshness
-      - total_active_users
-      - providers
-      title: TokenomicsAdoptionResponse
+      - start_date
+      - end_date
+      title: TokenomicsTimeRange
+    TokenomicsAdoptionProviderRow:
+      properties:
+        provider:
+          type: string
+          title: Provider
+        active_users:
+          type: integer
+          title: Active Users
+      type: object
+      required:
+      - provider
+      - active_users
+      title: TokenomicsAdoptionProviderRow
+    TokenomicsAdoptionFilters:
+      properties:
+        time_range:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsTimeRange'
+          - type: 'null'
+        providers:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 50
+            minItems: 1
+          - type: 'null'
+          title: Providers
+      additionalProperties: false
+      type: object
+      title: TokenomicsAdoptionFilters
+      description: Filters for adoption reads. Adoption is per provider/day and has no model dimension, so models is absent.
+    TokenomicsAdoptionTrendsRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsAdoptionFilters'
+        bucket:
+          type: string
+          const: day
+          title: Bucket
+          default: day
+      additionalProperties: false
+      type: object
+      title: TokenomicsAdoptionTrendsRequest
     TokenomicsUsageMetricsResponse:
       properties:
         date_range:
@@ -320,123 +401,6 @@ components:
       - rows
       - breakdowns
       title: TokenomicsUsageMetricsResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TokenomicsUsageTrendBucket:
-      properties:
-        bucket_date:
-          type: string
-          format: date
-          title: Bucket Date
-        provider:
-          type: string
-          title: Provider
-        usage_cost_usd:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Usage Cost Usd
-        total_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Tokens
-      type: object
-      required:
-      - bucket_date
-      - provider
-      title: TokenomicsUsageTrendBucket
-    TokenomicsAdoptionTrendsRequest:
-      properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsAdoptionFilters'
-        bucket:
-          type: string
-          const: day
-          title: Bucket
-          default: day
-      additionalProperties: false
-      type: object
-      title: TokenomicsAdoptionTrendsRequest
-    TokenomicsAdoptionFilters:
-      properties:
-        time_range:
-          anyOf:
-          - $ref: '#/components/schemas/TokenomicsTimeRange'
-          - type: 'null'
-        providers:
-          anyOf:
-          - items:
-              type: string
-              maxLength: 256
-              minLength: 1
-            type: array
-            maxItems: 50
-            minItems: 1
-          - type: 'null'
-          title: Providers
-      additionalProperties: false
-      type: object
-      title: TokenomicsAdoptionFilters
-      description: Filters for adoption reads. Adoption is per provider/day and has no model dimension, so models is absent.
-    TokenomicsUsersResponse:
-      properties:
-        date_range:
-          $ref: '#/components/schemas/TokenomicsDateRange'
-        data_freshness:
-          $ref: '#/components/schemas/TokenomicsDataFreshness'
-        pagination:
-          $ref: '#/components/schemas/TokenomicsUsersPagination'
-        users:
-          items:
-            $ref: '#/components/schemas/TokenomicsUserRow'
-          type: array
-          title: Users
-      type: object
-      required:
-      - date_range
-      - data_freshness
-      - pagination
-      - users
-      title: TokenomicsUsersResponse
-    TokenomicsFilters:
-      properties:
-        time_range:
-          anyOf:
-          - $ref: '#/components/schemas/TokenomicsTimeRange'
-          - type: 'null'
-        providers:
-          anyOf:
-          - items:
-              type: string
-              maxLength: 256
-              minLength: 1
-            type: array
-            maxItems: 50
-            minItems: 1
-          - type: 'null'
-          title: Providers
-        models:
-          anyOf:
-          - items:
-              type: string
-              maxLength: 256
-              minLength: 1
-            type: array
-            maxItems: 200
-            minItems: 1
-          - type: 'null'
-          title: Models
-      additionalProperties: false
-      type: object
-      title: TokenomicsFilters
     TokenomicsUsersRequest:
       properties:
         filters:
@@ -466,6 +430,26 @@ components:
       additionalProperties: false
       type: object
       title: TokenomicsUsersRequest
+    TokenomicsUsersResponse:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshness'
+        pagination:
+          $ref: '#/components/schemas/TokenomicsUsersPagination'
+        users:
+          items:
+            $ref: '#/components/schemas/TokenomicsUserRow'
+          type: array
+          title: Users
+      type: object
+      required:
+      - date_range
+      - data_freshness
+      - pagination
+      - users
+      title: TokenomicsUsersResponse
     TokenomicsAdoptionTrendsResponse:
       properties:
         date_range:
@@ -488,32 +472,118 @@ components:
       - bucket
       - series
       title: TokenomicsAdoptionTrendsResponse
-    ValidationError:
+    TokenomicsModelBreakdownRow:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        key:
           type: string
-          title: Message
-        type:
+          title: Key
+        provider:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Provider
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - key
+      - provider
+      title: TokenomicsModelBreakdownRow
+    TokenomicsUsageMetricsRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsFilters'
+        group_by:
+          items:
+            type: string
+            enum:
+            - provider
+            - model
+            - user
+          type: array
+          maxItems: 3
+          minItems: 1
+          title: Group By
+        sort_by:
+          anyOf:
+          - type: string
+            enum:
+            - provider
+            - model
+            - user_email
+            - usage_cost_usd
+            - total_tokens
+          - type: 'null'
+          title: Sort By
+        sort_direction:
+          type: string
+          enum:
+          - asc
+          - desc
+          title: Sort Direction
+          default: desc
+      additionalProperties: false
+      type: object
+      title: TokenomicsUsageMetricsRequest
+    TokenomicsDateRange:
+      properties:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      type: object
+      required:
+      - start_date
+      - end_date
+      title: TokenomicsDateRange
+    TokenomicsFilterOptionsResponse:
+      properties:
+        providers:
+          items:
+            type: string
+          type: array
+          title: Providers
+        models:
+          items:
+            type: string
+          type: array
+          title: Models
+      type: object
+      required:
+      - providers
+      - models
+      title: TokenomicsFilterOptionsResponse
+    TokenomicsUsageMetricsTotals:
+      properties:
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      title: TokenomicsUsageMetricsTotals
+    TokenomicsAdoptionRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsAdoptionFilters'
+      additionalProperties: false
+      type: object
+      title: TokenomicsAdoptionRequest
     TokenomicsUserRow:
       properties:
         provider:
@@ -552,22 +622,101 @@ components:
       - user_email
       - is_active
       title: TokenomicsUserRow
-    TokenomicsTimeRange:
+    HTTPValidationError:
       properties:
-        start_date:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TokenomicsUsageTrendsRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsFilters'
+        bucket:
           type: string
-          format: date
-          title: Start Date
-        end_date:
-          type: string
-          format: date
-          title: End Date
+          const: day
+          title: Bucket
+          default: day
       additionalProperties: false
       type: object
+      title: TokenomicsUsageTrendsRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
       required:
-      - start_date
-      - end_date
-      title: TokenomicsTimeRange
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TokenomicsDataFreshness:
+      properties:
+        last_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Updated At
+      type: object
+      title: TokenomicsDataFreshness
+    TokenomicsUsageMetricsBreakdowns:
+      properties:
+        provider:
+          items:
+            $ref: '#/components/schemas/TokenomicsProviderBreakdownRow'
+          type: array
+          title: Provider
+        model:
+          items:
+            $ref: '#/components/schemas/TokenomicsModelBreakdownRow'
+          type: array
+          title: Model
+      type: object
+      required:
+      - provider
+      - model
+      title: TokenomicsUsageMetricsBreakdowns
+    TokenomicsAdoptionResponse:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshness'
+        total_active_users:
+          type: integer
+          title: Total Active Users
+        providers:
+          items:
+            $ref: '#/components/schemas/TokenomicsAdoptionProviderRow'
+          type: array
+          title: Providers
+      type: object
+      required:
+      - date_range
+      - data_freshness
+      - total_active_users
+      - providers
+      title: TokenomicsAdoptionResponse
     TokenomicsUsageMetricsRow:
       properties:
         provider:
@@ -597,149 +746,6 @@ components:
           title: Total Tokens
       type: object
       title: TokenomicsUsageMetricsRow
-    TokenomicsAdoptionProviderRow:
-      properties:
-        provider:
-          type: string
-          title: Provider
-        active_users:
-          type: integer
-          title: Active Users
-      type: object
-      required:
-      - provider
-      - active_users
-      title: TokenomicsAdoptionProviderRow
-    TokenomicsUsageMetricsRequest:
-      properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsFilters'
-        group_by:
-          items:
-            type: string
-            enum:
-            - provider
-            - model
-            - user
-          type: array
-          maxItems: 3
-          minItems: 1
-          title: Group By
-        sort_by:
-          anyOf:
-          - type: string
-            enum:
-            - provider
-            - model
-            - user_email
-            - usage_cost_usd
-            - total_tokens
-          - type: 'null'
-          title: Sort By
-        sort_direction:
-          type: string
-          enum:
-          - asc
-          - desc
-          title: Sort Direction
-          default: desc
-      additionalProperties: false
-      type: object
-      title: TokenomicsUsageMetricsRequest
-    TokenomicsFilterOptionsResponse:
-      properties:
-        providers:
-          items:
-            type: string
-          type: array
-          title: Providers
-        models:
-          items:
-            type: string
-          type: array
-          title: Models
-      type: object
-      required:
-      - providers
-      - models
-      title: TokenomicsFilterOptionsResponse
-    TokenomicsUsageTrendsRequest:
-      properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsFilters'
-        bucket:
-          type: string
-          const: day
-          title: Bucket
-          default: day
-      additionalProperties: false
-      type: object
-      title: TokenomicsUsageTrendsRequest
-    TokenomicsAdoptionRequest:
-      properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsAdoptionFilters'
-      additionalProperties: false
-      type: object
-      title: TokenomicsAdoptionRequest
-    TokenomicsModelBreakdownRow:
-      properties:
-        key:
-          type: string
-          title: Key
-        provider:
-          type: string
-          title: Provider
-        usage_cost_usd:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Usage Cost Usd
-        total_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Tokens
-      type: object
-      required:
-      - key
-      - provider
-      title: TokenomicsModelBreakdownRow
-    TokenomicsAdoptionTrendBucket:
-      properties:
-        bucket_date:
-          type: string
-          format: date
-          title: Bucket Date
-        provider:
-          type: string
-          title: Provider
-        active_users:
-          type: integer
-          title: Active Users
-      type: object
-      required:
-      - bucket_date
-      - provider
-      - active_users
-      title: TokenomicsAdoptionTrendBucket
-    TokenomicsUsageMetricsBreakdowns:
-      properties:
-        provider:
-          items:
-            $ref: '#/components/schemas/TokenomicsProviderBreakdownRow'
-          type: array
-          title: Provider
-        model:
-          items:
-            $ref: '#/components/schemas/TokenomicsModelBreakdownRow'
-          type: array
-          title: Model
-      type: object
-      required:
-      - provider
-      - model
-      title: TokenomicsUsageMetricsBreakdowns
     TokenomicsUsersPagination:
       properties:
         limit:
@@ -754,30 +760,24 @@ components:
       required:
       - limit
       title: TokenomicsUsersPagination
-    TokenomicsDataFreshness:
+    TokenomicsPaginationRequest:
       properties:
-        last_updated_at:
+        limit:
+          type: integer
+          maximum: 500.0
+          minimum: 1.0
+          title: Limit
+          default: 50
+        cursor:
           anyOf:
           - type: string
-            format: date-time
+            maxLength: 1024
+            minLength: 1
           - type: 'null'
-          title: Last Updated At
+          title: Cursor
+      additionalProperties: false
       type: object
-      title: TokenomicsDataFreshness
-    TokenomicsProviderBreakdownRow:
-      properties:
-        key:
-          type: string
-          title: Key
-        usage_cost_usd:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Usage Cost Usd
-      type: object
-      required:
-      - key
-      title: TokenomicsProviderBreakdownRow
+      title: TokenomicsPaginationRequest
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

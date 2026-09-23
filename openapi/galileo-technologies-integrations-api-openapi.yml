@@ -1,17 +1,17 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation integrations API
+  title: Galileo API Server Integrations API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
 tags:
-- name: integrations
+- name: Integrations
 paths:
   /integrations/available:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Available Integrations
       description: List all of the available integrations to be created in Galileo.
       operationId: list_available_integrations_integrations_available_get
@@ -30,7 +30,7 @@ paths:
   /integrations/{name}:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Integration
       description: Gets the integration data formatted for the specified integration.
       operationId: get_integration_integrations__name__get
@@ -88,7 +88,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete Integration
       description: Delete an integration. Admins can delete integrations created by other admins in the same org.
       operationId: delete_integration_integrations__name__delete
@@ -118,7 +118,7 @@ paths:
   /integrations/{name}/status:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Integration Status
       description: Checks if the integration status is active or not.
       operationId: get_integration_status_integrations__name__status_get
@@ -152,7 +152,7 @@ paths:
   /integrations/{integration_id}/users:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List User Integration Collaborators
       description: List the users with which the integration has been shared.
       operationId: list_user_integration_collaborators_integrations__integration_id__users_get
@@ -198,7 +198,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Create User Integration Collaborators
       operationId: create_user_integration_collaborators_integrations__integration_id__users_post
       security:
@@ -242,7 +242,7 @@ paths:
   /integrations/{integration_id}/users/{user_id}:
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Update User Integration Collaborator
       description: Update the sharing permissions of a user on an integration.
       operationId: update_user_integration_collaborator_integrations__integration_id__users__user_id__patch
@@ -287,7 +287,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete User Integration Collaborator
       description: Remove a user's access to an integration.
       operationId: delete_user_integration_collaborator_integrations__integration_id__users__user_id__delete
@@ -326,7 +326,7 @@ paths:
   /integrations/{integration_id}/groups:
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Create Group Integration Collaborators
       description: Share an integration with groups.
       operationId: create_group_integration_collaborators_integrations__integration_id__groups_post
@@ -370,7 +370,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Group Integration Collaborators
       description: List the groups with which the integration has been shared.
       operationId: list_group_integration_collaborators_integrations__integration_id__groups_get
@@ -417,7 +417,7 @@ paths:
   /integrations/{integration_id}/groups/{group_id}:
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Update Group Integration Collaborator
       description: Update the sharing permissions of a group on an integration.
       operationId: update_group_integration_collaborator_integrations__integration_id__groups__group_id__patch
@@ -462,7 +462,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete Group Integration Collaborator
       description: Remove a group's access to an integration.
       operationId: delete_group_integration_collaborator_integrations__integration_id__groups__group_id__delete
@@ -501,7 +501,7 @@ paths:
   /integrations/{integration_id}/select:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create Or Update Integration Selection
       description: Create or update an integration selection for this user from Galileo.
       operationId: create_or_update_integration_selection_integrations__integration_id__select_put
@@ -534,7 +534,7 @@ paths:
   /integrations/anthropic:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Anthropic integration
       description: Create or update an Anthropic integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_anthropic_put
@@ -567,7 +567,7 @@ paths:
   /integrations/aws_bedrock:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update AWS Bedrock integration
       description: Create or update an AWS integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_aws_bedrock_put
@@ -610,7 +610,7 @@ paths:
   /integrations/aws_sagemaker:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update AWS SageMaker integration
       description: Create or update an AWS integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_aws_sagemaker_put
@@ -676,7 +676,7 @@ paths:
   /integrations/azure:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Azure integration
       description: Create or update an Azure integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_azure_put
@@ -733,7 +733,7 @@ paths:
   /integrations/custom:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update custom integration
       operationId: create_or_update_integration_integrations_custom_put
       requestBody:
@@ -795,7 +795,7 @@ paths:
   /integrations/custom/{name}:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update a named custom integration
       operationId: create_or_update_named_custom_integration_integrations_custom__name__put
       security:
@@ -865,7 +865,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get a named custom integration
       operationId: get_named_custom_integration_integrations_custom__name__get
       security:
@@ -897,7 +897,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete a named custom integration
       operationId: delete_named_custom_integration_integrations_custom__name__delete
       security:
@@ -929,7 +929,7 @@ paths:
   /integrations/databricks/unity-catalog/sql:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Databricks integration (legacy)
       description: Create or update a databricks integration for this user from Galileo.
       operationId: create_or_update_unity_catalog_integration_integrations_databricks_unity_catalog_sql_put
@@ -969,7 +969,7 @@ paths:
   /integrations/databricks:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Databricks integration
       description: Create or update a databricks integration for this user from Galileo.
       operationId: create_or_update_unity_catalog_integration_integrations_databricks_put
@@ -1008,7 +1008,7 @@ paths:
   /integrations/databricks/catalogs:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databricks Catalogs
       operationId: get_databricks_catalogs_integrations_databricks_catalogs_get
       responses:
@@ -1029,7 +1029,7 @@ paths:
   /integrations/databricks/databases:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databases For Cluster
       operationId: get_databases_for_cluster_integrations_databricks_databases_get
       security:
@@ -1065,7 +1065,7 @@ paths:
   /integrations/mistral:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Mistral integration
       description: Create or update an Mistral integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_mistral_put
@@ -1098,7 +1098,7 @@ paths:
   /integrations/nvidia:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update NVIDIA integration
       description: Create or update an NVIDIA integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_nvidia_put
@@ -1132,7 +1132,7 @@ paths:
   /integrations/openai:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update OpenAI integration
       description: Create or update an OpenAI integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_openai_put
@@ -1165,7 +1165,7 @@ paths:
   /integrations/vegas_gateway:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Vegas Gateway integration
       description: Create or update a Vegas Gateway integration for this user from Galileo.
       operationId: create_or_update_integration_integrations_vegas_gateway_put
@@ -1200,7 +1200,7 @@ paths:
   /integrations/vertex_ai:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Vertex AI integration
       description: Create or update a Google Vertex AI integration for a user.
       operationId: create_or_update_integration_integrations_vertex_ai_put
@@ -1233,7 +1233,7 @@ paths:
   /integrations/writer:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Writer integration
       description: Create or update a Writer integration for a user.
       operationId: create_or_update_integration_integrations_writer_put
@@ -1267,7 +1267,7 @@ paths:
   /prompts/models/all:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get All Models
       operationId: get_all_models_prompts_models_all_get
       security:
@@ -1302,7 +1302,7 @@ paths:
   /integrations:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Integrations
       description: List the created integrations for the requesting user.
       operationId: list_integrations_integrations_get
@@ -1324,7 +1324,7 @@ paths:
   /integrations/costs/summary:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Integration Costs
       operationId: get_integration_costs_integrations_costs_summary_get
       security:
@@ -1374,7 +1374,7 @@ paths:
   /billing/usage/{metric}:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Billing Usage
       operationId: get_billing_usage_billing_usage__metric__get
       security:
@@ -1440,7 +1440,7 @@ paths:
   /integrations/select:
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Select Integration
       description: Select an integration for this user.
       operationId: select_integration_integrations_select_post
@@ -1471,7 +1471,7 @@ paths:
   /integrations/disable:
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Disable Integration
       description: 'Disable an integration type for this user.
 
@@ -1504,7 +1504,7 @@ paths:
   /integrations/custom/definition:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get custom integration definition
       description: 'Return the full JSON definition of the custom integration, including decrypted secrets.
 
@@ -1528,7 +1528,7 @@ paths:
   /integrations/custom/{name}/status:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Check status of a named custom integration
       operationId: get_named_custom_integration_status_integrations_custom__name__status_get
       security:
@@ -1564,7 +1564,7 @@ paths:
   /integrations/custom/{name}/definition:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get definition of a named custom integration
       description: Return the full JSON definition of a named custom integration, including decrypted secrets.
       operationId: get_named_custom_integration_definition_integrations_custom__name__definition_get
@@ -1598,7 +1598,7 @@ paths:
   /v2/integrations/available:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Available Integrations
       description: List all of the available integrations to be created in Galileo.
       operationId: list_available_integrations_v2_integrations_available_get
@@ -1617,7 +1617,7 @@ paths:
   /v2/integrations/{name}:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Integration
       description: Gets the integration data formatted for the specified integration.
       operationId: get_integration_v2_integrations__name__get
@@ -1676,7 +1676,7 @@ paths:
   /v2/integrations/{name}/status:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Integration Status
       description: Checks if the integration status is active or not.
       operationId: get_integration_status_v2_integrations__name__status_get
@@ -1710,7 +1710,7 @@ paths:
   /v2/integrations/{integration_id}/users:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List User Integration Collaborators
       description: List the users with which the integration has been shared.
       operationId: list_user_integration_collaborators_v2_integrations__integration_id__users_get
@@ -1756,7 +1756,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Create User Integration Collaborators
       operationId: create_user_integration_collaborators_v2_integrations__integration_id__users_post
       security:
@@ -1800,7 +1800,7 @@ paths:
   /v2/integrations/{integration_id}/users/{user_id}:
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Update User Integration Collaborator
       description: Update the sharing permissions of a user on an integration.
       operationId: update_user_integration_collaborator_v2_integrations__integration_id__users__user_id__patch
@@ -1845,7 +1845,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete User Integration Collaborator
       description: Remove a user's access to an integration.
       operationId: delete_user_integration_collaborator_v2_integrations__integration_id__users__user_id__delete
@@ -1884,7 +1884,7 @@ paths:
   /v2/integrations/{integration_id}/groups:
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Create Group Integration Collaborators
       description: Share an integration with groups.
       operationId: create_group_integration_collaborators_v2_integrations__integration_id__groups_post
@@ -1928,7 +1928,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Group Integration Collaborators
       description: List the groups with which the integration has been shared.
       operationId: list_group_integration_collaborators_v2_integrations__integration_id__groups_get
@@ -1975,7 +1975,7 @@ paths:
   /v2/integrations/{integration_id}/groups/{group_id}:
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Update Group Integration Collaborator
       description: Update the sharing permissions of a group on an integration.
       operationId: update_group_integration_collaborator_v2_integrations__integration_id__groups__group_id__patch
@@ -2020,7 +2020,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete Group Integration Collaborator
       description: Remove a group's access to an integration.
       operationId: delete_group_integration_collaborator_v2_integrations__integration_id__groups__group_id__delete
@@ -2059,7 +2059,7 @@ paths:
   /v2/integrations/{integration_id}/select:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create Or Update Integration Selection
       description: Create or update an integration selection for this user from Galileo.
       operationId: create_or_update_integration_selection_v2_integrations__integration_id__select_put
@@ -2092,7 +2092,7 @@ paths:
   /v2/integrations/anthropic:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Anthropic integration
       description: Create or update an Anthropic integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_anthropic_put
@@ -2125,7 +2125,7 @@ paths:
   /v2/integrations/aws_bedrock:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update AWS Bedrock integration
       description: Create or update an AWS integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_aws_bedrock_put
@@ -2168,7 +2168,7 @@ paths:
   /v2/integrations/aws_sagemaker:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update AWS SageMaker integration
       description: Create or update an AWS integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_aws_sagemaker_put
@@ -2234,7 +2234,7 @@ paths:
   /v2/integrations/azure:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Azure integration
       description: Create or update an Azure integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_azure_put
@@ -2291,7 +2291,7 @@ paths:
   /v2/integrations/custom:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update custom integration
       operationId: create_or_update_integration_v2_integrations_custom_put
       requestBody:
@@ -2353,7 +2353,7 @@ paths:
   /v2/integrations/custom/{name}:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update a named custom integration
       operationId: create_or_update_named_custom_integration_v2_integrations_custom__name__put
       security:
@@ -2424,7 +2424,7 @@ paths:
   /v2/integrations/databricks/unity-catalog/sql:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Databricks integration (legacy)
       description: Create or update a databricks integration for this user from Galileo.
       operationId: create_or_update_unity_catalog_integration_v2_integrations_databricks_unity_catalog_sql_put
@@ -2464,7 +2464,7 @@ paths:
   /v2/integrations/databricks:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Databricks integration
       description: Create or update a databricks integration for this user from Galileo.
       operationId: create_or_update_unity_catalog_integration_v2_integrations_databricks_put
@@ -2503,7 +2503,7 @@ paths:
   /v2/integrations/databricks/catalogs:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databricks Catalogs
       operationId: get_databricks_catalogs_v2_integrations_databricks_catalogs_get
       responses:
@@ -2524,7 +2524,7 @@ paths:
   /v2/integrations/databricks/databases:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databases For Cluster
       operationId: get_databases_for_cluster_v2_integrations_databricks_databases_get
       security:
@@ -2560,7 +2560,7 @@ paths:
   /v2/integrations/mistral:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Mistral integration
       description: Create or update an Mistral integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_mistral_put
@@ -2593,7 +2593,7 @@ paths:
   /v2/integrations/nvidia:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update NVIDIA integration
       description: Create or update an NVIDIA integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_nvidia_put
@@ -2627,7 +2627,7 @@ paths:
   /v2/integrations/openai:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update OpenAI integration
       description: Create or update an OpenAI integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_openai_put
@@ -2660,7 +2660,7 @@ paths:
   /v2/integrations/vegas_gateway:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Vegas Gateway integration
       description: Create or update a Vegas Gateway integration for this user from Galileo.
       operationId: create_or_update_integration_v2_integrations_vegas_gateway_put
@@ -2695,7 +2695,7 @@ paths:
   /v2/integrations/vertex_ai:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Vertex AI integration
       description: Create or update a Google Vertex AI integration for a user.
       operationId: create_or_update_integration_v2_integrations_vertex_ai_put
@@ -2728,7 +2728,7 @@ paths:
   /v2/integrations/writer:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Writer integration
       description: Create or update a Writer integration for a user.
       operationId: create_or_update_integration_v2_integrations_writer_put
@@ -2762,7 +2762,7 @@ paths:
   /public/v2/integrations/available:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Available Integrations
       description: List all of the available integrations to be created in Galileo.
       operationId: list_available_integrations_public_v2_integrations_available_get
@@ -2781,7 +2781,7 @@ paths:
   /public/v2/integrations/{name}:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Integration
       description: Gets the integration data formatted for the specified integration.
       operationId: get_integration_public_v2_integrations__name__get
@@ -2840,7 +2840,7 @@ paths:
   /public/v2/integrations/{name}/status:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Integration Status
       description: Checks if the integration status is active or not.
       operationId: get_integration_status_public_v2_integrations__name__status_get
@@ -2874,7 +2874,7 @@ paths:
   /public/v2/integrations/{integration_id}/users:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List User Integration Collaborators
       description: List the users with which the integration has been shared.
       operationId: list_user_integration_collaborators_public_v2_integrations__integration_id__users_get
@@ -2920,7 +2920,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Create User Integration Collaborators
       operationId: create_user_integration_collaborators_public_v2_integrations__integration_id__users_post
       security:
@@ -2964,7 +2964,7 @@ paths:
   /public/v2/integrations/{integration_id}/users/{user_id}:
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Update User Integration Collaborator
       description: Update the sharing permissions of a user on an integration.
       operationId: update_user_integration_collaborator_public_v2_integrations__integration_id__users__user_id__patch
@@ -3009,7 +3009,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete User Integration Collaborator
       description: Remove a user's access to an integration.
       operationId: delete_user_integration_collaborator_public_v2_integrations__integration_id__users__user_id__delete
@@ -3048,7 +3048,7 @@ paths:
   /public/v2/integrations/{integration_id}/groups:
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Create Group Integration Collaborators
       description: Share an integration with groups.
       operationId: create_group_integration_collaborators_public_v2_integrations__integration_id__groups_post
@@ -3092,7 +3092,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Group Integration Collaborators
       description: List the groups with which the integration has been shared.
       operationId: list_group_integration_collaborators_public_v2_integrations__integration_id__groups_get
@@ -3139,7 +3139,7 @@ paths:
   /public/v2/integrations/{integration_id}/groups/{group_id}:
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Update Group Integration Collaborator
       description: Update the sharing permissions of a group on an integration.
       operationId: update_group_integration_collaborator_public_v2_integrations__integration_id__groups__group_id__patch
@@ -3184,7 +3184,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete Group Integration Collaborator
       description: Remove a group's access to an integration.
       operationId: delete_group_integration_collaborator_public_v2_integrations__integration_id__groups__group_id__delete
@@ -3223,7 +3223,7 @@ paths:
   /public/v2/integrations/{integration_id}/select:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create Or Update Integration Selection
       description: Create or update an integration selection for this user from Galileo.
       operationId: create_or_update_integration_selection_public_v2_integrations__integration_id__select_put
@@ -3256,7 +3256,7 @@ paths:
   /public/v2/integrations/anthropic:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Anthropic integration
       description: Create or update an Anthropic integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_anthropic_put
@@ -3289,7 +3289,7 @@ paths:
   /public/v2/integrations/aws_bedrock:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update AWS Bedrock integration
       description: Create or update an AWS integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_aws_bedrock_put
@@ -3332,7 +3332,7 @@ paths:
   /public/v2/integrations/aws_sagemaker:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update AWS SageMaker integration
       description: Create or update an AWS integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_aws_sagemaker_put
@@ -3398,7 +3398,7 @@ paths:
   /public/v2/integrations/azure:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Azure integration
       description: Create or update an Azure integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_azure_put
@@ -3455,7 +3455,7 @@ paths:
   /public/v2/integrations/custom:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update custom integration
       operationId: create_or_update_integration_public_v2_integrations_custom_put
       requestBody:
@@ -3517,7 +3517,7 @@ paths:
   /public/v2/integrations/custom/{name}:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update a named custom integration
       operationId: create_or_update_named_custom_integration_public_v2_integrations_custom__name__put
       security:
@@ -3588,7 +3588,7 @@ paths:
   /public/v2/integrations/databricks/unity-catalog/sql:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Databricks integration (legacy)
       description: Create or update a databricks integration for this user from Galileo.
       operationId: create_or_update_unity_catalog_integration_public_v2_integrations_databricks_unity_catalog_sql_put
@@ -3628,7 +3628,7 @@ paths:
   /public/v2/integrations/databricks:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Databricks integration
       description: Create or update a databricks integration for this user from Galileo.
       operationId: create_or_update_unity_catalog_integration_public_v2_integrations_databricks_put
@@ -3667,7 +3667,7 @@ paths:
   /public/v2/integrations/databricks/catalogs:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databricks Catalogs
       operationId: get_databricks_catalogs_public_v2_integrations_databricks_catalogs_get
       responses:
@@ -3688,7 +3688,7 @@ paths:
   /public/v2/integrations/databricks/databases:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databases For Cluster
       operationId: get_databases_for_cluster_public_v2_integrations_databricks_databases_get
       security:
@@ -3724,7 +3724,7 @@ paths:
   /public/v2/integrations/mistral:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Mistral integration
       description: Create or update an Mistral integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_mistral_put
@@ -3757,7 +3757,7 @@ paths:
   /public/v2/integrations/nvidia:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update NVIDIA integration
       description: Create or update an NVIDIA integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_nvidia_put
@@ -3791,7 +3791,7 @@ paths:
   /public/v2/integrations/openai:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update OpenAI integration
       description: Create or update an OpenAI integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_openai_put
@@ -3824,7 +3824,7 @@ paths:
   /public/v2/integrations/vegas_gateway:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Vegas Gateway integration
       description: Create or update a Vegas Gateway integration for this user from Galileo.
       operationId: create_or_update_integration_public_v2_integrations_vegas_gateway_put
@@ -3859,7 +3859,7 @@ paths:
   /public/v2/integrations/vertex_ai:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Vertex AI integration
       description: Create or update a Google Vertex AI integration for a user.
       operationId: create_or_update_integration_public_v2_integrations_vertex_ai_put
@@ -3892,7 +3892,7 @@ paths:
   /public/v2/integrations/writer:
     put:
       tags:
-      - integrations
+      - Integrations
       summary: Create or update Writer integration
       description: Create or update a Writer integration for a user.
       operationId: create_or_update_integration_public_v2_integrations_writer_put
@@ -3925,128 +3925,39 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
-    WriterIntegration:
-      properties:
-        organization_id:
-          type: string
-          title: Organization Id
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          type: string
-          const: writer
-          title: Name
-          default: writer
-        provider:
-          type: string
-          const: writer
-          title: Provider
-          default: writer
-        extra:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-      type: object
-      required:
-      - organization_id
-      title: WriterIntegration
-    AvailableIntegrations:
-      properties:
-        integrations:
-          items:
-            $ref: '#/components/schemas/IntegrationProvider'
-          type: array
-          title: Integrations
-      type: object
-      required:
-      - integrations
-      title: AvailableIntegrations
-    CollaboratorUpdate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-      type: object
-      required:
-      - role
-      title: CollaboratorUpdate
-    CustomLLMConfig:
-      properties:
-        file_name:
-          type: string
-          title: File Name
-          description: Python file name containing the CustomLLM class (e.g., 'my_handler.py')
-        class_name:
-          type: string
-          title: Class Name
-          description: Class name within the module (must be a litellm.CustomLLM subclass)
-        init_kwargs:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Init Kwargs
-          description: Optional keyword arguments to pass to the CustomLLM constructor
-      type: object
-      required:
-      - file_name
-      - class_name
-      title: CustomLLMConfig
-      description: 'Configuration for a custom LiteLLM handler class.
-
-
-        Allows users to specify a custom implementation of litellm.CustomLLM
-
-        that handles acompletion() calls with custom request/response transformation.'
-    AwsSageMakerIntegration:
-      properties:
-        credential_type:
-          $ref: '#/components/schemas/AwsCredentialType'
-          default: key_secret
-        region:
-          type: string
-          title: Region
-          default: us-west-2
-        multi_modal_config:
-          anyOf:
-          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
-          - type: 'null'
-          description: Configuration for multi-modal (file upload) capabilities.
-        models:
-          items:
-            $ref: '#/components/schemas/Model'
-          type: array
-          title: Models
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          type: string
-          const: aws_sagemaker
-          title: Name
-          default: aws_sagemaker
-        provider:
-          type: string
-          const: aws_sagemaker
-          title: Provider
-          default: aws_sagemaker
-        extra:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-      type: object
-      title: AwsSageMakerIntegration
-    IntegrationDB:
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    GroupCollaborator:
       properties:
         id:
           type: string
@@ -4058,352 +3969,27 @@ components:
           type: array
           title: Permissions
           default: []
-        name:
-          type: string
-          title: Name
-        provider:
-          $ref: '#/components/schemas/IntegrationProvider'
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
         created_at:
           type: string
           format: date-time
           title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        created_by:
+        group_id:
           type: string
           format: uuid4
-          title: Created By
-        is_selected:
-          type: boolean
-          title: Is Selected
-          default: false
-        is_disabled:
-          type: boolean
-          title: Is Disabled
-          default: false
+          title: Group Id
+        group_name:
+          type: string
+          title: Group Name
       type: object
       required:
       - id
-      - name
-      - provider
+      - role
       - created_at
-      - updated_at
-      - created_by
-      title: IntegrationDB
-    Model:
-      properties:
-        name:
-          type: string
-          title: Name
-        alias:
-          type: string
-          title: Alias
-        integration:
-          $ref: '#/components/schemas/LLMIntegration'
-          default: openai
-        user_role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Role
-        assistant_role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Assistant Role
-        system_supported:
-          type: boolean
-          title: System Supported
-          default: false
-        input_modalities:
-          items:
-            $ref: '#/components/schemas/ContentModality'
-          type: array
-          title: Input Modalities
-          description: Input modalities that the model can accept.
-        alternative_names:
-          items:
-            type: string
-          type: array
-          title: Alternative Names
-          description: Alternative names for the model, used for matching with various current, versioned or legacy names.
-        input_token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Input Token Limit
-        output_token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Output Token Limit
-        token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Token Limit
-        cost_by:
-          $ref: '#/components/schemas/ModelCostBy'
-          default: tokens
-        is_chat:
-          type: boolean
-          title: Is Chat
-          default: false
-        provides_log_probs:
-          type: boolean
-          title: Provides Log Probs
-          default: false
-        formatting_tokens:
-          type: integer
-          title: Formatting Tokens
-          default: 0
-        response_prefix_tokens:
-          type: integer
-          title: Response Prefix Tokens
-          default: 0
-        api_version:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Api Version
-        legacy_mistral_prompt_format:
-          type: boolean
-          title: Legacy Mistral Prompt Format
-          default: false
-        requires_max_tokens:
-          type: boolean
-          title: Requires Max Tokens
-          default: false
-        max_top_p:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Max Top P
-        params_map:
-          $ref: '#/components/schemas/RunParamsMap'
-        output_map:
-          anyOf:
-          - $ref: '#/components/schemas/OutputMap'
-          - type: 'null'
-        input_map:
-          anyOf:
-          - $ref: '#/components/schemas/InputMap'
-          - type: 'null'
-      type: object
-      required:
-      - name
-      - alias
-      title: Model
-    VegasGatewayIntegrationCreate:
-      properties:
-        multi_modal_config:
-          anyOf:
-          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
-          - type: 'null'
-          description: Configuration for multi-modal (file upload) capabilities.
-        endpoint:
-          type: string
-          maxLength: 2083
-          minLength: 1
-          format: uri
-          title: Endpoint
-        use_case:
-          type: string
-          title: Use Case
-        token:
-          type: string
-          title: Token
-      type: object
-      required:
-      - endpoint
-      - use_case
-      - token
-      title: VegasGatewayIntegrationCreate
-    ModelProperties-Input:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The model name used when calling the API.
-        alias:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Alias
-          description: The display name/alias for the model. Defaults to name.
-        based_on:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Based On
-          description: Alias of a built-in model whose parameter map should be used. For example, 'gpt-5.4'. Mutually exclusive with supported_parameters.
-        supported_parameters:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Parameters
-          description: Explicit list of parameter names this model supports (e.g., ['max_tokens', 'temperature', 'verbosity']). Each name must be a valid RunParamsMap field. Mutually exclusive with based_on.
-      type: object
-      required:
-      - name
-      title: ModelProperties
-      description: "Properties for a model in a custom integration.\n\nAttributes:\n    name: The model name used when calling the API.\n    alias: The display name/alias for the model in the UI.\n          Defaults to ``name`` when not provided.\n    based_on: Alias of a built-in model whose parameter map should be used.\n              Mutually exclusive with ``supported_parameters``.\n    supported_parameters: Explicit list of parameter names this model supports.\n                          Mutually exclusive with ``based_on``."
-    CollaboratorRole:
-      type: string
-      enum:
-      - owner
-      - editor
-      - annotator
-      - viewer
-      title: CollaboratorRole
-    InputMap:
-      properties:
-        prompt:
-          type: string
-          title: Prompt
-        prefix:
-          type: string
-          title: Prefix
-          default: ''
-        suffix:
-          type: string
-          title: Suffix
-          default: ''
-      type: object
-      required:
-      - prompt
-      title: InputMap
-    MistralIntegration:
-      properties:
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          type: string
-          const: mistral
-          title: Name
-          default: mistral
-        provider:
-          type: string
-          const: mistral
-          title: Provider
-          default: mistral
-        extra:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-      type: object
-      title: MistralIntegration
-    MultiModalModelIntegrationConfig:
-      properties:
-        max_files:
-          anyOf:
-          - type: integer
-            minimum: 1.0
-          - type: 'null'
-          title: Max Files
-          description: Maximum number of files allowed per request. None means no limit.
-        max_file_size_bytes:
-          anyOf:
-          - type: integer
-            minimum: 1.0
-          - type: 'null'
-          title: Max File Size Bytes
-          description: Maximum file size in bytes per file. None means no limit.
-      type: object
-      title: MultiModalModelIntegrationConfig
-      description: Configuration for multi-modal capabilities (file uploads).
-    promptgalileo__schemas__config__custom__ModelProperties:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The model name used when calling the API.
-        alias:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Alias
-          description: The display name/alias for the model. Defaults to name.
-        based_on:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Based On
-          description: Alias of a built-in model whose parameter map should be used. For example, 'gpt-5.4'. Mutually exclusive with supported_parameters.
-        supported_parameters:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Parameters
-          description: Explicit list of parameter names this model supports (e.g., ['max_tokens', 'temperature', 'verbosity']). Each name must be a valid RunParamsMap field. Mutually exclusive with based_on.
-      type: object
-      required:
-      - name
-      title: ModelProperties
-      description: "Properties for a model in a custom integration.\n\nAttributes:\n    name: The model name used when calling the API.\n    alias: The display name/alias for the model in the UI.\n          Defaults to ``name`` when not provided.\n    based_on: Alias of a built-in model whose parameter map should be used.\n              Mutually exclusive with ``supported_parameters``.\n    supported_parameters: Explicit list of parameter names this model supports.\n                          Mutually exclusive with ``based_on``."
-    UserCollaboratorCreate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-          default: viewer
-        user_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: User Id
-        user_email:
-          anyOf:
-          - type: string
-            format: email
-          - type: 'null'
-          title: User Email
-      type: object
-      title: UserCollaboratorCreate
-      description: 'Create a user collaborator using either user_id or email.
-
-
-        When using email, if the user doesn''t exist in the organization,
-
-        they will be invited automatically.'
-    IntegrationDisableRequest:
-      properties:
-        integration_name:
-          type: string
-          title: Integration Name
-      type: object
-      required:
-      - integration_name
-      title: IntegrationDisableRequest
-    CustomAuthenticationType:
-      type: string
-      enum:
-      - api_key
-      - none
-      - oauth2
-      title: CustomAuthenticationType
-      description: 'Authentication types for custom integrations.
-
-
-        Values:
-
-        - none: No authentication required
-
-        - oauth2: OAuth2 token-based authentication
-
-        - api_key: API key header-based authentication'
+      - group_id
+      - group_name
+      title: GroupCollaborator
     AnthropicIntegration:
       properties:
         multi_modal_config:
@@ -4463,294 +4049,83 @@ components:
           title: Extra
       type: object
       title: AnthropicIntegration
-    ListUserCollaboratorsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        collaborators:
-          items:
-            $ref: '#/components/schemas/UserCollaborator'
-          type: array
-          title: Collaborators
-      type: object
-      required:
-      - collaborators
-      title: ListUserCollaboratorsResponse
-    NvidiaIntegrationCreate:
-      properties:
-        token:
-          type: string
-          title: Token
-        hostname:
-          type: string
-          maxLength: 2083
-          minLength: 1
-          format: uri
-          title: Hostname
-      type: object
-      required:
-      - token
-      - hostname
-      title: NvidiaIntegrationCreate
-    ContentModality:
+    AnthropicAuthenticationType:
       type: string
       enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
-    ControlResourceAction:
-      type: string
-      enum:
-      - create
-      - read
-      - update
-      - delete
-      title: ControlResourceAction
-      description: Actions on Agent Control's org-scoped ``control`` resource.
-    VegasGatewayIntegration:
+      - api_key
+      - custom_oauth2
+      title: AnthropicAuthenticationType
+    CustomLLMConfig:
       properties:
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
+        file_name:
           type: string
-          const: vegas_gateway
-          title: Name
-          default: vegas_gateway
-        provider:
+          title: File Name
+          description: Python file name containing the CustomLLM class (e.g., 'my_handler.py')
+        class_name:
           type: string
-          const: vegas_gateway
-          title: Provider
-          default: vegas_gateway
-        extra:
+          title: Class Name
+          description: Class name within the module (must be a litellm.CustomLLM subclass)
+        init_kwargs:
           anyOf:
           - additionalProperties: true
             type: object
           - type: 'null'
-          title: Extra
-      type: object
-      title: VegasGatewayIntegration
-    ModelInfo:
-      properties:
-        name:
-          type: string
-          title: Name
-        alias:
-          type: string
-          title: Alias
-        integration:
-          $ref: '#/components/schemas/LLMIntegration'
-          default: openai
-        user_role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Role
-        assistant_role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Assistant Role
-        system_supported:
-          type: boolean
-          title: System Supported
-          default: false
-        input_modalities:
-          items:
-            $ref: '#/components/schemas/ContentModality'
-          type: array
-          title: Input Modalities
-          description: Input modalities that the model can accept.
+          title: Init Kwargs
+          description: Optional keyword arguments to pass to the CustomLLM constructor
       type: object
       required:
-      - name
-      - alias
-      title: ModelInfo
-      description: 'Model information that is useful to surface to the UI and in other contexts.
+      - file_name
+      - class_name
+      title: CustomLLMConfig
+      description: 'Configuration for a custom LiteLLM handler class.
 
 
-        This is a subset of all of the information we store about the model. We need a lot more
+        Allows users to specify a custom implementation of litellm.CustomLLM
 
-        information to actually execute requests against the model, but that is not necessary
-
-        to surface to the user.'
-    DatabricksIntegration:
-      properties:
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          type: string
-          const: databricks
-          title: Name
-          default: databricks
-        provider:
-          type: string
-          const: databricks
-          title: Provider
-          default: databricks
-        extra:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-      type: object
-      title: DatabricksIntegration
-    RunParamsMap:
-      properties:
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model
-        temperature:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Temperature
-        max_tokens:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Max Tokens
-        stop_sequences:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Stop Sequences
-        top_p:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Top P
-        top_k:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Top K
-        frequency_penalty:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Frequency Penalty
-        presence_penalty:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Presence Penalty
-        echo:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Echo
-        logprobs:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logprobs
-        top_logprobs:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Top Logprobs
-        n:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: N
-        api_version:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Api Version
-        tools:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Tools
-        tool_choice:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Tool Choice
-        response_format:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Response Format
-        reasoning_effort:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Reasoning Effort
-        verbosity:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Verbosity
-        deployment_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Deployment Name
-      type: object
-      title: RunParamsMap
-      description: 'Maps the internal settings parameters (left) to the serialized parameters (right) we want to send in the API
-
-        requests.'
-    AwsCredentialType:
-      type: string
-      enum:
-      - assumed_role
-      - key_secret
-      title: AwsCredentialType
-    AnthropicIntegrationCreate:
+        that handles acompletion() calls with custom request/response transformation.'
+    AzureIntegrationCreate:
       properties:
         multi_modal_config:
           anyOf:
           - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
           - type: 'null'
           description: Configuration for multi-modal (file upload) capabilities.
-        authentication_type:
-          $ref: '#/components/schemas/AnthropicAuthenticationType'
-          default: api_key
+        proxy:
+          type: boolean
+          title: Proxy
+          default: false
         endpoint:
+          type: string
+          title: Endpoint
+        api_version:
+          type: string
+          title: Api Version
+          default: 2025-03-01-preview
+        azure_deployment:
           anyOf:
           - type: string
           - type: 'null'
-          title: Endpoint
-          description: Custom base URL for the Anthropic API. Required if `proxy` is True.
+          title: Azure Deployment
+        authentication_type:
+          $ref: '#/components/schemas/AzureAuthenticationType'
+          default: api_key
         authentication_scope:
           anyOf:
           - type: string
           - type: 'null'
           title: Authentication Scope
+        default_headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Default Headers
+        deployments:
+          additionalProperties:
+            type: string
+          type: object
+          title: Deployments
         oauth2_token_url:
           anyOf:
           - type: string
@@ -4765,13 +4140,47 @@ components:
           - type: 'null'
           title: Custom Header Mapping
           description: Custom header mapping from internal fields to be included in the LLM request.
+        available_deployments:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/AzureModelDeployment'
+            type: array
+          - type: 'null'
+          title: Available Deployments
+          description: The available deployments for this integration. If provided, we will not try to get this list from Azure.
         token:
           type: string
           title: Token
       type: object
       required:
+      - endpoint
       - token
-      title: AnthropicIntegrationCreate
+      title: AzureIntegrationCreate
+    UserCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: User Id
+        user_email:
+          anyOf:
+          - type: string
+            format: email
+          - type: 'null'
+          title: User Email
+      type: object
+      title: UserCollaboratorCreate
+      description: 'Create a user collaborator using either user_id or email.
+
+
+        When using email, if the user doesn''t exist in the organization,
+
+        they will be invited automatically.'
     CustomIntegrationDefinition:
       properties:
         authentication_type:
@@ -4851,39 +4260,217 @@ components:
         including decrypted sensitive fields (api_key_value, token, headers).
 
         Only accessible to users with edit permission (creator + admins).'
-    MistralIntegrationCreate:
+    VegasGatewayIntegration:
       properties:
-        token:
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
           type: string
-          title: Token
+          const: vegas_gateway
+          title: Name
+          default: vegas_gateway
+        provider:
+          type: string
+          const: vegas_gateway
+          title: Provider
+          default: vegas_gateway
+        extra:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
       type: object
-      required:
-      - token
-      title: MistralIntegrationCreate
-    HTTPValidationError:
+      title: VegasGatewayIntegration
+    IntegrationCostsResponse:
       properties:
-        detail:
+        features:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/FeatureIntegrationCosts'
           type: array
-          title: Detail
+          title: Features
       type: object
-      title: HTTPValidationError
-    OpenAIIntegrationCreate:
+      title: IntegrationCostsResponse
+    ModelCostBy:
+      type: string
+      enum:
+      - tokens
+      - characters
+      title: ModelCostBy
+    CustomIntegrationCreate:
       properties:
-        organization_id:
+        multi_modal_config:
+          anyOf:
+          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
+          - type: 'null'
+          description: Configuration for multi-modal (file upload) capabilities.
+        authentication_type:
+          $ref: '#/components/schemas/CustomAuthenticationType'
+          default: oauth2
+        models:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Models
+          description: 'List of model names for the custom integration. Deprecated: use model_properties instead.'
+        model_properties:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ModelProperties-Input'
+            type: array
+          - type: 'null'
+          title: Model Properties
+          description: List of model properties with name and alias for the custom integration.
+        is_legacy_format:
+          type: boolean
+          title: Is Legacy Format
+          description: 'Internal: whether this config was created from the legacy ''models'' field.'
+          default: false
+        default_model:
           anyOf:
           - type: string
           - type: 'null'
-          title: Organization Id
-        token:
+          title: Default Model
+          description: Default model to use. If not provided, defaults to the first model.
+        endpoint:
           type: string
+          title: Endpoint
+          description: Endpoint URL for the custom integration.
+        authentication_scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authentication Scope
+          description: Optional scope for OAuth2 authentication.
+        oauth2_token_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Oauth2 Token Url
+          description: OAuth2 token URL for custom OAuth2 authentication. If not provided, defaults to the endpoint.
+        api_key_header:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Key Header
+          description: HTTP header name to use for API key authentication (e.g., 'X-API-Key', 'Authorization').
+        api_key_value:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Key Value
+          description: API key value to send in the specified header for authentication.
+        custom_llm_config:
+          anyOf:
+          - $ref: '#/components/schemas/CustomLLMConfig'
+          - type: 'null'
+          description: Optional configuration for a custom LiteLLM handler class. When specified, the handler's acompletion() method is used instead of the default litellm.acompletion().
+        custom_header_mapping:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Custom Header Mapping
+          description: Custom header mapping from internal fields (job_id, user_id, project_id, run_id) to custom header names to be included in LLM requests.
+        headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+            maxProperties: 50
+          - type: 'null'
+          title: Headers
+          description: Optional custom HTTP headers to include in requests to the integration endpoint. Stored encrypted at rest.
+        token:
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Token
       type: object
       required:
-      - token
-      title: OpenAIIntegrationCreate
-    AzureIntegrationCreate:
+      - endpoint
+      title: CustomIntegrationCreate
+      description: 'Schema for creating custom integrations.
+
+
+        Inherits api_key field validation from CustomConfig:
+
+        - api_key_header and api_key_value are required when authentication_type is api_key
+
+
+        Token field is only used for oauth2 authentication (contains OAuth2 client credentials).
+
+        For api_key auth, the api_key_value field is used instead.'
+    GroupCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+      type: object
+      required:
+      - group_id
+      title: GroupCollaboratorCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ProjectIntegrationCosts:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+        total_cost:
+          type: number
+          title: Total Cost
+          default: 0.0
+        data_points:
+          items:
+            $ref: '#/components/schemas/IntegrationCostsDataPoint'
+          type: array
+          title: Data Points
+      type: object
+      required:
+      - project_id
+      - project_name
+      title: ProjectIntegrationCosts
+    AzureIntegration:
       properties:
         multi_modal_config:
           anyOf:
@@ -4948,303 +4535,32 @@ components:
           - type: 'null'
           title: Available Deployments
           description: The available deployments for this integration. If provided, we will not try to get this list from Azure.
-        token:
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
           type: string
-          title: Token
+          const: azure
+          title: Name
+          default: azure
+        provider:
+          type: string
+          const: azure
+          title: Provider
+          default: azure
+        extra:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
       type: object
       required:
       - endpoint
-      - token
-      title: AzureIntegrationCreate
-    AzureAuthenticationType:
-      type: string
-      enum:
-      - api_key
-      - client_secret
-      - username_password
-      - custom_oauth2
-      title: AzureAuthenticationType
-    WriterIntegrationCreate:
-      properties:
-        organization_id:
-          type: string
-          title: Organization Id
-        token:
-          type: string
-          title: Token
-      type: object
-      required:
-      - organization_id
-      - token
-      title: WriterIntegrationCreate
-    DatasetAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
-    GeneratedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: GeneratedScorerAction
-    IntegrationCostsResponse:
-      properties:
-        features:
-          items:
-            $ref: '#/components/schemas/FeatureIntegrationCosts'
-          type: array
-          title: Features
-      type: object
-      title: IntegrationCostsResponse
-    ProjectIntegrationCosts:
-      properties:
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        project_name:
-          type: string
-          title: Project Name
-        total_cost:
-          type: number
-          title: Total Cost
-          default: 0.0
-        data_points:
-          items:
-            $ref: '#/components/schemas/IntegrationCostsDataPoint'
-          type: array
-          title: Data Points
-      type: object
-      required:
-      - project_id
-      - project_name
-      title: ProjectIntegrationCosts
-    AnthropicAuthenticationType:
-      type: string
-      enum:
-      - api_key
-      - custom_oauth2
-      title: AnthropicAuthenticationType
-    LLMIntegration:
-      type: string
-      enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: LLMIntegration
-    FeatureIntegrationCosts:
-      properties:
-        feature_name:
-          type: string
-          title: Feature Name
-        total_cost:
-          type: number
-          title: Total Cost
-          default: 0.0
-        projects:
-          items:
-            $ref: '#/components/schemas/ProjectIntegrationCosts'
-          type: array
-          title: Projects
-      type: object
-      required:
-      - feature_name
-      title: FeatureIntegrationCosts
-    AwsSageMakerIntegrationCreate:
-      properties:
-        multi_modal_config:
-          anyOf:
-          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
-          - type: 'null'
-          description: Configuration for multi-modal (file upload) capabilities.
-        models:
-          items:
-            $ref: '#/components/schemas/Model'
-          type: array
-          title: Models
-        credential_type:
-          $ref: '#/components/schemas/AwsCredentialType'
-          default: key_secret
-        region:
-          type: string
-          title: Region
-          default: us-west-2
-        inference_profiles:
-          additionalProperties:
-            type: string
-          type: object
-          title: Inference Profiles
-          description: Mapping from model name (Foundation model ID) to inference profile ARN or ID
-        token:
-          additionalProperties:
-            type: string
-          type: object
-          title: Token
-      type: object
-      required:
-      - token
-      title: AwsSageMakerIntegrationCreate
-    UserAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - read_api_keys
-      - change_role_to_admin
-      - change_role_to_manager
-      - change_role_to_user
-      - change_role_to_read_only
-      title: UserAction
-    IntegrationCostsDataPoint:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        cost:
-          type: number
-          title: Cost
-      type: object
-      required:
-      - timestamp
-      - cost
-      title: IntegrationCostsDataPoint
-    VertexAIGCSConfigResponse:
-      properties:
-        bucket_name:
-          type: string
-          title: Bucket Name
-        object_path_prefix:
-          type: string
-          title: Object Path Prefix
-      type: object
-      required:
-      - bucket_name
-      - object_path_prefix
-      title: VertexAIGCSConfigResponse
-      description: GCS config response model — credentials are never exposed in GET responses.
-    OrganizationAction:
-      type: string
-      enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
-    ScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - autotune_apply
-      title: ScorerAction
-    AzureModelDeployment:
-      properties:
-        model:
-          type: string
-          title: Model
-          description: The name of the model.
-        id:
-          type: string
-          title: Id
-          description: The ID of the deployment.
-      type: object
-      required:
-      - model
-      - id
-      title: AzureModelDeployment
-    BillingUsageMetric:
-      type: string
-      enum:
-      - traces
-      - spans
-      - luna_tokens
-      - luna_fine_tuning_runs
-      title: BillingUsageMetric
-    IntegrationAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - read_secrets
-      title: IntegrationAction
-    ProjectAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - rename
-      - share
-      - create_run
-      - delete_run
-      - rename_run
-      - move_run
-      - export_data
-      - configure_human_feedback
-      - record_human_feedback
-      - log_data
-      - toggle_metric
-      - edit_alert
-      - create_stage
-      - edit_stage
-      - configure_crown_logic
-      - delete_data
-      - set_metric
-      - edit_run_tags
-      - dismiss_alert
-      - edit_slice
-      - edit_edit
-      - update_control_bindings
-      - use_control_runtime
-      title: ProjectAction
-    ListGroupCollaboratorsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        collaborators:
-          items:
-            $ref: '#/components/schemas/GroupCollaborator'
-          type: array
-          title: Collaborators
-      type: object
-      required:
-      - collaborators
-      title: ListGroupCollaboratorsResponse
+      title: AzureIntegration
     CustomIntegration:
       properties:
         multi_modal_config:
@@ -5363,62 +4679,115 @@ components:
         so we override the parent validator to skip requiring it on read.
 
         Headers are not returned on read (they''re encrypted and sensitive).'
-    GroupAction:
+    IntegrationCostsDataPoint:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        cost:
+          type: number
+          title: Cost
+      type: object
+      required:
+      - timestamp
+      - cost
+      title: IntegrationCostsDataPoint
+    BillingUsageDataPoint:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        value:
+          type: integer
+          title: Value
+      type: object
+      required:
+      - timestamp
+      - value
+      title: BillingUsageDataPoint
+    BillingUsageMetric:
       type: string
       enum:
-      - update
-      - list_members
-      - join
-      - request_to_join
-      title: GroupAction
-    BaseAwsIntegrationCreate:
+      - traces
+      - spans
+      - luna_tokens
+      - luna_fine_tuning_runs
+      title: BillingUsageMetric
+    VertexAIIntegration:
       properties:
         multi_modal_config:
           anyOf:
           - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
           - type: 'null'
           description: Configuration for multi-modal (file upload) capabilities.
-        credential_type:
-          $ref: '#/components/schemas/AwsCredentialType'
-          default: key_secret
-        region:
+        gcs_config:
+          anyOf:
+          - $ref: '#/components/schemas/VertexAIGCSConfigResponse'
+          - type: 'null'
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
           type: string
-          title: Region
-          default: us-west-2
-        inference_profiles:
-          additionalProperties:
-            type: string
-          type: object
-          title: Inference Profiles
-          description: Mapping from model name (Foundation model ID) to inference profile ARN or ID
-        token:
-          additionalProperties:
-            type: string
-          type: object
-          title: Token
+          const: vertex_ai
+          title: Name
+          default: vertex_ai
+        provider:
+          type: string
+          const: vertex_ai
+          title: Provider
+          default: vertex_ai
+        extra:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
       type: object
-      required:
-      - token
-      title: BaseAwsIntegrationCreate
-    VertexAIGCSConfig:
+      title: VertexAIIntegration
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    OpenAIIntegration:
       properties:
-        service_account_credentials:
+        organization_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization Id
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
           type: string
-          title: Service Account Credentials
-        bucket_name:
+          const: openai
+          title: Name
+          default: openai
+        provider:
           type: string
-          title: Bucket Name
-        object_path_prefix:
-          type: string
-          title: Object Path Prefix
+          const: openai
+          title: Provider
+          default: openai
+        extra:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
       type: object
-      required:
-      - service_account_credentials
-      - bucket_name
-      - object_path_prefix
-      title: VertexAIGCSConfig
-      description: Configuration for GCS file uploads in Vertex AI.
-    IntegrationProvider:
+      title: OpenAIIntegration
+    LLMIntegration:
       type: string
       enum:
       - anthropic
@@ -5433,7 +4802,18 @@ components:
       - vegas_gateway
       - vertex_ai
       - writer
-      title: IntegrationProvider
+      title: LLMIntegration
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
     UserCollaborator:
       properties:
         id:
@@ -5479,99 +4859,438 @@ components:
       - last_name
       - email
       title: UserCollaborator
-    Permission:
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    WriterIntegrationCreate:
       properties:
-        action:
-          anyOf:
-          - $ref: '#/components/schemas/UserAction'
-          - $ref: '#/components/schemas/GroupAction'
-          - $ref: '#/components/schemas/GroupMemberAction'
-          - $ref: '#/components/schemas/ProjectAction'
-          - $ref: '#/components/schemas/ScorerAction'
-          - $ref: '#/components/schemas/RegisteredScorerAction'
-          - $ref: '#/components/schemas/ApiKeyAction'
-          - $ref: '#/components/schemas/GeneratedScorerAction'
-          - $ref: '#/components/schemas/FineTunedScorerAction'
-          - $ref: '#/components/schemas/DatasetAction'
-          - $ref: '#/components/schemas/IntegrationAction'
-          - $ref: '#/components/schemas/OrganizationAction'
-          - $ref: '#/components/schemas/AnnotationQueueAction'
-          - $ref: '#/components/schemas/ControlResourceAction'
-          title: Action
-        allowed:
-          type: boolean
-          title: Allowed
-        message:
+        organization_id:
+          type: string
+          title: Organization Id
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - organization_id
+      - token
+      title: WriterIntegrationCreate
+    ModelProperties-Input:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The model name used when calling the API.
+        alias:
           anyOf:
           - type: string
           - type: 'null'
-          title: Message
+          title: Alias
+          description: The display name/alias for the model. Defaults to name.
+        based_on:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Based On
+          description: Alias of a built-in model whose parameter map should be used. For example, 'gpt-5.4'. Mutually exclusive with supported_parameters.
+        supported_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Parameters
+          description: Explicit list of parameter names this model supports (e.g., ['max_tokens', 'temperature', 'verbosity']). Each name must be a valid RunParamsMap field. Mutually exclusive with based_on.
       type: object
       required:
-      - action
-      - allowed
-      title: Permission
-    VertexAIIntegration:
+      - name
+      title: ModelProperties
+      description: "Properties for a model in a custom integration.\n\nAttributes:\n    name: The model name used when calling the API.\n    alias: The display name/alias for the model in the UI.\n          Defaults to ``name`` when not provided.\n    based_on: Alias of a built-in model whose parameter map should be used.\n              Mutually exclusive with ``supported_parameters``.\n    supported_parameters: Explicit list of parameter names this model supports.\n                          Mutually exclusive with ``based_on``."
+    AwsSageMakerIntegrationCreate:
       properties:
         multi_modal_config:
           anyOf:
           - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
           - type: 'null'
           description: Configuration for multi-modal (file upload) capabilities.
-        gcs_config:
-          anyOf:
-          - $ref: '#/components/schemas/VertexAIGCSConfigResponse'
-          - type: 'null'
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          type: string
-          const: vertex_ai
-          title: Name
-          default: vertex_ai
-        provider:
-          type: string
-          const: vertex_ai
-          title: Provider
-          default: vertex_ai
-        extra:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-      type: object
-      title: VertexAIIntegration
-    BillingUsageResponse:
-      properties:
-        metric:
-          $ref: '#/components/schemas/BillingUsageMetric'
-        total:
-          type: integer
-          title: Total
-          default: 0
-        projects:
+        models:
           items:
-            $ref: '#/components/schemas/ProjectBillingUsage'
+            $ref: '#/components/schemas/Model'
           type: array
-          title: Projects
-        available:
-          type: boolean
-          title: Available
-          default: true
-        unavailable_reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Unavailable Reason
+          title: Models
+        credential_type:
+          $ref: '#/components/schemas/AwsCredentialType'
+          default: key_secret
+        region:
+          type: string
+          title: Region
+          default: us-west-2
+        inference_profiles:
+          additionalProperties:
+            type: string
+          type: object
+          title: Inference Profiles
+          description: Mapping from model name (Foundation model ID) to inference profile ARN or ID
+        token:
+          additionalProperties:
+            type: string
+          type: object
+          title: Token
       type: object
       required:
-      - metric
-      title: BillingUsageResponse
+      - token
+      title: AwsSageMakerIntegrationCreate
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    BaseAwsIntegrationCreate:
+      properties:
+        multi_modal_config:
+          anyOf:
+          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
+          - type: 'null'
+          description: Configuration for multi-modal (file upload) capabilities.
+        credential_type:
+          $ref: '#/components/schemas/AwsCredentialType'
+          default: key_secret
+        region:
+          type: string
+          title: Region
+          default: us-west-2
+        inference_profiles:
+          additionalProperties:
+            type: string
+          type: object
+          title: Inference Profiles
+          description: Mapping from model name (Foundation model ID) to inference profile ARN or ID
+        token:
+          additionalProperties:
+            type: string
+          type: object
+          title: Token
+      type: object
+      required:
+      - token
+      title: BaseAwsIntegrationCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ListGroupCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/GroupCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListGroupCollaboratorsResponse
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      title: CollaboratorRole
+    AnthropicIntegrationCreate:
+      properties:
+        multi_modal_config:
+          anyOf:
+          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
+          - type: 'null'
+          description: Configuration for multi-modal (file upload) capabilities.
+        authentication_type:
+          $ref: '#/components/schemas/AnthropicAuthenticationType'
+          default: api_key
+        endpoint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Endpoint
+          description: Custom base URL for the Anthropic API. Required if `proxy` is True.
+        authentication_scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authentication Scope
+        oauth2_token_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Oauth2 Token Url
+          description: OAuth2 token URL for custom OAuth2 authentication
+        custom_header_mapping:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Custom Header Mapping
+          description: Custom header mapping from internal fields to be included in the LLM request.
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - token
+      title: AnthropicIntegrationCreate
+    CustomAuthenticationType:
+      type: string
+      enum:
+      - api_key
+      - none
+      - oauth2
+      title: CustomAuthenticationType
+      description: 'Authentication types for custom integrations.
+
+
+        Values:
+
+        - none: No authentication required
+
+        - oauth2: OAuth2 token-based authentication
+
+        - api_key: API key header-based authentication'
+    IntegrationDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          type: string
+          title: Name
+        provider:
+          $ref: '#/components/schemas/IntegrationProvider'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        is_selected:
+          type: boolean
+          title: Is Selected
+          default: false
+        is_disabled:
+          type: boolean
+          title: Is Disabled
+          default: false
+      type: object
+      required:
+      - id
+      - name
+      - provider
+      - created_at
+      - updated_at
+      - created_by
+      title: IntegrationDB
+    GroupAction:
+      type: string
+      enum:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    NvidiaIntegrationCreate:
+      properties:
+        token:
+          type: string
+          title: Token
+        hostname:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Hostname
+      type: object
+      required:
+      - token
+      - hostname
+      title: NvidiaIntegrationCreate
+    AzureAuthenticationType:
+      type: string
+      enum:
+      - api_key
+      - client_secret
+      - username_password
+      - custom_oauth2
+      title: AzureAuthenticationType
+    IntegrationDisableRequest:
+      properties:
+        integration_name:
+          type: string
+          title: Integration Name
+      type: object
+      required:
+      - integration_name
+      title: IntegrationDisableRequest
+    RunParamsMap:
+      properties:
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+        temperature:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Max Tokens
+        stop_sequences:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top K
+        frequency_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Presence Penalty
+        echo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Echo
+        logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logprobs
+        top_logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top Logprobs
+        n:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: N
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        tools:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+        reasoning_effort:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Effort
+        verbosity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verbosity
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+      type: object
+      title: RunParamsMap
+      description: 'Maps the internal settings parameters (left) to the serialized parameters (right) we want to send in the API
+
+        requests.'
+    AwsCredentialType:
+      type: string
+      enum:
+      - assumed_role
+      - key_secret
+      title: AwsCredentialType
     VertexAIIntegrationCreate:
       properties:
         multi_modal_config:
@@ -5590,35 +5309,6 @@ components:
       required:
       - token
       title: VertexAIIntegrationCreate
-    OutputMap:
-      properties:
-        response:
-          type: string
-          title: Response
-        token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Token Count
-        input_token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Input Token Count
-        output_token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output Token Count
-        completion_reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Completion Reason
-      type: object
-      required:
-      - response
-      title: OutputMap
     AwsBedrockIntegration:
       properties:
         multi_modal_config:
@@ -5663,146 +5353,6 @@ components:
           title: Extra
       type: object
       title: AwsBedrockIntegration
-    CustomIntegrationCreate:
-      properties:
-        multi_modal_config:
-          anyOf:
-          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
-          - type: 'null'
-          description: Configuration for multi-modal (file upload) capabilities.
-        authentication_type:
-          $ref: '#/components/schemas/CustomAuthenticationType'
-          default: oauth2
-        models:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Models
-          description: 'List of model names for the custom integration. Deprecated: use model_properties instead.'
-        model_properties:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/ModelProperties-Input'
-            type: array
-          - type: 'null'
-          title: Model Properties
-          description: List of model properties with name and alias for the custom integration.
-        is_legacy_format:
-          type: boolean
-          title: Is Legacy Format
-          description: 'Internal: whether this config was created from the legacy ''models'' field.'
-          default: false
-        default_model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Default Model
-          description: Default model to use. If not provided, defaults to the first model.
-        endpoint:
-          type: string
-          title: Endpoint
-          description: Endpoint URL for the custom integration.
-        authentication_scope:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authentication Scope
-          description: Optional scope for OAuth2 authentication.
-        oauth2_token_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Oauth2 Token Url
-          description: OAuth2 token URL for custom OAuth2 authentication. If not provided, defaults to the endpoint.
-        api_key_header:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Api Key Header
-          description: HTTP header name to use for API key authentication (e.g., 'X-API-Key', 'Authorization').
-        api_key_value:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Api Key Value
-          description: API key value to send in the specified header for authentication.
-        custom_llm_config:
-          anyOf:
-          - $ref: '#/components/schemas/CustomLLMConfig'
-          - type: 'null'
-          description: Optional configuration for a custom LiteLLM handler class. When specified, the handler's acompletion() method is used instead of the default litellm.acompletion().
-        custom_header_mapping:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Custom Header Mapping
-          description: Custom header mapping from internal fields (job_id, user_id, project_id, run_id) to custom header names to be included in LLM requests.
-        headers:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-            maxProperties: 50
-          - type: 'null'
-          title: Headers
-          description: Optional custom HTTP headers to include in requests to the integration endpoint. Stored encrypted at rest.
-        token:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Token
-      type: object
-      required:
-      - endpoint
-      title: CustomIntegrationCreate
-      description: 'Schema for creating custom integrations.
-
-
-        Inherits api_key field validation from CustomConfig:
-
-        - api_key_header and api_key_value are required when authentication_type is api_key
-
-
-        Token field is only used for oauth2 authentication (contains OAuth2 client credentials).
-
-        For api_key auth, the api_key_value field is used instead.'
-    GroupCollaborator:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        group_id:
-          type: string
-          format: uuid4
-          title: Group Id
-        group_name:
-          type: string
-          title: Group Name
-      type: object
-      required:
-      - id
-      - role
-      - created_at
-      - group_id
-      - group_name
-      title: GroupCollaborator
     CostInterval:
       type: string
       enum:
@@ -5811,28 +5361,248 @@ components:
       - weekly
       - monthly
       title: CostInterval
-    AnnotationQueueAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - record_annotation
-      title: AnnotationQueueAction
-    BillingUsageDataPoint:
+    OutputMap:
       properties:
-        timestamp:
+        response:
           type: string
-          format: date-time
-          title: Timestamp
-        value:
-          type: integer
-          title: Value
+          title: Response
+        token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Count
+        input_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input Token Count
+        output_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Token Count
+        completion_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Completion Reason
       type: object
       required:
-      - timestamp
-      - value
-      title: BillingUsageDataPoint
+      - response
+      title: OutputMap
+    VegasGatewayIntegrationCreate:
+      properties:
+        multi_modal_config:
+          anyOf:
+          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
+          - type: 'null'
+          description: Configuration for multi-modal (file upload) capabilities.
+        endpoint:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Endpoint
+        use_case:
+          type: string
+          title: Use Case
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - endpoint
+      - use_case
+      - token
+      title: VegasGatewayIntegrationCreate
+    AwsSageMakerIntegration:
+      properties:
+        credential_type:
+          $ref: '#/components/schemas/AwsCredentialType'
+          default: key_secret
+        region:
+          type: string
+          title: Region
+          default: us-west-2
+        multi_modal_config:
+          anyOf:
+          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
+          - type: 'null'
+          description: Configuration for multi-modal (file upload) capabilities.
+        models:
+          items:
+            $ref: '#/components/schemas/Model'
+          type: array
+          title: Models
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
+          type: string
+          const: aws_sagemaker
+          title: Name
+          default: aws_sagemaker
+        provider:
+          type: string
+          const: aws_sagemaker
+          title: Provider
+          default: aws_sagemaker
+        extra:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
+      type: object
+      title: AwsSageMakerIntegration
+    promptgalileo__schemas__config__custom__ModelProperties:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The model name used when calling the API.
+        alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Alias
+          description: The display name/alias for the model. Defaults to name.
+        based_on:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Based On
+          description: Alias of a built-in model whose parameter map should be used. For example, 'gpt-5.4'. Mutually exclusive with supported_parameters.
+        supported_parameters:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Parameters
+          description: Explicit list of parameter names this model supports (e.g., ['max_tokens', 'temperature', 'verbosity']). Each name must be a valid RunParamsMap field. Mutually exclusive with based_on.
+      type: object
+      required:
+      - name
+      title: ModelProperties
+      description: "Properties for a model in a custom integration.\n\nAttributes:\n    name: The model name used when calling the API.\n    alias: The display name/alias for the model in the UI.\n          Defaults to ``name`` when not provided.\n    based_on: Alias of a built-in model whose parameter map should be used.\n              Mutually exclusive with ``supported_parameters``.\n    supported_parameters: Explicit list of parameter names this model supports.\n                          Mutually exclusive with ``based_on``."
+    ProjectBillingUsage:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+        total:
+          type: integer
+          title: Total
+          default: 0
+        data_points:
+          items:
+            $ref: '#/components/schemas/BillingUsageDataPoint'
+          type: array
+          title: Data Points
+      type: object
+      required:
+      - project_id
+      - project_name
+      title: ProjectBillingUsage
+    InputMap:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+        prefix:
+          type: string
+          title: Prefix
+          default: ''
+        suffix:
+          type: string
+          title: Suffix
+          default: ''
+      type: object
+      required:
+      - prompt
+      title: InputMap
+    ListUserCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/UserCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListUserCollaboratorsResponse
+    VertexAIGCSConfigResponse:
+      properties:
+        bucket_name:
+          type: string
+          title: Bucket Name
+        object_path_prefix:
+          type: string
+          title: Object Path Prefix
+      type: object
+      required:
+      - bucket_name
+      - object_path_prefix
+      title: VertexAIGCSConfigResponse
+      description: GCS config response model — credentials are never exposed in GET responses.
+    Permission:
+      properties:
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - action
+      - allowed
+      title: Permission
     IntegrationSelectRequest:
       properties:
         integration_name:
@@ -5847,97 +5617,6 @@ components:
       - integration_name
       - integration_id
       title: IntegrationSelectRequest
-    AzureIntegration:
-      properties:
-        multi_modal_config:
-          anyOf:
-          - $ref: '#/components/schemas/MultiModalModelIntegrationConfig'
-          - type: 'null'
-          description: Configuration for multi-modal (file upload) capabilities.
-        proxy:
-          type: boolean
-          title: Proxy
-          default: false
-        endpoint:
-          type: string
-          title: Endpoint
-        api_version:
-          type: string
-          title: Api Version
-          default: 2025-03-01-preview
-        azure_deployment:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Azure Deployment
-        authentication_type:
-          $ref: '#/components/schemas/AzureAuthenticationType'
-          default: api_key
-        authentication_scope:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authentication Scope
-        default_headers:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Default Headers
-        deployments:
-          additionalProperties:
-            type: string
-          type: object
-          title: Deployments
-        oauth2_token_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Oauth2 Token Url
-          description: OAuth2 token URL for custom OAuth2 authentication
-        custom_header_mapping:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Custom Header Mapping
-          description: Custom header mapping from internal fields to be included in the LLM request.
-        available_deployments:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/AzureModelDeployment'
-            type: array
-          - type: 'null'
-          title: Available Deployments
-          description: The available deployments for this integration. If provided, we will not try to get this list from Azure.
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          type: string
-          const: azure
-          title: Name
-          default: azure
-        provider:
-          type: string
-          const: azure
-          title: Provider
-          default: azure
-        extra:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-      type: object
-      required:
-      - endpoint
-      title: AzureIntegration
     NvidiaIntegration:
       properties:
         id:
@@ -5964,56 +5643,10 @@ components:
           title: Extra
       type: object
       title: NvidiaIntegration
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
-    FineTunedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: FineTunedScorerAction
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    OpenAIIntegration:
+    WriterIntegration:
       properties:
         organization_id:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Organization Id
         id:
           anyOf:
@@ -6023,14 +5656,14 @@ components:
           title: Id
         name:
           type: string
-          const: openai
+          const: writer
           title: Name
-          default: openai
+          default: writer
         provider:
           type: string
-          const: openai
+          const: writer
           title: Provider
-          default: openai
+          default: writer
         extra:
           anyOf:
           - additionalProperties: true
@@ -6038,42 +5671,278 @@ components:
           - type: 'null'
           title: Extra
       type: object
-      title: OpenAIIntegration
-    ModelCostBy:
+      required:
+      - organization_id
+      title: WriterIntegration
+    CollaboratorUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+      type: object
+      required:
+      - role
+      title: CollaboratorUpdate
+    MistralIntegrationCreate:
+      properties:
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - token
+      title: MistralIntegrationCreate
+    FeatureIntegrationCosts:
+      properties:
+        feature_name:
+          type: string
+          title: Feature Name
+        total_cost:
+          type: number
+          title: Total Cost
+          default: 0.0
+        projects:
+          items:
+            $ref: '#/components/schemas/ProjectIntegrationCosts'
+          type: array
+          title: Projects
+      type: object
+      required:
+      - feature_name
+      title: FeatureIntegrationCosts
+    VertexAIGCSConfig:
+      properties:
+        service_account_credentials:
+          type: string
+          title: Service Account Credentials
+        bucket_name:
+          type: string
+          title: Bucket Name
+        object_path_prefix:
+          type: string
+          title: Object Path Prefix
+      type: object
+      required:
+      - service_account_credentials
+      - bucket_name
+      - object_path_prefix
+      title: VertexAIGCSConfig
+      description: Configuration for GCS file uploads in Vertex AI.
+    MistralIntegration:
+      properties:
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
+          type: string
+          const: mistral
+          title: Name
+          default: mistral
+        provider:
+          type: string
+          const: mistral
+          title: Provider
+          default: mistral
+        extra:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
+      type: object
+      title: MistralIntegration
+    IntegrationProvider:
       type: string
       enum:
-      - tokens
-      - characters
-      title: ModelCostBy
-    RegisteredScorerAction:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: IntegrationProvider
+    DatasetAction:
       type: string
       enum:
       - update
       - delete
-      title: RegisteredScorerAction
-    ProjectBillingUsage:
+      - share
+      - export
+      - rename
+      title: DatasetAction
+    OpenAIIntegrationCreate:
       properties:
-        project_id:
+        organization_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization Id
+        token:
           type: string
-          format: uuid4
-          title: Project Id
-        project_name:
+          title: Token
+      type: object
+      required:
+      - token
+      title: OpenAIIntegrationCreate
+    AvailableIntegrations:
+      properties:
+        integrations:
+          items:
+            $ref: '#/components/schemas/IntegrationProvider'
+          type: array
+          title: Integrations
+      type: object
+      required:
+      - integrations
+      title: AvailableIntegrations
+    ModelInfo:
+      properties:
+        name:
           type: string
-          title: Project Name
+          title: Name
+        alias:
+          type: string
+          title: Alias
+        integration:
+          $ref: '#/components/schemas/LLMIntegration'
+          default: openai
+        user_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Role
+        assistant_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assistant Role
+        system_supported:
+          type: boolean
+          title: System Supported
+          default: false
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+          description: Input modalities that the model can accept.
+      type: object
+      required:
+      - name
+      - alias
+      title: ModelInfo
+      description: 'Model information that is useful to surface to the UI and in other contexts.
+
+
+        This is a subset of all of the information we store about the model. We need a lot more
+
+        information to actually execute requests against the model, but that is not necessary
+
+        to surface to the user.'
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    ProjectAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    BillingUsageResponse:
+      properties:
+        metric:
+          $ref: '#/components/schemas/BillingUsageMetric'
         total:
           type: integer
           title: Total
           default: 0
-        data_points:
+        projects:
           items:
-            $ref: '#/components/schemas/BillingUsageDataPoint'
+            $ref: '#/components/schemas/ProjectBillingUsage'
           type: array
-          title: Data Points
+          title: Projects
+        available:
+          type: boolean
+          title: Available
+          default: true
+        unavailable_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Unavailable Reason
       type: object
       required:
-      - project_id
-      - project_name
-      title: ProjectBillingUsage
+      - metric
+      title: BillingUsageResponse
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    DatabricksIntegration:
+      properties:
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
+          type: string
+          const: databricks
+          title: Name
+          default: databricks
+        provider:
+          type: string
+          const: databricks
+          title: Provider
+          default: databricks
+        extra:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
+      type: object
+      title: DatabricksIntegration
     DatabricksIntegrationCreate:
       properties:
         token:
@@ -6108,19 +5977,150 @@ components:
       - token
       - hostname
       title: DatabricksIntegrationCreate
-    GroupCollaboratorCreate:
+    Model:
       properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-          default: viewer
-        group_id:
+        name:
           type: string
-          format: uuid4
-          title: Group Id
+          title: Name
+        alias:
+          type: string
+          title: Alias
+        integration:
+          $ref: '#/components/schemas/LLMIntegration'
+          default: openai
+        user_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Role
+        assistant_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assistant Role
+        system_supported:
+          type: boolean
+          title: System Supported
+          default: false
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+          description: Input modalities that the model can accept.
+        alternative_names:
+          items:
+            type: string
+          type: array
+          title: Alternative Names
+          description: Alternative names for the model, used for matching with various current, versioned or legacy names.
+        input_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Input Token Limit
+        output_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Token Limit
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        cost_by:
+          $ref: '#/components/schemas/ModelCostBy'
+          default: tokens
+        is_chat:
+          type: boolean
+          title: Is Chat
+          default: false
+        provides_log_probs:
+          type: boolean
+          title: Provides Log Probs
+          default: false
+        formatting_tokens:
+          type: integer
+          title: Formatting Tokens
+          default: 0
+        response_prefix_tokens:
+          type: integer
+          title: Response Prefix Tokens
+          default: 0
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        legacy_mistral_prompt_format:
+          type: boolean
+          title: Legacy Mistral Prompt Format
+          default: false
+        requires_max_tokens:
+          type: boolean
+          title: Requires Max Tokens
+          default: false
+        max_top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max Top P
+        params_map:
+          $ref: '#/components/schemas/RunParamsMap'
+        output_map:
+          anyOf:
+          - $ref: '#/components/schemas/OutputMap'
+          - type: 'null'
+        input_map:
+          anyOf:
+          - $ref: '#/components/schemas/InputMap'
+          - type: 'null'
       type: object
       required:
-      - group_id
-      title: GroupCollaboratorCreate
+      - name
+      - alias
+      title: Model
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    MultiModalModelIntegrationConfig:
+      properties:
+        max_files:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Max Files
+          description: Maximum number of files allowed per request. None means no limit.
+        max_file_size_bytes:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Max File Size Bytes
+          description: Maximum file size in bytes per file. None means no limit.
+      type: object
+      title: MultiModalModelIntegrationConfig
+      description: Configuration for multi-modal capabilities (file uploads).
+    AzureModelDeployment:
+      properties:
+        model:
+          type: string
+          title: Model
+          description: The name of the model.
+        id:
+          type: string
+          title: Id
+          description: The ID of the deployment.
+      type: object
+      required:
+      - model
+      - id
+      title: AzureModelDeployment
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

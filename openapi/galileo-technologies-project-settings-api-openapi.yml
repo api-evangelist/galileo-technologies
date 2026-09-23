@@ -1,17 +1,17 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation project_settings API
+  title: Galileo API Server Project Settings API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
 tags:
-- name: project_settings
+- name: Project Settings
 paths:
   /project_settings/{project_id}:
     patch:
       tags:
-      - project_settings
+      - Project Settings
       summary: Update Project Settings Legacy
       operationId: update_project_settings_legacy_project_settings__project_id__patch
       security:
@@ -48,7 +48,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     put:
       tags:
-      - project_settings
+      - Project Settings
       summary: Update Project Settings Legacy
       operationId: update_project_settings_legacy_project_settings__project_id__put
       security:
@@ -86,7 +86,7 @@ paths:
   /projects/{project_id}/settings:
     put:
       tags:
-      - project_settings
+      - Project Settings
       summary: Update Project Settings
       operationId: update_project_settings_projects__project_id__settings_put
       security:
@@ -123,7 +123,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - project_settings
+      - Project Settings
       summary: Get Settings
       operationId: get_settings_projects__project_id__settings_get
       security:
@@ -155,7 +155,7 @@ paths:
   /projects/{project_id}/settings/scorers_config:
     get:
       tags:
-      - project_settings
+      - Project Settings
       summary: Get Scorers Config
       operationId: get_scorers_config_projects__project_id__settings_scorers_config_get
       security:
@@ -187,7 +187,7 @@ paths:
   /project/{project_id}/settings/scorers_config:
     get:
       tags:
-      - project_settings
+      - Project Settings
       summary: Get Scorers Config
       operationId: get_scorers_config_project__project_id__settings_scorers_config_get
       security:
@@ -219,7 +219,7 @@ paths:
   /projects/{project_id}/settings/observe:
     get:
       tags:
-      - project_settings
+      - Project Settings
       summary: Get Observe Settings
       operationId: get_observe_settings_projects__project_id__settings_observe_get
       security:
@@ -251,7 +251,7 @@ paths:
   /projects/{project_id}/settings/evaluate:
     get:
       tags:
-      - project_settings
+      - Project Settings
       summary: Get Evaluate Settings
       operationId: get_evaluate_settings_projects__project_id__settings_evaluate_get
       security:
@@ -282,77 +282,37 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ScorersConfig:
+    FineTunedScorer:
       properties:
-        scorers:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/AgenticWorkflowSuccessScorer'
-            - $ref: '#/components/schemas/AgenticSessionSuccessScorer'
-            - $ref: '#/components/schemas/ChunkAttributionUtilizationScorer'
-            - $ref: '#/components/schemas/CompletenessScorer'
-            - $ref: '#/components/schemas/ContextAdherenceScorer'
-            - $ref: '#/components/schemas/ContextRelevanceScorer'
-            - $ref: '#/components/schemas/CorrectnessScorer'
-            - $ref: '#/components/schemas/GroundTruthAdherenceScorer'
-            - $ref: '#/components/schemas/InputPIIScorer'
-            - $ref: '#/components/schemas/InputSexistScorer'
-            - $ref: '#/components/schemas/InputToneScorer'
-            - $ref: '#/components/schemas/InputToxicityScorer'
-            - $ref: '#/components/schemas/InstructionAdherenceScorer'
-            - $ref: '#/components/schemas/OutputPIIScorer'
-            - $ref: '#/components/schemas/OutputSexistScorer'
-            - $ref: '#/components/schemas/OutputToneScorer'
-            - $ref: '#/components/schemas/OutputToxicityScorer'
-            - $ref: '#/components/schemas/PromptInjectionScorer'
-            - $ref: '#/components/schemas/ToolErrorRateScorer'
-            - $ref: '#/components/schemas/ToolSelectionQualityScorer'
-            discriminator:
-              propertyName: name
-              mapping:
-                agentic_session_success: '#/components/schemas/AgenticSessionSuccessScorer'
-                agentic_workflow_success: '#/components/schemas/AgenticWorkflowSuccessScorer'
-                chunk_attribution_utilization: '#/components/schemas/ChunkAttributionUtilizationScorer'
-                completeness: '#/components/schemas/CompletenessScorer'
-                context_adherence: '#/components/schemas/ContextAdherenceScorer'
-                context_relevance: '#/components/schemas/ContextRelevanceScorer'
-                correctness: '#/components/schemas/CorrectnessScorer'
-                ground_truth_adherence: '#/components/schemas/GroundTruthAdherenceScorer'
-                input_pii: '#/components/schemas/InputPIIScorer'
-                input_sexist: '#/components/schemas/InputSexistScorer'
-                input_tone: '#/components/schemas/InputToneScorer'
-                input_toxicity: '#/components/schemas/InputToxicityScorer'
-                instruction_adherence: '#/components/schemas/InstructionAdherenceScorer'
-                output_pii: '#/components/schemas/OutputPIIScorer'
-                output_sexist: '#/components/schemas/OutputSexistScorer'
-                output_tone: '#/components/schemas/OutputToneScorer'
-                output_toxicity: '#/components/schemas/OutputToxicityScorer'
-                prompt_injection: '#/components/schemas/PromptInjectionScorer'
-                tool_error_rate: '#/components/schemas/ToolErrorRateScorer'
-                tool_selection_quality: '#/components/schemas/ToolSelectionQualityScorer'
-          type: array
-          title: Scorers
-          description: List of Galileo scorers to enable.
-        registered_scorers:
-          items:
-            $ref: '#/components/schemas/RegisteredScorer'
-          type: array
-          title: Registered Scorers
-          description: List of user registered scorers to enable.
-        generated_scorers:
-          items:
-            $ref: '#/components/schemas/GeneratedScorer'
-          type: array
-          title: Generated Scorers
-          description: List of user generated scorers to enable.
-        finetuned_scorers:
-          items:
-            $ref: '#/components/schemas/FineTunedScorer'
-          type: array
-          title: Finetuned Scorers
-          description: List of user fine-tuned scorers to enable.
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
       type: object
-      title: ScorersConfig
+      title: FineTunedScorer
     AgenticSessionSuccessScorer:
       properties:
         name:
@@ -400,13 +360,28 @@ components:
           description: Number of judges for the scorer.
       type: object
       title: AgenticSessionSuccessScorer
-    InstructionAdherenceScorer:
+    AlertsConfiguration:
+      properties:
+        emails:
+          items:
+            type: string
+            format: email
+          type: array
+          title: Emails
+        webhooks:
+          items:
+            $ref: '#/components/schemas/Webhook'
+          type: array
+          title: Webhooks
+      type: object
+      title: AlertsConfiguration
+    OutputSexistScorer:
       properties:
         name:
           type: string
-          const: instruction_adherence
+          const: output_sexist
           title: Name
-          default: instruction_adherence
+          default: output_sexist
         filters:
           anyOf:
           - items:
@@ -426,7 +401,368 @@ components:
           description: List of filters to apply to the scorer.
         type:
           type: string
-          const: plus
+          enum:
+          - luna
+          - plus
+          title: Type
+          default: luna
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
+        num_judges:
+          anyOf:
+          - type: integer
+            maximum: 10.0
+            minimum: 1.0
+          - type: 'null'
+          title: Num Judges
+          description: Number of judges for the scorer.
+      type: object
+      title: OutputSexistScorer
+    ContextAdherenceScorer:
+      properties:
+        name:
+          type: string
+          const: context_adherence
+          title: Name
+          default: context_adherence
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
+          type: string
+          enum:
+          - luna
+          - plus
+          title: Type
+          default: luna
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
+        num_judges:
+          anyOf:
+          - type: integer
+            maximum: 10.0
+            minimum: 1.0
+          - type: 'null'
+          title: Num Judges
+          description: Number of judges for the scorer.
+      type: object
+      title: ContextAdherenceScorer
+    Webhook:
+      properties:
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+          default: untested
+        notes:
+          type: string
+          maxLength: 255
+          title: Notes
+          default: ''
+      type: object
+      required:
+      - url
+      title: Webhook
+    GeneratedScorerConfig:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Name of the scorer to enable.
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+      type: object
+      required:
+      - name
+      title: GeneratedScorerConfig
+    CompletenessScorer:
+      properties:
+        name:
+          type: string
+          const: completeness
+          title: Name
+          default: completeness
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
+          type: string
+          enum:
+          - luna
+          - plus
+          title: Type
+          default: luna
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
+        num_judges:
+          anyOf:
+          - type: integer
+            maximum: 10.0
+            minimum: 1.0
+          - type: 'null'
+          title: Num Judges
+          description: Number of judges for the scorer.
+      type: object
+      title: CompletenessScorer
+    ObserveProjectSettings:
+      properties:
+        scorers_config:
+          anyOf:
+          - $ref: '#/components/schemas/ScorersConfig'
+          - type: 'null'
+        alerts_configuration:
+          anyOf:
+          - $ref: '#/components/schemas/AlertsConfiguration'
+          - type: 'null'
+        scorers_configuration:
+          anyOf:
+          - $ref: '#/components/schemas/ScorersConfiguration'
+          - type: 'null'
+        registered_scorers_configuration:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/RegisteredScorer'
+            type: array
+          - type: 'null'
+          title: Registered Scorers Configuration
+        generated_scorers_configuration:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GeneratedScorerConfig'
+            type: array
+          - type: 'null'
+          title: Generated Scorers Configuration
+        customized_scorers_configuration:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CustomizedScorer'
+            type: array
+          - type: 'null'
+          title: Customized Scorers Configuration
+      type: object
+      title: ObserveProjectSettings
+    InputSexistScorer:
+      properties:
+        name:
+          type: string
+          const: input_sexist
+          title: Name
+          default: input_sexist
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
+          type: string
+          enum:
+          - luna
+          - plus
+          title: Type
+          default: luna
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
+        num_judges:
+          anyOf:
+          - type: integer
+            maximum: 10.0
+            minimum: 1.0
+          - type: 'null'
+          title: Num Judges
+          description: Number of judges for the scorer.
+      type: object
+      title: InputSexistScorer
+    ProjectSettingsDB:
+      properties:
+        scorers_config:
+          anyOf:
+          - $ref: '#/components/schemas/ScorersConfig'
+          - type: 'null'
+        metric_weights_configuration:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MetricWeight'
+            type: object
+          - type: 'null'
+          title: Metric Weights Configuration
+        alerts_configuration:
+          anyOf:
+          - $ref: '#/components/schemas/AlertsConfiguration'
+          - type: 'null'
+        scorers_configuration:
+          anyOf:
+          - $ref: '#/components/schemas/ScorersConfiguration'
+          - type: 'null'
+        registered_scorers_configuration:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/RegisteredScorer'
+            type: array
+          - type: 'null'
+          title: Registered Scorers Configuration
+        generated_scorers_configuration:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GeneratedScorerConfig'
+            type: array
+          - type: 'null'
+          title: Generated Scorers Configuration
+        customized_scorers_configuration:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CustomizedScorer'
+            type: array
+          - type: 'null'
+          title: Customized Scorers Configuration
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - project_id
+      - id
+      - created_at
+      - updated_at
+      title: ProjectSettingsDB
+    GroupLabel:
+      type: string
+      enum:
+      - Input Quality
+      - Output Quality
+      - Configuration
+      - LLM Parameters
+      - RAG Quality
+      - RAG Parameters
+      - Generic Parameters
+      - Safety Metrics
+      - Protect
+      - System Metrics
+      - Rating Summary
+      - Annotation Agreement
+      - Custom Metrics
+      - Security
+      - Dataset
+      - Agent Quality
+      - Text to SQL Metrics
+      title: GroupLabel
+      description: Group labels for prompt rows.
+    AgenticWorkflowSuccessScorer:
+      properties:
+        name:
+          type: string
+          const: agentic_workflow_success
+          title: Name
+          default: agentic_workflow_success
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
+          type: string
+          enum:
+          - luna
+          - plus
           title: Type
           default: plus
         model_name:
@@ -444,7 +780,7 @@ components:
           title: Num Judges
           description: Number of judges for the scorer.
       type: object
-      title: InstructionAdherenceScorer
+      title: AgenticWorkflowSuccessScorer
     ScorersConfiguration:
       properties:
         latency:
@@ -611,22 +947,13 @@ components:
         The keys here are sorted by their approximate execution time to execute the scorers that we anticipate will be the
 
         fastest first, and the slowest last.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ContextAdherenceScorer:
+    OutputToxicityScorer:
       properties:
         name:
           type: string
-          const: context_adherence
+          const: output_toxicity
           title: Name
-          default: context_adherence
+          default: output_toxicity
         filters:
           anyOf:
           - items:
@@ -666,86 +993,7 @@ components:
           title: Num Judges
           description: Number of judges for the scorer.
       type: object
-      title: ContextAdherenceScorer
-    NodeNameFilter:
-      properties:
-        name:
-          type: string
-          const: node_name
-          title: Name
-          default: node_name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: NodeNameFilter
-      description: Filters on node names in scorer jobs.
-    FineTunedScorer:
-      properties:
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-      type: object
-      title: FineTunedScorer
-    EvaluateProjectSettings:
-      properties:
-        scorers_config:
-          anyOf:
-          - $ref: '#/components/schemas/ScorersConfig'
-          - type: 'null'
-        metric_weights_configuration:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/MetricWeight'
-            type: object
-          - type: 'null'
-          title: Metric Weights Configuration
-      type: object
-      title: EvaluateProjectSettings
+      title: OutputToxicityScorer
     ContextRelevanceScorer:
       properties:
         name:
@@ -772,22 +1020,85 @@ components:
           description: List of filters to apply to the scorer.
       type: object
       title: ContextRelevanceScorer
-    AlertsConfiguration:
+    ToolErrorRateScorer:
       properties:
-        emails:
-          items:
-            type: string
-            format: email
-          type: array
-          title: Emails
-        webhooks:
-          items:
-            $ref: '#/components/schemas/Webhook'
-          type: array
-          title: Webhooks
+        name:
+          type: string
+          const: tool_error_rate
+          title: Name
+          default: tool_error_rate
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
+          type: string
+          enum:
+          - luna
+          - plus
+          title: Type
+          default: plus
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
       type: object
-      title: AlertsConfiguration
-    ProjectSettingsDB:
+      title: ToolErrorRateScorer
+    ChunkAttributionUtilizationScorer:
+      properties:
+        name:
+          type: string
+          const: chunk_attribution_utilization
+          title: Name
+          default: chunk_attribution_utilization
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
+          type: string
+          enum:
+          - luna
+          - plus
+          title: Type
+          default: luna
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
+      type: object
+      title: ChunkAttributionUtilizationScorer
+    CompositeProjectSettings:
       properties:
         scorers_config:
           anyOf:
@@ -829,122 +1140,15 @@ components:
             type: array
           - type: 'null'
           title: Customized Scorers Configuration
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
       type: object
-      required:
-      - project_id
-      - id
-      - created_at
-      - updated_at
-      title: ProjectSettingsDB
-    MetricWeight:
-      properties:
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-        group_label:
-          anyOf:
-          - $ref: '#/components/schemas/GroupLabel'
-          - type: 'null'
-        description:
-          anyOf:
-          - $ref: '#/components/schemas/MetricDescriptions'
-          - type: 'null'
-        weight:
-          type: number
-          title: Weight
-          default: 0.5
-      type: object
-      title: MetricWeight
-    OutputPIIScorer:
+      title: CompositeProjectSettings
+    InstructionAdherenceScorer:
       properties:
         name:
           type: string
-          const: output_pii
+          const: instruction_adherence
           title: Name
-          default: output_pii
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-      type: object
-      title: OutputPIIScorer
-    RegisteredScorer:
-      properties:
-        id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Id
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-      type: object
-      title: RegisteredScorer
-    WebhookStatus:
-      type: string
-      enum:
-      - active
-      - untested
-      - failed
-      - paused
-      title: WebhookStatus
-    ChunkAttributionUtilizationScorer:
-      properties:
-        name:
-          type: string
-          const: chunk_attribution_utilization
-          title: Name
-          default: chunk_attribution_utilization
+          default: instruction_adherence
         filters:
           anyOf:
           - items:
@@ -964,130 +1168,15 @@ components:
           description: List of filters to apply to the scorer.
         type:
           type: string
-          enum:
-          - luna
-          - plus
+          const: plus
           title: Type
-          default: luna
+          default: plus
         model_name:
           anyOf:
           - type: string
           - type: 'null'
           title: Model Name
           description: Alias of the model to use for the scorer.
-      type: object
-      title: ChunkAttributionUtilizationScorer
-    OutputToneScorer:
-      properties:
-        name:
-          type: string
-          const: output_tone
-          title: Name
-          default: output_tone
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-      type: object
-      title: OutputToneScorer
-    GroupLabel:
-      type: string
-      enum:
-      - Input Quality
-      - Output Quality
-      - Configuration
-      - LLM Parameters
-      - RAG Quality
-      - RAG Parameters
-      - Generic Parameters
-      - Safety Metrics
-      - Protect
-      - System Metrics
-      - Rating Summary
-      - Annotation Agreement
-      - Custom Metrics
-      - Security
-      - Dataset
-      - Agent Quality
-      - Text to SQL Metrics
-      title: GroupLabel
-      description: Group labels for prompt rows.
-    InputPIIScorer:
-      properties:
-        name:
-          type: string
-          const: input_pii
-          title: Name
-          default: input_pii
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-      type: object
-      title: InputPIIScorer
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CustomizedScorer:
-      properties:
-        scorer_name:
-          $ref: '#/components/schemas/CustomizedScorerName'
-          description: Name of the customized scorer.
-        model_alias:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Alias
-          description: Model alias to use for scoring.
         num_judges:
           anyOf:
           - type: integer
@@ -1097,41 +1186,157 @@ components:
           title: Num Judges
           description: Number of judges for the scorer.
       type: object
-      required:
-      - scorer_name
-      title: CustomizedScorer
-    MetadataFilter:
+      title: InstructionAdherenceScorer
+    ScorersConfig:
+      properties:
+        scorers:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AgenticWorkflowSuccessScorer'
+            - $ref: '#/components/schemas/AgenticSessionSuccessScorer'
+            - $ref: '#/components/schemas/ChunkAttributionUtilizationScorer'
+            - $ref: '#/components/schemas/CompletenessScorer'
+            - $ref: '#/components/schemas/ContextAdherenceScorer'
+            - $ref: '#/components/schemas/ContextRelevanceScorer'
+            - $ref: '#/components/schemas/CorrectnessScorer'
+            - $ref: '#/components/schemas/GroundTruthAdherenceScorer'
+            - $ref: '#/components/schemas/InputPIIScorer'
+            - $ref: '#/components/schemas/InputSexistScorer'
+            - $ref: '#/components/schemas/InputToneScorer'
+            - $ref: '#/components/schemas/InputToxicityScorer'
+            - $ref: '#/components/schemas/InstructionAdherenceScorer'
+            - $ref: '#/components/schemas/OutputPIIScorer'
+            - $ref: '#/components/schemas/OutputSexistScorer'
+            - $ref: '#/components/schemas/OutputToneScorer'
+            - $ref: '#/components/schemas/OutputToxicityScorer'
+            - $ref: '#/components/schemas/PromptInjectionScorer'
+            - $ref: '#/components/schemas/ToolErrorRateScorer'
+            - $ref: '#/components/schemas/ToolSelectionQualityScorer'
+            discriminator:
+              propertyName: name
+              mapping:
+                agentic_session_success: '#/components/schemas/AgenticSessionSuccessScorer'
+                agentic_workflow_success: '#/components/schemas/AgenticWorkflowSuccessScorer'
+                chunk_attribution_utilization: '#/components/schemas/ChunkAttributionUtilizationScorer'
+                completeness: '#/components/schemas/CompletenessScorer'
+                context_adherence: '#/components/schemas/ContextAdherenceScorer'
+                context_relevance: '#/components/schemas/ContextRelevanceScorer'
+                correctness: '#/components/schemas/CorrectnessScorer'
+                ground_truth_adherence: '#/components/schemas/GroundTruthAdherenceScorer'
+                input_pii: '#/components/schemas/InputPIIScorer'
+                input_sexist: '#/components/schemas/InputSexistScorer'
+                input_tone: '#/components/schemas/InputToneScorer'
+                input_toxicity: '#/components/schemas/InputToxicityScorer'
+                instruction_adherence: '#/components/schemas/InstructionAdherenceScorer'
+                output_pii: '#/components/schemas/OutputPIIScorer'
+                output_sexist: '#/components/schemas/OutputSexistScorer'
+                output_tone: '#/components/schemas/OutputToneScorer'
+                output_toxicity: '#/components/schemas/OutputToxicityScorer'
+                prompt_injection: '#/components/schemas/PromptInjectionScorer'
+                tool_error_rate: '#/components/schemas/ToolErrorRateScorer'
+                tool_selection_quality: '#/components/schemas/ToolSelectionQualityScorer'
+          type: array
+          title: Scorers
+          description: List of Galileo scorers to enable.
+        registered_scorers:
+          items:
+            $ref: '#/components/schemas/RegisteredScorer'
+          type: array
+          title: Registered Scorers
+          description: List of user registered scorers to enable.
+        generated_scorers:
+          items:
+            $ref: '#/components/schemas/GeneratedScorer'
+          type: array
+          title: Generated Scorers
+          description: List of user generated scorers to enable.
+        finetuned_scorers:
+          items:
+            $ref: '#/components/schemas/FineTunedScorer'
+          type: array
+          title: Finetuned Scorers
+          description: List of user fine-tuned scorers to enable.
+      type: object
+      title: ScorersConfig
+    EvaluateProjectSettings:
+      properties:
+        scorers_config:
+          anyOf:
+          - $ref: '#/components/schemas/ScorersConfig'
+          - type: 'null'
+        metric_weights_configuration:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MetricWeight'
+            type: object
+          - type: 'null'
+          title: Metric Weights Configuration
+      type: object
+      title: EvaluateProjectSettings
+    CustomizedScorerName:
+      type: string
+      enum:
+      - _customized_agentic_workflow_success
+      - _customized_agentic_session_success
+      - _customized_chunk_attribution_utilization_gpt
+      - _customized_completeness_gpt
+      - _customized_groundedness
+      - _customized_factuality
+      - _customized_ground_truth_adherence
+      - _customized_instruction_adherence
+      - _customized_prompt_injection_gpt
+      - _customized_tool_error_rate
+      - _customized_tool_selection_quality
+      - _customized_sexist_gpt
+      - _customized_input_sexist_gpt
+      - _customized_toxicity_gpt
+      - _customized_input_toxicity_gpt
+      title: CustomizedScorerName
+    CorrectnessScorer:
       properties:
         name:
           type: string
-          const: metadata
+          const: correctness
           title: Name
-          default: metadata
-        operator:
+          default: correctness
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
           type: string
-          enum:
-          - one_of
-          - not_in
-          - eq
-          - ne
-          title: Operator
-        key:
-          type: string
-          title: Key
-        value:
+          const: plus
+          title: Type
+          default: plus
+        model_name:
           anyOf:
           - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
+        num_judges:
+          anyOf:
+          - type: integer
+            maximum: 10.0
+            minimum: 1.0
+          - type: 'null'
+          title: Num Judges
+          description: Number of judges for the scorer.
       type: object
-      required:
-      - operator
-      - key
-      - value
-      title: MetadataFilter
-      description: Filters on metadata key-value pairs in scorer jobs.
+      title: CorrectnessScorer
     GeneratedScorer:
       properties:
         id:
@@ -1163,6 +1368,194 @@ components:
           title: Filters
       type: object
       title: GeneratedScorer
+    GroundTruthAdherenceScorer:
+      properties:
+        name:
+          type: string
+          const: ground_truth_adherence
+          title: Name
+          default: ground_truth_adherence
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        type:
+          type: string
+          const: plus
+          title: Type
+          default: plus
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+          description: Alias of the model to use for the scorer.
+        num_judges:
+          anyOf:
+          - type: integer
+            maximum: 10.0
+            minimum: 1.0
+          - type: 'null'
+          title: Num Judges
+          description: Number of judges for the scorer.
+      type: object
+      title: GroundTruthAdherenceScorer
+    OutputPIIScorer:
+      properties:
+        name:
+          type: string
+          const: output_pii
+          title: Name
+          default: output_pii
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+      type: object
+      title: OutputPIIScorer
+    InputToneScorer:
+      properties:
+        name:
+          type: string
+          const: input_tone
+          title: Name
+          default: input_tone
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+      type: object
+      title: InputToneScorer
+    WebhookStatus:
+      type: string
+      enum:
+      - active
+      - untested
+      - failed
+      - paused
+      title: WebhookStatus
+    NodeNameFilter:
+      properties:
+        name:
+          type: string
+          const: node_name
+          title: Name
+          default: node_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: NodeNameFilter
+      description: Filters on node names in scorer jobs.
+    GenAIProjectSettings:
+      properties:
+        scorers_config:
+          anyOf:
+          - $ref: '#/components/schemas/ScorersConfig'
+          - type: 'null'
+        metric_weights_configuration:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MetricWeight'
+            type: object
+          - type: 'null'
+          title: Metric Weights Configuration
+        alerts_configuration:
+          anyOf:
+          - $ref: '#/components/schemas/AlertsConfiguration'
+          - type: 'null'
+      type: object
+      title: GenAIProjectSettings
+    RegisteredScorer:
+      properties:
+        id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+      type: object
+      title: RegisteredScorer
     MetricDescriptions:
       type: string
       enum:
@@ -1222,113 +1615,13 @@ components:
       - Evaluates whether the generated image / PDF complies with the provided rules.
       - Identifies barge-ins by the user or the LLM in an audio conversation.
       title: MetricDescriptions
-    CorrectnessScorer:
+    InputPIIScorer:
       properties:
         name:
           type: string
-          const: correctness
+          const: input_pii
           title: Name
-          default: correctness
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          const: plus
-          title: Type
-          default: plus
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
-        num_judges:
-          anyOf:
-          - type: integer
-            maximum: 10.0
-            minimum: 1.0
-          - type: 'null'
-          title: Num Judges
-          description: Number of judges for the scorer.
-      type: object
-      title: CorrectnessScorer
-    GenAIProjectSettings:
-      properties:
-        scorers_config:
-          anyOf:
-          - $ref: '#/components/schemas/ScorersConfig'
-          - type: 'null'
-        metric_weights_configuration:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/MetricWeight'
-            type: object
-          - type: 'null'
-          title: Metric Weights Configuration
-        alerts_configuration:
-          anyOf:
-          - $ref: '#/components/schemas/AlertsConfiguration'
-          - type: 'null'
-      type: object
-      title: GenAIProjectSettings
-    ModalityFilter:
-      properties:
-        name:
-          type: string
-          const: modality
-          title: Name
-          default: modality
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-            description: Single enum value - specific options depend on the concrete enum type used
-            example: ENUM_VALUE
-          - items:
-              type: string
-              example: ENUM_VALUE
-            type: array
-            description: Array of enum values
-            example:
-            - ENUM_VALUE_1
-            - ENUM_VALUE_2
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ModalityFilter
-      description: 'Filters on content modalities in scorer jobs.
-
-        Matches if at least one of the specified modalities is present.'
-    GeneratedScorerConfig:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: Name of the scorer to enable.
+          default: input_pii
         filters:
           anyOf:
           - items:
@@ -1347,325 +1640,16 @@ components:
           title: Filters
           description: List of filters to apply to the scorer.
       type: object
-      required:
-      - name
-      title: GeneratedScorerConfig
-    OutputSexistScorer:
+      title: InputPIIScorer
+    HTTPValidationError:
       properties:
-        name:
-          type: string
-          const: output_sexist
-          title: Name
-          default: output_sexist
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          enum:
-          - luna
-          - plus
-          title: Type
-          default: luna
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
-        num_judges:
-          anyOf:
-          - type: integer
-            maximum: 10.0
-            minimum: 1.0
-          - type: 'null'
-          title: Num Judges
-          description: Number of judges for the scorer.
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: OutputSexistScorer
-    InputToneScorer:
-      properties:
-        name:
-          type: string
-          const: input_tone
-          title: Name
-          default: input_tone
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-      type: object
-      title: InputToneScorer
-    InputToxicityScorer:
-      properties:
-        name:
-          type: string
-          const: input_toxicity
-          title: Name
-          default: input_toxicity
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          enum:
-          - luna
-          - plus
-          title: Type
-          default: luna
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
-        num_judges:
-          anyOf:
-          - type: integer
-            maximum: 10.0
-            minimum: 1.0
-          - type: 'null'
-          title: Num Judges
-          description: Number of judges for the scorer.
-      type: object
-      title: InputToxicityScorer
-    ObserveProjectSettings:
-      properties:
-        scorers_config:
-          anyOf:
-          - $ref: '#/components/schemas/ScorersConfig'
-          - type: 'null'
-        alerts_configuration:
-          anyOf:
-          - $ref: '#/components/schemas/AlertsConfiguration'
-          - type: 'null'
-        scorers_configuration:
-          anyOf:
-          - $ref: '#/components/schemas/ScorersConfiguration'
-          - type: 'null'
-        registered_scorers_configuration:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/RegisteredScorer'
-            type: array
-          - type: 'null'
-          title: Registered Scorers Configuration
-        generated_scorers_configuration:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/GeneratedScorerConfig'
-            type: array
-          - type: 'null'
-          title: Generated Scorers Configuration
-        customized_scorers_configuration:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/CustomizedScorer'
-            type: array
-          - type: 'null'
-          title: Customized Scorers Configuration
-      type: object
-      title: ObserveProjectSettings
-    Webhook:
-      properties:
-        url:
-          type: string
-          maxLength: 2083
-          minLength: 1
-          format: uri
-          title: Url
-        status:
-          $ref: '#/components/schemas/WebhookStatus'
-          default: untested
-        notes:
-          type: string
-          maxLength: 255
-          title: Notes
-          default: ''
-      type: object
-      required:
-      - url
-      title: Webhook
-    ToolSelectionQualityScorer:
-      properties:
-        name:
-          type: string
-          const: tool_selection_quality
-          title: Name
-          default: tool_selection_quality
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          enum:
-          - luna
-          - plus
-          title: Type
-          default: plus
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
-        num_judges:
-          anyOf:
-          - type: integer
-            maximum: 10.0
-            minimum: 1.0
-          - type: 'null'
-          title: Num Judges
-          description: Number of judges for the scorer.
-      type: object
-      title: ToolSelectionQualityScorer
-    GroundTruthAdherenceScorer:
-      properties:
-        name:
-          type: string
-          const: ground_truth_adherence
-          title: Name
-          default: ground_truth_adherence
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          const: plus
-          title: Type
-          default: plus
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
-        num_judges:
-          anyOf:
-          - type: integer
-            maximum: 10.0
-            minimum: 1.0
-          - type: 'null'
-          title: Num Judges
-          description: Number of judges for the scorer.
-      type: object
-      title: GroundTruthAdherenceScorer
-    AgenticWorkflowSuccessScorer:
-      properties:
-        name:
-          type: string
-          const: agentic_workflow_success
-          title: Name
-          default: agentic_workflow_success
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          enum:
-          - luna
-          - plus
-          title: Type
-          default: plus
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
-        num_judges:
-          anyOf:
-          - type: integer
-            maximum: 10.0
-            minimum: 1.0
-          - type: 'null'
-          title: Num Judges
-          description: Number of judges for the scorer.
-      type: object
-      title: AgenticWorkflowSuccessScorer
+      title: HTTPValidationError
     PromptInjectionScorer:
       properties:
         name:
@@ -1713,13 +1697,120 @@ components:
           description: Number of judges for the scorer.
       type: object
       title: PromptInjectionScorer
-    OutputToxicityScorer:
+    CustomizedScorer:
+      properties:
+        scorer_name:
+          $ref: '#/components/schemas/CustomizedScorerName'
+          description: Name of the customized scorer.
+        model_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Alias
+          description: Model alias to use for scoring.
+        num_judges:
+          anyOf:
+          - type: integer
+            maximum: 10.0
+            minimum: 1.0
+          - type: 'null'
+          title: Num Judges
+          description: Number of judges for the scorer.
+      type: object
+      required:
+      - scorer_name
+      title: CustomizedScorer
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OutputToneScorer:
       properties:
         name:
           type: string
-          const: output_toxicity
+          const: output_tone
           title: Name
-          default: output_toxicity
+          default: output_tone
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+      type: object
+      title: OutputToneScorer
+    MetadataFilter:
+      properties:
+        name:
+          type: string
+          const: metadata
+          title: Name
+          default: metadata
+        operator:
+          type: string
+          enum:
+          - one_of
+          - not_in
+          - eq
+          - ne
+          title: Operator
+        key:
+          type: string
+          title: Key
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - key
+      - value
+      title: MetadataFilter
+      description: Filters on metadata key-value pairs in scorer jobs.
+    InputToxicityScorer:
+      properties:
+        name:
+          type: string
+          const: input_toxicity
+          title: Name
+          default: input_toxicity
         filters:
           anyOf:
           - items:
@@ -1759,33 +1850,51 @@ components:
           title: Num Judges
           description: Number of judges for the scorer.
       type: object
-      title: OutputToxicityScorer
-    CustomizedScorerName:
-      type: string
-      enum:
-      - _customized_agentic_workflow_success
-      - _customized_agentic_session_success
-      - _customized_chunk_attribution_utilization_gpt
-      - _customized_completeness_gpt
-      - _customized_groundedness
-      - _customized_factuality
-      - _customized_ground_truth_adherence
-      - _customized_instruction_adherence
-      - _customized_prompt_injection_gpt
-      - _customized_tool_error_rate
-      - _customized_tool_selection_quality
-      - _customized_sexist_gpt
-      - _customized_input_sexist_gpt
-      - _customized_toxicity_gpt
-      - _customized_input_toxicity_gpt
-      title: CustomizedScorerName
-    ToolErrorRateScorer:
+      title: InputToxicityScorer
+    ModalityFilter:
       properties:
         name:
           type: string
-          const: tool_error_rate
+          const: modality
           title: Name
-          default: tool_error_rate
+          default: modality
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ModalityFilter
+      description: 'Filters on content modalities in scorer jobs.
+
+        Matches if at least one of the specified modalities is present.'
+    ToolSelectionQualityScorer:
+      properties:
+        name:
+          type: string
+          const: tool_selection_quality
+          title: Name
+          default: tool_selection_quality
         filters:
           anyOf:
           - items:
@@ -1816,45 +1925,6 @@ components:
           - type: 'null'
           title: Model Name
           description: Alias of the model to use for the scorer.
-      type: object
-      title: ToolErrorRateScorer
-    InputSexistScorer:
-      properties:
-        name:
-          type: string
-          const: input_sexist
-          title: Name
-          default: input_sexist
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          enum:
-          - luna
-          - plus
-          title: Type
-          default: luna
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
         num_judges:
           anyOf:
           - type: integer
@@ -1864,98 +1934,28 @@ components:
           title: Num Judges
           description: Number of judges for the scorer.
       type: object
-      title: InputSexistScorer
-    CompletenessScorer:
+      title: ToolSelectionQualityScorer
+    MetricWeight:
       properties:
-        name:
-          type: string
-          const: completeness
-          title: Name
-          default: completeness
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        type:
-          type: string
-          enum:
-          - luna
-          - plus
-          title: Type
-          default: luna
-        model_name:
+        label:
           anyOf:
           - type: string
           - type: 'null'
-          title: Model Name
-          description: Alias of the model to use for the scorer.
-        num_judges:
+          title: Label
+        group_label:
           anyOf:
-          - type: integer
-            maximum: 10.0
-            minimum: 1.0
+          - $ref: '#/components/schemas/GroupLabel'
           - type: 'null'
-          title: Num Judges
-          description: Number of judges for the scorer.
+        description:
+          anyOf:
+          - $ref: '#/components/schemas/MetricDescriptions'
+          - type: 'null'
+        weight:
+          type: number
+          title: Weight
+          default: 0.5
       type: object
-      title: CompletenessScorer
-    CompositeProjectSettings:
-      properties:
-        scorers_config:
-          anyOf:
-          - $ref: '#/components/schemas/ScorersConfig'
-          - type: 'null'
-        metric_weights_configuration:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/MetricWeight'
-            type: object
-          - type: 'null'
-          title: Metric Weights Configuration
-        alerts_configuration:
-          anyOf:
-          - $ref: '#/components/schemas/AlertsConfiguration'
-          - type: 'null'
-        scorers_configuration:
-          anyOf:
-          - $ref: '#/components/schemas/ScorersConfiguration'
-          - type: 'null'
-        registered_scorers_configuration:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/RegisteredScorer'
-            type: array
-          - type: 'null'
-          title: Registered Scorers Configuration
-        generated_scorers_configuration:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/GeneratedScorerConfig'
-            type: array
-          - type: 'null'
-          title: Generated Scorers Configuration
-        customized_scorers_configuration:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/CustomizedScorer'
-            type: array
-          - type: 'null'
-          title: Customized Scorers Configuration
-      type: object
-      title: CompositeProjectSettings
+      title: MetricWeight
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

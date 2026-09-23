@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation Audit Logs API
+  title: Galileo API Server Audit Logs API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
@@ -114,17 +114,15 @@ components:
       - records
       title: AuditLogListResponse
       description: Response for audit log list endpoint.
-    AuditAction:
-      type: string
-      enum:
-      - http_request
-      - login
-      - logout
-      - resource
-      - refresh_token
-      - failed_login
-      - account_lockout
-      title: AuditAction
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -181,15 +179,17 @@ components:
       - raw_event
       title: AuditLogRecord
       description: Single audit log record for query responses.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+    AuditAction:
+      type: string
+      enum:
+      - http_request
+      - login
+      - logout
+      - resource
+      - refresh_token
+      - failed_login
+      - account_lockout
+      title: AuditAction
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

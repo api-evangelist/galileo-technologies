@@ -1,17 +1,17 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation assistant API
+  title: Galileo API Server Assistant API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
 tags:
-- name: assistant
+- name: Assistant
 paths:
   /assistant/mentions:
     get:
       tags:
-      - assistant
+      - Assistant
       summary: Search Mentions
       description: 'Search entities by name for @-mention autocomplete in the assistant.
 
@@ -75,7 +75,7 @@ paths:
   /assistant/suggested-questions:
     get:
       tags:
-      - assistant
+      - Assistant
       summary: Get Suggested Questions
       description: Return suggested questions for the assistant panel given the active context.
       operationId: get_suggested_questions_assistant_suggested_questions_get
@@ -134,7 +134,7 @@ paths:
   /assistant/warmup:
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Warmup
       description: 'Warm up the assistant for a project, logstream or experiment.
 
@@ -166,7 +166,7 @@ paths:
   /assistant/background-tasks:
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Upsert Background Task
       description: Create or update an assistant background task and linkage row.
       operationId: upsert_background_task_assistant_background_tasks_post
@@ -196,7 +196,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - assistant
+      - Assistant
       summary: List Background Tasks
       description: List the caller's background task linkage rows plus read-time derived statuses.
       operationId: list_background_tasks_assistant_background_tasks_get
@@ -247,7 +247,7 @@ paths:
   /assistant/background-tasks/{task_name}/{target_type}/{target_id}:
     get:
       tags:
-      - assistant
+      - Assistant
       summary: Get Background Task
       description: Return the caller's background task linkage row plus read-time derived status.
       operationId: get_background_task_assistant_background_tasks__task_name___target_type___target_id__get
@@ -290,7 +290,7 @@ paths:
   /assistant/conversations:
     get:
       tags:
-      - assistant
+      - Assistant
       summary: List Conversations
       description: List the caller's conversations, most recently updated first.
       operationId: list_conversations_assistant_conversations_get
@@ -311,7 +311,7 @@ paths:
       - HTTPBasic: []
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Create Conversation
       description: Create a new conversation owned by the caller.
       operationId: create_conversation_assistant_conversations_post
@@ -342,7 +342,7 @@ paths:
   /assistant/conversations/{conversation_id}:
     patch:
       tags:
-      - assistant
+      - Assistant
       summary: Update Conversation
       description: Rename a conversation. 404 if it does not exist in the caller's org.
       operationId: update_conversation_assistant_conversations__conversation_id__patch
@@ -380,7 +380,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - assistant
+      - Assistant
       summary: Delete Conversation
       description: Delete a conversation (cascades to its messages). 404 if it does not exist.
       operationId: delete_conversation_assistant_conversations__conversation_id__delete
@@ -409,7 +409,7 @@ paths:
   /assistant/conversations/{conversation_id}/messages:
     get:
       tags:
-      - assistant
+      - Assistant
       summary: List Messages
       description: 'List a conversation''s messages, latest first, cursor-paginated.
 
@@ -466,7 +466,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Send Message
       description: 'Send a message to the conversation and stream the assistant''s response as SSE events.
 
@@ -506,7 +506,7 @@ paths:
   /assistant/conversations/{conversation_id}/messages/{assistant_message_id}/stream:
     get:
       tags:
-      - assistant
+      - Assistant
       summary: Resume Message Stream
       description: Resume an assistant response stream by replaying the turn's Redis stream.
       operationId: resume_message_stream_assistant_conversations__conversation_id__messages__assistant_message_id__stream_get
@@ -542,7 +542,7 @@ paths:
   /assistant/conversations/{conversation_id}/messages/{message_id}/stop-response:
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Stop Response
       description: 'Stop the in-progress assistant response started by `message_id`.
 
@@ -583,7 +583,7 @@ paths:
   /assistant/messages/{message_id}/feedback:
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Record Message Feedback
       description: 'Record feedback on an assistant message.
 
@@ -628,7 +628,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - assistant
+      - Assistant
       summary: Delete Message Feedback
       description: 'Remove feedback from an assistant message.
 
@@ -661,22 +661,99 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ExperimentContext:
+    SendMessageRequest:
+      properties:
+        message_id:
+          type: string
+          format: uuid4
+          title: Message Id
+          description: Client-generated UUID for this user message. Echoed back in the SSE start event as message_id.
+        message:
+          type: string
+          maxLength: 32000
+          minLength: 1
+          title: Message
+          description: The user's message text.
+        parent_message_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Parent Message Id
+          description: ID of the message this branches from. Null for the first message in a conversation.
+        model:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Model
+          description: LLM model to use. Overrides the conversation default for this turn.
+        context:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PageContext'
+            - $ref: '#/components/schemas/ProjectContext'
+            - $ref: '#/components/schemas/LogstreamContext'
+            - $ref: '#/components/schemas/ExperimentContext'
+            - $ref: '#/components/schemas/TraceContext'
+            - $ref: '#/components/schemas/SpanContext'
+            discriminator:
+              propertyName: type
+              mapping:
+                experiment: '#/components/schemas/ExperimentContext'
+                logstream: '#/components/schemas/LogstreamContext'
+                page: '#/components/schemas/PageContext'
+                project: '#/components/schemas/ProjectContext'
+                span: '#/components/schemas/SpanContext'
+                trace: '#/components/schemas/TraceContext'
+          type: array
+          maxItems: 50
+          title: Context
+          description: 'Active surfaces scoping this turn: project, logstream, experiment, trace, span, and current page.'
+      type: object
+      required:
+      - message_id
+      - message
+      title: SendMessageRequest
+      description: Request body for sending a message to the assistant.
+    ConversationMessagesPage:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/ConversationMessageResponse'
+          type: array
+          title: Messages
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+      type: object
+      required:
+      - messages
+      title: ConversationMessagesPage
+      description: 'A cursor-paginated slice of a conversation''s messages, latest first.
+
+
+        `next_cursor` is an opaque token to pass back as `cursor` on the next request.
+
+        It is null when the caller has reached the start of the conversation.'
+    LogstreamContext:
       properties:
         type:
           type: string
-          const: experiment
+          const: logstream
           title: Type
         id:
           type: string
           format: uuid4
           title: Id
-          description: Experiment ID.
+          description: Logstream (run) ID.
         project_id:
           type: string
           format: uuid4
           title: Project Id
-          description: Project the experiment belongs to.
+          description: Project the logstream belongs to.
         start_time:
           anyOf:
           - type: string
@@ -696,8 +773,141 @@ components:
       - type
       - id
       - project_id
-      title: ExperimentContext
-      description: Active experiment scope for the assistant turn.
+      title: LogstreamContext
+      description: Active logstream scope for the assistant turn.
+    ConversationResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - title
+      - created_by
+      - created_at
+      - updated_at
+      title: ConversationResponse
+      description: 'Conversation row returned by the conversation CRUD endpoints.
+
+
+        `created_by` is non-null on the wire: the column is nullable on the model
+
+        (`ondelete=SET NULL`), but the lookup path filters by `created_by == caller`, so any
+
+        row that reaches the response by definition has a creator.'
+    JobStatus:
+      type: string
+      enum:
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
+    MessageFeedbackRequest:
+      properties:
+        rating:
+          $ref: '#/components/schemas/MessageFeedbackRating'
+        comment:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Comment
+          description: Optional free-text comment.
+      type: object
+      required:
+      - rating
+      title: MessageFeedbackRequest
+      description: Request body for submitting feedback on an assistant message.
+    ConversationMessageRole:
+      type: string
+      enum:
+      - user
+      - assistant
+      title: ConversationMessageRole
+      description: 'Author of a conversation message.
+
+
+        `user` is sent by the human, `assistant` is generated by the Galileo Assistant runner.'
+    WarmupRequest:
+      properties:
+        context:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PageContext'
+            - $ref: '#/components/schemas/ProjectContext'
+            - $ref: '#/components/schemas/LogstreamContext'
+            - $ref: '#/components/schemas/ExperimentContext'
+            - $ref: '#/components/schemas/TraceContext'
+            - $ref: '#/components/schemas/SpanContext'
+            discriminator:
+              propertyName: type
+              mapping:
+                experiment: '#/components/schemas/ExperimentContext'
+                logstream: '#/components/schemas/LogstreamContext'
+                page: '#/components/schemas/PageContext'
+                project: '#/components/schemas/ProjectContext'
+                span: '#/components/schemas/SpanContext'
+                trace: '#/components/schemas/TraceContext'
+          type: array
+          maxItems: 50
+          title: Context
+          description: Active surfaces to pre-fetch context for. Logstream and experiment items trigger schema prefetch; other types are ignored.
+      type: object
+      title: WarmupRequest
+      description: Request body for warming up the assistant.
+    MentionResult:
+      properties:
+        type:
+          $ref: '#/components/schemas/AssistantContextType'
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+          description: Parent project ID. Present for logstream and experiment.
+      type: object
+      required:
+      - type
+      - id
+      - name
+      title: MentionResult
+      description: A single entity result from the mentions search.
+    AssistantBackgroundTaskTargetType:
+      type: string
+      enum:
+      - experiment
+      - logstream
+      title: AssistantBackgroundTaskTargetType
     ConversationMessageFinishReason:
       type: string
       enum:
@@ -706,6 +916,150 @@ components:
       - max_tokens
       title: ConversationMessageFinishReason
       description: Why an assistant turn ended.
+    AssistantBackgroundTaskName:
+      type: string
+      enum:
+      - generate-signals
+      title: AssistantBackgroundTaskName
+    MentionsResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/MentionResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: MentionsResponse
+      description: Response for the mentions search endpoint.
+    AssistantBackgroundTaskListItem:
+      properties:
+        conversation_id:
+          type: string
+          format: uuid4
+          title: Conversation Id
+        task_name:
+          type: string
+          title: Task Name
+        target_type:
+          type: string
+          title: Target Type
+        target_id:
+          type: string
+          format: uuid4
+          title: Target Id
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: string
+            const: unknown
+          title: Status
+        job_run_summary:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Job Run Summary
+      type: object
+      required:
+      - conversation_id
+      - task_name
+      - target_type
+      - target_id
+      - status
+      title: AssistantBackgroundTaskListItem
+      description: Background task fields needed by the assistant UI list/reload path.
+    MessageFeedbackRating:
+      type: string
+      enum:
+      - positive
+      - negative
+      title: MessageFeedbackRating
+      description: Positive or Negative rating for an assistant message.
+    ConversationMessageStatus:
+      type: string
+      enum:
+      - in_progress
+      - success
+      - failed
+      title: ConversationMessageStatus
+      description: 'Runner-reported state of an assistant message turn.
+
+
+        `content` may be NULL while `in_progress` and after `failed`. On `success`, inspect
+
+        `finish_reason` for *why* the turn ended.'
+    ProjectContext:
+      properties:
+        type:
+          type: string
+          const: project
+          title: Type
+        id:
+          type: string
+          format: uuid4
+          title: Id
+          description: Project ID.
+      type: object
+      required:
+      - type
+      - id
+      title: ProjectContext
+      description: Active project scope for the assistant turn.
+    CreateConversationRequest:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Title
+          description: Optional human-readable title.
+      type: object
+      title: CreateConversationRequest
+      description: Request body for creating a new conversation.
+    UpdateConversationRequest:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Title
+          description: New title; null clears the title.
+      type: object
+      title: UpdateConversationRequest
+      description: Request body for renaming a conversation.
+    SpanContext:
+      properties:
+        type:
+          type: string
+          const: span
+          title: Type
+        id:
+          type: string
+          format: uuid4
+          title: Id
+          description: Span ID.
+        trace_id:
+          type: string
+          format: uuid4
+          title: Trace Id
+          description: Trace the span belongs to.
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: Project the trace belongs to.
+      type: object
+      required:
+      - type
+      - id
+      - trace_id
+      - project_id
+      title: SpanContext
+      description: A specific span within a trace the user is viewing.
     AssistantBackgroundTaskResponse:
       properties:
         id:
@@ -765,297 +1119,6 @@ components:
       - updated_at
       title: AssistantBackgroundTaskResponse
       description: Background task linkage row plus response-only derived status.
-    MentionsResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/MentionResult'
-          type: array
-          title: Results
-      type: object
-      required:
-      - results
-      title: MentionsResponse
-      description: Response for the mentions search endpoint.
-    PageContext:
-      properties:
-        type:
-          type: string
-          const: page
-          title: Type
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Id
-          description: Page identifier.
-        path:
-          type: string
-          maxLength: 2048
-          minLength: 1
-          pattern: ^/
-          title: Path
-          description: Current route path.
-        view:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: 'null'
-          title: View
-          description: Optional page view or sub-view identifier.
-      type: object
-      required:
-      - type
-      - id
-      - path
-      title: PageContext
-      description: Current application page for the assistant turn.
-    AssistantBackgroundTasksResponse:
-      properties:
-        tasks:
-          items:
-            $ref: '#/components/schemas/AssistantBackgroundTaskListItem'
-          type: array
-          title: Tasks
-      type: object
-      required:
-      - tasks
-      title: AssistantBackgroundTasksResponse
-      description: Background task linkage rows for the caller.
-    WarmupRequest:
-      properties:
-        context:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/PageContext'
-            - $ref: '#/components/schemas/ProjectContext'
-            - $ref: '#/components/schemas/LogstreamContext'
-            - $ref: '#/components/schemas/ExperimentContext'
-            - $ref: '#/components/schemas/TraceContext'
-            - $ref: '#/components/schemas/SpanContext'
-            discriminator:
-              propertyName: type
-              mapping:
-                experiment: '#/components/schemas/ExperimentContext'
-                logstream: '#/components/schemas/LogstreamContext'
-                page: '#/components/schemas/PageContext'
-                project: '#/components/schemas/ProjectContext'
-                span: '#/components/schemas/SpanContext'
-                trace: '#/components/schemas/TraceContext'
-          type: array
-          maxItems: 50
-          title: Context
-          description: Active surfaces to pre-fetch context for. Logstream and experiment items trigger schema prefetch; other types are ignored.
-      type: object
-      title: WarmupRequest
-      description: Request body for warming up the assistant.
-    SpanContext:
-      properties:
-        type:
-          type: string
-          const: span
-          title: Type
-        id:
-          type: string
-          format: uuid4
-          title: Id
-          description: Span ID.
-        trace_id:
-          type: string
-          format: uuid4
-          title: Trace Id
-          description: Trace the span belongs to.
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-          description: Project the trace belongs to.
-      type: object
-      required:
-      - type
-      - id
-      - trace_id
-      - project_id
-      title: SpanContext
-      description: A specific span within a trace the user is viewing.
-    JobStatus:
-      type: string
-      enum:
-      - unstarted
-      - in_progress
-      - processed
-      - completed
-      - error
-      - failed
-      title: JobStatus
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ProjectContext:
-      properties:
-        type:
-          type: string
-          const: project
-          title: Type
-        id:
-          type: string
-          format: uuid4
-          title: Id
-          description: Project ID.
-      type: object
-      required:
-      - type
-      - id
-      title: ProjectContext
-      description: Active project scope for the assistant turn.
-    AssistantContextType:
-      type: string
-      enum:
-      - page
-      - project
-      - logstream
-      - experiment
-      - trace
-      - span
-      title: AssistantContextType
-      description: Discriminator for the active surface attached to an assistant turn.
-    UpdateConversationRequest:
-      properties:
-        title:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: 'null'
-          title: Title
-          description: New title; null clears the title.
-      type: object
-      title: UpdateConversationRequest
-      description: Request body for renaming a conversation.
-    ConversationMessagesPage:
-      properties:
-        messages:
-          items:
-            $ref: '#/components/schemas/ConversationMessageResponse'
-          type: array
-          title: Messages
-        next_cursor:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Next Cursor
-      type: object
-      required:
-      - messages
-      title: ConversationMessagesPage
-      description: 'A cursor-paginated slice of a conversation''s messages, latest first.
-
-
-        `next_cursor` is an opaque token to pass back as `cursor` on the next request.
-
-        It is null when the caller has reached the start of the conversation.'
-    AssistantBackgroundTaskListItem:
-      properties:
-        conversation_id:
-          type: string
-          format: uuid4
-          title: Conversation Id
-        task_name:
-          type: string
-          title: Task Name
-        target_type:
-          type: string
-          title: Target Type
-        target_id:
-          type: string
-          format: uuid4
-          title: Target Id
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/JobStatus'
-          - type: string
-            const: unknown
-          title: Status
-        job_run_summary:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Job Run Summary
-      type: object
-      required:
-      - conversation_id
-      - task_name
-      - target_type
-      - target_id
-      - status
-      title: AssistantBackgroundTaskListItem
-      description: Background task fields needed by the assistant UI list/reload path.
-    CreateConversationRequest:
-      properties:
-        title:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: 'null'
-          title: Title
-          description: Optional human-readable title.
-      type: object
-      title: CreateConversationRequest
-      description: Request body for creating a new conversation.
-    UpsertAssistantBackgroundTaskRequest:
-      properties:
-        conversation_id:
-          type: string
-          format: uuid4
-          title: Conversation Id
-        task_name:
-          $ref: '#/components/schemas/AssistantBackgroundTaskName'
-        target_type:
-          $ref: '#/components/schemas/AssistantBackgroundTaskTargetType'
-        target_id:
-          type: string
-          format: uuid4
-          title: Target Id
-        params:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/GenerateSignalsAssistantBackgroundTaskParams'
-            discriminator:
-              propertyName: task_name
-              mapping:
-                generate-signals: '#/components/schemas/GenerateSignalsAssistantBackgroundTaskParams'
-          - type: 'null'
-          title: Params
-      type: object
-      required:
-      - conversation_id
-      - task_name
-      - target_type
-      - target_id
-      title: UpsertAssistantBackgroundTaskRequest
-      description: Request body for linking an assistant conversation to a product background task.
-    MessageFeedbackRequest:
-      properties:
-        rating:
-          $ref: '#/components/schemas/MessageFeedbackRating'
-        comment:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Comment
-          description: Optional free-text comment.
-      type: object
-      required:
-      - rating
-      title: MessageFeedbackRequest
-      description: Request body for submitting feedback on an assistant message.
     SuggestedQuestionsResponse:
       properties:
         questions:
@@ -1068,6 +1131,26 @@ components:
       - questions
       title: SuggestedQuestionsResponse
       description: Suggested questions the user can ask the assistant given the active context.
+    AssistantContextType:
+      type: string
+      enum:
+      - page
+      - project
+      - logstream
+      - experiment
+      - trace
+      - span
+      title: AssistantContextType
+      description: Discriminator for the active surface attached to an assistant turn.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TraceContext:
       properties:
         type:
@@ -1091,23 +1174,6 @@ components:
       - project_id
       title: TraceContext
       description: A specific trace the user is viewing.
-    GenerateSignalsAssistantBackgroundTaskParams:
-      properties:
-        task_name:
-          type: string
-          const: generate-signals
-          title: Task Name
-        model_alias:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: 'null'
-          title: Model Alias
-          description: Optional model alias to use when creating the background task.
-      type: object
-      required:
-      - task_name
-      title: GenerateSignalsAssistantBackgroundTaskParams
     ValidationError:
       properties:
         loc:
@@ -1134,16 +1200,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ConversationMessageRole:
-      type: string
-      enum:
-      - user
-      - assistant
-      title: ConversationMessageRole
-      description: 'Author of a conversation message.
-
-
-        `user` is sent by the human, `assistant` is generated by the Galileo Assistant runner.'
     ConversationMessageResponse:
       properties:
         id:
@@ -1231,22 +1287,54 @@ components:
       - updated_at
       title: ConversationMessageResponse
       description: One row from `conversation_messages` as the chat UI consumes it.
-    LogstreamContext:
+    UpsertAssistantBackgroundTaskRequest:
+      properties:
+        conversation_id:
+          type: string
+          format: uuid4
+          title: Conversation Id
+        task_name:
+          $ref: '#/components/schemas/AssistantBackgroundTaskName'
+        target_type:
+          $ref: '#/components/schemas/AssistantBackgroundTaskTargetType'
+        target_id:
+          type: string
+          format: uuid4
+          title: Target Id
+        params:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/GenerateSignalsAssistantBackgroundTaskParams'
+            discriminator:
+              propertyName: task_name
+              mapping:
+                generate-signals: '#/components/schemas/GenerateSignalsAssistantBackgroundTaskParams'
+          - type: 'null'
+          title: Params
+      type: object
+      required:
+      - conversation_id
+      - task_name
+      - target_type
+      - target_id
+      title: UpsertAssistantBackgroundTaskRequest
+      description: Request body for linking an assistant conversation to a product background task.
+    ExperimentContext:
       properties:
         type:
           type: string
-          const: logstream
+          const: experiment
           title: Type
         id:
           type: string
           format: uuid4
           title: Id
-          description: Logstream (run) ID.
+          description: Experiment ID.
         project_id:
           type: string
           format: uuid4
           title: Project Id
-          description: Project the logstream belongs to.
+          description: Project the experiment belongs to.
         start_time:
           anyOf:
           - type: string
@@ -1266,158 +1354,70 @@ components:
       - type
       - id
       - project_id
-      title: LogstreamContext
-      description: Active logstream scope for the assistant turn.
-    ConversationMessageStatus:
-      type: string
-      enum:
-      - in_progress
-      - success
-      - failed
-      title: ConversationMessageStatus
-      description: 'Runner-reported state of an assistant message turn.
-
-
-        `content` may be NULL while `in_progress` and after `failed`. On `success`, inspect
-
-        `finish_reason` for *why* the turn ended.'
-    AssistantBackgroundTaskTargetType:
-      type: string
-      enum:
-      - experiment
-      - logstream
-      title: AssistantBackgroundTaskTargetType
-    SendMessageRequest:
+      title: ExperimentContext
+      description: Active experiment scope for the assistant turn.
+    GenerateSignalsAssistantBackgroundTaskParams:
       properties:
-        message_id:
+        task_name:
           type: string
-          format: uuid4
-          title: Message Id
-          description: Client-generated UUID for this user message. Echoed back in the SSE start event as message_id.
-        message:
-          type: string
-          maxLength: 32000
-          minLength: 1
-          title: Message
-          description: The user's message text.
-        parent_message_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Parent Message Id
-          description: ID of the message this branches from. Null for the first message in a conversation.
-        model:
+          const: generate-signals
+          title: Task Name
+        model_alias:
           anyOf:
           - type: string
             maxLength: 255
           - type: 'null'
-          title: Model
-          description: LLM model to use. Overrides the conversation default for this turn.
-        context:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/PageContext'
-            - $ref: '#/components/schemas/ProjectContext'
-            - $ref: '#/components/schemas/LogstreamContext'
-            - $ref: '#/components/schemas/ExperimentContext'
-            - $ref: '#/components/schemas/TraceContext'
-            - $ref: '#/components/schemas/SpanContext'
-            discriminator:
-              propertyName: type
-              mapping:
-                experiment: '#/components/schemas/ExperimentContext'
-                logstream: '#/components/schemas/LogstreamContext'
-                page: '#/components/schemas/PageContext'
-                project: '#/components/schemas/ProjectContext'
-                span: '#/components/schemas/SpanContext'
-                trace: '#/components/schemas/TraceContext'
-          type: array
-          maxItems: 50
-          title: Context
-          description: 'Active surfaces scoping this turn: project, logstream, experiment, trace, span, and current page.'
+          title: Model Alias
+          description: Optional model alias to use when creating the background task.
       type: object
       required:
-      - message_id
-      - message
-      title: SendMessageRequest
-      description: Request body for sending a message to the assistant.
-    AssistantBackgroundTaskName:
-      type: string
-      enum:
-      - generate-signals
-      title: AssistantBackgroundTaskName
-    MessageFeedbackRating:
-      type: string
-      enum:
-      - positive
-      - negative
-      title: MessageFeedbackRating
-      description: Positive or Negative rating for an assistant message.
-    ConversationResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Title
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - title
-      - created_by
-      - created_at
-      - updated_at
-      title: ConversationResponse
-      description: 'Conversation row returned by the conversation CRUD endpoints.
-
-
-        `created_by` is non-null on the wire: the column is nullable on the model
-
-        (`ondelete=SET NULL`), but the lookup path filters by `created_by == caller`, so any
-
-        row that reaches the response by definition has a creator.'
-    MentionResult:
+      - task_name
+      title: GenerateSignalsAssistantBackgroundTaskParams
+    PageContext:
       properties:
         type:
-          $ref: '#/components/schemas/AssistantContextType'
+          type: string
+          const: page
+          title: Type
         id:
           type: string
-          format: uuid4
+          maxLength: 255
+          minLength: 1
           title: Id
-        name:
+          description: Page identifier.
+        path:
           type: string
-          title: Name
-        project_id:
+          maxLength: 2048
+          minLength: 1
+          pattern: ^/
+          title: Path
+          description: Current route path.
+        view:
           anyOf:
           - type: string
-            format: uuid4
+            maxLength: 255
           - type: 'null'
-          title: Project Id
-          description: Parent project ID. Present for logstream and experiment.
+          title: View
+          description: Optional page view or sub-view identifier.
       type: object
       required:
       - type
       - id
-      - name
-      title: MentionResult
-      description: A single entity result from the mentions search.
+      - path
+      title: PageContext
+      description: Current application page for the assistant turn.
+    AssistantBackgroundTasksResponse:
+      properties:
+        tasks:
+          items:
+            $ref: '#/components/schemas/AssistantBackgroundTaskListItem'
+          type: array
+          title: Tasks
+      type: object
+      required:
+      - tasks
+      title: AssistantBackgroundTasksResponse
+      description: Background task linkage rows for the caller.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

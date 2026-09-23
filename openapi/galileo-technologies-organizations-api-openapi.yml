@@ -1,17 +1,17 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation organizations API
+  title: Galileo API Server Organizations API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
 tags:
-- name: organizations
+- name: Organizations
 paths:
   /organizations:
     post:
       tags:
-      - organizations
+      - Organizations
       summary: Create Organization
       operationId: create_organization_organizations_post
       requestBody:
@@ -41,7 +41,7 @@ paths:
   /organizations/query:
     post:
       tags:
-      - organizations
+      - Organizations
       summary: Query Organizations
       operationId: query_organizations_organizations_query_post
       security:
@@ -91,7 +91,7 @@ paths:
   /organizations/{organization_id}:
     patch:
       tags:
-      - organizations
+      - Organizations
       summary: Update Organization
       operationId: update_organization_organizations__organization_id__patch
       security:
@@ -128,7 +128,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - organizations
+      - Organizations
       summary: Delete Organization
       operationId: delete_organization_organizations__organization_id__delete
       security:
@@ -172,7 +172,7 @@ paths:
   /organizations/settings:
     get:
       tags:
-      - organizations
+      - Organizations
       summary: List Organization Settings
       description: List all settings for the current organization. Admin only.
       operationId: list_organization_settings_organizations_settings_get
@@ -193,7 +193,7 @@ paths:
       - HTTPBasic: []
     put:
       tags:
-      - organizations
+      - Organizations
       summary: Update Organization Setting
       description: Update an organization setting. Admin only.
       operationId: update_organization_setting_organizations_settings_put
@@ -223,375 +223,6 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
-    RedactionSetting:
-      properties:
-        settings_key:
-          type: string
-          const: redaction
-          title: Settings Key
-          default: redaction
-        filters:
-          items:
-            $ref: '#/components/schemas/RedactionFilter'
-          type: array
-          maxItems: 32
-          title: Filters
-          default: []
-      type: object
-      title: RedactionSetting
-      description: Redaction setting for RBAC-based content filtering.
-    UpdateOrganizationRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Name
-      type: object
-      title: UpdateOrganizationRequest
-    IntegrationAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - read_secrets
-      title: IntegrationAction
-    ProjectAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - rename
-      - share
-      - create_run
-      - delete_run
-      - rename_run
-      - move_run
-      - export_data
-      - configure_human_feedback
-      - record_human_feedback
-      - log_data
-      - toggle_metric
-      - edit_alert
-      - create_stage
-      - edit_stage
-      - configure_crown_logic
-      - delete_data
-      - set_metric
-      - edit_run_tags
-      - dismiss_alert
-      - edit_slice
-      - edit_edit
-      - update_control_bindings
-      - use_control_runtime
-      title: ProjectAction
-    QueryOrganizationParams:
-      properties:
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/OrganizationNameFilter'
-            - $ref: '#/components/schemas/OrganizationIsMemberFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                is_member: '#/components/schemas/OrganizationIsMemberFilter'
-                name: '#/components/schemas/OrganizationNameFilter'
-          type: array
-          title: Filters
-        sort:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/OrganizationCreatedAtSort'
-            - $ref: '#/components/schemas/OrganizationNameSort'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/OrganizationCreatedAtSort'
-                name: '#/components/schemas/OrganizationNameSort'
-          - type: 'null'
-          title: Sort
-          default:
-            name: created_at
-            ascending: false
-            sort_type: column
-      type: object
-      title: QueryOrganizationParams
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    OrganizationIsMemberFilter:
-      properties:
-        name:
-          type: string
-          const: is_member
-          title: Name
-          default: is_member
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: OrganizationIsMemberFilter
-    OrganizationSettingsUpdateRequest:
-      properties:
-        setting:
-          oneOf:
-          - $ref: '#/components/schemas/RedactionSetting'
-          title: Setting
-          discriminator:
-            propertyName: settings_key
-            mapping:
-              redaction: '#/components/schemas/RedactionSetting'
-      type: object
-      required:
-      - setting
-      title: OrganizationSettingsUpdateRequest
-      description: Request to update an organization setting.
-    GroupAction:
-      type: string
-      enum:
-      - update
-      - list_members
-      - join
-      - request_to_join
-      title: GroupAction
-    OrganizationDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        name:
-          type: string
-          title: Name
-        slug:
-          type: string
-          title: Slug
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - name
-      - slug
-      - created_at
-      - updated_at
-      title: OrganizationDB
-    OrganizationCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - name
-      title: OrganizationCreate
-    RedactionFilter:
-      properties:
-        user_metadata_key:
-          type: string
-          maxLength: 32
-          minLength: 1
-          title: User Metadata Key
-        user_metadata_values:
-          items:
-            type: string
-            maxLength: 256
-            minLength: 1
-          type: array
-          maxItems: 32
-          minItems: 1
-          title: User Metadata Values
-      type: object
-      required:
-      - user_metadata_key
-      - user_metadata_values
-      title: RedactionFilter
-      description: A single filter rule for RBAC redaction.
-    DatasetAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
-    AnnotationQueueAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - record_annotation
-      title: AnnotationQueueAction
-    GeneratedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: GeneratedScorerAction
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
-    FineTunedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: FineTunedScorerAction
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
-    UserAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - read_api_keys
-      - change_role_to_admin
-      - change_role_to_manager
-      - change_role_to_user
-      - change_role_to_read_only
-      title: UserAction
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    OrganizationNameFilter:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: OrganizationNameFilter
-    OrganizationSettingsResponse:
-      properties:
-        value:
-          oneOf:
-          - $ref: '#/components/schemas/RedactionSetting'
-          title: Value
-          discriminator:
-            propertyName: settings_key
-            mapping:
-              redaction: '#/components/schemas/RedactionSetting'
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        updated_by:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Updated By
-        updated_by_user:
-          anyOf:
-          - $ref: '#/components/schemas/UserInfo'
-          - type: 'null'
-      type: object
-      required:
-      - value
-      - updated_at
-      - updated_by
-      - updated_by_user
-      title: OrganizationSettingsResponse
-      description: Response schema for an organization setting.
-    OrganizationCreatedAtSort:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: OrganizationCreatedAtSort
     Permission:
       properties:
         action:
@@ -630,17 +261,6 @@ components:
       - update
       - delete
       title: RegisteredScorerAction
-    OrganizationAction:
-      type: string
-      enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
     ListOrganizationsResponse:
       properties:
         starting_token:
@@ -678,33 +298,152 @@ components:
       - delete
       title: ControlResourceAction
       description: Actions on Agent Control's org-scoped ``control`` resource.
-    OrganizationNameSort:
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    UpdateOrganizationRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+      type: object
+      title: UpdateOrganizationRequest
+    OrganizationSettingsResponse:
+      properties:
+        value:
+          oneOf:
+          - $ref: '#/components/schemas/RedactionSetting'
+          title: Value
+          discriminator:
+            propertyName: settings_key
+            mapping:
+              redaction: '#/components/schemas/RedactionSetting'
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        updated_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Updated By
+        updated_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+      type: object
+      required:
+      - value
+      - updated_at
+      - updated_by
+      - updated_by_user
+      title: OrganizationSettingsResponse
+      description: Response schema for an organization setting.
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    RedactionFilter:
+      properties:
+        user_metadata_key:
+          type: string
+          maxLength: 32
+          minLength: 1
+          title: User Metadata Key
+        user_metadata_values:
+          items:
+            type: string
+            maxLength: 256
+            minLength: 1
+          type: array
+          maxItems: 32
+          minItems: 1
+          title: User Metadata Values
+      type: object
+      required:
+      - user_metadata_key
+      - user_metadata_values
+      title: RedactionFilter
+      description: A single filter rule for RBAC redaction.
+    OrganizationNameFilter:
       properties:
         name:
           type: string
           const: name
           title: Name
           default: name
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
+        operator:
           type: string
-          const: column
-          title: Sort Type
-          default: column
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
       type: object
-      title: OrganizationNameSort
-    ScorerAction:
+      required:
+      - operator
+      - value
+      title: OrganizationNameFilter
+    GroupAction:
+      type: string
+      enum:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    AnnotationQueueAction:
       type: string
       enum:
       - update
       - delete
       - share
-      - export
-      - autotune_apply
-      title: ScorerAction
+      - record_annotation
+      title: AnnotationQueueAction
     UserInfo:
       properties:
         id:
@@ -730,6 +469,267 @@ components:
       - email
       title: UserInfo
       description: A user's basic information, used for display purposes.
+    OrganizationSettingsUpdateRequest:
+      properties:
+        setting:
+          oneOf:
+          - $ref: '#/components/schemas/RedactionSetting'
+          title: Setting
+          discriminator:
+            propertyName: settings_key
+            mapping:
+              redaction: '#/components/schemas/RedactionSetting'
+      type: object
+      required:
+      - setting
+      title: OrganizationSettingsUpdateRequest
+      description: Request to update an organization setting.
+    RedactionSetting:
+      properties:
+        settings_key:
+          type: string
+          const: redaction
+          title: Settings Key
+          default: redaction
+        filters:
+          items:
+            $ref: '#/components/schemas/RedactionFilter'
+          type: array
+          maxItems: 32
+          title: Filters
+          default: []
+      type: object
+      title: RedactionSetting
+      description: Redaction setting for RBAC-based content filtering.
+    OrganizationNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: OrganizationNameSort
+    DatasetAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
+    QueryOrganizationParams:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/OrganizationNameFilter'
+            - $ref: '#/components/schemas/OrganizationIsMemberFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                is_member: '#/components/schemas/OrganizationIsMemberFilter'
+                name: '#/components/schemas/OrganizationNameFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/OrganizationCreatedAtSort'
+            - $ref: '#/components/schemas/OrganizationNameSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/OrganizationCreatedAtSort'
+                name: '#/components/schemas/OrganizationNameSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: QueryOrganizationParams
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    OrganizationDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          type: string
+          title: Name
+        slug:
+          type: string
+          title: Slug
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - name
+      - slug
+      - created_at
+      - updated_at
+      title: OrganizationDB
+    OrganizationIsMemberFilter:
+      properties:
+        name:
+          type: string
+          const: is_member
+          title: Name
+          default: is_member
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: OrganizationIsMemberFilter
+    ProjectAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    OrganizationCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: OrganizationCreate
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    OrganizationCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: OrganizationCreatedAtSort
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

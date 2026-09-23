@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation system_users_authentication API
+  title: Galileo API Server System Users Authentication API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
@@ -109,6 +109,87 @@ paths:
       - OAuth2PasswordBearer: []
 components:
   schemas:
+    EmailVerificationRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - email
+      title: EmailVerificationRequest
+    PasswordResetEmailResponse:
+      properties: {}
+      type: object
+      title: PasswordResetEmailResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ResendVerificationEmailResponse:
+      properties: {}
+      type: object
+      title: ResendVerificationEmailResponse
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserPasswordResetRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          anyOf:
+          - type: string
+            format: password
+            writeOnly: true
+          - type: 'null'
+          title: Password
+        email_is_verified:
+          type: boolean
+          title: Email Is Verified
+          default: true
+      type: object
+      required:
+      - email
+      title: UserPasswordResetRequest
     SystemUserDB:
       properties:
         id:
@@ -158,93 +239,12 @@ components:
       - role
       - auth_method
       title: SystemUserDB
-    SystemUserStatus:
-      type: string
-      enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
-    EmailVerificationRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-      type: object
-      required:
-      - email
-      title: EmailVerificationRequest
-    UserPasswordResetRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        password:
-          anyOf:
-          - type: string
-            format: password
-            writeOnly: true
-          - type: 'null'
-          title: Password
-        email_is_verified:
-          type: boolean
-          title: Email Is Verified
-          default: true
-      type: object
-      required:
-      - email
-      title: UserPasswordResetRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PasswordResetEmailResponse:
-      properties: {}
-      type: object
-      title: PasswordResetEmailResponse
     SystemRole:
       type: string
       enum:
       - system_admin
       - system_user
       title: SystemRole
-    ResendVerificationEmailResponse:
-      properties: {}
-      type: object
-      title: ResendVerificationEmailResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

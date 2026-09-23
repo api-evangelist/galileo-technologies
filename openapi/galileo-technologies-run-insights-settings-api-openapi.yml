@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation run_insights_settings API
+  title: Galileo API Server Run Insights Settings API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
@@ -268,13 +268,38 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RunInsightsSettingsSchema:
+    RunInsightsRequest:
       properties:
-        logstream:
-          $ref: '#/components/schemas/LogstreamInsightConfig'
-          description: Logstream insights configuration.
+        insights:
+          $ref: '#/components/schemas/RunInsightsSettingsSchema'
+          description: The insights configuration for the run.
       type: object
-      title: RunInsightsSettingsSchema
+      title: RunInsightsRequest
+    LogstreamInsightConfig:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Whether logstream insights are enabled for this run.
+          default: false
+        start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start Time
+          description: Start time for generating logstream insights.
+      type: object
+      title: LogstreamInsightConfig
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -301,13 +326,13 @@ components:
       - msg
       - type
       title: ValidationError
-    RunInsightsRequest:
+    RunInsightsSettingsSchema:
       properties:
-        insights:
-          $ref: '#/components/schemas/RunInsightsSettingsSchema'
-          description: The insights configuration for the run.
+        logstream:
+          $ref: '#/components/schemas/LogstreamInsightConfig'
+          description: Logstream insights configuration.
       type: object
-      title: RunInsightsRequest
+      title: RunInsightsSettingsSchema
     RunInsightsResponse:
       properties:
         insights:
@@ -322,31 +347,6 @@ components:
       required:
       - run_id
       title: RunInsightsResponse
-    LogstreamInsightConfig:
-      properties:
-        enabled:
-          type: boolean
-          title: Enabled
-          description: Whether logstream insights are enabled for this run.
-          default: false
-        start_time:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Start Time
-          description: Start time for generating logstream insights.
-      type: object
-      title: LogstreamInsightConfig
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

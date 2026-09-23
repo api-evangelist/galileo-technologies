@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation code-metric-generation API
+  title: Galileo API Server Code Metric Generation API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
@@ -85,6 +85,62 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CreateCodeMetricGenerationResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        status:
+          $ref: '#/components/schemas/CodeMetricGenerationStatus'
+      type: object
+      required:
+      - id
+      - status
+      title: CreateCodeMetricGenerationResponse
+      description: Response with generation ID for polling.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CodeMetricGenerationStatus:
+      type: string
+      enum:
+      - generating
+      - completed
+      - failed
+      title: CodeMetricGenerationStatus
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     CreateCodeMetricGenerationRequest:
       properties:
         user_message:
@@ -117,13 +173,20 @@ components:
       - user_message
       title: CreateCodeMetricGenerationRequest
       description: Request to generate scorer code from a user message.
-    CodeMetricGenerationStatus:
+    OutputTypeEnum:
       type: string
       enum:
-      - generating
-      - completed
-      - failed
-      title: CodeMetricGenerationStatus
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
     CodeMetricGenerationStatusResponse:
       properties:
         id:
@@ -148,69 +211,6 @@ components:
       - status
       title: CodeMetricGenerationStatusResponse
       description: Lightweight polling response.
-    CreateCodeMetricGenerationResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        status:
-          $ref: '#/components/schemas/CodeMetricGenerationStatus'
-      type: object
-      required:
-      - id
-      - status
-      title: CreateCodeMetricGenerationResponse
-      description: Response with generation ID for polling.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    OutputTypeEnum:
-      type: string
-      enum:
-      - boolean
-      - categorical
-      - count
-      - discrete
-      - freeform
-      - percentage
-      - multilabel
-      - retrieved_chunk_list_boolean
-      - boolean_multilabel
-      title: OutputTypeEnum
-      description: Enumeration of output types.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

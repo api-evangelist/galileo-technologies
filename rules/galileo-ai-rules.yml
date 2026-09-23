@@ -1,0 +1,62 @@
+extends:
+  - [spectral:oas, recommended]
+documentationUrl: https://docs.galileo.ai/
+rules:
+  galileo-server-base-url:
+    description: Galileo OpenAPI documents MUST declare https://api.galileo.ai as a server.
+    severity: error
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: '^https://api\.galileo\.ai'
+  galileo-paths-v2-prefix:
+    description: Galileo public API paths MUST be prefixed with /v2.
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: '^/v2/'
+  galileo-operation-id-camel-case:
+    description: operationId values MUST be camelCase.
+    severity: warn
+    given: $.paths[*][*].operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]+$'
+  galileo-api-key-security:
+    description: Galileo APIs MUST document the Galileo-API-Key header security scheme.
+    severity: error
+    given: $.components.securitySchemes
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: [apiKeyHeader]
+          properties:
+            apiKeyHeader:
+              type: object
+              required: [type, in, name]
+              properties:
+                type: { const: apiKey }
+                in: { const: header }
+                name: { const: Galileo-API-Key }
+  galileo-tag-titlecase:
+    description: Tag names SHOULD use Title Case (e.g. "Datasets", "Experiments").
+    severity: warn
+    given: $.tags[*].name
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[A-Z][A-Za-z0-9]*( [A-Z][A-Za-z0-9]*)*$'
+  galileo-summary-titlecase:
+    description: Operation summaries SHOULD use Title Case.
+    severity: warn
+    given: $.paths[*][*].summary
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[A-Z]'

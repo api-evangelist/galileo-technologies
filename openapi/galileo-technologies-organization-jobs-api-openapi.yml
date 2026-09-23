@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation Organization Jobs API
+  title: Galileo API Server Organization Jobs API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
@@ -184,22 +184,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    OrgMetadataDeleteRequest:
+    HTTPValidationError:
       properties:
-        metadata_key:
-          type: string
-          maxLength: 256
-          minLength: 1
-          title: Metadata Key
-        metadata_value:
-          type: string
-          title: Metadata Value
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - metadata_key
-      - metadata_value
-      title: OrgMetadataDeleteRequest
-      description: Request body for organization-wide metadata-based deletion.
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -226,23 +219,6 @@ components:
       - msg
       - type
       title: ValidationError
-    OrgMetadataDeleteResponse:
-      properties:
-        job_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Job Id
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - job_id
-      - message
-      title: OrgMetadataDeleteResponse
-      description: Response for organization-wide metadata-based deletion.
     OrgJobDB:
       properties:
         id:
@@ -293,15 +269,39 @@ components:
       - updated_at
       title: OrgJobDB
       description: Response schema for org jobs.
-    HTTPValidationError:
+    OrgMetadataDeleteRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        metadata_key:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Metadata Key
+        metadata_value:
+          type: string
+          title: Metadata Value
       type: object
-      title: HTTPValidationError
+      required:
+      - metadata_key
+      - metadata_value
+      title: OrgMetadataDeleteRequest
+      description: Request body for organization-wide metadata-based deletion.
+    OrgMetadataDeleteResponse:
+      properties:
+        job_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Job Id
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - job_id
+      - message
+      title: OrgMetadataDeleteResponse
+      description: Response for organization-wide metadata-based deletion.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

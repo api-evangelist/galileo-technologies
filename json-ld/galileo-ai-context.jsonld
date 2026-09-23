@@ -1,0 +1,183 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "galileo": "https://api.galileo.ai/v2/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Project": {
+      "@id": "galileo:Project",
+      "@context": {
+        "id": { "@id": "galileo:Project/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "type": { "@id": "galileo:Project/type", "@type": "xsd:string" },
+        "created_at": { "@id": "dcterms:created", "@type": "xsd:dateTime" },
+        "updated_at": { "@id": "dcterms:modified", "@type": "xsd:dateTime" },
+        "created_by": { "@id": "galileo:Project/createdBy", "@type": "xsd:string" }
+      }
+    },
+
+    "Dataset": {
+      "@id": "galileo:Dataset",
+      "@context": {
+        "id": { "@id": "galileo:Dataset/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "num_rows": { "@id": "galileo:Dataset/numRows", "@type": "xsd:integer" },
+        "column_names": { "@id": "galileo:Dataset/columnNames", "@container": "@list" },
+        "project_id": { "@id": "galileo:Dataset/projectId", "@type": "xsd:string" },
+        "created_at": { "@id": "dcterms:created", "@type": "xsd:dateTime" },
+        "updated_at": { "@id": "dcterms:modified", "@type": "xsd:dateTime" }
+      }
+    },
+
+    "DatasetRow": {
+      "@id": "galileo:DatasetRow",
+      "@context": {
+        "id": { "@id": "galileo:DatasetRow/id", "@type": "xsd:string" },
+        "values": { "@id": "galileo:DatasetRow/values" },
+        "metadata": { "@id": "galileo:DatasetRow/metadata" }
+      }
+    },
+
+    "Experiment": {
+      "@id": "galileo:Experiment",
+      "@context": {
+        "id": { "@id": "galileo:Experiment/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "project_id": { "@id": "galileo:Experiment/projectId", "@type": "xsd:string" },
+        "dataset_id": { "@id": "galileo:Experiment/datasetId", "@type": "xsd:string" },
+        "prompt_template_id": { "@id": "galileo:Experiment/promptTemplateId", "@type": "xsd:string" },
+        "metrics": { "@id": "galileo:Experiment/metrics", "@container": "@list" },
+        "status": { "@id": "galileo:Experiment/status", "@type": "xsd:string" },
+        "created_at": { "@id": "dcterms:created", "@type": "xsd:dateTime" }
+      }
+    },
+
+    "Trace": {
+      "@id": "galileo:Trace",
+      "@context": {
+        "id": { "@id": "galileo:Trace/id", "@type": "xsd:string" },
+        "project_id": { "@id": "galileo:Trace/projectId", "@type": "xsd:string" },
+        "log_stream_id": { "@id": "galileo:Trace/logStreamId", "@type": "xsd:string" },
+        "session_id": { "@id": "galileo:Trace/sessionId", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "input": { "@id": "galileo:Trace/input" },
+        "output": { "@id": "galileo:Trace/output" },
+        "spans": { "@id": "galileo:Trace/spans", "@container": "@list" },
+        "metrics": { "@id": "galileo:Trace/metrics" },
+        "created_at": { "@id": "dcterms:created", "@type": "xsd:dateTime" }
+      }
+    },
+
+    "Span": {
+      "@id": "galileo:Span",
+      "@context": {
+        "id": { "@id": "galileo:Span/id", "@type": "xsd:string" },
+        "trace_id": { "@id": "galileo:Span/traceId", "@type": "xsd:string" },
+        "parent_id": { "@id": "galileo:Span/parentId", "@type": "xsd:string" },
+        "type": {
+          "@id": "galileo:Span/type",
+          "@type": "xsd:string",
+          "@comment": "One of: workflow | llm | retriever | tool"
+        },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "input": { "@id": "galileo:Span/input" },
+        "output": { "@id": "galileo:Span/output" },
+        "model": { "@id": "galileo:Span/model", "@type": "xsd:string" },
+        "tokens_input": { "@id": "galileo:Span/tokensInput", "@type": "xsd:integer" },
+        "tokens_output": { "@id": "galileo:Span/tokensOutput", "@type": "xsd:integer" },
+        "duration_ms": { "@id": "galileo:Span/durationMs", "@type": "xsd:integer" },
+        "metrics": { "@id": "galileo:Span/metrics" },
+        "tools_used": { "@id": "galileo:Span/toolsUsed", "@container": "@list" }
+      }
+    },
+
+    "PromptTemplate": {
+      "@id": "galileo:PromptTemplate",
+      "@context": {
+        "id": { "@id": "galileo:PromptTemplate/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "version": { "@id": "schema:version", "@type": "xsd:string" },
+        "template": { "@id": "galileo:PromptTemplate/template", "@type": "xsd:string" },
+        "variables": { "@id": "galileo:PromptTemplate/variables", "@container": "@list" }
+      }
+    },
+
+    "Metric": {
+      "@id": "galileo:Metric",
+      "@context": {
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "type": {
+          "@id": "galileo:Metric/type",
+          "@type": "xsd:string",
+          "@comment": "One of: builtin | luna | custom"
+        },
+        "value": { "@id": "galileo:Metric/value", "@type": "xsd:decimal" },
+        "explanation": { "@id": "galileo:Metric/explanation", "@type": "xsd:string" }
+      }
+    },
+
+    "AnnotationTemplate": {
+      "@id": "galileo:AnnotationTemplate",
+      "@context": {
+        "id": { "@id": "galileo:AnnotationTemplate/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "scale": { "@id": "galileo:AnnotationTemplate/scale", "@container": "@list" },
+        "instructions": { "@id": "galileo:AnnotationTemplate/instructions", "@type": "xsd:string" }
+      }
+    },
+
+    "AnnotationRating": {
+      "@id": "galileo:AnnotationRating",
+      "@context": {
+        "id": { "@id": "galileo:AnnotationRating/id", "@type": "xsd:string" },
+        "template_id": { "@id": "galileo:AnnotationRating/templateId", "@type": "xsd:string" },
+        "target_id": { "@id": "galileo:AnnotationRating/targetId", "@type": "xsd:string" },
+        "rater_id": { "@id": "galileo:AnnotationRating/raterId", "@type": "xsd:string" },
+        "value": { "@id": "galileo:AnnotationRating/value" },
+        "comment": { "@id": "schema:comment", "@type": "xsd:string" }
+      }
+    },
+
+    "LogStream": {
+      "@id": "galileo:LogStream",
+      "@context": {
+        "id": { "@id": "galileo:LogStream/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "project_id": { "@id": "galileo:LogStream/projectId", "@type": "xsd:string" }
+      }
+    },
+
+    "Integration": {
+      "@id": "galileo:Integration",
+      "@context": {
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "type": { "@id": "galileo:Integration/type", "@type": "xsd:string" },
+        "configured": { "@id": "galileo:Integration/configured", "@type": "xsd:boolean" },
+        "status": { "@id": "galileo:Integration/status", "@type": "xsd:string" }
+      }
+    },
+
+    "Group": {
+      "@id": "galileo:Group",
+      "@context": {
+        "id": { "@id": "galileo:Group/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "role": { "@id": "galileo:Group/role", "@type": "xsd:string" }
+      }
+    },
+
+    "ApiKey": {
+      "@id": "galileo:ApiKey",
+      "@context": {
+        "id": { "@id": "galileo:ApiKey/id", "@type": "xsd:string" },
+        "name": { "@id": "schema:name", "@type": "xsd:string" },
+        "user_id": { "@id": "galileo:ApiKey/userId", "@type": "xsd:string" },
+        "created_at": { "@id": "dcterms:created", "@type": "xsd:dateTime" },
+        "expires_at": { "@id": "galileo:ApiKey/expiresAt", "@type": "xsd:dateTime" }
+      }
+    }
+  }
+}

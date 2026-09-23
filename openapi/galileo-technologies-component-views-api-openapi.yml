@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation component_views API
+  title: Galileo API Server Component Views API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
@@ -388,6 +388,72 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ComponentViewCreate:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Run Id
+        component:
+          $ref: '#/components/schemas/ComponentType'
+          description: Component type (e.g. 'logstream_table')
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+          default: user
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: Name of the view
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        view_data:
+          additionalProperties: true
+          type: object
+          title: View Data
+          description: JSON view configuration
+      type: object
+      required:
+      - project_id
+      - component
+      - name
+      - view_data
+      title: ComponentViewCreate
+      description: Schema for creating a new component view.
+    ComponentViewDuplicate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: Name for the duplicated view
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+          description: Visibility for the duplicated view (always creates as selected visibility)
+          default: user
+      type: object
+      required:
+      - name
+      title: ComponentViewDuplicate
+      description: Schema for duplicating a view.
     ViewVisibility:
       type: string
       enum:
@@ -395,6 +461,15 @@ components:
       - project
       title: ViewVisibility
       description: Visibility levels for views.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ComponentViewUpdate:
       properties:
         name:
@@ -516,72 +591,6 @@ components:
       - updated_at
       title: ComponentViewResponse
       description: Response schema for component view with computed fields.
-    ComponentViewDuplicate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-          description: Name for the duplicated view
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Optional description
-        visibility:
-          $ref: '#/components/schemas/ViewVisibility'
-          description: Visibility for the duplicated view (always creates as selected visibility)
-          default: user
-      type: object
-      required:
-      - name
-      title: ComponentViewDuplicate
-      description: Schema for duplicating a view.
-    ComponentViewCreate:
-      properties:
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Run Id
-        component:
-          $ref: '#/components/schemas/ComponentType'
-          description: Component type (e.g. 'logstream_table')
-        visibility:
-          $ref: '#/components/schemas/ViewVisibility'
-          default: user
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-          description: Name of the view
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Optional description
-        view_data:
-          additionalProperties: true
-          type: object
-          title: View Data
-          description: JSON view configuration
-      type: object
-      required:
-      - project_id
-      - component
-      - name
-      - view_data
-      title: ComponentViewCreate
-      description: Schema for creating a new component view.
     ComponentType:
       type: string
       enum:
@@ -589,15 +598,6 @@ components:
       - experiments_table
       title: ComponentType
       description: Types of components that can have saved views.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

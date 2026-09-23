@@ -1,0 +1,172 @@
+# x-archived-from: galileo-ai-datasets-api-openapi.yml
+# x-archived-on: 2026-09-16
+openapi: 3.2.0
+info:
+  title: Galileo Public Annotations Datasets API
+  version: v2
+  description: 'Best-effort OpenAPI 3.1 description of the Galileo (galileo.ai) public
+
+    REST API for projects, datasets, experiments, traces, prompts, integrations,
+
+    annotations, and groups. Generated from the public OpenAPI index at
+
+    https://api.galileo.ai/public/v2/openapi.json; not an official copy.
+
+    '
+  contact:
+    name: Galileo Developer Docs
+    url: https://docs.galileo.ai/
+servers:
+- url: https://api.galileo.ai
+  description: Galileo hosted production
+security:
+- apiKeyHeader: []
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Datasets
+paths:
+  /v2/datasets:
+    get:
+      tags:
+      - Datasets
+      operationId: listDatasets
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    post:
+      tags:
+      - Datasets
+      operationId: createDataset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '201':
+          $ref: '#/components/responses/Ok'
+  /v2/datasets/{dataset_id}:
+    parameters:
+    - $ref: '#/components/parameters/DatasetId'
+    get:
+      tags:
+      - Datasets
+      operationId: getDataset
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    patch:
+      tags:
+      - Datasets
+      operationId: updateDataset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    delete:
+      tags:
+      - Datasets
+      operationId: deleteDataset
+      responses:
+        '204':
+          description: No Content
+  /v2/datasets/{dataset_id}/content:
+    parameters:
+    - $ref: '#/components/parameters/DatasetId'
+    get:
+      tags:
+      - Datasets
+      operationId: getDatasetContent
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    put:
+      tags:
+      - Datasets
+      operationId: replaceDatasetContent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    patch:
+      tags:
+      - Datasets
+      operationId: patchDatasetContent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+  /v2/datasets/{dataset_id}/content/query:
+    parameters:
+    - $ref: '#/components/parameters/DatasetId'
+    post:
+      tags:
+      - Datasets
+      operationId: queryDatasetContent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+  /v2/datasets/{dataset_id}/download:
+    parameters:
+    - $ref: '#/components/parameters/DatasetId'
+    get:
+      tags:
+      - Datasets
+      operationId: downloadDataset
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+components:
+  parameters:
+    DatasetId:
+      in: path
+      name: dataset_id
+      required: true
+      schema:
+        type: string
+  schemas:
+    Object:
+      type: object
+      additionalProperties: true
+  responses:
+    Ok:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Object'
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 password bearer (JWT) issued by /v2/token
+    basicAuth:
+      type: http
+      scheme: basic

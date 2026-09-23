@@ -1,0 +1,133 @@
+# x-archived-from: galileo-ai-experiments-api-openapi.yml
+# x-archived-on: 2026-09-16
+openapi: 3.2.0
+info:
+  title: Galileo Public Annotations Experiments API
+  version: v2
+  description: 'Best-effort OpenAPI 3.1 description of the Galileo (galileo.ai) public
+
+    REST API for projects, datasets, experiments, traces, prompts, integrations,
+
+    annotations, and groups. Generated from the public OpenAPI index at
+
+    https://api.galileo.ai/public/v2/openapi.json; not an official copy.
+
+    '
+  contact:
+    name: Galileo Developer Docs
+    url: https://docs.galileo.ai/
+servers:
+- url: https://api.galileo.ai
+  description: Galileo hosted production
+security:
+- apiKeyHeader: []
+- bearerAuth: []
+- basicAuth: []
+tags:
+- name: Experiments
+paths:
+  /v2/projects/{project_id}/experiments:
+    parameters:
+    - $ref: '#/components/parameters/ProjectId'
+    get:
+      tags:
+      - Experiments
+      operationId: listExperiments
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    post:
+      tags:
+      - Experiments
+      operationId: createExperiment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '201':
+          $ref: '#/components/responses/Ok'
+  /v2/projects/{project_id}/experiments/{experiment_id}:
+    parameters:
+    - $ref: '#/components/parameters/ProjectId'
+    - in: path
+      name: experiment_id
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Experiments
+      operationId: getExperiment
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    put:
+      tags:
+      - Experiments
+      operationId: updateExperiment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+    delete:
+      tags:
+      - Experiments
+      operationId: deleteExperiment
+      responses:
+        '204':
+          description: No Content
+  /v2/projects/{project_id}/experiments/search:
+    parameters:
+    - $ref: '#/components/parameters/ProjectId'
+    post:
+      tags:
+      - Experiments
+      operationId: searchExperiments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Object'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+components:
+  schemas:
+    Object:
+      type: object
+      additionalProperties: true
+  responses:
+    Ok:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Object'
+  parameters:
+    ProjectId:
+      in: path
+      name: project_id
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 password bearer (JWT) issued by /v2/token
+    basicAuth:
+      type: http
+      scheme: basic

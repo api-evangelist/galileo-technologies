@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Galileo API Server annotation auto-metric-suggestions API
+  title: Galileo API Server Auto Metric Suggestions API
   version: 1.1085.0
 servers:
 - url: https://api.galileo.ai
@@ -102,40 +102,16 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AutoMetricSuggestionLabel:
+    JobStatus:
       type: string
       enum:
-      - Retriever Augmented Generation (RAG)
-      - Agent
-      - Code Generation
-      - Multi-turn dialogue system
-      title: AutoMetricSuggestionLabel
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
     ChatWithMetricRequest:
       properties:
         project_id:
@@ -196,6 +172,101 @@ components:
       - project_id
       - log_stream_id
       title: AutoMetricSuggestionGetRequest
+    AutoMetric:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        implementation:
+          type: string
+          title: Implementation
+          default: galileo
+        code:
+          type: string
+          title: Code
+          default: ''
+      type: object
+      required:
+      - name
+      - description
+      title: AutoMetric
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AutoMetricSuggestionLabel:
+      type: string
+      enum:
+      - Retriever Augmented Generation (RAG)
+      - Agent
+      - Code Generation
+      - Multi-turn dialogue system
+      title: AutoMetricSuggestionLabel
+    AutoMetricSuggestionGetResponse:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        metrics:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/AutoMetric'
+            type: array
+          - type: 'null'
+          title: Metrics
+        job_status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      title: AutoMetricSuggestionGetResponse
     ChatWithMetricResponse:
       properties:
         project_id:
@@ -237,77 +308,6 @@ components:
       - chat_query
       - metric_name
       title: ChatWithMetricResponse
-    AutoMetricSuggestionGetResponse:
-      properties:
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        log_stream_id:
-          type: string
-          format: uuid4
-          title: Log Stream Id
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-        metrics:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/AutoMetric'
-            type: array
-          - type: 'null'
-          title: Metrics
-        job_status:
-          anyOf:
-          - $ref: '#/components/schemas/JobStatus'
-          - type: 'null'
-      type: object
-      required:
-      - project_id
-      - log_stream_id
-      title: AutoMetricSuggestionGetResponse
-    AutoMetric:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        implementation:
-          type: string
-          title: Implementation
-          default: galileo
-        code:
-          type: string
-          title: Code
-          default: ''
-      type: object
-      required:
-      - name
-      - description
-      title: AutoMetric
-    JobStatus:
-      type: string
-      enum:
-      - unstarted
-      - in_progress
-      - processed
-      - completed
-      - error
-      - failed
-      title: JobStatus
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey
