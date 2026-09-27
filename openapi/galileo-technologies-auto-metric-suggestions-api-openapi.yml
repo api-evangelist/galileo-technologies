@@ -102,140 +102,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    JobStatus:
-      type: string
-      enum:
-      - unstarted
-      - in_progress
-      - processed
-      - completed
-      - error
-      - failed
-      title: JobStatus
-    ChatWithMetricRequest:
-      properties:
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        log_stream_id:
-          type: string
-          format: uuid4
-          title: Log Stream Id
-        metric_name:
-          type: string
-          title: Metric Name
-        chat_query:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Chat Query
-        is_restart:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Restart
-          default: false
-      type: object
-      required:
-      - project_id
-      - log_stream_id
-      - metric_name
-      title: ChatWithMetricRequest
-    AutoMetricSuggestionGetRequest:
-      properties:
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        log_stream_id:
-          type: string
-          format: uuid4
-          title: Log Stream Id
-        label:
-          anyOf:
-          - $ref: '#/components/schemas/AutoMetricSuggestionLabel'
-          - type: 'null'
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        is_restart:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Restart
-          default: false
-      type: object
-      required:
-      - project_id
-      - log_stream_id
-      title: AutoMetricSuggestionGetRequest
-    AutoMetric:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        implementation:
-          type: string
-          title: Implementation
-          default: galileo
-        code:
-          type: string
-          title: Code
-          default: ''
-      type: object
-      required:
-      - name
-      - description
-      title: AutoMetric
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    AutoMetricSuggestionLabel:
-      type: string
-      enum:
-      - Retriever Augmented Generation (RAG)
-      - Agent
-      - Code Generation
-      - Multi-turn dialogue system
-      title: AutoMetricSuggestionLabel
     AutoMetricSuggestionGetResponse:
       properties:
         project_id:
@@ -267,6 +133,91 @@ components:
       - project_id
       - log_stream_id
       title: AutoMetricSuggestionGetResponse
+    AutoMetric:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        implementation:
+          type: string
+          title: Implementation
+          default: galileo
+        code:
+          type: string
+          title: Code
+          default: ''
+      type: object
+      required:
+      - name
+      - description
+      title: AutoMetric
+    AutoMetricSuggestionLabel:
+      type: string
+      enum:
+      - Retriever Augmented Generation (RAG)
+      - Agent
+      - Code Generation
+      - Multi-turn dialogue system
+      title: AutoMetricSuggestionLabel
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AutoMetricSuggestionGetRequest:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        label:
+          anyOf:
+          - $ref: '#/components/schemas/AutoMetricSuggestionLabel'
+          - type: 'null'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        is_restart:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Restart
+          default: false
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      title: AutoMetricSuggestionGetRequest
     ChatWithMetricResponse:
       properties:
         project_id:
@@ -308,6 +259,55 @@ components:
       - chat_query
       - metric_name
       title: ChatWithMetricResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChatWithMetricRequest:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        metric_name:
+          type: string
+          title: Metric Name
+        chat_query:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chat Query
+        is_restart:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Restart
+          default: false
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      - metric_name
+      title: ChatWithMetricRequest
+    JobStatus:
+      type: string
+      enum:
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

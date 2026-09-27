@@ -388,49 +388,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ComponentViewCreate:
-      properties:
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Run Id
-        component:
-          $ref: '#/components/schemas/ComponentType'
-          description: Component type (e.g. 'logstream_table')
-        visibility:
-          $ref: '#/components/schemas/ViewVisibility'
-          default: user
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-          description: Name of the view
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Optional description
-        view_data:
-          additionalProperties: true
-          type: object
-          title: View Data
-          description: JSON view configuration
-      type: object
-      required:
-      - project_id
-      - component
-      - name
-      - view_data
-      title: ComponentViewCreate
-      description: Schema for creating a new component view.
     ComponentViewDuplicate:
       properties:
         name:
@@ -454,76 +411,6 @@ components:
       - name
       title: ComponentViewDuplicate
       description: Schema for duplicating a view.
-    ViewVisibility:
-      type: string
-      enum:
-      - user
-      - project
-      title: ViewVisibility
-      description: Visibility levels for views.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ComponentViewUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        view_data:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: View Data
-        visibility:
-          anyOf:
-          - $ref: '#/components/schemas/ViewVisibility'
-          - type: 'null'
-          description: Promote visibility from user to project. Project to user is not allowed.
-      type: object
-      title: ComponentViewUpdate
-      description: Schema for updating an existing component view.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     ComponentViewResponse:
       properties:
         id:
@@ -591,6 +478,91 @@ components:
       - updated_at
       title: ComponentViewResponse
       description: Response schema for component view with computed fields.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ComponentViewCreate:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Run Id
+        component:
+          $ref: '#/components/schemas/ComponentType'
+          description: Component type (e.g. 'logstream_table')
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+          default: user
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: Name of the view
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        view_data:
+          additionalProperties: true
+          type: object
+          title: View Data
+          description: JSON view configuration
+      type: object
+      required:
+      - project_id
+      - component
+      - name
+      - view_data
+      title: ComponentViewCreate
+      description: Schema for creating a new component view.
+    ViewVisibility:
+      type: string
+      enum:
+      - user
+      - project
+      title: ViewVisibility
+      description: Visibility levels for views.
     ComponentType:
       type: string
       enum:
@@ -598,6 +570,34 @@ components:
       - experiments_table
       title: ComponentType
       description: Types of components that can have saved views.
+    ComponentViewUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        view_data:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: View Data
+        visibility:
+          anyOf:
+          - $ref: '#/components/schemas/ViewVisibility'
+          - type: 'null'
+          description: Promote visibility from user to project. Project to user is not allowed.
+      type: object
+      title: ComponentViewUpdate
+      description: Schema for updating an existing component view.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

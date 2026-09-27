@@ -72,77 +72,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    GeneratedScorerTaskResultType:
-      type: string
-      enum:
-      - scorer_auto_gen
-      - scorer_auto_gen_v2
-      - scorer_validation
-      title: GeneratedScorerTaskResultType
-    FineTunedScorerWeightsUploadRequest:
+    FewShotExample:
       properties:
-        lora_task_id:
-          type: integer
-          minimum: 1.0
-          title: Lora Task Id
-      type: object
-      required:
-      - lora_task_id
-      title: FineTunedScorerWeightsUploadRequest
-    GeneratedScorerValidationResult:
-      properties:
-        rating:
-          anyOf:
-          - type: number
-          - type: string
-          - type: 'null'
-          title: Rating
-        explanation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Explanation
-      type: object
-      required:
-      - rating
-      - explanation
-      title: GeneratedScorerValidationResult
-      description: Result of a generated scorer validation job.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        generation_prompt_and_response:
           type: string
-          title: Message
-        type:
+          title: Generation Prompt And Response
+        evaluating_response:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Evaluating Response
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
     GeneratedScorerTaskResultResponse:
       properties:
         id:
@@ -176,6 +119,68 @@ components:
       - status
       - result_type
       title: GeneratedScorerTaskResultResponse
+    FineTunedScorerWeightsUploadRequest:
+      properties:
+        lora_task_id:
+          type: integer
+          minimum: 1.0
+          title: Lora Task Id
+      type: object
+      required:
+      - lora_task_id
+      title: FineTunedScorerWeightsUploadRequest
+    GeneratedScorerTaskResultType:
+      type: string
+      enum:
+      - scorer_auto_gen
+      - scorer_auto_gen_v2
+      - scorer_validation
+      title: GeneratedScorerTaskResultType
+    GeneratedScorerValidationResult:
+      properties:
+        rating:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Rating
+        explanation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Explanation
+      type: object
+      required:
+      - rating
+      - explanation
+      title: GeneratedScorerValidationResult
+      description: Result of a generated scorer validation job.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     TaskResultStatus:
       type: string
       enum:
@@ -184,20 +189,6 @@ components:
       - completed
       - failed
       title: TaskResultStatus
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
-          type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
-      type: object
-      required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
     FineTunedScorerWeightsUploadResponse:
       properties:
         bucket:
@@ -227,6 +218,15 @@ components:
       - object_paths
       - presigned_url_expiry_seconds
       title: FineTunedScorerWeightsUploadResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ChainPollTemplate:
       properties:
         metric_system_prompt:

@@ -235,84 +235,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    WebhookStatus:
-      type: string
-      enum:
-      - active
-      - untested
-      - failed
-      - paused
-      title: WebhookStatus
-    RunAlertSettingsBase:
-      properties:
-        emails:
-          items:
-            type: string
-            format: email
-          type: array
-          title: Emails
-        webhooks:
-          items:
-            $ref: '#/components/schemas/Webhook'
-          type: array
-          title: Webhooks
-        generic_webhooks:
-          items:
-            $ref: '#/components/schemas/GenericWebhook'
-          type: array
-          maxItems: 10
-          title: Generic Webhooks
-      type: object
-      title: RunAlertSettingsBase
-    RunAlertSettingsResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-        emails:
-          items:
-            type: string
-            format: email
-          type: array
-          title: Emails
-        webhooks:
-          items:
-            $ref: '#/components/schemas/Webhook'
-          type: array
-          title: Webhooks
-        generic_webhooks:
-          items:
-            $ref: '#/components/schemas/GenericWebhookResponse'
-          type: array
-          title: Generic Webhooks
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - run_id
-      - created_at
-      - updated_at
-      title: RunAlertSettingsResponse
-      description: 'API response shape: identical to RunAlertSettingsDB but auth_value masked in generic_webhooks.'
-    GenericWebhookAuthType:
-      type: string
-      enum:
-      - none
-      - header_token
-      - basic
-      title: GenericWebhookAuthType
     GenericWebhookResponse:
       properties:
         url:
@@ -365,43 +287,55 @@ components:
       required:
       - url
       title: Webhook
-    RunAlertSettingsPatch:
+    RunAlertSettingsResponse:
       properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
         emails:
-          anyOf:
-          - items:
-              type: string
-              format: email
-            type: array
-          - type: 'null'
+          items:
+            type: string
+            format: email
+          type: array
           title: Emails
         webhooks:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/Webhook'
-            type: array
-          - type: 'null'
+          items:
+            $ref: '#/components/schemas/Webhook'
+          type: array
           title: Webhooks
         generic_webhooks:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/GenericWebhook'
-            type: array
-            maxItems: 10
-          - type: 'null'
-          title: Generic Webhooks
-      type: object
-      title: RunAlertSettingsPatch
-      description: 'Partial update: only provided fields are written; absent fields preserve existing DB values.'
-    HTTPValidationError:
-      properties:
-        detail:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/GenericWebhookResponse'
           type: array
-          title: Detail
+          title: Generic Webhooks
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
       type: object
-      title: HTTPValidationError
+      required:
+      - id
+      - run_id
+      - created_at
+      - updated_at
+      title: RunAlertSettingsResponse
+      description: 'API response shape: identical to RunAlertSettingsDB but auth_value masked in generic_webhooks.'
+    GenericWebhookAuthType:
+      type: string
+      enum:
+      - none
+      - header_token
+      - basic
+      title: GenericWebhookAuthType
     ValidationError:
       properties:
         loc:
@@ -428,6 +362,14 @@ components:
       - msg
       - type
       title: ValidationError
+    WebhookStatus:
+      type: string
+      enum:
+      - active
+      - untested
+      - failed
+      - paused
+      title: WebhookStatus
     GenericWebhook:
       properties:
         url:
@@ -471,6 +413,64 @@ components:
       required:
       - url
       title: GenericWebhook
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RunAlertSettingsBase:
+      properties:
+        emails:
+          items:
+            type: string
+            format: email
+          type: array
+          title: Emails
+        webhooks:
+          items:
+            $ref: '#/components/schemas/Webhook'
+          type: array
+          title: Webhooks
+        generic_webhooks:
+          items:
+            $ref: '#/components/schemas/GenericWebhook'
+          type: array
+          maxItems: 10
+          title: Generic Webhooks
+      type: object
+      title: RunAlertSettingsBase
+    RunAlertSettingsPatch:
+      properties:
+        emails:
+          anyOf:
+          - items:
+              type: string
+              format: email
+            type: array
+          - type: 'null'
+          title: Emails
+        webhooks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Webhook'
+            type: array
+          - type: 'null'
+          title: Webhooks
+        generic_webhooks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GenericWebhook'
+            type: array
+            maxItems: 10
+          - type: 'null'
+          title: Generic Webhooks
+      type: object
+      title: RunAlertSettingsPatch
+      description: 'Partial update: only provided fields are written; absent fields preserve existing DB values.'
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

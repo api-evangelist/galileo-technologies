@@ -85,36 +85,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CreateCodeMetricGenerationResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        status:
-          $ref: '#/components/schemas/CodeMetricGenerationStatus'
-      type: object
-      required:
-      - id
-      - status
-      title: CreateCodeMetricGenerationResponse
-      description: Response with generation ID for polling.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CodeMetricGenerationStatus:
+    OutputTypeEnum:
       type: string
       enum:
-      - generating
-      - completed
-      - failed
-      title: CodeMetricGenerationStatus
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
     ValidationError:
       properties:
         loc:
@@ -173,20 +157,6 @@ components:
       - user_message
       title: CreateCodeMetricGenerationRequest
       description: Request to generate scorer code from a user message.
-    OutputTypeEnum:
-      type: string
-      enum:
-      - boolean
-      - categorical
-      - count
-      - discrete
-      - freeform
-      - percentage
-      - multilabel
-      - retrieved_chunk_list_boolean
-      - boolean_multilabel
-      title: OutputTypeEnum
-      description: Enumeration of output types.
     CodeMetricGenerationStatusResponse:
       properties:
         id:
@@ -211,6 +181,36 @@ components:
       - status
       title: CodeMetricGenerationStatusResponse
       description: Lightweight polling response.
+    CreateCodeMetricGenerationResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        status:
+          $ref: '#/components/schemas/CodeMetricGenerationStatus'
+      type: object
+      required:
+      - id
+      - status
+      title: CreateCodeMetricGenerationResponse
+      description: Response with generation ID for polling.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CodeMetricGenerationStatus:
+      type: string
+      enum:
+      - generating
+      - completed
+      - failed
+      title: CodeMetricGenerationStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

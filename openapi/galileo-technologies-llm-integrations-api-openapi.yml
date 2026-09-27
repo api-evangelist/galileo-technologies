@@ -189,82 +189,13 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ContentModality:
-      type: string
-      enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
     MultimodalCapability:
       type: string
       enum:
       - vision
       - audio
       title: MultimodalCapability
-    api__schemas__integration__llm_integration__ModelProperties:
-      properties:
-        alias:
-          type: string
-          title: Alias
-        name:
-          type: string
-          title: Name
-        input_modalities:
-          items:
-            $ref: '#/components/schemas/ContentModality'
-          type: array
-          title: Input Modalities
-        multimodal_capabilities:
-          items:
-            $ref: '#/components/schemas/MultimodalCapability'
-          type: array
-          title: Multimodal Capabilities
-      type: object
-      required:
-      - alias
-      - name
-      - input_modalities
-      title: ModelProperties
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    LLMIntegration:
+    IntegrationProvider:
       type: string
       enum:
       - anthropic
@@ -279,16 +210,7 @@ components:
       - vegas_gateway
       - vertex_ai
       - writer
-      title: LLMIntegration
-    RecommendedModelPurpose:
-      type: string
-      enum:
-      - custom_metric_judge
-      - custom_metric_autogen
-      - autotune
-      - signals
-      - ai_assistant
-      title: RecommendedModelPurpose
+      title: IntegrationProvider
     RecommendedModelsResponse:
       properties:
         supported:
@@ -318,6 +240,66 @@ components:
       - supported
       - available
       title: RecommendedModelsResponse
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RecommendedModelPurpose:
+      type: string
+      enum:
+      - custom_metric_judge
+      - custom_metric_autogen
+      - autotune
+      - signals
+      - ai_assistant
+      title: RecommendedModelPurpose
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     IntegrationModelsResponse:
       properties:
         integration_name:
@@ -369,22 +351,40 @@ components:
       - models
       - scorer_models
       title: IntegrationModelsResponse
-    IntegrationProvider:
+    api__schemas__integration__llm_integration__ModelProperties:
+      properties:
+        alias:
+          type: string
+          title: Alias
+        name:
+          type: string
+          title: Name
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+        multimodal_capabilities:
+          items:
+            $ref: '#/components/schemas/MultimodalCapability'
+          type: array
+          title: Multimodal Capabilities
+      type: object
+      required:
+      - alias
+      - name
+      - input_modalities
+      title: ModelProperties
+    ContentModality:
       type: string
       enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: IntegrationProvider
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

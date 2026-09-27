@@ -97,32 +97,6 @@ paths:
       - Audit Logs
 components:
   schemas:
-    AuditLogListResponse:
-      properties:
-        records:
-          items:
-            $ref: '#/components/schemas/AuditLogRecord'
-          type: array
-          title: Records
-        next_cursor_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Cursor Id
-      type: object
-      required:
-      - records
-      title: AuditLogListResponse
-      description: Response for audit log list endpoint.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -179,6 +153,32 @@ components:
       - raw_event
       title: AuditLogRecord
       description: Single audit log record for query responses.
+    AuditLogListResponse:
+      properties:
+        records:
+          items:
+            $ref: '#/components/schemas/AuditLogRecord'
+          type: array
+          title: Records
+        next_cursor_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Cursor Id
+      type: object
+      required:
+      - records
+      title: AuditLogListResponse
+      description: Response for audit log list endpoint.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     AuditAction:
       type: string
       enum:

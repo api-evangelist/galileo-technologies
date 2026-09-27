@@ -171,38 +171,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ScoringInvokeRequest:
-      properties:
-        scorer_label:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Scorer Label
-        scorer_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Scorer Id
-        scorer_version_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Scorer Version Id
-        inputs:
-          $ref: '#/components/schemas/ScoringInvokeInputs'
-        config:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Config
-      type: object
-      required:
-      - inputs
-      title: ScoringInvokeRequest
     GeneratedScorerTaskResultResponse:
       properties:
         id:
@@ -236,153 +204,6 @@ components:
       - status
       - result_type
       title: GeneratedScorerTaskResultResponse
-    TaskResultStatus:
-      type: string
-      enum:
-      - pending
-      - started
-      - completed
-      - failed
-      title: TaskResultStatus
-    ScorerTypes:
-      type: string
-      enum:
-      - llm
-      - code
-      - luna
-      - preset
-      title: ScorerTypes
-    JsonLike:
-      anyOf:
-      - $ref: '#/components/schemas/JsonPrimitive-Input'
-      - items:
-          $ref: '#/components/schemas/JsonLike'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonLike'
-        type: object
-    LunaOutputTypeEnum:
-      type: string
-      enum:
-      - float
-      - string
-      - string_list
-      - bool_list
-      title: LunaOutputTypeEnum
-    GeneratedScorerTaskResultType:
-      type: string
-      enum:
-      - scorer_auto_gen
-      - scorer_auto_gen_v2
-      - scorer_validation
-      title: GeneratedScorerTaskResultType
-    MultimodalCapability:
-      type: string
-      enum:
-      - vision
-      - audio
-      title: MultimodalCapability
-    GeneratedScorerValidationResult:
-      properties:
-        rating:
-          anyOf:
-          - type: number
-          - type: string
-          - type: 'null'
-          title: Rating
-        explanation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Explanation
-      type: object
-      required:
-      - rating
-      - explanation
-      title: GeneratedScorerValidationResult
-      description: Result of a generated scorer validation job.
-    FineTunedScorerWeightsUploadRequest:
-      properties:
-        lora_task_id:
-          type: integer
-          minimum: 1.0
-          title: Lora Task Id
-      type: object
-      required:
-      - lora_task_id
-      title: FineTunedScorerWeightsUploadRequest
-    V1ScorerVersionEntry:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        version:
-          type: integer
-          title: Version
-        finetuned_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/V1FinetunedScorerEntry'
-          - type: 'null'
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-        user_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Prompt
-      type: object
-      required:
-      - id
-      - version
-      title: V1ScorerVersionEntry
-    OutputTypeEnum:
-      type: string
-      enum:
-      - boolean
-      - categorical
-      - count
-      - discrete
-      - freeform
-      - percentage
-      - multilabel
-      - retrieved_chunk_list_boolean
-      - boolean_multilabel
-      title: OutputTypeEnum
-      description: Enumeration of output types.
-    LunaInputTypeEnum:
-      type: string
-      enum:
-      - span
-      - trace_object
-      - trace_input_output_only
-      title: LunaInputTypeEnum
-    InputTypeEnum:
-      type: string
-      enum:
-      - basic
-      - llm_spans
-      - retriever_spans
-      - sessions_normalized
-      - sessions_trace_io_only
-      - tool_spans
-      - trace_input_only
-      - trace_io_only
-      - trace_normalized
-      - trace_output_only
-      - agent_spans
-      - workflow_spans
-      title: InputTypeEnum
-      description: Enumeration of input types.
-    JsonPrimitive-Input:
-      anyOf:
-      - type: boolean
-      - type: integer
-      - type: number
-      - type: string
-      - type: 'null'
     V1ScorerEntry:
       properties:
         id:
@@ -460,68 +281,37 @@ components:
       - name
       - scorer_type
       title: V1ScorerEntry
-    ModelType:
+    JsonPrimitive-Input:
+      anyOf:
+      - type: boolean
+      - type: integer
+      - type: number
+      - type: string
+      - type: 'null'
+    MultimodalCapability:
       type: string
       enum:
-      - slm
-      - llm
-      - code
-      title: ModelType
-    FineTunedScorerWeightsUploadResponse:
+      - vision
+      - audio
+      title: MultimodalCapability
+    FineTunedScorerWeightsUploadRequest:
       properties:
-        bucket:
-          type: string
-          title: Bucket
-        lora_weights_path:
-          type: string
-          title: Lora Weights Path
-        upload_urls:
-          additionalProperties:
-            type: string
-          type: object
-          title: Upload Urls
-        object_paths:
-          additionalProperties:
-            type: string
-          type: object
-          title: Object Paths
-        presigned_url_expiry_seconds:
+        lora_task_id:
           type: integer
-          title: Presigned Url Expiry Seconds
+          minimum: 1.0
+          title: Lora Task Id
       type: object
       required:
-      - bucket
-      - lora_weights_path
-      - upload_urls
-      - object_paths
-      - presigned_url_expiry_seconds
-      title: FineTunedScorerWeightsUploadResponse
-    V1ListScorersResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        scorers:
-          items:
-            $ref: '#/components/schemas/V1ScorerEntry'
-          type: array
-          title: Scorers
-      type: object
-      title: V1ListScorersResponse
+      - lora_task_id
+      title: FineTunedScorerWeightsUploadRequest
+    MetricComputationStatus:
+      type: string
+      enum:
+      - success
+      - timeout
+      - failed
+      - error
+      title: MetricComputationStatus
     ChainPollTemplate:
       properties:
         metric_system_prompt:
@@ -570,6 +360,103 @@ components:
       description: 'Template for a chainpoll metric prompt,
 
         containing all the info necessary to send a chainpoll prompt.'
+    ScoringInvokeRequest:
+      properties:
+        scorer_label:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Scorer Label
+        scorer_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Scorer Id
+        scorer_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Scorer Version Id
+        inputs:
+          $ref: '#/components/schemas/ScoringInvokeInputs'
+        config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Config
+      type: object
+      required:
+      - inputs
+      title: ScoringInvokeRequest
+    FewShotExample:
+      properties:
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
+      type: object
+      required:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
+    GeneratedScorerTaskResultType:
+      type: string
+      enum:
+      - scorer_auto_gen
+      - scorer_auto_gen_v2
+      - scorer_validation
+      title: GeneratedScorerTaskResultType
+    FineTunedScorerWeightsUploadResponse:
+      properties:
+        bucket:
+          type: string
+          title: Bucket
+        lora_weights_path:
+          type: string
+          title: Lora Weights Path
+        upload_urls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Upload Urls
+        object_paths:
+          additionalProperties:
+            type: string
+          type: object
+          title: Object Paths
+        presigned_url_expiry_seconds:
+          type: integer
+          title: Presigned Url Expiry Seconds
+      type: object
+      required:
+      - bucket
+      - lora_weights_path
+      - upload_urls
+      - object_paths
+      - presigned_url_expiry_seconds
+      title: FineTunedScorerWeightsUploadResponse
+    LunaInputTypeEnum:
+      type: string
+      enum:
+      - span
+      - trace_object
+      - trace_input_output_only
+      title: LunaInputTypeEnum
+    ScorerTypes:
+      type: string
+      enum:
+      - llm
+      - code
+      - luna
+      - preset
+      title: ScorerTypes
     HTTPValidationError:
       properties:
         detail:
@@ -613,6 +500,31 @@ components:
           title: Error Message
       type: object
       title: ScoringInvokeResponse
+    InputTypeEnum:
+      type: string
+      enum:
+      - basic
+      - llm_spans
+      - retriever_spans
+      - sessions_normalized
+      - sessions_trace_io_only
+      - tool_spans
+      - trace_input_only
+      - trace_io_only
+      - trace_normalized
+      - trace_output_only
+      - agent_spans
+      - workflow_spans
+      title: InputTypeEnum
+      description: Enumeration of input types.
+    LunaOutputTypeEnum:
+      type: string
+      enum:
+      - float
+      - string
+      - string_list
+      - bool_list
+      title: LunaOutputTypeEnum
     ValidationError:
       properties:
         loc:
@@ -639,20 +551,130 @@ components:
       - msg
       - type
       title: ValidationError
-    FewShotExample:
+    V1ScorerVersionEntry:
       properties:
-        generation_prompt_and_response:
+        id:
           type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
+          format: uuid4
+          title: Id
+        version:
+          type: integer
+          title: Version
+        finetuned_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/V1FinetunedScorerEntry'
+          - type: 'null'
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
       type: object
       required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
+      - id
+      - version
+      title: V1ScorerVersionEntry
+    ScoringInvokeInputs:
+      properties:
+        query:
+          $ref: '#/components/schemas/JsonLike'
+          default: ''
+        response:
+          $ref: '#/components/schemas/JsonLike'
+          default: ''
+        ground_truth:
+          $ref: '#/components/schemas/JsonLike'
+        tools:
+          $ref: '#/components/schemas/JsonLike'
+      type: object
+      title: ScoringInvokeInputs
+    TaskResultStatus:
+      type: string
+      enum:
+      - pending
+      - started
+      - completed
+      - failed
+      title: TaskResultStatus
+    ModelType:
+      type: string
+      enum:
+      - slm
+      - llm
+      - code
+      title: ModelType
+    V1ListScorersResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        scorers:
+          items:
+            $ref: '#/components/schemas/V1ScorerEntry'
+          type: array
+          title: Scorers
+      type: object
+      title: V1ListScorersResponse
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
+    GeneratedScorerValidationResult:
+      properties:
+        rating:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Rating
+        explanation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Explanation
+      type: object
+      required:
+      - rating
+      - explanation
+      title: GeneratedScorerValidationResult
+      description: Result of a generated scorer validation job.
+    JsonLike:
+      anyOf:
+      - $ref: '#/components/schemas/JsonPrimitive-Input'
+      - items:
+          $ref: '#/components/schemas/JsonLike'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonLike'
+        type: object
     V1FinetunedScorerEntry:
       properties:
         id:
@@ -675,28 +697,6 @@ components:
       - id
       - lora_task_id
       title: V1FinetunedScorerEntry
-    MetricComputationStatus:
-      type: string
-      enum:
-      - success
-      - timeout
-      - failed
-      - error
-      title: MetricComputationStatus
-    ScoringInvokeInputs:
-      properties:
-        query:
-          $ref: '#/components/schemas/JsonLike'
-          default: ''
-        response:
-          $ref: '#/components/schemas/JsonLike'
-          default: ''
-        ground_truth:
-          $ref: '#/components/schemas/JsonLike'
-        tools:
-          $ref: '#/components/schemas/JsonLike'
-      type: object
-      title: ScoringInvokeInputs
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

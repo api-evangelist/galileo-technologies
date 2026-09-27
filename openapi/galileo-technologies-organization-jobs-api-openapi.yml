@@ -184,15 +184,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -219,6 +210,48 @@ components:
       - msg
       - type
       title: ValidationError
+    OrgMetadataDeleteResponse:
+      properties:
+        job_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Job Id
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - job_id
+      - message
+      title: OrgMetadataDeleteResponse
+      description: Response for organization-wide metadata-based deletion.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    OrgMetadataDeleteRequest:
+      properties:
+        metadata_key:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Metadata Key
+        metadata_value:
+          type: string
+          title: Metadata Value
+      type: object
+      required:
+      - metadata_key
+      - metadata_value
+      title: OrgMetadataDeleteRequest
+      description: Request body for organization-wide metadata-based deletion.
     OrgJobDB:
       properties:
         id:
@@ -269,39 +302,6 @@ components:
       - updated_at
       title: OrgJobDB
       description: Response schema for org jobs.
-    OrgMetadataDeleteRequest:
-      properties:
-        metadata_key:
-          type: string
-          maxLength: 256
-          minLength: 1
-          title: Metadata Key
-        metadata_value:
-          type: string
-          title: Metadata Value
-      type: object
-      required:
-      - metadata_key
-      - metadata_value
-      title: OrgMetadataDeleteRequest
-      description: Request body for organization-wide metadata-based deletion.
-    OrgMetadataDeleteResponse:
-      properties:
-        job_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Job Id
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - job_id
-      - message
-      title: OrgMetadataDeleteResponse
-      description: Response for organization-wide metadata-based deletion.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

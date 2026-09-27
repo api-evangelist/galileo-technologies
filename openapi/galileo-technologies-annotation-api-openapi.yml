@@ -1128,48 +1128,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AnnotationTemplateCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        include_explanation:
-          type: boolean
-          title: Include Explanation
-          default: false
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-        constraints:
-          oneOf:
-          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__StarConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TagsConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TextConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
-          title: Constraints
-          discriminator:
-            propertyName: annotation_type
-            mapping:
-              choice: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
-              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
-              score: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
-              star: '#/components/schemas/api__schemas__annotation__StarConstraints'
-              tags: '#/components/schemas/api__schemas__annotation__TagsConstraints'
-              text: '#/components/schemas/api__schemas__annotation__TextConstraints'
-              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
-      type: object
-      required:
-      - name
-      - constraints
-      title: AnnotationTemplateCreate
     AnnotationTemplateDB:
       properties:
         name:
@@ -1238,203 +1196,92 @@ components:
       - position
       - usage_count
       title: AnnotationTemplateDB
-    AnnotationTemplateReorder:
-      properties:
-        ordering:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Ordering
-      type: object
-      required:
-      - ordering
-      title: AnnotationTemplateReorder
-      description: 'Request to re-order the annotation templates of a project.
-
-
-        - Expects a list of strings where each string is the ID of a template in the project in the order
-
-        we want the templates to appear in.
-
-        - Expects the list to be complete list of all template IDs.'
-    AnnotationTemplateUpdate:
+    AnnotationTemplateCreate:
       properties:
         name:
           type: string
           maxLength: 255
           minLength: 1
           title: Name
+        include_explanation:
+          type: boolean
+          title: Include Explanation
+          default: false
         criteria:
           anyOf:
           - type: string
             minLength: 1
           - type: 'null'
           title: Criteria
-      type: object
-      required:
-      - name
-      - criteria
-      title: AnnotationTemplateUpdate
-    api__schemas__annotation__StarConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: star
-          title: Annotation Type
-      type: object
-      required:
-      - annotation_type
-      title: StarConstraints
-    api__schemas__annotation__LikeDislikeRating:
-      properties:
-        annotation_type:
-          type: string
-          const: like_dislike
-          title: Annotation Type
-          default: like_dislike
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: LikeDislikeRating
-    api__schemas__annotation__TreeChoiceNode-Input:
-      properties:
-        label:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Label
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Id
-        children:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
-          type: array
-          maxItems: 50
-          title: Children
-      type: object
-      required:
-      - label
-      - id
-      title: TreeChoiceNode
-    AnnotationRatingCreate:
-      properties:
-        explanation:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Explanation
-        rating:
+        constraints:
           oneOf:
-          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__StarRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__ScoreRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TagsRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TextRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
-          title: Rating
+          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__StarConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TagsConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TextConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
+          title: Constraints
           discriminator:
             propertyName: annotation_type
             mapping:
-              choice: '#/components/schemas/api__schemas__annotation__ChoiceRating'
-              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
-              score: '#/components/schemas/api__schemas__annotation__ScoreRating'
-              star: '#/components/schemas/api__schemas__annotation__StarRating'
-              tags: '#/components/schemas/api__schemas__annotation__TagsRating'
-              text: '#/components/schemas/api__schemas__annotation__TextRating'
-              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
+              choice: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
+              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
+              score: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
+              star: '#/components/schemas/api__schemas__annotation__StarConstraints'
+              tags: '#/components/schemas/api__schemas__annotation__TagsConstraints'
+              text: '#/components/schemas/api__schemas__annotation__TextConstraints'
+              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
       type: object
       required:
-      - rating
-      title: AnnotationRatingCreate
-    BulkAnnotationRatingDelete:
-      properties:
-        annotation_template_id:
-          type: string
-          format: uuid4
-          title: Annotation Template Id
-        operation_type:
-          type: string
-          const: delete
-          title: Operation Type
-          default: delete
-      type: object
-      required:
-      - annotation_template_id
-      title: BulkAnnotationRatingDelete
-    api__schemas__annotation__TextRating:
+      - name
+      - constraints
+      title: AnnotationTemplateCreate
+    api__schemas__annotation__ChoiceConstraints:
       properties:
         annotation_type:
           type: string
-          const: text
+          const: choice
           title: Annotation Type
-          default: text
-        value:
-          type: string
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: TextRating
-    BulkAnnotationRatingStatus:
-      properties:
-        selector:
-          $ref: '#/components/schemas/AnnotationSelectorType'
-          default: traces
-        index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Index
-        trace:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Trace
-        operation:
-          $ref: '#/components/schemas/AnnotationRatingOperationType'
-        success:
-          type: boolean
-          title: Success
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-      type: object
-      required:
-      - operation
-      - success
-      - message
-      title: BulkAnnotationRatingStatus
-    AnnotationTraceSelector:
-      properties:
-        selector_type:
-          type: string
-          const: traces
-          title: Selector Type
-          default: traces
-        traces:
+        choices:
           items:
             type: string
-            format: uuid4
+            maxLength: 255
+            minLength: 1
           type: array
-          title: Traces
+          title: Choices
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
       type: object
       required:
-      - traces
-      title: AnnotationTraceSelector
-      description: Choose specific traces to apply the bulk operation to.
+      - annotation_type
+      - choices
+      title: ChoiceConstraints
+    api__schemas__annotation__TagsConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: tags
+          title: Annotation Type
+        tags:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          title: Tags
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
+      type: object
+      required:
+      - annotation_type
+      - tags
+      title: TagsConstraints
     api__schemas__annotation__TreeChoiceRating:
       properties:
         annotation_type:
@@ -1450,68 +1297,6 @@ components:
       required:
       - value
       title: TreeChoiceRating
-    AnnotationRatingOperationType:
-      type: string
-      enum:
-      - create
-      - delete
-      title: AnnotationRatingOperationType
-      description: Operation type for bulk annotation rating operations.
-    api__schemas__annotation__TreeChoiceConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-        choices_tree:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
-            type: array
-            maxItems: 50
-          - type: 'null'
-          title: Choices Tree
-        choices_tree_yaml:
-          anyOf:
-          - type: string
-            maxLength: 10000
-            minLength: 1
-          - type: 'null'
-          title: Choices Tree Yaml
-      type: object
-      required:
-      - annotation_type
-      title: TreeChoiceConstraints
-    api__schemas__annotation__ChoiceRating:
-      properties:
-        annotation_type:
-          type: string
-          const: choice
-          title: Annotation Type
-          default: choice
-        value:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: ChoiceRating
-    api__schemas__annotation__ScoreRating:
-      properties:
-        annotation_type:
-          type: string
-          const: score
-          title: Annotation Type
-          default: score
-        value:
-          type: integer
-          title: Value
-      type: object
-      required:
-      - value
-      title: ScoreRating
     BulkAnnotationRatingCreate:
       properties:
         explanation:
@@ -1554,49 +1339,6 @@ components:
       - rating
       - annotation_template_id
       title: BulkAnnotationRatingCreate
-    api__schemas__annotation__ScoreConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: score
-          title: Annotation Type
-        min:
-          type: integer
-          minimum: 0.0
-          title: Min
-        max:
-          type: integer
-          minimum: 0.0
-          title: Max
-      type: object
-      required:
-      - annotation_type
-      - min
-      - max
-      title: ScoreConstraints
-    TreeChoiceDBConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-        choices_tree:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
-          type: array
-          maxItems: 50
-          title: Choices Tree
-        choices_tree_yaml:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Choices Tree Yaml
-      type: object
-      required:
-      - annotation_type
-      - choices_tree
-      - choices_tree_yaml
-      title: TreeChoiceDBConstraints
     BulkAnnotationRequest:
       properties:
         operations:
@@ -1624,57 +1366,6 @@ components:
       - operations
       - selector
       title: BulkAnnotationRequest
-    api__schemas__annotation__TreeChoiceNode-Output:
-      properties:
-        label:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Label
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Id
-        children:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
-          type: array
-          maxItems: 50
-          title: Children
-      type: object
-      required:
-      - label
-      - id
-      title: TreeChoiceNode
-    api__schemas__annotation__LikeDislikeConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: like_dislike
-          title: Annotation Type
-      type: object
-      required:
-      - annotation_type
-      title: LikeDislikeConstraints
-    api__schemas__annotation__TagsRating:
-      properties:
-        annotation_type:
-          type: string
-          const: tags
-          title: Annotation Type
-          default: tags
-        value:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          title: Value
-      type: object
-      required:
-      - value
-      title: TagsRating
     HTTPValidationError:
       properties:
         detail:
@@ -1684,6 +1375,58 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    BulkAnnotationRatingStatus:
+      properties:
+        selector:
+          $ref: '#/components/schemas/AnnotationSelectorType'
+          default: traces
+        index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Index
+        trace:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Trace
+        operation:
+          $ref: '#/components/schemas/AnnotationRatingOperationType'
+        success:
+          type: boolean
+          title: Success
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - operation
+      - success
+      - message
+      title: BulkAnnotationRatingStatus
+    api__schemas__annotation__ScoreConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: score
+          title: Annotation Type
+        min:
+          type: integer
+          minimum: 0.0
+          title: Min
+        max:
+          type: integer
+          minimum: 0.0
+          title: Max
+      type: object
+      required:
+      - annotation_type
+      - min
+      - max
+      title: ScoreConstraints
     ValidationError:
       properties:
         loc:
@@ -1710,11 +1453,58 @@ components:
       - msg
       - type
       title: ValidationError
-    AnnotationSelectorType:
-      type: string
-      enum:
-      - traces
-      title: AnnotationSelectorType
+    AnnotationTemplateReorder:
+      properties:
+        ordering:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Ordering
+      type: object
+      required:
+      - ordering
+      title: AnnotationTemplateReorder
+      description: 'Request to re-order the annotation templates of a project.
+
+
+        - Expects a list of strings where each string is the ID of a template in the project in the order
+
+        we want the templates to appear in.
+
+        - Expects the list to be complete list of all template IDs.'
+    api__schemas__annotation__LikeDislikeRating:
+      properties:
+        annotation_type:
+          type: string
+          const: like_dislike
+          title: Annotation Type
+          default: like_dislike
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: LikeDislikeRating
+    api__schemas__annotation__TagsRating:
+      properties:
+        annotation_type:
+          type: string
+          const: tags
+          title: Annotation Type
+          default: tags
+        value:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          title: Value
+      type: object
+      required:
+      - value
+      title: TagsRating
     api__schemas__annotation__TextConstraints:
       properties:
         annotation_type:
@@ -1725,28 +1515,44 @@ components:
       required:
       - annotation_type
       title: TextConstraints
-    api__schemas__annotation__ChoiceConstraints:
+    AnnotationTraceSelector:
+      properties:
+        selector_type:
+          type: string
+          const: traces
+          title: Selector Type
+          default: traces
+        traces:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Traces
+      type: object
+      required:
+      - traces
+      title: AnnotationTraceSelector
+      description: Choose specific traces to apply the bulk operation to.
+    AnnotationSelectorType:
+      type: string
+      enum:
+      - traces
+      title: AnnotationSelectorType
+    api__schemas__annotation__TextRating:
       properties:
         annotation_type:
           type: string
-          const: choice
+          const: text
           title: Annotation Type
-        choices:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          title: Choices
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
+          default: text
+        value:
+          type: string
+          minLength: 1
+          title: Value
       type: object
       required:
-      - annotation_type
-      - choices
-      title: ChoiceConstraints
+      - value
+      title: TextRating
     api__schemas__annotation__StarRating:
       properties:
         annotation_type:
@@ -1763,28 +1569,185 @@ components:
       required:
       - value
       title: StarRating
-    api__schemas__annotation__TagsConstraints:
+    api__schemas__annotation__TreeChoiceConstraints:
       properties:
         annotation_type:
           type: string
-          const: tags
+          const: tree_choice
           title: Annotation Type
-        tags:
-          items:
-            type: string
-            maxLength: 255
+        choices_tree:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Choices Tree
+        choices_tree_yaml:
+          anyOf:
+          - type: string
+            maxLength: 10000
             minLength: 1
-          type: array
-          title: Tags
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
+          - type: 'null'
+          title: Choices Tree Yaml
       type: object
       required:
       - annotation_type
-      - tags
-      title: TagsConstraints
+      title: TreeChoiceConstraints
+    api__schemas__annotation__StarConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: star
+          title: Annotation Type
+      type: object
+      required:
+      - annotation_type
+      title: StarConstraints
+    api__schemas__annotation__ChoiceRating:
+      properties:
+        annotation_type:
+          type: string
+          const: choice
+          title: Annotation Type
+          default: choice
+        value:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: ChoiceRating
+    AnnotationRatingOperationType:
+      type: string
+      enum:
+      - create
+      - delete
+      title: AnnotationRatingOperationType
+      description: Operation type for bulk annotation rating operations.
+    api__schemas__annotation__LikeDislikeConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: like_dislike
+          title: Annotation Type
+      type: object
+      required:
+      - annotation_type
+      title: LikeDislikeConstraints
+    BulkAnnotationRatingDelete:
+      properties:
+        annotation_template_id:
+          type: string
+          format: uuid4
+          title: Annotation Template Id
+        operation_type:
+          type: string
+          const: delete
+          title: Operation Type
+          default: delete
+      type: object
+      required:
+      - annotation_template_id
+      title: BulkAnnotationRatingDelete
+    AnnotationRatingCreate:
+      properties:
+        explanation:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Explanation
+        rating:
+          oneOf:
+          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__StarRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__ScoreRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TagsRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TextRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
+          title: Rating
+          discriminator:
+            propertyName: annotation_type
+            mapping:
+              choice: '#/components/schemas/api__schemas__annotation__ChoiceRating'
+              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
+              score: '#/components/schemas/api__schemas__annotation__ScoreRating'
+              star: '#/components/schemas/api__schemas__annotation__StarRating'
+              tags: '#/components/schemas/api__schemas__annotation__TagsRating'
+              text: '#/components/schemas/api__schemas__annotation__TextRating'
+              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
+      type: object
+      required:
+      - rating
+      title: AnnotationRatingCreate
+    api__schemas__annotation__TreeChoiceNode-Input:
+      properties:
+        label:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Label
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Id
+        children:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
+          type: array
+          maxItems: 50
+          title: Children
+      type: object
+      required:
+      - label
+      - id
+      title: TreeChoiceNode
+    TreeChoiceDBConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: tree_choice
+          title: Annotation Type
+        choices_tree:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
+          type: array
+          maxItems: 50
+          title: Choices Tree
+        choices_tree_yaml:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Choices Tree Yaml
+      type: object
+      required:
+      - annotation_type
+      - choices_tree
+      - choices_tree_yaml
+      title: TreeChoiceDBConstraints
+    AnnotationTemplateUpdate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
+      type: object
+      required:
+      - name
+      - criteria
+      title: AnnotationTemplateUpdate
     AnnotationRatingDB:
       properties:
         explanation:
@@ -1829,6 +1792,43 @@ components:
       - created_at
       - created_by
       title: AnnotationRatingDB
+    api__schemas__annotation__TreeChoiceNode-Output:
+      properties:
+        label:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Label
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Id
+        children:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
+          type: array
+          maxItems: 50
+          title: Children
+      type: object
+      required:
+      - label
+      - id
+      title: TreeChoiceNode
+    api__schemas__annotation__ScoreRating:
+      properties:
+        annotation_type:
+          type: string
+          const: score
+          title: Annotation Type
+          default: score
+        value:
+          type: integer
+          title: Value
+      type: object
+      required:
+      - value
+      title: ScoreRating
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

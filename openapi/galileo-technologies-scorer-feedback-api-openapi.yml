@@ -702,820 +702,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AutotuneValidationResultItem:
-      properties:
-        feedback_id:
-          type: string
-          format: uuid4
-          title: Feedback Id
-          description: Feedback item ID
-        record_id:
-          type: string
-          format: uuid4
-          title: Record Id
-          description: Original ClickHouse record ID
-        input:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Input
-          description: Input text of the record
-        output:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output
-          description: Output text of the record
-        original_value:
-          type: string
-          title: Original Value
-          description: Original scorer output that was incorrect
-        annotated_value:
-          type: string
-          title: Annotated Value
-          description: User-corrected expected value
-        feedback_text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Feedback Text
-          description: User's explanation for the correction
-        new_score:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: New Score
-          description: New scorer output from the validation run, null if not yet scored
-        new_score_rationale:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: New Score Rationale
-          description: Rationale from the new scorer (if CoT enabled), null if not scored or CoT disabled
-        project_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Project Name
-          description: Name of the source project
-        run_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Run Name
-          description: Name of the source run
-      type: object
-      required:
-      - feedback_id
-      - record_id
-      - original_value
-      - annotated_value
-      title: AutotuneValidationResultItem
-      description: One row in the autotune validation results — one per feedback item.
-    UpdateQueueResponse:
-      properties:
-        queue_id:
-          type: string
-          format: uuid4
-          title: Queue Id
-          description: Queue ID that was updated
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-          description: Scorer ID
-        target_scorer_version_id:
-          type: string
-          format: uuid4
-          title: Target Scorer Version Id
-          description: Target scorer version for the queue
-        result_scorer_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Result Scorer Id
-          description: Scorer that owns the result version (set on complete)
-        result_scorer_version_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Result Scorer Version Id
-          description: Scorer version created from this queue (set on complete)
-        status:
-          type: string
-          title: Status
-          description: Current queue status after update
-        message:
-          type: string
-          title: Message
-          description: Confirmation message
-      type: object
-      required:
-      - queue_id
-      - scorer_id
-      - target_scorer_version_id
-      - status
-      - message
-      title: UpdateQueueResponse
-      description: 'Response schema for queue update request (200 OK).
-
-
-        For abort action: Clears draft_prompt and generation_task_id, returns to pending state.
-
-        For complete action: Sets status to completed and links queue to the resulting scorer version.'
-    FeedbackCountsResponse:
-      properties:
-        feedback_counts:
-          additionalProperties:
-            type: integer
-          propertyNames:
-            format: uuid4
-          type: object
-          title: Feedback Counts
-          description: Map of scorer_id to count of feedback items in the scorer's active queue. Returns 0 for scorers with no active queue.
-      type: object
-      required:
-      - feedback_counts
-      title: FeedbackCountsResponse
-      description: Response schema mapping scorer IDs to their active queue feedback counts.
-    BaseGeneratedScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        instructions:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Instructions
-        chain_poll_template:
-          $ref: '#/components/schemas/ChainPollTemplate'
-        user_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Prompt
-      type: object
-      required:
-      - id
-      - name
-      - chain_poll_template
-      title: BaseGeneratedScorerDB
-    ScorerTypes:
-      type: string
-      enum:
-      - llm
-      - code
-      - luna
-      - preset
-      title: ScorerTypes
-    ScorerFeedbackQueueStatusResponse:
-      properties:
-        queue_id:
-          type: string
-          format: uuid4
-          title: Queue Id
-          description: Queue ID
-        queue_status:
-          $ref: '#/components/schemas/ScorerFeedbackQueueStatus'
-          description: Current queue status
-        generation_error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Generation Error Message
-          description: Error message from the last failed generation attempt
-        draft_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Draft Prompt
-          description: Draft prompt if generation completed
-      type: object
-      required:
-      - queue_id
-      - queue_status
-      title: ScorerFeedbackQueueStatusResponse
-      description: Lightweight response for polling queue generation status.
-    ScorerFeedbackResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-        source_scorer_version_id:
-          type: string
-          format: uuid4
-          title: Source Scorer Version Id
-        record_id:
-          type: string
-          format: uuid4
-          title: Record Id
-        original_value:
-          type: string
-          title: Original Value
-        annotated_value:
-          type: string
-          title: Annotated Value
-        feedback_text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Feedback Text
-        rationale:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Rationale
-        queue_id:
-          type: string
-          format: uuid4
-          title: Queue Id
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Created By
-        created_by_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Created By Name
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - project_id
-      - run_id
-      - scorer_id
-      - source_scorer_version_id
-      - record_id
-      - original_value
-      - annotated_value
-      - feedback_text
-      - rationale
-      - queue_id
-      - created_by
-      - created_at
-      - updated_at
-      title: ScorerFeedbackResponse
-      description: Response schema for scorer feedback.
-    LogRecordsFilterType:
-      type: string
-      enum:
-      - id
-      - date
-      - number
-      - boolean
-      - text
-      - collection
-      - fully_annotated
-      title: LogRecordsFilterType
-    LunaOutputTypeEnum:
-      type: string
-      enum:
-      - float
-      - string
-      - string_list
-      - bool_list
-      title: LunaOutputTypeEnum
-    ValidateAutotuneQueueRequest:
-      properties:
-        user_prompt:
-          type: string
-          minLength: 1
-          title: User Prompt
-          description: The draft/edited prompt to test against feedback records
-      type: object
-      required:
-      - user_prompt
-      title: ValidateAutotuneQueueRequest
-      description: Request to test a draft prompt against autotune feedback records.
-    BaseScorerVersionDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        version:
-          type: integer
-          title: Version
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-        generated_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseGeneratedScorerDB'
-          - type: 'null'
-        registered_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseRegisteredScorerDB'
-          - type: 'null'
-        finetuned_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseFinetunedScorerDB'
-          - type: 'null'
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-        num_judges:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Num Judges
-        scoreable_node_types:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Scoreable Node Types
-          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
-        cot_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Cot Enabled
-          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-          description: What type of output to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
-        input_type:
-          anyOf:
-          - $ref: '#/components/schemas/InputTypeEnum'
-          - type: 'null'
-          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
-      type: object
-      required:
-      - id
-      - version
-      - scorer_id
-      title: BaseScorerVersionDB
-      description: Scorer version from the scorer_versions table.
-    MultimodalCapability:
-      type: string
-      enum:
-      - vision
-      - audio
-      title: MultimodalCapability
-    EnrichedScorerFeedbackItem:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-        source_scorer_version_id:
-          type: string
-          format: uuid4
-          title: Source Scorer Version Id
-        record_id:
-          type: string
-          format: uuid4
-          title: Record Id
-        original_value:
-          type: string
-          title: Original Value
-        annotated_value:
-          type: string
-          title: Annotated Value
-        feedback_text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Feedback Text
-        rationale:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Rationale
-        queue_id:
-          type: string
-          format: uuid4
-          title: Queue Id
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Created By
-        created_by_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Created By Name
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        project_name:
-          type: string
-          title: Project Name
-          description: Name of the project
-        run_name:
-          type: string
-          title: Run Name
-          description: Name of the run
-        input:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Input
-          description: Input data for the record that was scored
-        output:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output
-          description: Output data for the record that was scored
-        can_submit:
-          type: boolean
-          title: Can Submit
-          description: Whether the caller may submit this feedback item into an autotune run
-          default: true
-      type: object
-      required:
-      - id
-      - project_id
-      - run_id
-      - scorer_id
-      - source_scorer_version_id
-      - record_id
-      - original_value
-      - annotated_value
-      - feedback_text
-      - rationale
-      - queue_id
-      - created_by
-      - created_at
-      - updated_at
-      - project_name
-      - run_name
-      title: EnrichedScorerFeedbackItem
-      description: Enriched feedback item with record data and entity names.
-    CreateScorerFeedbackRequest:
-      properties:
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-          description: Project context for audit trail
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-          description: Run context
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-          description: Scorer being corrected
-        scorer_version_id:
-          type: string
-          format: uuid4
-          title: Scorer Version Id
-          description: Version that produced the incorrect output
-        record_id:
-          type: string
-          format: uuid4
-          title: Record Id
-          description: ID of the record that was scored
-        original_value:
-          type: string
-          minLength: 1
-          title: Original Value
-          description: The original incorrect scorer output
-        annotated_value:
-          type: string
-          minLength: 1
-          title: Annotated Value
-          description: Corrected value (validated against scorer output_type)
-        feedback_text:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Feedback Text
-          description: Rationale/explanation for the correction
-        rationale:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Rationale
-          description: Original scorer response (value + rationale) for CLHF context
-      type: object
-      required:
-      - project_id
-      - run_id
-      - scorer_id
-      - scorer_version_id
-      - record_id
-      - original_value
-      - annotated_value
-      title: CreateScorerFeedbackRequest
-      description: Request schema for creating scorer feedback.
-    AutotuneValidationStatus:
-      type: string
-      enum:
-      - pending
-      - in_progress
-      - completed
-      title: AutotuneValidationStatus
-      description: Status of autotune validation scoring.
-    UpdateScorerFeedbackRequest:
-      properties:
-        annotated_value:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Annotated Value
-          description: Updated correct value
-        feedback_text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Feedback Text
-          description: Updated explanation (empty string or null clears)
-      type: object
-      title: UpdateScorerFeedbackRequest
-      description: Request schema for updating scorer feedback.
-    OutputTypeEnum:
-      type: string
-      enum:
-      - boolean
-      - categorical
-      - count
-      - discrete
-      - freeform
-      - percentage
-      - multilabel
-      - retrieved_chunk_list_boolean
-      - boolean_multilabel
-      title: OutputTypeEnum
-      description: Enumeration of output types.
-    StepType:
-      type: string
-      enum:
-      - llm
-      - retriever
-      - tool
-      - workflow
-      - agent
-      - control
-      - trace
-      - session
-      title: StepType
-    LunaInputTypeEnum:
-      type: string
-      enum:
-      - span
-      - trace_object
-      - trace_input_output_only
-      title: LunaInputTypeEnum
-    InputTypeEnum:
-      type: string
-      enum:
-      - basic
-      - llm_spans
-      - retriever_spans
-      - sessions_normalized
-      - sessions_trace_io_only
-      - tool_spans
-      - trace_input_only
-      - trace_io_only
-      - trace_normalized
-      - trace_output_only
-      - agent_spans
-      - workflow_spans
-      title: InputTypeEnum
-      description: Enumeration of input types.
-    ScorerConfig:
-      properties:
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-        num_judges:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Num Judges
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        scoreable_node_types:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Scoreable Node Types
-          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
-        cot_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Cot Enabled
-          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-          description: What type of output to use for model-based scorers (boolean, categorical, etc.).
-        input_type:
-          anyOf:
-          - $ref: '#/components/schemas/InputTypeEnum'
-          - type: 'null'
-          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc..).
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        scorer_type:
-          $ref: '#/components/schemas/ScorerTypes'
-        model_type:
-          anyOf:
-          - $ref: '#/components/schemas/ModelType'
-          - type: 'null'
-          description: Type of model to use for this scorer. slm maps to luna, and llm maps to plus
-        scorer_version:
-          anyOf:
-          - $ref: '#/components/schemas/BaseScorerVersionDB'
-          - type: 'null'
-          description: ScorerVersion to use for this scorer. If not provided, the latest version will be used.
-        multimodal_capabilities:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/MultimodalCapability'
-            type: array
-          - type: 'null'
-          title: Multimodal Capabilities
-          description: Multimodal capabilities which this scorer can utilize in its evaluation.
-        roll_up_method:
-          anyOf:
-          - $ref: '#/components/schemas/RollUpMethodDisplayOptions'
-          - type: 'null'
-        score_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Score Type
-          description: Return type of code scorers (e.g., 'bool', 'int', 'float', 'str').
-      type: object
-      required:
-      - id
-      - scorer_type
-      title: ScorerConfig
-      description: Used for configuring a scorer for a scorer job.
-    ScorerFeedbackListResponse:
-      properties:
-        queue_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Queue Id
-          description: ID of the active queue, null if no active queue
-        queue_status:
-          anyOf:
-          - $ref: '#/components/schemas/ScorerFeedbackQueueStatus'
-          - type: 'null'
-          description: Status of the active queue, null if no active queue
-        generation_task_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Generation Task Id
-          description: Task ID for polling prompt generation, present when status is 'generating'
-        generation_error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Generation Error Message
-          description: Error message from the last failed generation attempt
-        total_count:
-          type: integer
-          title: Total Count
-          description: Total number of feedback items in the active queue
-        feedback_items:
-          items:
-            $ref: '#/components/schemas/EnrichedScorerFeedbackItem'
-          type: array
-          title: Feedback Items
-          description: List of feedback items with enriched data
-        restricted_feedback:
-          type: boolean
-          title: Restricted Feedback
-          description: True when the active queue contains one or more feedback items the caller cannot view (hidden because they originate from a project the caller has no view access to)
-          default: false
-      type: object
-      required:
-      - total_count
-      title: ScorerFeedbackListResponse
-      description: Response schema for active queue feedback list.
-    ColumnCategory:
-      type: string
-      enum:
-      - standard
-      - metric
-      - user_metadata
-      - metric_status
-      - dataset_metadata
-      - dataset
-      - feedback
-      - tags
-      title: ColumnCategory
-    DataType:
-      type: string
-      enum:
-      - uuid
-      - text
-      - integer
-      - floating_point
-      - boolean
-      - timestamp
-      - string_list
-      - tag
-      - dataset
-      - prompt
-      - playground
-      - rank
-      - category_count
-      - score_rating_aggregate
-      - star_rating_aggregate
-      - thumb_rating_aggregate
-      - tags_rating_aggregate
-      - text_rating_aggregate
-      - annotation_agreement
-      - fully_annotated
-      title: DataType
     UpdateQueueRequest:
       properties:
         action:
@@ -1550,21 +736,195 @@ components:
 
 
         Used to perform actions on a queue, such as aborting generation/review or completing the queue.'
-    DeleteScorerFeedbackRequest:
+    GeneratePromptResponse:
       properties:
-        feedback_ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          minItems: 1
-          title: Feedback Ids
-          description: List of feedback IDs to delete
+        task_id:
+          type: string
+          title: Task Id
+          description: Celery task ID for polling
+        queue_id:
+          type: string
+          format: uuid4
+          title: Queue Id
+          description: Queue ID being processed
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+          description: Scorer ID
+        feedback_count:
+          type: integer
+          title: Feedback Count
+          description: Number of feedback items
+        status:
+          type: string
+          title: Status
+          description: Current status (generating)
+        message:
+          type: string
+          title: Message
+          description: Message with polling instructions
       type: object
       required:
-      - feedback_ids
-      title: DeleteScorerFeedbackRequest
-      description: Request schema for deleting scorer feedback items.
+      - task_id
+      - queue_id
+      - scorer_id
+      - feedback_count
+      - status
+      - message
+      title: GeneratePromptResponse
+      description: Response schema for generate prompt request (202 Accepted).
+    MultimodalCapability:
+      type: string
+      enum:
+      - vision
+      - audio
+      title: MultimodalCapability
+    MetricThreshold:
+      properties:
+        inverted:
+          type: boolean
+          title: Inverted
+          description: Whether the column should be inverted for thresholds, i.e. if True, lower is better.
+          default: false
+        buckets:
+          items:
+            anyOf:
+            - type: integer
+            - type: number
+          type: array
+          title: Buckets
+          description: Threshold buckets for the column. If the column is a metric, these are the thresholds for the column.
+        display_value_levels:
+          items:
+            type: string
+          type: array
+          title: Display Value Levels
+          description: Ordered list of strings that raw values get transformed to for displaying.
+      type: object
+      title: MetricThreshold
+      description: 'Threshold configuration for metrics.
+
+
+        Defines how metric values are bucketed and displayed, including whether
+
+        lower or higher values are considered better.'
+    DataType:
+      type: string
+      enum:
+      - uuid
+      - text
+      - integer
+      - floating_point
+      - boolean
+      - timestamp
+      - string_list
+      - tag
+      - dataset
+      - prompt
+      - playground
+      - rank
+      - category_count
+      - score_rating_aggregate
+      - star_rating_aggregate
+      - thumb_rating_aggregate
+      - tags_rating_aggregate
+      - text_rating_aggregate
+      - annotation_agreement
+      - fully_annotated
+      title: DataType
+    StepType:
+      type: string
+      enum:
+      - llm
+      - retriever
+      - tool
+      - workflow
+      - agent
+      - control
+      - trace
+      - session
+      title: StepType
+    MetadataFilter:
+      properties:
+        name:
+          type: string
+          const: metadata
+          title: Name
+          default: metadata
+        operator:
+          type: string
+          enum:
+          - one_of
+          - not_in
+          - eq
+          - ne
+          title: Operator
+        key:
+          type: string
+          title: Key
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - key
+      - value
+      title: MetadataFilter
+      description: Filters on metadata key-value pairs in scorer jobs.
+    ChainPollTemplate:
+      properties:
+        metric_system_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric System Prompt
+          description: System prompt for the metric.
+        metric_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Description
+          description: Description of what the metric should do.
+        value_field_name:
+          type: string
+          title: Value Field Name
+          description: Field name to look for in the chainpoll response, for the rating.
+          default: rating
+        explanation_field_name:
+          type: string
+          title: Explanation Field Name
+          description: Field name to look for in the chainpoll response, for the explanation.
+          default: explanation
+        template:
+          type: string
+          title: Template
+          description: Chainpoll prompt template.
+        metric_few_shot_examples:
+          items:
+            $ref: '#/components/schemas/FewShotExample'
+          type: array
+          title: Metric Few Shot Examples
+          description: Few-shot examples for the metric.
+        response_schema:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Response Schema
+          description: Response schema for the output
+      type: object
+      required:
+      - template
+      title: ChainPollTemplate
+      description: 'Template for a chainpoll metric prompt,
+
+        containing all the info necessary to send a chainpoll prompt.'
     ScorerFeedbackQueueStatus:
       type: string
       enum:
@@ -1574,72 +934,39 @@ components:
       - completed
       title: ScorerFeedbackQueueStatus
       description: Status of a scorer feedback queue throughout its lifecycle.
-    InsightType:
-      type: string
-      enum:
-      - vertical_bar
-      - horizontal_bar
-      title: InsightType
-    ValidateAutotuneQueueResponse:
+    BaseRegisteredScorerDB:
       properties:
-        metrics_testing_run_id:
+        id:
           type: string
           format: uuid4
-          title: Metrics Testing Run Id
-          description: ID of the metrics testing run containing validation results
-        project_id:
+          title: Id
+        name:
           type: string
-          format: uuid4
-          title: Project Id
-          description: Project where the metrics testing run was created
-        queue_id:
-          type: string
-          format: uuid4
-          title: Queue Id
-          description: Queue ID that was tested
-        feedback_count:
-          type: integer
-          title: Feedback Count
-          description: Number of feedback records tested
+          title: Name
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
       type: object
       required:
-      - metrics_testing_run_id
-      - project_id
-      - queue_id
-      - feedback_count
-      title: ValidateAutotuneQueueResponse
-      description: Response for autotune queue validation (202 Accepted).
-    FeedbackCountsRequest:
+      - id
+      - name
+      title: BaseRegisteredScorerDB
+    FewShotExample:
       properties:
-        scorer_ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          minItems: 1
-          title: Scorer Ids
-          description: List of scorer IDs to query feedback counts for
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
       type: object
       required:
-      - scorer_ids
-      title: FeedbackCountsRequest
-      description: Request schema for querying feedback counts by scorer IDs.
-    ModelType:
-      type: string
-      enum:
-      - slm
-      - llm
-      - code
-      title: ModelType
-    DataUnit:
-      type: string
-      enum:
-      - percentage
-      - nano_seconds
-      - milli_seconds
-      - dollars
-      - count_and_total
-      title: DataUnit
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
     LogRecordsColumnInfo:
       properties:
         id:
@@ -1769,106 +1096,100 @@ components:
       - category
       - data_type
       title: LogRecordsColumnInfo
-    ChainPollTemplate:
-      properties:
-        metric_system_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric System Prompt
-          description: System prompt for the metric.
-        metric_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric Description
-          description: Description of what the metric should do.
-        value_field_name:
-          type: string
-          title: Value Field Name
-          description: Field name to look for in the chainpoll response, for the rating.
-          default: rating
-        explanation_field_name:
-          type: string
-          title: Explanation Field Name
-          description: Field name to look for in the chainpoll response, for the explanation.
-          default: explanation
-        template:
-          type: string
-          title: Template
-          description: Chainpoll prompt template.
-        metric_few_shot_examples:
-          items:
-            $ref: '#/components/schemas/FewShotExample'
-          type: array
-          title: Metric Few Shot Examples
-          description: Few-shot examples for the metric.
-        response_schema:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Response Schema
-          description: Response schema for the output
-      type: object
-      required:
-      - template
-      title: ChainPollTemplate
-      description: 'Template for a chainpoll metric prompt,
-
-        containing all the info necessary to send a chainpoll prompt.'
-    NodeNameFilter:
-      properties:
-        name:
-          type: string
-          const: node_name
-          title: Name
-          default: node_name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: NodeNameFilter
-      description: Filters on node names in scorer jobs.
-    RollUpMethodDisplayOptions:
+    LogRecordsFilterType:
       type: string
       enum:
-      - average
-      - sum
-      - max
-      - min
-      - category_count
-      - percentage_true
-      - percentage_false
-      title: RollUpMethodDisplayOptions
-      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
-
-
-        Separates display intent from computation methods. The computation methods
-
-        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
-
-        This enum controls how the UI displays the selected roll-up value for a scorer.'
+      - id
+      - date
+      - number
+      - boolean
+      - text
+      - collection
+      - fully_annotated
+      title: LogRecordsFilterType
+    AutotuneValidationResultsResponse:
+      properties:
+        queue_id:
+          type: string
+          format: uuid4
+          title: Queue Id
+          description: Queue ID
+        metrics_testing_run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Metrics Testing Run Id
+          description: Metrics testing run ID, null if validation not started
+        status:
+          $ref: '#/components/schemas/AutotuneValidationStatus'
+          description: Overall validation scoring status
+        total_count:
+          type: integer
+          title: Total Count
+          description: Total number of feedback items
+        scored_count:
+          type: integer
+          title: Scored Count
+          description: Number of feedback items that have been scored
+        results:
+          items:
+            $ref: '#/components/schemas/AutotuneValidationResultItem'
+          type: array
+          title: Results
+          description: One row per feedback item
+      type: object
+      required:
+      - queue_id
+      - status
+      - total_count
+      - scored_count
+      title: AutotuneValidationResultsResponse
+      description: Response for the autotune validation results endpoint (pollable).
+    ValidateAutotuneQueueResponse:
+      properties:
+        metrics_testing_run_id:
+          type: string
+          format: uuid4
+          title: Metrics Testing Run Id
+          description: ID of the metrics testing run containing validation results
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: Project where the metrics testing run was created
+        queue_id:
+          type: string
+          format: uuid4
+          title: Queue Id
+          description: Queue ID that was tested
+        feedback_count:
+          type: integer
+          title: Feedback Count
+          description: Number of feedback records tested
+      type: object
+      required:
+      - metrics_testing_run_id
+      - project_id
+      - queue_id
+      - feedback_count
+      title: ValidateAutotuneQueueResponse
+      description: Response for autotune queue validation (202 Accepted).
+    LunaInputTypeEnum:
+      type: string
+      enum:
+      - span
+      - trace_object
+      - trace_input_output_only
+      title: LunaInputTypeEnum
+    ScorerTypes:
+      type: string
+      enum:
+      - llm
+      - code
+      - luna
+      - preset
+      title: ScorerTypes
     HTTPValidationError:
       properties:
         detail:
@@ -1878,25 +1199,267 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    BaseRegisteredScorerDB:
+    FeedbackCountsResponse:
+      properties:
+        feedback_counts:
+          additionalProperties:
+            type: integer
+          propertyNames:
+            format: uuid4
+          type: object
+          title: Feedback Counts
+          description: Map of scorer_id to count of feedback items in the scorer's active queue. Returns 0 for scorers with no active queue.
+      type: object
+      required:
+      - feedback_counts
+      title: FeedbackCountsResponse
+      description: Response schema mapping scorer IDs to their active queue feedback counts.
+    AutotuneValidationStatus:
+      type: string
+      enum:
+      - pending
+      - in_progress
+      - completed
+      title: AutotuneValidationStatus
+      description: Status of autotune validation scoring.
+    ScorerFeedbackQueueStatusResponse:
+      properties:
+        queue_id:
+          type: string
+          format: uuid4
+          title: Queue Id
+          description: Queue ID
+        queue_status:
+          $ref: '#/components/schemas/ScorerFeedbackQueueStatus'
+          description: Current queue status
+        generation_error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Generation Error Message
+          description: Error message from the last failed generation attempt
+        draft_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Draft Prompt
+          description: Draft prompt if generation completed
+      type: object
+      required:
+      - queue_id
+      - queue_status
+      title: ScorerFeedbackQueueStatusResponse
+      description: Lightweight response for polling queue generation status.
+    InputTypeEnum:
+      type: string
+      enum:
+      - basic
+      - llm_spans
+      - retriever_spans
+      - sessions_normalized
+      - sessions_trace_io_only
+      - tool_spans
+      - trace_input_only
+      - trace_io_only
+      - trace_normalized
+      - trace_output_only
+      - agent_spans
+      - workflow_spans
+      title: InputTypeEnum
+      description: Enumeration of input types.
+    BaseScorerVersionDB:
       properties:
         id:
           type: string
           format: uuid4
           title: Id
-        name:
+        version:
+          type: integer
+          title: Version
+        scorer_id:
           type: string
-          title: Name
-        score_type:
+          format: uuid4
+          title: Scorer Id
+        generated_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseGeneratedScorerDB'
+          - type: 'null'
+        registered_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseRegisteredScorerDB'
+          - type: 'null'
+        finetuned_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseFinetunedScorerDB'
+          - type: 'null'
+        model_name:
           anyOf:
           - type: string
           - type: 'null'
-          title: Score Type
+          title: Model Name
+        num_judges:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Judges
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
+        cot_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Cot Enabled
+          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: What type of output to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
+        input_type:
+          anyOf:
+          - $ref: '#/components/schemas/InputTypeEnum'
+          - type: 'null'
+          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
       type: object
       required:
       - id
-      - name
-      title: BaseRegisteredScorerDB
+      - version
+      - scorer_id
+      title: BaseScorerVersionDB
+      description: Scorer version from the scorer_versions table.
+    QueueAction:
+      type: string
+      enum:
+      - abort
+      - complete
+      title: QueueAction
+      description: Actions that can be performed on a feedback queue.
+    LunaOutputTypeEnum:
+      type: string
+      enum:
+      - float
+      - string
+      - string_list
+      - bool_list
+      title: LunaOutputTypeEnum
+    AutotuneValidationColumnsResponse:
+      properties:
+        columns:
+          items:
+            $ref: '#/components/schemas/LogRecordsColumnInfo'
+          type: array
+          title: Columns
+          description: Column definitions for the validation results table
+      type: object
+      title: AutotuneValidationColumnsResponse
+      description: Response for the autotune validation columns endpoint.
+    UpdateScorerFeedbackRequest:
+      properties:
+        annotated_value:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Annotated Value
+          description: Updated correct value
+        feedback_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Text
+          description: Updated explanation (empty string or null clears)
+      type: object
+      title: UpdateScorerFeedbackRequest
+      description: Request schema for updating scorer feedback.
+    ScorerFeedbackResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+        source_scorer_version_id:
+          type: string
+          format: uuid4
+          title: Source Scorer Version Id
+        record_id:
+          type: string
+          format: uuid4
+          title: Record Id
+        original_value:
+          type: string
+          title: Original Value
+        annotated_value:
+          type: string
+          title: Annotated Value
+        feedback_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Text
+        rationale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rationale
+        queue_id:
+          type: string
+          format: uuid4
+          title: Queue Id
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        created_by_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created By Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - project_id
+      - run_id
+      - scorer_id
+      - source_scorer_version_id
+      - record_id
+      - original_value
+      - annotated_value
+      - feedback_text
+      - rationale
+      - queue_id
+      - created_by
+      - created_at
+      - updated_at
+      title: ScorerFeedbackResponse
+      description: Response schema for scorer feedback.
     ValidationError:
       properties:
         loc:
@@ -1923,17 +1486,621 @@ components:
       - msg
       - type
       title: ValidationError
-    AutotuneValidationColumnsResponse:
+    UpdateQueueResponse:
       properties:
-        columns:
-          items:
-            $ref: '#/components/schemas/LogRecordsColumnInfo'
-          type: array
-          title: Columns
-          description: Column definitions for the validation results table
+        queue_id:
+          type: string
+          format: uuid4
+          title: Queue Id
+          description: Queue ID that was updated
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+          description: Scorer ID
+        target_scorer_version_id:
+          type: string
+          format: uuid4
+          title: Target Scorer Version Id
+          description: Target scorer version for the queue
+        result_scorer_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Result Scorer Id
+          description: Scorer that owns the result version (set on complete)
+        result_scorer_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Result Scorer Version Id
+          description: Scorer version created from this queue (set on complete)
+        status:
+          type: string
+          title: Status
+          description: Current queue status after update
+        message:
+          type: string
+          title: Message
+          description: Confirmation message
       type: object
-      title: AutotuneValidationColumnsResponse
-      description: Response for the autotune validation columns endpoint.
+      required:
+      - queue_id
+      - scorer_id
+      - target_scorer_version_id
+      - status
+      - message
+      title: UpdateQueueResponse
+      description: 'Response schema for queue update request (200 OK).
+
+
+        For abort action: Clears draft_prompt and generation_task_id, returns to pending state.
+
+        For complete action: Sets status to completed and links queue to the resulting scorer version.'
+    ScorerFeedbackListResponse:
+      properties:
+        queue_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Queue Id
+          description: ID of the active queue, null if no active queue
+        queue_status:
+          anyOf:
+          - $ref: '#/components/schemas/ScorerFeedbackQueueStatus'
+          - type: 'null'
+          description: Status of the active queue, null if no active queue
+        generation_task_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Generation Task Id
+          description: Task ID for polling prompt generation, present when status is 'generating'
+        generation_error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Generation Error Message
+          description: Error message from the last failed generation attempt
+        total_count:
+          type: integer
+          title: Total Count
+          description: Total number of feedback items in the active queue
+        feedback_items:
+          items:
+            $ref: '#/components/schemas/EnrichedScorerFeedbackItem'
+          type: array
+          title: Feedback Items
+          description: List of feedback items with enriched data
+        restricted_feedback:
+          type: boolean
+          title: Restricted Feedback
+          description: True when the active queue contains one or more feedback items the caller cannot view (hidden because they originate from a project the caller has no view access to)
+          default: false
+      type: object
+      required:
+      - total_count
+      title: ScorerFeedbackListResponse
+      description: Response schema for active queue feedback list.
+    BaseGeneratedScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        chain_poll_template:
+          $ref: '#/components/schemas/ChainPollTemplate'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
+      type: object
+      required:
+      - id
+      - name
+      - chain_poll_template
+      title: BaseGeneratedScorerDB
+    DataUnit:
+      type: string
+      enum:
+      - percentage
+      - nano_seconds
+      - milli_seconds
+      - dollars
+      - count_and_total
+      title: DataUnit
+    ModelType:
+      type: string
+      enum:
+      - slm
+      - llm
+      - code
+      title: ModelType
+    CreateScorerFeedbackRequest:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: Project context for audit trail
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+          description: Run context
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+          description: Scorer being corrected
+        scorer_version_id:
+          type: string
+          format: uuid4
+          title: Scorer Version Id
+          description: Version that produced the incorrect output
+        record_id:
+          type: string
+          format: uuid4
+          title: Record Id
+          description: ID of the record that was scored
+        original_value:
+          type: string
+          minLength: 1
+          title: Original Value
+          description: The original incorrect scorer output
+        annotated_value:
+          type: string
+          minLength: 1
+          title: Annotated Value
+          description: Corrected value (validated against scorer output_type)
+        feedback_text:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Feedback Text
+          description: Rationale/explanation for the correction
+        rationale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rationale
+          description: Original scorer response (value + rationale) for CLHF context
+      type: object
+      required:
+      - project_id
+      - run_id
+      - scorer_id
+      - scorer_version_id
+      - record_id
+      - original_value
+      - annotated_value
+      title: CreateScorerFeedbackRequest
+      description: Request schema for creating scorer feedback.
+    ColumnCategory:
+      type: string
+      enum:
+      - standard
+      - metric
+      - user_metadata
+      - metric_status
+      - dataset_metadata
+      - dataset
+      - feedback
+      - tags
+      title: ColumnCategory
+    ModalityFilter:
+      properties:
+        name:
+          type: string
+          const: modality
+          title: Name
+          default: modality
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ModalityFilter
+      description: 'Filters on content modalities in scorer jobs.
+
+        Matches if at least one of the specified modalities is present.'
+    DeleteScorerFeedbackResponse:
+      properties:
+        deleted_count:
+          type: integer
+          title: Deleted Count
+          description: Number of feedback items successfully deleted
+        deleted_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Deleted Ids
+          description: List of feedback IDs that were deleted
+      type: object
+      required:
+      - deleted_count
+      - deleted_ids
+      title: DeleteScorerFeedbackResponse
+      description: Response schema for bulk delete operation.
+    RollUpMethodDisplayOptions:
+      type: string
+      enum:
+      - average
+      - sum
+      - max
+      - min
+      - category_count
+      - percentage_true
+      - percentage_false
+      title: RollUpMethodDisplayOptions
+      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
+
+
+        Separates display intent from computation methods. The computation methods
+
+        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
+
+        This enum controls how the UI displays the selected roll-up value for a scorer.'
+    ValidateAutotuneQueueRequest:
+      properties:
+        user_prompt:
+          type: string
+          minLength: 1
+          title: User Prompt
+          description: The draft/edited prompt to test against feedback records
+      type: object
+      required:
+      - user_prompt
+      title: ValidateAutotuneQueueRequest
+      description: Request to test a draft prompt against autotune feedback records.
+    FeedbackCountsRequest:
+      properties:
+        scorer_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          minItems: 1
+          title: Scorer Ids
+          description: List of scorer IDs to query feedback counts for
+      type: object
+      required:
+      - scorer_ids
+      title: FeedbackCountsRequest
+      description: Request schema for querying feedback counts by scorer IDs.
+    EnrichedScorerFeedbackItem:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+        source_scorer_version_id:
+          type: string
+          format: uuid4
+          title: Source Scorer Version Id
+        record_id:
+          type: string
+          format: uuid4
+          title: Record Id
+        original_value:
+          type: string
+          title: Original Value
+        annotated_value:
+          type: string
+          title: Annotated Value
+        feedback_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Text
+        rationale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rationale
+        queue_id:
+          type: string
+          format: uuid4
+          title: Queue Id
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        created_by_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created By Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        project_name:
+          type: string
+          title: Project Name
+          description: Name of the project
+        run_name:
+          type: string
+          title: Run Name
+          description: Name of the run
+        input:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input
+          description: Input data for the record that was scored
+        output:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output
+          description: Output data for the record that was scored
+        can_submit:
+          type: boolean
+          title: Can Submit
+          description: Whether the caller may submit this feedback item into an autotune run
+          default: true
+      type: object
+      required:
+      - id
+      - project_id
+      - run_id
+      - scorer_id
+      - source_scorer_version_id
+      - record_id
+      - original_value
+      - annotated_value
+      - feedback_text
+      - rationale
+      - queue_id
+      - created_by
+      - created_at
+      - updated_at
+      - project_name
+      - run_name
+      title: EnrichedScorerFeedbackItem
+      description: Enriched feedback item with record data and entity names.
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
+    ScorerConfig:
+      properties:
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+        num_judges:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Judges
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
+        cot_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Cot Enabled
+          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: What type of output to use for model-based scorers (boolean, categorical, etc.).
+        input_type:
+          anyOf:
+          - $ref: '#/components/schemas/InputTypeEnum'
+          - type: 'null'
+          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc..).
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        scorer_type:
+          $ref: '#/components/schemas/ScorerTypes'
+        model_type:
+          anyOf:
+          - $ref: '#/components/schemas/ModelType'
+          - type: 'null'
+          description: Type of model to use for this scorer. slm maps to luna, and llm maps to plus
+        scorer_version:
+          anyOf:
+          - $ref: '#/components/schemas/BaseScorerVersionDB'
+          - type: 'null'
+          description: ScorerVersion to use for this scorer. If not provided, the latest version will be used.
+        multimodal_capabilities:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/MultimodalCapability'
+            type: array
+          - type: 'null'
+          title: Multimodal Capabilities
+          description: Multimodal capabilities which this scorer can utilize in its evaluation.
+        roll_up_method:
+          anyOf:
+          - $ref: '#/components/schemas/RollUpMethodDisplayOptions'
+          - type: 'null'
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
+          description: Return type of code scorers (e.g., 'bool', 'int', 'float', 'str').
+      type: object
+      required:
+      - id
+      - scorer_type
+      title: ScorerConfig
+      description: Used for configuring a scorer for a scorer job.
+    InsightType:
+      type: string
+      enum:
+      - vertical_bar
+      - horizontal_bar
+      title: InsightType
+    AutotuneValidationResultItem:
+      properties:
+        feedback_id:
+          type: string
+          format: uuid4
+          title: Feedback Id
+          description: Feedback item ID
+        record_id:
+          type: string
+          format: uuid4
+          title: Record Id
+          description: Original ClickHouse record ID
+        input:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input
+          description: Input text of the record
+        output:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output
+          description: Output text of the record
+        original_value:
+          type: string
+          title: Original Value
+          description: Original scorer output that was incorrect
+        annotated_value:
+          type: string
+          title: Annotated Value
+          description: User-corrected expected value
+        feedback_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Feedback Text
+          description: User's explanation for the correction
+        new_score:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: New Score
+          description: New scorer output from the validation run, null if not yet scored
+        new_score_rationale:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: New Score Rationale
+          description: Rationale from the new scorer (if CoT enabled), null if not scored or CoT disabled
+        project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Name
+          description: Name of the source project
+        run_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Run Name
+          description: Name of the source run
+      type: object
+      required:
+      - feedback_id
+      - record_id
+      - original_value
+      - annotated_value
+      title: AutotuneValidationResultItem
+      description: One row in the autotune validation results — one per feedback item.
     galileo_core__schemas__shared__scorers__scorer_name__ScorerName:
       type: string
       enum:
@@ -2013,24 +2180,22 @@ components:
       - user_intent_change_audio
       - interruption_detection
       title: ScorerName
-    MetadataFilter:
+    NodeNameFilter:
       properties:
         name:
           type: string
-          const: metadata
+          const: node_name
           title: Name
-          default: metadata
+          default: node_name
         operator:
           type: string
           enum:
-          - one_of
-          - not_in
           - eq
           - ne
+          - contains
+          - one_of
+          - not_in
           title: Operator
-        key:
-          type: string
-          title: Key
         value:
           anyOf:
           - type: string
@@ -2038,66 +2203,31 @@ components:
               type: string
             type: array
           title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
       type: object
       required:
       - operator
-      - key
       - value
-      title: MetadataFilter
-      description: Filters on metadata key-value pairs in scorer jobs.
-    AutotuneValidationResultsResponse:
+      title: NodeNameFilter
+      description: Filters on node names in scorer jobs.
+    DeleteScorerFeedbackRequest:
       properties:
-        queue_id:
-          type: string
-          format: uuid4
-          title: Queue Id
-          description: Queue ID
-        metrics_testing_run_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Metrics Testing Run Id
-          description: Metrics testing run ID, null if validation not started
-        status:
-          $ref: '#/components/schemas/AutotuneValidationStatus'
-          description: Overall validation scoring status
-        total_count:
-          type: integer
-          title: Total Count
-          description: Total number of feedback items
-        scored_count:
-          type: integer
-          title: Scored Count
-          description: Number of feedback items that have been scored
-        results:
+        feedback_ids:
           items:
-            $ref: '#/components/schemas/AutotuneValidationResultItem'
+            type: string
+            format: uuid4
           type: array
-          title: Results
-          description: One row per feedback item
+          minItems: 1
+          title: Feedback Ids
+          description: List of feedback IDs to delete
       type: object
       required:
-      - queue_id
-      - status
-      - total_count
-      - scored_count
-      title: AutotuneValidationResultsResponse
-      description: Response for the autotune validation results endpoint (pollable).
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
-          type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
-      type: object
-      required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
+      - feedback_ids
+      title: DeleteScorerFeedbackRequest
+      description: Request schema for deleting scorer feedback items.
     BaseFinetunedScorerDB:
       properties:
         id:
@@ -2151,136 +2281,6 @@ components:
       - lora_task_id
       - prompt
       title: BaseFinetunedScorerDB
-    ModalityFilter:
-      properties:
-        name:
-          type: string
-          const: modality
-          title: Name
-          default: modality
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-            description: Single enum value - specific options depend on the concrete enum type used
-            example: ENUM_VALUE
-          - items:
-              type: string
-              example: ENUM_VALUE
-            type: array
-            description: Array of enum values
-            example:
-            - ENUM_VALUE_1
-            - ENUM_VALUE_2
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ModalityFilter
-      description: 'Filters on content modalities in scorer jobs.
-
-        Matches if at least one of the specified modalities is present.'
-    QueueAction:
-      type: string
-      enum:
-      - abort
-      - complete
-      title: QueueAction
-      description: Actions that can be performed on a feedback queue.
-    GeneratePromptResponse:
-      properties:
-        task_id:
-          type: string
-          title: Task Id
-          description: Celery task ID for polling
-        queue_id:
-          type: string
-          format: uuid4
-          title: Queue Id
-          description: Queue ID being processed
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-          description: Scorer ID
-        feedback_count:
-          type: integer
-          title: Feedback Count
-          description: Number of feedback items
-        status:
-          type: string
-          title: Status
-          description: Current status (generating)
-        message:
-          type: string
-          title: Message
-          description: Message with polling instructions
-      type: object
-      required:
-      - task_id
-      - queue_id
-      - scorer_id
-      - feedback_count
-      - status
-      - message
-      title: GeneratePromptResponse
-      description: Response schema for generate prompt request (202 Accepted).
-    MetricThreshold:
-      properties:
-        inverted:
-          type: boolean
-          title: Inverted
-          description: Whether the column should be inverted for thresholds, i.e. if True, lower is better.
-          default: false
-        buckets:
-          items:
-            anyOf:
-            - type: integer
-            - type: number
-          type: array
-          title: Buckets
-          description: Threshold buckets for the column. If the column is a metric, these are the thresholds for the column.
-        display_value_levels:
-          items:
-            type: string
-          type: array
-          title: Display Value Levels
-          description: Ordered list of strings that raw values get transformed to for displaying.
-      type: object
-      title: MetricThreshold
-      description: 'Threshold configuration for metrics.
-
-
-        Defines how metric values are bucketed and displayed, including whether
-
-        lower or higher values are considered better.'
-    DeleteScorerFeedbackResponse:
-      properties:
-        deleted_count:
-          type: integer
-          title: Deleted Count
-          description: Number of feedback items successfully deleted
-        deleted_ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Deleted Ids
-          description: List of feedback IDs that were deleted
-      type: object
-      required:
-      - deleted_count
-      - deleted_ids
-      title: DeleteScorerFeedbackResponse
-      description: Response schema for bulk delete operation.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

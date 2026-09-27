@@ -174,20 +174,24 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    UpdateMetricRollUpColorThresholdRequest:
+    MetricColor:
+      type: string
+      enum:
+      - red
+      - yellow
+      - green
+      title: MetricColor
+      description: Allowed colors for metric threshold visualization in the UI.
+    DeleteMetricRollUpConfigResponse:
       properties:
-        color_threshold_config:
-          anyOf:
-          - $ref: '#/components/schemas/MetricColorPickerNumeric'
-          - type: 'null'
+        message:
+          type: string
+          title: Message
       type: object
-      title: UpdateMetricRollUpColorThresholdRequest
-      description: 'Request to update only the color_threshold_config on an existing MetricRollUpConfig.
-
-
-        Omitting `color_threshold_config` is a no-op — only an explicitly sent field (even if
-
-        null) is written. Send null to clear the stored threshold.'
+      required:
+      - message
+      title: DeleteMetricRollUpConfigResponse
+      description: Response for deleting a metric roll up configuration.
     MetricColorPickerNumeric:
       properties:
         type:
@@ -206,25 +210,12 @@ components:
       - constraints
       title: MetricColorPickerNumeric
       description: "Color picker configuration for numeric metrics.\n\nEach constraint maps a numeric condition to a color. The UI uses these\nconstraints to color-code metric values (e.g. green for high scores,\nred for low scores).\n\nExample:\n    {\n        \"type\": \"numeric\",\n        \"constraints\": [\n            {\"color\": \"green\", \"operator\": \"gte\", \"value\": 0.8},\n            {\"color\": \"yellow\", \"operator\": \"between\", \"value\": [0.3, 0.8]},\n            {\"color\": \"red\", \"operator\": \"lt\", \"value\": 0.3}\n        ]\n    }"
-    DeleteMetricRollUpConfigResponse:
-      properties:
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - message
-      title: DeleteMetricRollUpConfigResponse
-      description: Response for deleting a metric roll up configuration.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+    CategoricalRollUpMethod:
+      type: string
+      enum:
+      - category_count
+      title: CategoricalRollUpMethod
+      description: Roll up methods for aggregating categorical metrics up the session/trace/span hierarchy.
     ValidationError:
       properties:
         loc:
@@ -251,28 +242,34 @@ components:
       - msg
       - type
       title: ValidationError
-    CreateMetricRollUpConfigRequest:
+    NumericColorConstraint:
       properties:
-        roll_up_methods:
+        color:
+          $ref: '#/components/schemas/MetricColor'
+        operator:
+          type: string
+          enum:
+          - eq
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
           anyOf:
+          - type: number
           - items:
-              $ref: '#/components/schemas/NumericRollUpMethod'
+              type: number
             type: array
-          - items:
-              $ref: '#/components/schemas/CategoricalRollUpMethod'
-            type: array
-          minLength: 1
-          title: Roll Up Methods
-          description: List of roll up methods to apply to the metric. For numeric scorers we support doing multiple roll up types per metric.
-        color_threshold_config:
-          anyOf:
-          - $ref: '#/components/schemas/MetricColorPickerNumeric'
-          - type: 'null'
+          title: Value
       type: object
       required:
-      - roll_up_methods
-      title: CreateMetricRollUpConfigRequest
-      description: Request to create a metric roll up configuration.
+      - color
+      - operator
+      - value
+      title: NumericColorConstraint
+      description: "A color constraint for numeric metric values.\n\nAssigns a color when a numeric score matches the given operator and value.\n\nOperators and expected value shapes:\n  - eq, gt, gte, lt, lte: value must be a single float.\n  - between: value must be a list of exactly 2 floats [low, high] where low < high.\n    The range is inclusive on both ends.\n\nExample:\n    {\"color\": \"green\", \"operator\": \"gte\", \"value\": 0.8}\n    {\"color\": \"yellow\", \"operator\": \"between\", \"value\": [0.3, 0.7]}"
     MetricRollUpConfigResponse:
       properties:
         roll_up_methods:
@@ -324,20 +321,29 @@ components:
       - updated_at
       title: MetricRollUpConfigResponse
       description: Response for a metric roll up configuration.
-    CategoricalRollUpMethod:
-      type: string
-      enum:
-      - category_count
-      title: CategoricalRollUpMethod
-      description: Roll up methods for aggregating categorical metrics up the session/trace/span hierarchy.
-    MetricColor:
-      type: string
-      enum:
-      - red
-      - yellow
-      - green
-      title: MetricColor
-      description: Allowed colors for metric threshold visualization in the UI.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateMetricRollUpColorThresholdRequest:
+      properties:
+        color_threshold_config:
+          anyOf:
+          - $ref: '#/components/schemas/MetricColorPickerNumeric'
+          - type: 'null'
+      type: object
+      title: UpdateMetricRollUpColorThresholdRequest
+      description: 'Request to update only the color_threshold_config on an existing MetricRollUpConfig.
+
+
+        Omitting `color_threshold_config` is a no-op — only an explicitly sent field (even if
+
+        null) is written. Send null to clear the stored threshold.'
     NumericRollUpMethod:
       type: string
       enum:
@@ -347,34 +353,28 @@ components:
       - min
       title: NumericRollUpMethod
       description: Roll up methods for aggregating numeric metrics up the session/trace/span hierarchy.
-    NumericColorConstraint:
+    CreateMetricRollUpConfigRequest:
       properties:
-        color:
-          $ref: '#/components/schemas/MetricColor'
-        operator:
-          type: string
-          enum:
-          - eq
-          - gt
-          - gte
-          - lt
-          - lte
-          - between
-          title: Operator
-        value:
+        roll_up_methods:
           anyOf:
-          - type: number
           - items:
-              type: number
+              $ref: '#/components/schemas/NumericRollUpMethod'
             type: array
-          title: Value
+          - items:
+              $ref: '#/components/schemas/CategoricalRollUpMethod'
+            type: array
+          minLength: 1
+          title: Roll Up Methods
+          description: List of roll up methods to apply to the metric. For numeric scorers we support doing multiple roll up types per metric.
+        color_threshold_config:
+          anyOf:
+          - $ref: '#/components/schemas/MetricColorPickerNumeric'
+          - type: 'null'
       type: object
       required:
-      - color
-      - operator
-      - value
-      title: NumericColorConstraint
-      description: "A color constraint for numeric metric values.\n\nAssigns a color when a numeric score matches the given operator and value.\n\nOperators and expected value shapes:\n  - eq, gt, gte, lt, lte: value must be a single float.\n  - between: value must be a list of exactly 2 floats [low, high] where low < high.\n    The range is inclusive on both ends.\n\nExample:\n    {\"color\": \"green\", \"operator\": \"gte\", \"value\": 0.8}\n    {\"color\": \"yellow\", \"operator\": \"between\", \"value\": [0.3, 0.7]}"
+      - roll_up_methods
+      title: CreateMetricRollUpConfigRequest
+      description: Request to create a metric roll up configuration.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

@@ -109,87 +109,10 @@ paths:
       - OAuth2PasswordBearer: []
 components:
   schemas:
-    EmailVerificationRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-      type: object
-      required:
-      - email
-      title: EmailVerificationRequest
-    PasswordResetEmailResponse:
-      properties: {}
-      type: object
-      title: PasswordResetEmailResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ResendVerificationEmailResponse:
       properties: {}
       type: object
       title: ResendVerificationEmailResponse
-    SystemUserStatus:
-      type: string
-      enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    UserPasswordResetRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        password:
-          anyOf:
-          - type: string
-            format: password
-            writeOnly: true
-          - type: 'null'
-          title: Password
-        email_is_verified:
-          type: boolean
-          title: Email Is Verified
-          default: true
-      type: object
-      required:
-      - email
-      title: UserPasswordResetRequest
     SystemUserDB:
       properties:
         id:
@@ -239,12 +162,89 @@ components:
       - role
       - auth_method
       title: SystemUserDB
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
+    PasswordResetEmailResponse:
+      properties: {}
+      type: object
+      title: PasswordResetEmailResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserPasswordResetRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          anyOf:
+          - type: string
+            format: password
+            writeOnly: true
+          - type: 'null'
+          title: Password
+        email_is_verified:
+          type: boolean
+          title: Email Is Verified
+          default: true
+      type: object
+      required:
+      - email
+      title: UserPasswordResetRequest
     SystemRole:
       type: string
       enum:
       - system_admin
       - system_user
       title: SystemRole
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    EmailVerificationRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - email
+      title: EmailVerificationRequest
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

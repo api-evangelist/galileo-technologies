@@ -186,6 +186,38 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    SubscriptionConfig:
+      properties:
+        statuses:
+          items:
+            $ref: '#/components/schemas/ExecutionStatus'
+          type: array
+          title: Statuses
+          description: List of statuses that will cause a notification to be sent to the configured URL.
+          default:
+          - triggered
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: URL to send the event to. This can be a webhook URL, a message queue URL, an event bus or a custom endpoint that can receive an HTTP POST request.
+      type: object
+      required:
+      - url
+      title: SubscriptionConfig
+    ExecutionStatus:
+      type: string
+      enum:
+      - triggered
+      - failed
+      - error
+      - timeout
+      - paused
+      - not_triggered
+      - skipped
+      title: ExecutionStatus
+      description: Status of the execution.
     RulesetsMixin:
       properties:
         prioritized_rulesets:
@@ -233,58 +265,21 @@ components:
       - name
       - project_id
       title: StageWithRulesets
-    ExecutionStatus:
-      type: string
-      enum:
-      - triggered
-      - failed
-      - error
-      - timeout
-      - paused
-      - not_triggered
-      - skipped
-      title: ExecutionStatus
-      description: Status of the execution.
-    HTTPValidationError:
+    PassthroughAction:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    Rule:
-      properties:
-        metric:
+        type:
           type: string
-          title: Metric
-          description: Name of the metric.
-        operator:
-          $ref: '#/components/schemas/RuleOperator'
-          description: Operator to use for comparison.
-        target_value:
-          anyOf:
-          - type: string
-          - type: number
-          - type: integer
-          - items: {}
-            type: array
-          - type: 'null'
-          title: Target Value
-          description: Value to compare with for this metric (right hand side).
+          const: PASSTHROUGH
+          title: Type
+          default: PASSTHROUGH
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/SubscriptionConfig'
+          type: array
+          title: Subscriptions
+          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
       type: object
-      required:
-      - metric
-      - operator
-      - target_value
-      title: Rule
-    StageType:
-      type: string
-      enum:
-      - local
-      - central
-      title: StageType
+      title: PassthroughAction
     RuleOperator:
       type: string
       enum:
@@ -326,65 +321,12 @@ components:
       - msg
       - type
       title: ValidationError
-    SubscriptionConfig:
-      properties:
-        statuses:
-          items:
-            $ref: '#/components/schemas/ExecutionStatus'
-          type: array
-          title: Statuses
-          description: List of statuses that will cause a notification to be sent to the configured URL.
-          default:
-          - triggered
-        url:
-          type: string
-          minLength: 1
-          format: uri
-          title: Url
-          description: URL to send the event to. This can be a webhook URL, a message queue URL, an event bus or a custom endpoint that can receive an HTTP POST request.
-      type: object
-      required:
-      - url
-      title: SubscriptionConfig
-    PassthroughAction:
-      properties:
-        type:
-          type: string
-          const: PASSTHROUGH
-          title: Type
-          default: PASSTHROUGH
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/SubscriptionConfig'
-          type: array
-          title: Subscriptions
-          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
-      type: object
-      title: PassthroughAction
-    OverrideAction:
-      properties:
-        type:
-          type: string
-          const: OVERRIDE
-          title: Type
-          default: OVERRIDE
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/SubscriptionConfig'
-          type: array
-          title: Subscriptions
-          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
-        choices:
-          items:
-            type: string
-          type: array
-          minItems: 1
-          title: Choices
-          description: List of choices to override the response with. If there are multiple choices, one will be chosen at random when applying this action.
-      type: object
-      required:
-      - choices
-      title: OverrideAction
+    StageType:
+      type: string
+      enum:
+      - local
+      - central
+      title: StageType
     StageDB:
       properties:
         name:
@@ -431,6 +373,39 @@ components:
       - created_by
       - id
       title: StageDB
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    OverrideAction:
+      properties:
+        type:
+          type: string
+          const: OVERRIDE
+          title: Type
+          default: OVERRIDE
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/SubscriptionConfig'
+          type: array
+          title: Subscriptions
+          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
+        choices:
+          items:
+            type: string
+          type: array
+          minItems: 1
+          title: Choices
+          description: List of choices to override the response with. If there are multiple choices, one will be chosen at random when applying this action.
+      type: object
+      required:
+      - choices
+      title: OverrideAction
     Ruleset:
       properties:
         rules:
@@ -459,6 +434,31 @@ components:
           description: Description of the ruleset.
       type: object
       title: Ruleset
+    Rule:
+      properties:
+        metric:
+          type: string
+          title: Metric
+          description: Name of the metric.
+        operator:
+          $ref: '#/components/schemas/RuleOperator'
+          description: Operator to use for comparison.
+        target_value:
+          anyOf:
+          - type: string
+          - type: number
+          - type: integer
+          - items: {}
+            type: array
+          - type: 'null'
+          title: Target Value
+          description: Value to compare with for this metric (right hand side).
+      type: object
+      required:
+      - metric
+      - operator
+      - target_value
+      title: Rule
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

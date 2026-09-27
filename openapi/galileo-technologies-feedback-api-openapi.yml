@@ -1274,87 +1274,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    TreeChoiceConstraints-Output:
-      properties:
-        feedback_type:
-          type: string
-          const: tree_choice
-          title: Feedback Type
-        choices_tree:
-          items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
-          type: array
-          minItems: 1
-          title: Choices Tree
-      type: object
-      required:
-      - feedback_type
-      - choices_tree
-      title: TreeChoiceConstraints
-      description: 'Tree-choice node values must be globally unique leaf-path values.
-
-
-        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
-
-        so duplicate ids or labels in different branches are converted to unambiguous
-
-        slash-delimited path values before model validation.'
-    libs__python__schemas__log_records__feedback__TextConstraints:
-      properties:
-        feedback_type:
-          type: string
-          const: text
-          title: Feedback Type
-      type: object
-      required:
-      - feedback_type
-      title: TextConstraints
-    libs__python__schemas__log_records__feedback__ScoreRating:
-      properties:
-        feedback_type:
-          type: string
-          const: score
-          title: Feedback Type
-          default: score
-        value:
-          type: integer
-          title: Value
-      type: object
-      required:
-      - value
-      title: ScoreRating
-    FeedbackRatingCreate:
-      properties:
-        explanation:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Explanation
-        rating:
-          oneOf:
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-          title: Rating
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-      type: object
-      required:
-      - rating
-      title: FeedbackRatingCreate
     BulkFeedbackRequest:
       properties:
         operations:
@@ -1384,66 +1303,6 @@ components:
       - operations
       - selector
       title: BulkFeedbackRequest
-    libs__python__schemas__log_records__feedback__ChoiceRating:
-      properties:
-        feedback_type:
-          type: string
-          const: choice
-          title: Feedback Type
-          default: choice
-        value:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: ChoiceRating
-    libs__python__schemas__log_records__feedback__TreeChoiceRating:
-      properties:
-        feedback_type:
-          type: string
-          const: tree_choice
-          title: Feedback Type
-          default: tree_choice
-        value:
-          type: string
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: TreeChoiceRating
-    libs__python__schemas__log_records__feedback__TagsConstraints:
-      properties:
-        feedback_type:
-          type: string
-          const: tags
-          title: Feedback Type
-        tags:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          title: Tags
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
-      type: object
-      required:
-      - feedback_type
-      - tags
-      title: TagsConstraints
-    FeedbackRatingOperationType:
-      type: string
-      enum:
-      - create
-      - delete
-      title: FeedbackRatingOperationType
-      description: Operation type for bulk feedback rating operations.
     libs__python__schemas__log_records__feedback__StarRating:
       properties:
         feedback_type:
@@ -1460,368 +1319,6 @@ components:
       required:
       - value
       title: StarRating
-    libs__python__schemas__log_records__feedback__TreeChoiceNode-Input:
-      properties:
-        label:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Label
-        value:
-          type: string
-          minLength: 1
-          title: Value
-        children:
-          items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
-          type: array
-          title: Children
-      type: object
-      required:
-      - value
-      title: TreeChoiceNode
-    FeedbackTemplateCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        include_explanation:
-          type: boolean
-          title: Include Explanation
-          default: false
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-        constraints:
-          oneOf:
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
-          title: Constraints
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
-              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
-              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
-              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
-              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
-              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
-              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
-      type: object
-      required:
-      - name
-      - constraints
-      title: FeedbackTemplateCreate
-    FeedbackTemplateReorder:
-      properties:
-        ordering:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Ordering
-      type: object
-      required:
-      - ordering
-      title: FeedbackTemplateReorder
-      description: 'Request to re-order the feedback templates of a project.
-
-
-        - Expects a list of strings where each string is the ID of a template in the project in the order
-
-        we want the templates to appear in.
-
-        - Expects the list to be complete list of all template IDs.'
-    BulkFeedbackRatingDelete:
-      properties:
-        feedback_template_id:
-          type: string
-          format: uuid4
-          title: Feedback Template Id
-        operation_type:
-          type: string
-          const: delete
-          title: Operation Type
-          default: delete
-      type: object
-      required:
-      - feedback_template_id
-      title: BulkFeedbackRatingDelete
-    libs__python__schemas__log_records__feedback__TreeChoiceNode-Output:
-      properties:
-        label:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Label
-        value:
-          type: string
-          minLength: 1
-          title: Value
-        children:
-          items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
-          type: array
-          title: Children
-      type: object
-      required:
-      - value
-      title: TreeChoiceNode
-    FeedbackRatingDB:
-      properties:
-        explanation:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Explanation
-        rating:
-          oneOf:
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-          title: Rating
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Created By
-      type: object
-      required:
-      - rating
-      - created_at
-      - created_by
-      title: FeedbackRatingDB
-    libs__python__schemas__log_records__feedback__LikeDislikeRating:
-      properties:
-        feedback_type:
-          type: string
-          const: like_dislike
-          title: Feedback Type
-          default: like_dislike
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: LikeDislikeRating
-    BulkFeedbackRatingStatus:
-      properties:
-        selector:
-          $ref: '#/components/schemas/SelectorType'
-          default: indexes
-        index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Index
-        trace:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Trace
-        operation:
-          $ref: '#/components/schemas/FeedbackRatingOperationType'
-        success:
-          type: boolean
-          title: Success
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-      type: object
-      required:
-      - operation
-      - success
-      - message
-      title: BulkFeedbackRatingStatus
-    FeedbackTemplateUpdate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-      type: object
-      required:
-      - name
-      - criteria
-      title: FeedbackTemplateUpdate
-    SelectorType:
-      type: string
-      enum:
-      - indexes
-      - traces
-      title: SelectorType
-    libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input:
-      properties:
-        feedback_type:
-          type: string
-          const: tree_choice
-          title: Feedback Type
-        choices_tree:
-          items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
-          type: array
-          minItems: 1
-          title: Choices Tree
-      type: object
-      required:
-      - feedback_type
-      - choices_tree
-      title: TreeChoiceConstraints
-      description: 'Tree-choice node values must be globally unique leaf-path values.
-
-
-        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
-
-        so duplicate ids or labels in different branches are converted to unambiguous
-
-        slash-delimited path values before model validation.'
-    libs__python__schemas__log_records__feedback__TextRating:
-      properties:
-        feedback_type:
-          type: string
-          const: text
-          title: Feedback Type
-          default: text
-        value:
-          type: string
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: TextRating
-    libs__python__schemas__log_records__feedback__StarConstraints:
-      properties:
-        feedback_type:
-          type: string
-          const: star
-          title: Feedback Type
-      type: object
-      required:
-      - feedback_type
-      title: StarConstraints
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    libs__python__schemas__log_records__feedback__ChoiceConstraints:
-      properties:
-        feedback_type:
-          type: string
-          const: choice
-          title: Feedback Type
-        choices:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          maxItems: 50
-          minItems: 2
-          title: Choices
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
-      type: object
-      required:
-      - feedback_type
-      - choices
-      title: ChoiceConstraints
-    TraceSelector:
-      properties:
-        selector_type:
-          type: string
-          const: traces
-          title: Selector Type
-          default: traces
-        traces:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Traces
-      type: object
-      required:
-      - traces
-      title: TraceSelector
-      description: Choose specific traces to apply the bulk operation to.
     BulkFeedbackRatingCreate:
       properties:
         explanation:
@@ -1864,53 +1361,48 @@ components:
       - rating
       - feedback_template_id
       title: BulkFeedbackRatingCreate
-    libs__python__schemas__log_records__feedback__ScoreConstraints:
+    FeedbackTemplateCreate:
       properties:
-        feedback_type:
+        name:
           type: string
-          const: score
-          title: Feedback Type
-        min:
-          type: integer
-          minimum: 0.0
-          title: Min
-        max:
-          type: integer
-          minimum: 0.0
-          title: Max
+          maxLength: 255
+          minLength: 1
+          title: Name
+        include_explanation:
+          type: boolean
+          title: Include Explanation
+          default: false
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
+        constraints:
+          oneOf:
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
+          title: Constraints
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
+              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
+              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
+              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
+              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
+              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
+              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
       type: object
       required:
-      - feedback_type
-      - min
-      - max
-      title: ScoreConstraints
-    libs__python__schemas__log_records__feedback__LikeDislikeConstraints:
-      properties:
-        feedback_type:
-          type: string
-          const: like_dislike
-          title: Feedback Type
-      type: object
-      required:
-      - feedback_type
-      title: LikeDislikeConstraints
-    IndexSelector:
-      properties:
-        selector_type:
-          type: string
-          const: indexes
-          title: Selector Type
-          default: indexes
-        indexes:
-          items:
-            type: integer
-          type: array
-          title: Indexes
-      type: object
-      required:
-      - indexes
-      title: IndexSelector
-      description: Choose specific indexes to apply the bulk operation to.
+      - name
+      - constraints
+      title: FeedbackTemplateCreate
     FeedbackTemplateDB:
       properties:
         name:
@@ -1980,6 +1472,28 @@ components:
       - created_by
       - position
       title: FeedbackTemplateDB
+    libs__python__schemas__log_records__feedback__TreeChoiceNode-Input:
+      properties:
+        label:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Label
+        value:
+          type: string
+          minLength: 1
+          title: Value
+        children:
+          items:
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
+          type: array
+          title: Children
+      type: object
+      required:
+      - value
+      title: TreeChoiceNode
     libs__python__schemas__log_records__feedback__TagsRating:
       properties:
         feedback_type:
@@ -1998,6 +1512,492 @@ components:
       required:
       - value
       title: TagsRating
+    FeedbackRatingOperationType:
+      type: string
+      enum:
+      - create
+      - delete
+      title: FeedbackRatingOperationType
+      description: Operation type for bulk feedback rating operations.
+    libs__python__schemas__log_records__feedback__TextRating:
+      properties:
+        feedback_type:
+          type: string
+          const: text
+          title: Feedback Type
+          default: text
+        value:
+          type: string
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: TextRating
+    libs__python__schemas__log_records__feedback__ScoreRating:
+      properties:
+        feedback_type:
+          type: string
+          const: score
+          title: Feedback Type
+          default: score
+        value:
+          type: integer
+          title: Value
+      type: object
+      required:
+      - value
+      title: ScoreRating
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+        choices_tree:
+          items:
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
+          type: array
+          minItems: 1
+          title: Choices Tree
+      type: object
+      required:
+      - feedback_type
+      - choices_tree
+      title: TreeChoiceConstraints
+      description: 'Tree-choice node values must be globally unique leaf-path values.
+
+
+        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
+
+        so duplicate ids or labels in different branches are converted to unambiguous
+
+        slash-delimited path values before model validation.'
+    FeedbackTemplateUpdate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
+      type: object
+      required:
+      - name
+      - criteria
+      title: FeedbackTemplateUpdate
+    libs__python__schemas__log_records__feedback__LikeDislikeConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: like_dislike
+          title: Feedback Type
+      type: object
+      required:
+      - feedback_type
+      title: LikeDislikeConstraints
+    FeedbackRatingDB:
+      properties:
+        explanation:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Explanation
+        rating:
+          oneOf:
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+          title: Rating
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+      type: object
+      required:
+      - rating
+      - created_at
+      - created_by
+      title: FeedbackRatingDB
+    libs__python__schemas__log_records__feedback__TextConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: text
+          title: Feedback Type
+      type: object
+      required:
+      - feedback_type
+      title: TextConstraints
+    libs__python__schemas__log_records__feedback__StarConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: star
+          title: Feedback Type
+      type: object
+      required:
+      - feedback_type
+      title: StarConstraints
+    FeedbackRatingCreate:
+      properties:
+        explanation:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Explanation
+        rating:
+          oneOf:
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+          title: Rating
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+      type: object
+      required:
+      - rating
+      title: FeedbackRatingCreate
+    libs__python__schemas__log_records__feedback__ScoreConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: score
+          title: Feedback Type
+        min:
+          type: integer
+          minimum: 0.0
+          title: Min
+        max:
+          type: integer
+          minimum: 0.0
+          title: Max
+      type: object
+      required:
+      - feedback_type
+      - min
+      - max
+      title: ScoreConstraints
+    libs__python__schemas__log_records__feedback__TreeChoiceNode-Output:
+      properties:
+        label:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Label
+        value:
+          type: string
+          minLength: 1
+          title: Value
+        children:
+          items:
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
+          type: array
+          title: Children
+      type: object
+      required:
+      - value
+      title: TreeChoiceNode
+    libs__python__schemas__log_records__feedback__TagsConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: tags
+          title: Feedback Type
+        tags:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          title: Tags
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
+      type: object
+      required:
+      - feedback_type
+      - tags
+      title: TagsConstraints
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    libs__python__schemas__log_records__feedback__ChoiceConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: choice
+          title: Feedback Type
+        choices:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          maxItems: 50
+          minItems: 2
+          title: Choices
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
+      type: object
+      required:
+      - feedback_type
+      - choices
+      title: ChoiceConstraints
+    BulkFeedbackRatingDelete:
+      properties:
+        feedback_template_id:
+          type: string
+          format: uuid4
+          title: Feedback Template Id
+        operation_type:
+          type: string
+          const: delete
+          title: Operation Type
+          default: delete
+      type: object
+      required:
+      - feedback_template_id
+      title: BulkFeedbackRatingDelete
+    IndexSelector:
+      properties:
+        selector_type:
+          type: string
+          const: indexes
+          title: Selector Type
+          default: indexes
+        indexes:
+          items:
+            type: integer
+          type: array
+          title: Indexes
+      type: object
+      required:
+      - indexes
+      title: IndexSelector
+      description: Choose specific indexes to apply the bulk operation to.
+    TraceSelector:
+      properties:
+        selector_type:
+          type: string
+          const: traces
+          title: Selector Type
+          default: traces
+        traces:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Traces
+      type: object
+      required:
+      - traces
+      title: TraceSelector
+      description: Choose specific traces to apply the bulk operation to.
+    TreeChoiceConstraints-Output:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+        choices_tree:
+          items:
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
+          type: array
+          minItems: 1
+          title: Choices Tree
+      type: object
+      required:
+      - feedback_type
+      - choices_tree
+      title: TreeChoiceConstraints
+      description: 'Tree-choice node values must be globally unique leaf-path values.
+
+
+        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
+
+        so duplicate ids or labels in different branches are converted to unambiguous
+
+        slash-delimited path values before model validation.'
+    libs__python__schemas__log_records__feedback__LikeDislikeRating:
+      properties:
+        feedback_type:
+          type: string
+          const: like_dislike
+          title: Feedback Type
+          default: like_dislike
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: LikeDislikeRating
+    SelectorType:
+      type: string
+      enum:
+      - indexes
+      - traces
+      title: SelectorType
+    libs__python__schemas__log_records__feedback__TreeChoiceRating:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+          default: tree_choice
+        value:
+          type: string
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: TreeChoiceRating
+    FeedbackTemplateReorder:
+      properties:
+        ordering:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Ordering
+      type: object
+      required:
+      - ordering
+      title: FeedbackTemplateReorder
+      description: 'Request to re-order the feedback templates of a project.
+
+
+        - Expects a list of strings where each string is the ID of a template in the project in the order
+
+        we want the templates to appear in.
+
+        - Expects the list to be complete list of all template IDs.'
+    libs__python__schemas__log_records__feedback__ChoiceRating:
+      properties:
+        feedback_type:
+          type: string
+          const: choice
+          title: Feedback Type
+          default: choice
+        value:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: ChoiceRating
+    BulkFeedbackRatingStatus:
+      properties:
+        selector:
+          $ref: '#/components/schemas/SelectorType'
+          default: indexes
+        index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Index
+        trace:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Trace
+        operation:
+          $ref: '#/components/schemas/FeedbackRatingOperationType'
+        success:
+          type: boolean
+          title: Success
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - operation
+      - success
+      - message
+      title: BulkFeedbackRatingStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

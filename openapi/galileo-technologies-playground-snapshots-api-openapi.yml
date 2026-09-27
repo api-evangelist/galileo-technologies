@@ -164,41 +164,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    BaseGeneratedScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        instructions:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Instructions
-        chain_poll_template:
-          $ref: '#/components/schemas/ChainPollTemplate'
-        user_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Prompt
-      type: object
-      required:
-      - id
-      - name
-      - chain_poll_template
-      title: BaseGeneratedScorerDB
-    ScorerTypes:
-      type: string
-      enum:
-      - llm
-      - code
-      - luna
-      - preset
-      title: ScorerTypes
     PlaygroundSnapshotScorer:
       properties:
         id:
@@ -215,14 +180,249 @@ components:
       - id
       - name
       title: PlaygroundSnapshotScorer
-    LunaOutputTypeEnum:
+    PlaygroundSnapshotDataset:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        version_index:
+          type: integer
+          title: Version Index
+      type: object
+      required:
+      - id
+      - name
+      - version_index
+      title: PlaygroundSnapshotDataset
+    PlaygroundResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/PlaygroundDataset'
+          - type: 'null'
+        scratch_dataset_id:
+          type: string
+          format: uuid4
+          title: Scratch Dataset Id
+        scorers:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ScorerConfig'
+            type: array
+          - type: 'null'
+          title: Scorers
+      type: object
+      required:
+      - id
+      - name
+      - created_by_user
+      - created_at
+      - updated_at
+      - dataset
+      - scratch_dataset_id
+      - scorers
+      title: PlaygroundResponse
+    MultimodalCapability:
       type: string
       enum:
-      - float
-      - string
-      - string_list
-      - bool_list
-      title: LunaOutputTypeEnum
+      - vision
+      - audio
+      title: MultimodalCapability
+    PlaygroundSnapshotCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: PlaygroundSnapshotCreatedAtSort
+    MetadataFilter:
+      properties:
+        name:
+          type: string
+          const: metadata
+          title: Name
+          default: metadata
+        operator:
+          type: string
+          enum:
+          - one_of
+          - not_in
+          - eq
+          - ne
+          title: Operator
+        key:
+          type: string
+          title: Key
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - key
+      - value
+      title: MetadataFilter
+      description: Filters on metadata key-value pairs in scorer jobs.
+    ChainPollTemplate:
+      properties:
+        metric_system_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric System Prompt
+          description: System prompt for the metric.
+        metric_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Description
+          description: Description of what the metric should do.
+        value_field_name:
+          type: string
+          title: Value Field Name
+          description: Field name to look for in the chainpoll response, for the rating.
+          default: rating
+        explanation_field_name:
+          type: string
+          title: Explanation Field Name
+          description: Field name to look for in the chainpoll response, for the explanation.
+          default: explanation
+        template:
+          type: string
+          title: Template
+          description: Chainpoll prompt template.
+        metric_few_shot_examples:
+          items:
+            $ref: '#/components/schemas/FewShotExample'
+          type: array
+          title: Metric Few Shot Examples
+          description: Few-shot examples for the metric.
+        response_schema:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Response Schema
+          description: Response schema for the output
+      type: object
+      required:
+      - template
+      title: ChainPollTemplate
+      description: 'Template for a chainpoll metric prompt,
+
+        containing all the info necessary to send a chainpoll prompt.'
+    BaseRegisteredScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
+      type: object
+      required:
+      - id
+      - name
+      title: BaseRegisteredScorerDB
+    FewShotExample:
+      properties:
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
+      type: object
+      required:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
+    LunaInputTypeEnum:
+      type: string
+      enum:
+      - span
+      - trace_object
+      - trace_input_output_only
+      title: LunaInputTypeEnum
+    ScorerTypes:
+      type: string
+      enum:
+      - llm
+      - code
+      - luna
+      - preset
+      title: ScorerTypes
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    InputTypeEnum:
+      type: string
+      enum:
+      - basic
+      - llm_spans
+      - retriever_spans
+      - sessions_normalized
+      - sessions_trace_io_only
+      - tool_spans
+      - trace_input_only
+      - trace_io_only
+      - trace_normalized
+      - trace_output_only
+      - agent_spans
+      - workflow_spans
+      title: InputTypeEnum
+      description: Enumeration of input types.
     BaseScorerVersionDB:
       properties:
         id:
@@ -289,102 +489,40 @@ components:
       - scorer_id
       title: BaseScorerVersionDB
       description: Scorer version from the scorer_versions table.
-    PlaygroundSnapshotDataset:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        version_index:
-          type: integer
-          title: Version Index
-      type: object
-      required:
-      - id
-      - name
-      - version_index
-      title: PlaygroundSnapshotDataset
-    UserInfo:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        email:
-          type: string
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-      type: object
-      required:
-      - id
-      - email
-      title: UserInfo
-      description: A user's basic information, used for display purposes.
-    MultimodalCapability:
+    LunaOutputTypeEnum:
       type: string
       enum:
-      - vision
-      - audio
-      title: MultimodalCapability
-    PlaygroundResponse:
+      - float
+      - string
+      - string_list
+      - bool_list
+      title: LunaOutputTypeEnum
+    ValidationError:
       properties:
-        id:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          format: uuid4
-          title: Id
-        name:
+          title: Message
+        type:
           type: string
-          title: Name
-        created_by_user:
-          anyOf:
-          - $ref: '#/components/schemas/UserInfo'
-          - type: 'null'
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        dataset:
-          anyOf:
-          - $ref: '#/components/schemas/PlaygroundDataset'
-          - type: 'null'
-        scratch_dataset_id:
-          type: string
-          format: uuid4
-          title: Scratch Dataset Id
-        scorers:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/ScorerConfig'
-            type: array
-          - type: 'null'
-          title: Scorers
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - id
-      - name
-      - created_by_user
-      - created_at
-      - updated_at
-      - dataset
-      - scratch_dataset_id
-      - scorers
-      title: PlaygroundResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
     PlaygroundSnapshotResponse:
       properties:
         id:
@@ -425,6 +563,178 @@ components:
       - scorers
       - dataset
       title: PlaygroundSnapshotResponse
+    BaseGeneratedScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        chain_poll_template:
+          $ref: '#/components/schemas/ChainPollTemplate'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
+      type: object
+      required:
+      - id
+      - name
+      - chain_poll_template
+      title: BaseGeneratedScorerDB
+    ListPlaygroundSnapshotsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        snapshots:
+          items:
+            $ref: '#/components/schemas/PlaygroundSnapshotResponse'
+          type: array
+          title: Snapshots
+      type: object
+      required:
+      - snapshots
+      title: ListPlaygroundSnapshotsResponse
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    ModelType:
+      type: string
+      enum:
+      - slm
+      - llm
+      - code
+      title: ModelType
+    ModalityFilter:
+      properties:
+        name:
+          type: string
+          const: modality
+          title: Name
+          default: modality
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ModalityFilter
+      description: 'Filters on content modalities in scorer jobs.
+
+        Matches if at least one of the specified modalities is present.'
+    ListPlaygroundSnapshotsParams:
+      properties:
+        sort:
+          $ref: '#/components/schemas/PlaygroundSnapshotCreatedAtSort'
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: ListPlaygroundSnapshotsParams
+    RollUpMethodDisplayOptions:
+      type: string
+      enum:
+      - average
+      - sum
+      - max
+      - min
+      - category_count
+      - percentage_true
+      - percentage_false
+      title: RollUpMethodDisplayOptions
+      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
+
+
+        Separates display intent from computation methods. The computation methods
+
+        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
+
+        This enum controls how the UI displays the selected roll-up value for a scorer.'
+    PlaygroundDataset:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        version_index:
+          type: integer
+          title: Version Index
+      type: object
+      required:
+      - id
+      - version_index
+      title: PlaygroundDataset
     OutputTypeEnum:
       type: string
       enum:
@@ -439,48 +749,6 @@ components:
       - boolean_multilabel
       title: OutputTypeEnum
       description: Enumeration of output types.
-    PlaygroundSnapshotCreatedAtSort:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: PlaygroundSnapshotCreatedAtSort
-    LunaInputTypeEnum:
-      type: string
-      enum:
-      - span
-      - trace_object
-      - trace_input_output_only
-      title: LunaInputTypeEnum
-    InputTypeEnum:
-      type: string
-      enum:
-      - basic
-      - llm_spans
-      - retriever_spans
-      - sessions_normalized
-      - sessions_trace_io_only
-      - tool_spans
-      - trace_input_only
-      - trace_io_only
-      - trace_normalized
-      - trace_output_only
-      - agent_spans
-      - workflow_spans
-      title: InputTypeEnum
-      description: Enumeration of input types.
     ScorerConfig:
       properties:
         model_name:
@@ -579,214 +847,6 @@ components:
       - scorer_type
       title: ScorerConfig
       description: Used for configuring a scorer for a scorer job.
-    PlaygroundDataset:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        version_index:
-          type: integer
-          title: Version Index
-      type: object
-      required:
-      - id
-      - version_index
-      title: PlaygroundDataset
-    ListPlaygroundSnapshotsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        snapshots:
-          items:
-            $ref: '#/components/schemas/PlaygroundSnapshotResponse'
-          type: array
-          title: Snapshots
-      type: object
-      required:
-      - snapshots
-      title: ListPlaygroundSnapshotsResponse
-    ModelType:
-      type: string
-      enum:
-      - slm
-      - llm
-      - code
-      title: ModelType
-    ChainPollTemplate:
-      properties:
-        metric_system_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric System Prompt
-          description: System prompt for the metric.
-        metric_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric Description
-          description: Description of what the metric should do.
-        value_field_name:
-          type: string
-          title: Value Field Name
-          description: Field name to look for in the chainpoll response, for the rating.
-          default: rating
-        explanation_field_name:
-          type: string
-          title: Explanation Field Name
-          description: Field name to look for in the chainpoll response, for the explanation.
-          default: explanation
-        template:
-          type: string
-          title: Template
-          description: Chainpoll prompt template.
-        metric_few_shot_examples:
-          items:
-            $ref: '#/components/schemas/FewShotExample'
-          type: array
-          title: Metric Few Shot Examples
-          description: Few-shot examples for the metric.
-        response_schema:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Response Schema
-          description: Response schema for the output
-      type: object
-      required:
-      - template
-      title: ChainPollTemplate
-      description: 'Template for a chainpoll metric prompt,
-
-        containing all the info necessary to send a chainpoll prompt.'
-    NodeNameFilter:
-      properties:
-        name:
-          type: string
-          const: node_name
-          title: Name
-          default: node_name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: NodeNameFilter
-      description: Filters on node names in scorer jobs.
-    RollUpMethodDisplayOptions:
-      type: string
-      enum:
-      - average
-      - sum
-      - max
-      - min
-      - category_count
-      - percentage_true
-      - percentage_false
-      title: RollUpMethodDisplayOptions
-      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
-
-
-        Separates display intent from computation methods. The computation methods
-
-        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
-
-        This enum controls how the UI displays the selected roll-up value for a scorer.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    BaseRegisteredScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        score_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Score Type
-      type: object
-      required:
-      - id
-      - name
-      title: BaseRegisteredScorerDB
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     galileo_core__schemas__shared__scorers__scorer_name__ScorerName:
       type: string
       enum:
@@ -866,24 +926,22 @@ components:
       - user_intent_change_audio
       - interruption_detection
       title: ScorerName
-    MetadataFilter:
+    NodeNameFilter:
       properties:
         name:
           type: string
-          const: metadata
+          const: node_name
           title: Name
-          default: metadata
+          default: node_name
         operator:
           type: string
           enum:
-          - one_of
-          - not_in
           - eq
           - ne
+          - contains
+          - one_of
+          - not_in
           title: Operator
-        key:
-          type: string
-          title: Key
         value:
           anyOf:
           - type: string
@@ -891,27 +949,16 @@ components:
               type: string
             type: array
           title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
       type: object
       required:
       - operator
-      - key
       - value
-      title: MetadataFilter
-      description: Filters on metadata key-value pairs in scorer jobs.
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
-          type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
-      type: object
-      required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
+      title: NodeNameFilter
+      description: Filters on node names in scorer jobs.
     BaseFinetunedScorerDB:
       properties:
         id:
@@ -965,53 +1012,6 @@ components:
       - lora_task_id
       - prompt
       title: BaseFinetunedScorerDB
-    ListPlaygroundSnapshotsParams:
-      properties:
-        sort:
-          $ref: '#/components/schemas/PlaygroundSnapshotCreatedAtSort'
-          default:
-            name: created_at
-            ascending: false
-            sort_type: column
-      type: object
-      title: ListPlaygroundSnapshotsParams
-    ModalityFilter:
-      properties:
-        name:
-          type: string
-          const: modality
-          title: Name
-          default: modality
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-            description: Single enum value - specific options depend on the concrete enum type used
-            example: ENUM_VALUE
-          - items:
-              type: string
-              example: ENUM_VALUE
-            type: array
-            description: Array of enum values
-            example:
-            - ENUM_VALUE_1
-            - ENUM_VALUE_2
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ModalityFilter
-      description: 'Filters on content modalities in scorer jobs.
-
-        Matches if at least one of the specified modalities is present.'
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

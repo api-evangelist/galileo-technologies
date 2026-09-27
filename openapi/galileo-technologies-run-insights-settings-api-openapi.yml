@@ -275,31 +275,13 @@ components:
           description: The insights configuration for the run.
       type: object
       title: RunInsightsRequest
-    LogstreamInsightConfig:
+    RunInsightsSettingsSchema:
       properties:
-        enabled:
-          type: boolean
-          title: Enabled
-          description: Whether logstream insights are enabled for this run.
-          default: false
-        start_time:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Start Time
-          description: Start time for generating logstream insights.
+        logstream:
+          $ref: '#/components/schemas/LogstreamInsightConfig'
+          description: Logstream insights configuration.
       type: object
-      title: LogstreamInsightConfig
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      title: RunInsightsSettingsSchema
     ValidationError:
       properties:
         loc:
@@ -326,13 +308,31 @@ components:
       - msg
       - type
       title: ValidationError
-    RunInsightsSettingsSchema:
+    LogstreamInsightConfig:
       properties:
-        logstream:
-          $ref: '#/components/schemas/LogstreamInsightConfig'
-          description: Logstream insights configuration.
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Whether logstream insights are enabled for this run.
+          default: false
+        start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start Time
+          description: Start time for generating logstream insights.
       type: object
-      title: RunInsightsSettingsSchema
+      title: LogstreamInsightConfig
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     RunInsightsResponse:
       properties:
         insights:

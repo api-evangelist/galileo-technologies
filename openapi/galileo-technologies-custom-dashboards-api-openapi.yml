@@ -472,6 +472,232 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : properties:
+        and:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          type: array
+          title: And
+      type: object
+      required:
+      - and
+      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    MultimodalCapability:
+      type: string
+      enum:
+      - vision
+      - audio
+      title: MultimodalCapability
+    LogRecordsTextFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: text
+          title: Type
+          default: text
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsTextFilter
+    DataType:
+      type: string
+      enum:
+      - uuid
+      - text
+      - integer
+      - floating_point
+      - boolean
+      - timestamp
+      - string_list
+      - tag
+      - dataset
+      - prompt
+      - playground
+      - rank
+      - category_count
+      - score_rating_aggregate
+      - star_rating_aggregate
+      - thumb_rating_aggregate
+      - tags_rating_aggregate
+      - text_rating_aggregate
+      - annotation_agreement
+      - fully_annotated
+      title: DataType
+    MetricThreshold:
+      properties:
+        inverted:
+          type: boolean
+          title: Inverted
+          description: Whether the column should be inverted for thresholds, i.e. if True, lower is better.
+          default: false
+        buckets:
+          items:
+            anyOf:
+            - type: integer
+            - type: number
+          type: array
+          title: Buckets
+          description: Threshold buckets for the column. If the column is a metric, these are the thresholds for the column.
+        display_value_levels:
+          items:
+            type: string
+          type: array
+          title: Display Value Levels
+          description: Ordered list of strings that raw values get transformed to for displaying.
+      type: object
+      title: MetricThreshold
+      description: 'Threshold configuration for metrics.
+
+
+        Defines how metric values are bucketed and displayed, including whether
+
+        lower or higher values are considered better.'
+    StepType:
+      type: string
+      enum:
+      - llm
+      - retriever
+      - tool
+      - workflow
+      - agent
+      - control
+      - trace
+      - session
+      title: StepType
+    MetadataFilter:
+      properties:
+        name:
+          type: string
+          const: metadata
+          title: Name
+          default: metadata
+        operator:
+          type: string
+          enum:
+          - one_of
+          - not_in
+          - eq
+          - ne
+          title: Operator
+        key:
+          type: string
+          title: Key
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - key
+      - value
+      title: MetadataFilter
+      description: Filters on metadata key-value pairs in scorer jobs.
+    ChainPollTemplate:
+      properties:
+        metric_system_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric System Prompt
+          description: System prompt for the metric.
+        metric_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Description
+          description: Description of what the metric should do.
+        value_field_name:
+          type: string
+          title: Value Field Name
+          description: Field name to look for in the chainpoll response, for the rating.
+          default: rating
+        explanation_field_name:
+          type: string
+          title: Explanation Field Name
+          description: Field name to look for in the chainpoll response, for the explanation.
+          default: explanation
+        template:
+          type: string
+          title: Template
+          description: Chainpoll prompt template.
+        metric_few_shot_examples:
+          items:
+            $ref: '#/components/schemas/FewShotExample'
+          type: array
+          title: Metric Few Shot Examples
+          description: Few-shot examples for the metric.
+        response_schema:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Response Schema
+          description: Response schema for the output
+      type: object
+      required:
+      - template
+      title: ChainPollTemplate
+      description: 'Template for a chainpoll metric prompt,
+
+        containing all the info necessary to send a chainpoll prompt.'
+    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        or:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          type: array
+          title: Or
+      type: object
+      required:
+      - or
+      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    WidgetType:
+      type: string
+      enum:
+      - bar_chart
+      - line_chart
+      - number
+      - table
+      title: WidgetType
     LogRecordsNumberFilter:
       properties:
         column_id:
@@ -511,6 +737,800 @@ components:
       - operator
       - value
       title: LogRecordsNumberFilter
+    BaseRegisteredScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
+      type: object
+      required:
+      - id
+      - name
+      title: BaseRegisteredScorerDB
+    FewShotExample:
+      properties:
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
+      type: object
+      required:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
+    LogRecordsColumnInfo:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Column id.  Must be universally unique.
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+          description: Display label of the column in the UI.
+        category:
+          $ref: '#/components/schemas/ColumnCategory'
+          description: Category of the column.
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Description of the column.
+        group_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Label
+          description: Display label of the column group.
+        data_type:
+          anyOf:
+          - $ref: '#/components/schemas/DataType'
+          - type: 'null'
+          description: Data type of the column. This is used to determine how to format the data on the UI.
+        data_unit:
+          anyOf:
+          - $ref: '#/components/schemas/DataUnit'
+          - type: 'null'
+          description: Data unit of the column (optional).
+        multi_valued:
+          type: boolean
+          title: Multi Valued
+          description: Whether the column is multi-valued.
+          default: false
+        allowed_values:
+          anyOf:
+          - items: {}
+            type: array
+            uniqueItems: true
+          - type: 'null'
+          title: Allowed Values
+          description: Allowed values for this column.
+        sortable:
+          type: boolean
+          title: Sortable
+          description: Whether the column is sortable.
+        filterable:
+          type: boolean
+          title: Filterable
+          description: Whether the column is filterable.
+        is_empty:
+          type: boolean
+          title: Is Empty
+          description: Indicates whether the column is empty and should be hidden.
+          default: false
+        applicable_types:
+          items:
+            $ref: '#/components/schemas/StepType'
+          type: array
+          uniqueItems: true
+          title: Applicable Types
+          description: List of types applicable for this column.
+        is_optional:
+          type: boolean
+          title: Is Optional
+          description: Whether the column is optional.
+          default: false
+        roll_up_method:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Roll Up Method
+          description: Default roll-up aggregation method for this metric (e.g., 'sum', 'average').
+        metric_key_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Key Alias
+          description: Alternate metric key for this column. When scorer UUIDs are used as column IDs, this holds the legacy metric_name string for dual-key ClickHouse query fallback.
+        scorer_config:
+          anyOf:
+          - $ref: '#/components/schemas/ScorerConfig'
+          - type: 'null'
+          description: 'For metric columns only: Scorer config that produced the metric.'
+        scorer_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Scorer Id
+          description: 'For metric columns only: Scorer id that produced the metric. This is deprecated and will be removed in future versions.'
+        insight_type:
+          anyOf:
+          - $ref: '#/components/schemas/InsightType'
+          - type: 'null'
+          description: Insight type.
+        filter_type:
+          anyOf:
+          - $ref: '#/components/schemas/LogRecordsFilterType'
+          - type: 'null'
+          description: Filter type.
+        threshold:
+          anyOf:
+          - $ref: '#/components/schemas/MetricThreshold'
+          - type: 'null'
+          description: Thresholds for the column, if this is a metrics column.
+        label_color:
+          anyOf:
+          - type: string
+            enum:
+            - positive
+            - negative
+          - type: 'null'
+          title: Label Color
+          description: Type of label color for the column, if this is a multilabel metric column.
+      type: object
+      required:
+      - id
+      - category
+      - data_type
+      title: LogRecordsColumnInfo
+    LogRecordsFilterType:
+      type: string
+      enum:
+      - id
+      - date
+      - number
+      - boolean
+      - text
+      - collection
+      - fully_annotated
+      title: LogRecordsFilterType
+    CustomDashboardResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        created_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created By
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        layout_map:
+          additionalProperties: true
+          type: object
+          title: Layout Map
+        interval_mins:
+          type: integer
+          title: Interval Mins
+        group_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group By
+        filter_tree:
+          anyOf:
+          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - type: 'null'
+        start_time:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Start Time
+        end_time:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: End Time
+        relative_time:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Relative Time
+        is_favorite:
+          type: boolean
+          title: Is Favorite
+          default: false
+        widgets:
+          items:
+            $ref: '#/components/schemas/CustomDashboardWidgetResponse'
+          type: array
+          maxItems: 50
+          title: Widgets
+        sections:
+          items:
+            $ref: '#/components/schemas/CustomDashboardSectionResponse'
+          type: array
+          maxItems: 50
+          title: Sections
+      type: object
+      required:
+      - id
+      - organization_id
+      - created_at
+      - updated_at
+      - name
+      - layout_map
+      - interval_mins
+      title: CustomDashboardResponse
+    LogRecordsCollectionFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: collection
+          title: Type
+          default: collection
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsCollectionFilter
+    LunaInputTypeEnum:
+      type: string
+      enum:
+      - span
+      - trace_object
+      - trace_input_output_only
+      title: LunaInputTypeEnum
+    ScorerTypes:
+      type: string
+      enum:
+      - llm
+      - code
+      - luna
+      - preset
+      title: ScorerTypes
+    CustomDashboardUpdateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+        interval_mins:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Interval Mins
+        layout_map:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Layout Map
+        start_time:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Start Time
+        end_time:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: End Time
+        relative_time:
+          anyOf:
+          - type: string
+            maxLength: 64
+            pattern: ^last_\d+_(seconds?|minutes?|hours?|days?|weeks?|months?)$
+          - type: 'null'
+          title: Relative Time
+          description: Rolling window from now, e.g. last_7_days, last_12_hours (max 5 years)
+        filter_tree:
+          anyOf:
+          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - type: 'null'
+        group_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group By
+      type: object
+      title: CustomDashboardUpdateRequest
+      description: Request to update a custom dashboard. All fields are optional.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LogRecordsBooleanFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+        type:
+          type: string
+          const: boolean
+          title: Type
+          default: boolean
+      type: object
+      required:
+      - column_id
+      - value
+      title: LogRecordsBooleanFilter
+    CustomDashboardSectionUpdateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Description
+        color:
+          anyOf:
+          - type: string
+            maxLength: 7
+            pattern: ^#[0-9A-Fa-f]{6}$
+          - type: 'null'
+          title: Color
+      type: object
+      title: CustomDashboardSectionUpdateRequest
+    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : anyOf:
+      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        and:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          type: array
+          title: And
+      type: object
+      required:
+      - and
+      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    InputTypeEnum:
+      type: string
+      enum:
+      - basic
+      - llm_spans
+      - retriever_spans
+      - sessions_normalized
+      - sessions_trace_io_only
+      - tool_spans
+      - trace_input_only
+      - trace_io_only
+      - trace_normalized
+      - trace_output_only
+      - agent_spans
+      - workflow_spans
+      title: InputTypeEnum
+      description: Enumeration of input types.
+    NodeNameFilter:
+      properties:
+        name:
+          type: string
+          const: node_name
+          title: Name
+          default: node_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: NodeNameFilter
+      description: Filters on node names in scorer jobs.
+    BaseScorerVersionDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        version:
+          type: integer
+          title: Version
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+        generated_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseGeneratedScorerDB'
+          - type: 'null'
+        registered_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseRegisteredScorerDB'
+          - type: 'null'
+        finetuned_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseFinetunedScorerDB'
+          - type: 'null'
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+        num_judges:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Judges
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
+        cot_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Cot Enabled
+          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: What type of output to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
+        input_type:
+          anyOf:
+          - $ref: '#/components/schemas/InputTypeEnum'
+          - type: 'null'
+          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
+      type: object
+      required:
+      - id
+      - version
+      - scorer_id
+      title: BaseScorerVersionDB
+      description: Scorer version from the scorer_versions table.
+    LunaOutputTypeEnum:
+      type: string
+      enum:
+      - float
+      - string
+      - string_list
+      - bool_list
+      title: LunaOutputTypeEnum
+    ? FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____
+    : properties:
+        filter:
+          oneOf:
+          - $ref: '#/components/schemas/LogRecordsIDFilter'
+          - $ref: '#/components/schemas/LogRecordsDateFilter'
+          - $ref: '#/components/schemas/LogRecordsNumberFilter'
+          - $ref: '#/components/schemas/LogRecordsBooleanFilter'
+          - $ref: '#/components/schemas/LogRecordsCollectionFilter'
+          - $ref: '#/components/schemas/LogRecordsTextFilter'
+          - $ref: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+          title: Filter
+          discriminator:
+            propertyName: type
+            mapping:
+              boolean: '#/components/schemas/LogRecordsBooleanFilter'
+              collection: '#/components/schemas/LogRecordsCollectionFilter'
+              date: '#/components/schemas/LogRecordsDateFilter'
+              fully_annotated: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+              id: '#/components/schemas/LogRecordsIDFilter'
+              number: '#/components/schemas/LogRecordsNumberFilter'
+              text: '#/components/schemas/LogRecordsTextFilter'
+      type: object
+      required:
+      - filter
+      title: FilterLeaf[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    CustomDashboardWidgetResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        type:
+          $ref: '#/components/schemas/WidgetType'
+        dataset:
+          anyOf:
+          - items:
+              additionalProperties:
+                items:
+                  type: string
+                type: array
+              type: object
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Dataset
+        metric:
+          type: string
+          title: Metric
+        aggregation:
+          $ref: '#/components/schemas/MetricAggregation'
+        section_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Section Id
+        analysis_mode:
+          anyOf:
+          - $ref: '#/components/schemas/AnalysisMode'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - metric
+      - aggregation
+      title: CustomDashboardWidgetResponse
+    CustomDashboardSectionCreateRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Description
+        color:
+          anyOf:
+          - type: string
+            maxLength: 7
+            pattern: ^#[0-9A-Fa-f]{6}$
+          - type: 'null'
+          title: Color
+      type: object
+      required:
+      - name
+      title: CustomDashboardSectionCreateRequest
+      description: Request to create a section on a custom dashboard.
+    CustomDashboardWidgetUpdateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Description
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/WidgetType'
+          - type: 'null'
+        dataset:
+          anyOf:
+          - items:
+              additionalProperties:
+                items:
+                  type: string
+                type: array
+              type: object
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Dataset
+        metric:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric
+        aggregation:
+          anyOf:
+          - $ref: '#/components/schemas/MetricAggregation'
+          - type: 'null'
+        section_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Section Id
+        analysis_mode:
+          anyOf:
+          - $ref: '#/components/schemas/AnalysisMode'
+          - type: 'null'
+      type: object
+      title: CustomDashboardWidgetUpdateRequest
+    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : anyOf:
+      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BaseGeneratedScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        chain_poll_template:
+          $ref: '#/components/schemas/ChainPollTemplate'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
+      type: object
+      required:
+      - id
+      - name
+      - chain_poll_template
+      title: BaseGeneratedScorerDB
+    DataUnit:
+      type: string
+      enum:
+      - percentage
+      - nano_seconds
+      - milli_seconds
+      - dollars
+      - count_and_total
+      title: DataUnit
     MetricAggregation:
       type: string
       enum:
@@ -1197,384 +2217,13 @@ components:
             - Medium
             - High
             inverted: true
-    CustomDashboardUpdateRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 1000
-          - type: 'null'
-          title: Description
-        interval_mins:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Interval Mins
-        layout_map:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Layout Map
-        start_time:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Start Time
-        end_time:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: End Time
-        relative_time:
-          anyOf:
-          - type: string
-            maxLength: 64
-            pattern: ^last_\d+_(seconds?|minutes?|hours?|days?|weeks?|months?)$
-          - type: 'null'
-          title: Relative Time
-          description: Rolling window from now, e.g. last_7_days, last_12_hours (max 5 years)
-        filter_tree:
-          anyOf:
-          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          - type: 'null'
-        group_by:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Group By
-      type: object
-      title: CustomDashboardUpdateRequest
-      description: Request to update a custom dashboard. All fields are optional.
-    BaseGeneratedScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        instructions:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Instructions
-        chain_poll_template:
-          $ref: '#/components/schemas/ChainPollTemplate'
-        user_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Prompt
-      type: object
-      required:
-      - id
-      - name
-      - chain_poll_template
-      title: BaseGeneratedScorerDB
-    ScorerTypes:
+    ModelType:
       type: string
       enum:
+      - slm
       - llm
       - code
-      - luna
-      - preset
-      title: ScorerTypes
-    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
-    : properties:
-        and:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          type: array
-          title: And
-      type: object
-      required:
-      - and
-      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    LogRecordsFullyAnnotatedFilter:
-      properties:
-        column_id:
-          type: string
-          const: fully_annotated
-          title: Column Id
-          description: Queue-scoped filter identifier. This filter only works for annotation-queue searches that provide queue context.
-          default: fully_annotated
-        type:
-          type: string
-          const: fully_annotated
-          title: Type
-          default: fully_annotated
-        user_ids:
-          anyOf:
-          - items:
-              type: string
-              format: uuid4
-            type: array
-            minItems: 1
-          - type: 'null'
-          title: User Ids
-          description: Optional queue member IDs to require for full annotation in a queue-scoped search. If omitted, all tracked queue members visible to the requester are used.
-      type: object
-      title: LogRecordsFullyAnnotatedFilter
-      description: Queue-scoped filter for records rated across all queue templates.
-    CustomDashboardResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        organization_id:
-          type: string
-          format: uuid4
-          title: Organization Id
-        created_by:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Created By
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        layout_map:
-          additionalProperties: true
-          type: object
-          title: Layout Map
-        interval_mins:
-          type: integer
-          title: Interval Mins
-        group_by:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Group By
-        filter_tree:
-          anyOf:
-          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          - type: 'null'
-        start_time:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Start Time
-        end_time:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: End Time
-        relative_time:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Relative Time
-        is_favorite:
-          type: boolean
-          title: Is Favorite
-          default: false
-        widgets:
-          items:
-            $ref: '#/components/schemas/CustomDashboardWidgetResponse'
-          type: array
-          maxItems: 50
-          title: Widgets
-        sections:
-          items:
-            $ref: '#/components/schemas/CustomDashboardSectionResponse'
-          type: array
-          maxItems: 50
-          title: Sections
-      type: object
-      required:
-      - id
-      - organization_id
-      - created_at
-      - updated_at
-      - name
-      - layout_map
-      - interval_mins
-      title: CustomDashboardResponse
-    LogRecordsFilterType:
-      type: string
-      enum:
-      - id
-      - date
-      - number
-      - boolean
-      - text
-      - collection
-      - fully_annotated
-      title: LogRecordsFilterType
-    LunaOutputTypeEnum:
-      type: string
-      enum:
-      - float
-      - string
-      - string_list
-      - bool_list
-      title: LunaOutputTypeEnum
-    BaseScorerVersionDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        version:
-          type: integer
-          title: Version
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-        generated_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseGeneratedScorerDB'
-          - type: 'null'
-        registered_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseRegisteredScorerDB'
-          - type: 'null'
-        finetuned_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseFinetunedScorerDB'
-          - type: 'null'
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-        num_judges:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Num Judges
-        scoreable_node_types:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Scoreable Node Types
-          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
-        cot_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Cot Enabled
-          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-          description: What type of output to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
-        input_type:
-          anyOf:
-          - $ref: '#/components/schemas/InputTypeEnum'
-          - type: 'null'
-          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
-      type: object
-      required:
-      - id
-      - version
-      - scorer_id
-      title: BaseScorerVersionDB
-      description: Scorer version from the scorer_versions table.
-    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
-    : properties:
-        and:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          type: array
-          title: And
-      type: object
-      required:
-      - and
-      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    MultimodalCapability:
-      type: string
-      enum:
-      - vision
-      - audio
-      title: MultimodalCapability
-    ? FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____
-    : properties:
-        filter:
-          oneOf:
-          - $ref: '#/components/schemas/LogRecordsIDFilter'
-          - $ref: '#/components/schemas/LogRecordsDateFilter'
-          - $ref: '#/components/schemas/LogRecordsNumberFilter'
-          - $ref: '#/components/schemas/LogRecordsBooleanFilter'
-          - $ref: '#/components/schemas/LogRecordsCollectionFilter'
-          - $ref: '#/components/schemas/LogRecordsTextFilter'
-          - $ref: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
-          title: Filter
-          discriminator:
-            propertyName: type
-            mapping:
-              boolean: '#/components/schemas/LogRecordsBooleanFilter'
-              collection: '#/components/schemas/LogRecordsCollectionFilter'
-              date: '#/components/schemas/LogRecordsDateFilter'
-              fully_annotated: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
-              id: '#/components/schemas/LogRecordsIDFilter'
-              number: '#/components/schemas/LogRecordsNumberFilter'
-              text: '#/components/schemas/LogRecordsTextFilter'
-      type: object
-      required:
-      - filter
-      title: FilterLeaf[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    LogRecordsBooleanFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          title: Operator
-          default: eq
-        value:
-          type: boolean
-          title: Value
-        type:
-          type: string
-          const: boolean
-          title: Type
-          default: boolean
-      type: object
-      required:
-      - column_id
-      - value
-      title: LogRecordsBooleanFilter
+      title: ModelType
     LogRecordsIDFilter:
       properties:
         column_id:
@@ -1613,63 +2262,205 @@ components:
       - column_id
       - value
       title: LogRecordsIDFilter
-    CustomDashboardWidgetResponse:
+    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : properties:
+        not:
+          anyOf:
+          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          title: Not
+      type: object
+      required:
+      - not
+      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    LogRecordsDateFilter:
       properties:
-        id:
+        column_id:
           type: string
-          format: uuid4
-          title: Id
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+        type:
+          type: string
+          const: date
+          title: Type
+          default: date
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsDateFilter
+    CustomDashboardCreateRequest:
+      properties:
         name:
           type: string
+          maxLength: 255
+          minLength: 1
           title: Name
         description:
           anyOf:
           - type: string
+            maxLength: 1000
           - type: 'null'
           title: Description
-        type:
-          $ref: '#/components/schemas/WidgetType'
-        dataset:
+        interval_mins:
+          type: integer
+          title: Interval Mins
+          default: 5
+        layout_map:
+          additionalProperties: true
+          type: object
+          title: Layout Map
+        start_time:
           anyOf:
-          - items:
-              additionalProperties:
-                items:
-                  type: string
-                type: array
-              type: object
-            type: array
-            maxItems: 50
+          - type: integer
           - type: 'null'
-          title: Dataset
-        metric:
-          type: string
-          title: Metric
-        aggregation:
-          $ref: '#/components/schemas/MetricAggregation'
-        section_id:
+          title: Start Time
+        end_time:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: End Time
+        relative_time:
           anyOf:
           - type: string
-            format: uuid4
+            maxLength: 64
+            pattern: ^last_\d+_(seconds?|minutes?|hours?|days?|weeks?|months?)$
           - type: 'null'
-          title: Section Id
-        analysis_mode:
+          title: Relative Time
+          description: Rolling window from now, e.g. last_7_days, last_12_hours (max 5 years)
+        filter_tree:
           anyOf:
-          - $ref: '#/components/schemas/AnalysisMode'
+          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
           - type: 'null'
+        group_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group By
       type: object
       required:
-      - id
       - name
-      - type
+      title: CustomDashboardCreateRequest
+      description: Request to create a custom dashboard at the organization level.
+    ColumnCategory:
+      type: string
+      enum:
+      - standard
       - metric
-      - aggregation
-      title: CustomDashboardWidgetResponse
-    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
-    : anyOf:
-      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+      - user_metadata
+      - metric_status
+      - dataset_metadata
+      - dataset
+      - feedback
+      - tags
+      title: ColumnCategory
+    ModalityFilter:
+      properties:
+        name:
+          type: string
+          const: modality
+          title: Name
+          default: modality
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ModalityFilter
+      description: 'Filters on content modalities in scorer jobs.
+
+        Matches if at least one of the specified modalities is present.'
+    AnalysisMode:
+      type: string
+      enum:
+      - compare
+      - combine
+      title: AnalysisMode
+    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        not:
+          anyOf:
+          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          title: Not
+      type: object
+      required:
+      - not
+      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    RollUpMethodDisplayOptions:
+      type: string
+      enum:
+      - average
+      - sum
+      - max
+      - min
+      - category_count
+      - percentage_true
+      - percentage_false
+      title: RollUpMethodDisplayOptions
+      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
+
+
+        Separates display intent from computation methods. The computation methods
+
+        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
+
+        This enum controls how the UI displays the selected roll-up value for a scorer.'
+    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : properties:
+        or:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          type: array
+          title: Or
+      type: object
+      required:
+      - or
+      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
     OutputTypeEnum:
       type: string
       enum:
@@ -1684,78 +2475,6 @@ components:
       - boolean_multilabel
       title: OutputTypeEnum
       description: Enumeration of output types.
-    StepType:
-      type: string
-      enum:
-      - llm
-      - retriever
-      - tool
-      - workflow
-      - agent
-      - control
-      - trace
-      - session
-      title: StepType
-    LunaInputTypeEnum:
-      type: string
-      enum:
-      - span
-      - trace_object
-      - trace_input_output_only
-      title: LunaInputTypeEnum
-    LogRecordsCollectionFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-        type:
-          type: string
-          const: collection
-          title: Type
-          default: collection
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsCollectionFilter
-    InputTypeEnum:
-      type: string
-      enum:
-      - basic
-      - llm_spans
-      - retriever_spans
-      - sessions_normalized
-      - sessions_trace_io_only
-      - tool_spans
-      - trace_input_only
-      - trace_io_only
-      - trace_normalized
-      - trace_output_only
-      - agent_spans
-      - workflow_spans
-      title: InputTypeEnum
-      description: Enumeration of input types.
     ScorerConfig:
       properties:
         model_name:
@@ -1854,116 +2573,6 @@ components:
       - scorer_type
       title: ScorerConfig
       description: Used for configuring a scorer for a scorer job.
-    AnalysisMode:
-      type: string
-      enum:
-      - compare
-      - combine
-      title: AnalysisMode
-    ColumnCategory:
-      type: string
-      enum:
-      - standard
-      - metric
-      - user_metadata
-      - metric_status
-      - dataset_metadata
-      - dataset
-      - feedback
-      - tags
-      title: ColumnCategory
-    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
-    : properties:
-        or:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          type: array
-          title: Or
-      type: object
-      required:
-      - or
-      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    CustomDashboardCreateRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 1000
-          - type: 'null'
-          title: Description
-        interval_mins:
-          type: integer
-          title: Interval Mins
-          default: 5
-        layout_map:
-          additionalProperties: true
-          type: object
-          title: Layout Map
-        start_time:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Start Time
-        end_time:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: End Time
-        relative_time:
-          anyOf:
-          - type: string
-            maxLength: 64
-            pattern: ^last_\d+_(seconds?|minutes?|hours?|days?|weeks?|months?)$
-          - type: 'null'
-          title: Relative Time
-          description: Rolling window from now, e.g. last_7_days, last_12_hours (max 5 years)
-        filter_tree:
-          anyOf:
-          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          - type: 'null'
-        group_by:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Group By
-      type: object
-      required:
-      - name
-      title: CustomDashboardCreateRequest
-      description: Request to create a custom dashboard at the organization level.
-    DataType:
-      type: string
-      enum:
-      - uuid
-      - text
-      - integer
-      - floating_point
-      - boolean
-      - timestamp
-      - string_list
-      - tag
-      - dataset
-      - prompt
-      - playground
-      - rank
-      - category_count
-      - score_rating_aggregate
-      - star_rating_aggregate
-      - thumb_rating_aggregate
-      - tags_rating_aggregate
-      - text_rating_aggregate
-      - annotation_agreement
-      - fully_annotated
-      title: DataType
     CustomDashboardWidgetCreateRequest:
       properties:
         name:
@@ -2015,518 +2624,12 @@ components:
       - aggregation
       title: CustomDashboardWidgetCreateRequest
       description: Request to create a widget on a custom dashboard.
-    LogRecordsDateFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-        type:
-          type: string
-          const: date
-          title: Type
-          default: date
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsDateFilter
-    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
-    : properties:
-        not:
-          anyOf:
-          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          title: Not
-      type: object
-      required:
-      - not
-      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
     InsightType:
       type: string
       enum:
       - vertical_bar
       - horizontal_bar
       title: InsightType
-    CustomDashboardSectionCreateRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 100
-          minLength: 1
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 500
-          - type: 'null'
-          title: Description
-        color:
-          anyOf:
-          - type: string
-            maxLength: 7
-            pattern: ^#[0-9A-Fa-f]{6}$
-          - type: 'null'
-          title: Color
-      type: object
-      required:
-      - name
-      title: CustomDashboardSectionCreateRequest
-      description: Request to create a section on a custom dashboard.
-    ModelType:
-      type: string
-      enum:
-      - slm
-      - llm
-      - code
-      title: ModelType
-    DataUnit:
-      type: string
-      enum:
-      - percentage
-      - nano_seconds
-      - milli_seconds
-      - dollars
-      - count_and_total
-      title: DataUnit
-    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
-    : anyOf:
-      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-    LogRecordsTextFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-        type:
-          type: string
-          const: text
-          title: Type
-          default: text
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsTextFilter
-    LogRecordsColumnInfo:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Column id.  Must be universally unique.
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-          description: Display label of the column in the UI.
-        category:
-          $ref: '#/components/schemas/ColumnCategory'
-          description: Category of the column.
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Description of the column.
-        group_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Group Label
-          description: Display label of the column group.
-        data_type:
-          anyOf:
-          - $ref: '#/components/schemas/DataType'
-          - type: 'null'
-          description: Data type of the column. This is used to determine how to format the data on the UI.
-        data_unit:
-          anyOf:
-          - $ref: '#/components/schemas/DataUnit'
-          - type: 'null'
-          description: Data unit of the column (optional).
-        multi_valued:
-          type: boolean
-          title: Multi Valued
-          description: Whether the column is multi-valued.
-          default: false
-        allowed_values:
-          anyOf:
-          - items: {}
-            type: array
-            uniqueItems: true
-          - type: 'null'
-          title: Allowed Values
-          description: Allowed values for this column.
-        sortable:
-          type: boolean
-          title: Sortable
-          description: Whether the column is sortable.
-        filterable:
-          type: boolean
-          title: Filterable
-          description: Whether the column is filterable.
-        is_empty:
-          type: boolean
-          title: Is Empty
-          description: Indicates whether the column is empty and should be hidden.
-          default: false
-        applicable_types:
-          items:
-            $ref: '#/components/schemas/StepType'
-          type: array
-          uniqueItems: true
-          title: Applicable Types
-          description: List of types applicable for this column.
-        is_optional:
-          type: boolean
-          title: Is Optional
-          description: Whether the column is optional.
-          default: false
-        roll_up_method:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Roll Up Method
-          description: Default roll-up aggregation method for this metric (e.g., 'sum', 'average').
-        metric_key_alias:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric Key Alias
-          description: Alternate metric key for this column. When scorer UUIDs are used as column IDs, this holds the legacy metric_name string for dual-key ClickHouse query fallback.
-        scorer_config:
-          anyOf:
-          - $ref: '#/components/schemas/ScorerConfig'
-          - type: 'null'
-          description: 'For metric columns only: Scorer config that produced the metric.'
-        scorer_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Scorer Id
-          description: 'For metric columns only: Scorer id that produced the metric. This is deprecated and will be removed in future versions.'
-        insight_type:
-          anyOf:
-          - $ref: '#/components/schemas/InsightType'
-          - type: 'null'
-          description: Insight type.
-        filter_type:
-          anyOf:
-          - $ref: '#/components/schemas/LogRecordsFilterType'
-          - type: 'null'
-          description: Filter type.
-        threshold:
-          anyOf:
-          - $ref: '#/components/schemas/MetricThreshold'
-          - type: 'null'
-          description: Thresholds for the column, if this is a metrics column.
-        label_color:
-          anyOf:
-          - type: string
-            enum:
-            - positive
-            - negative
-          - type: 'null'
-          title: Label Color
-          description: Type of label color for the column, if this is a multilabel metric column.
-      type: object
-      required:
-      - id
-      - category
-      - data_type
-      title: LogRecordsColumnInfo
-    ChainPollTemplate:
-      properties:
-        metric_system_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric System Prompt
-          description: System prompt for the metric.
-        metric_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric Description
-          description: Description of what the metric should do.
-        value_field_name:
-          type: string
-          title: Value Field Name
-          description: Field name to look for in the chainpoll response, for the rating.
-          default: rating
-        explanation_field_name:
-          type: string
-          title: Explanation Field Name
-          description: Field name to look for in the chainpoll response, for the explanation.
-          default: explanation
-        template:
-          type: string
-          title: Template
-          description: Chainpoll prompt template.
-        metric_few_shot_examples:
-          items:
-            $ref: '#/components/schemas/FewShotExample'
-          type: array
-          title: Metric Few Shot Examples
-          description: Few-shot examples for the metric.
-        response_schema:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Response Schema
-          description: Response schema for the output
-      type: object
-      required:
-      - template
-      title: ChainPollTemplate
-      description: 'Template for a chainpoll metric prompt,
-
-        containing all the info necessary to send a chainpoll prompt.'
-    ModalityFilter:
-      properties:
-        name:
-          type: string
-          const: modality
-          title: Name
-          default: modality
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-            description: Single enum value - specific options depend on the concrete enum type used
-            example: ENUM_VALUE
-          - items:
-              type: string
-              example: ENUM_VALUE
-            type: array
-            description: Array of enum values
-            example:
-            - ENUM_VALUE_1
-            - ENUM_VALUE_2
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ModalityFilter
-      description: 'Filters on content modalities in scorer jobs.
-
-        Matches if at least one of the specified modalities is present.'
-    NodeNameFilter:
-      properties:
-        name:
-          type: string
-          const: node_name
-          title: Name
-          default: node_name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: NodeNameFilter
-      description: Filters on node names in scorer jobs.
-    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
-    : properties:
-        not:
-          anyOf:
-          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          title: Not
-      type: object
-      required:
-      - not
-      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
-    : properties:
-        or:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          type: array
-          title: Or
-      type: object
-      required:
-      - or
-      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    CustomDashboardSectionResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        color:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Color
-        widgets:
-          items:
-            $ref: '#/components/schemas/CustomDashboardWidgetResponse'
-          type: array
-          maxItems: 50
-          title: Widgets
-      type: object
-      required:
-      - id
-      - name
-      title: CustomDashboardSectionResponse
-    RollUpMethodDisplayOptions:
-      type: string
-      enum:
-      - average
-      - sum
-      - max
-      - min
-      - category_count
-      - percentage_true
-      - percentage_false
-      title: RollUpMethodDisplayOptions
-      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
-
-
-        Separates display intent from computation methods. The computation methods
-
-        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
-
-        This enum controls how the UI displays the selected roll-up value for a scorer.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    BaseRegisteredScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        score_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Score Type
-      type: object
-      required:
-      - id
-      - name
-      title: BaseRegisteredScorerDB
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     galileo_core__schemas__shared__scorers__scorer_name__ScorerName:
       type: string
       enum:
@@ -2606,76 +2709,62 @@ components:
       - user_intent_change_audio
       - interruption_detection
       title: ScorerName
-    MetadataFilter:
+    LogRecordsFullyAnnotatedFilter:
       properties:
-        name:
+        column_id:
           type: string
-          const: metadata
-          title: Name
-          default: metadata
-        operator:
+          const: fully_annotated
+          title: Column Id
+          description: Queue-scoped filter identifier. This filter only works for annotation-queue searches that provide queue context.
+          default: fully_annotated
+        type:
           type: string
-          enum:
-          - one_of
-          - not_in
-          - eq
-          - ne
-          title: Operator
-        key:
-          type: string
-          title: Key
-        value:
+          const: fully_annotated
+          title: Type
+          default: fully_annotated
+        user_ids:
           anyOf:
-          - type: string
           - items:
               type: string
+              format: uuid4
             type: array
-          title: Value
-      type: object
-      required:
-      - operator
-      - key
-      - value
-      title: MetadataFilter
-      description: Filters on metadata key-value pairs in scorer jobs.
-    CustomDashboardSectionUpdateRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 100
-            minLength: 1
+            minItems: 1
           - type: 'null'
+          title: User Ids
+          description: Optional queue member IDs to require for full annotation in a queue-scoped search. If omitted, all tracked queue members visible to the requester are used.
+      type: object
+      title: LogRecordsFullyAnnotatedFilter
+      description: Queue-scoped filter for records rated across all queue templates.
+    CustomDashboardSectionResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
           title: Name
         description:
           anyOf:
           - type: string
-            maxLength: 500
           - type: 'null'
           title: Description
         color:
           anyOf:
           - type: string
-            maxLength: 7
-            pattern: ^#[0-9A-Fa-f]{6}$
           - type: 'null'
           title: Color
-      type: object
-      title: CustomDashboardSectionUpdateRequest
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
-          type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
+        widgets:
+          items:
+            $ref: '#/components/schemas/CustomDashboardWidgetResponse'
+          type: array
+          maxItems: 50
+          title: Widgets
       type: object
       required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
+      - id
+      - name
+      title: CustomDashboardSectionResponse
     BaseFinetunedScorerDB:
       properties:
         id:
@@ -2729,95 +2818,6 @@ components:
       - lora_task_id
       - prompt
       title: BaseFinetunedScorerDB
-    WidgetType:
-      type: string
-      enum:
-      - bar_chart
-      - line_chart
-      - number
-      - table
-      title: WidgetType
-    CustomDashboardWidgetUpdateRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 100
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 500
-          - type: 'null'
-          title: Description
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/WidgetType'
-          - type: 'null'
-        dataset:
-          anyOf:
-          - items:
-              additionalProperties:
-                items:
-                  type: string
-                type: array
-              type: object
-            type: array
-            maxItems: 50
-          - type: 'null'
-          title: Dataset
-        metric:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric
-        aggregation:
-          anyOf:
-          - $ref: '#/components/schemas/MetricAggregation'
-          - type: 'null'
-        section_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Section Id
-        analysis_mode:
-          anyOf:
-          - $ref: '#/components/schemas/AnalysisMode'
-          - type: 'null'
-      type: object
-      title: CustomDashboardWidgetUpdateRequest
-    MetricThreshold:
-      properties:
-        inverted:
-          type: boolean
-          title: Inverted
-          description: Whether the column should be inverted for thresholds, i.e. if True, lower is better.
-          default: false
-        buckets:
-          items:
-            anyOf:
-            - type: integer
-            - type: number
-          type: array
-          title: Buckets
-          description: Threshold buckets for the column. If the column is a metric, these are the thresholds for the column.
-        display_value_levels:
-          items:
-            type: string
-          type: array
-          title: Display Value Levels
-          description: Ordered list of strings that raw values get transformed to for displaying.
-      type: object
-      title: MetricThreshold
-      description: 'Threshold configuration for metrics.
-
-
-        Defines how metric values are bucketed and displayed, including whether
-
-        lower or higher values are considered better.'
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey
