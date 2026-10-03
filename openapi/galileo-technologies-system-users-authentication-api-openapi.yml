@@ -109,10 +109,67 @@ paths:
       - OAuth2PasswordBearer: []
 components:
   schemas:
+    PasswordResetEmailResponse:
+      properties: {}
+      type: object
+      title: PasswordResetEmailResponse
     ResendVerificationEmailResponse:
       properties: {}
       type: object
       title: ResendVerificationEmailResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SystemRole:
+      type: string
+      enum:
+      - system_admin
+      - system_user
+      title: SystemRole
+    UserPasswordResetRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          anyOf:
+          - type: string
+            format: password
+            writeOnly: true
+          - type: 'null'
+          title: Password
+        email_is_verified:
+          type: boolean
+          title: Email Is Verified
+          default: true
+      type: object
+      required:
+      - email
+      title: UserPasswordResetRequest
+    EmailVerificationRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - email
+      title: EmailVerificationRequest
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
     SystemUserDB:
       properties:
         id:
@@ -162,18 +219,6 @@ components:
       - role
       - auth_method
       title: SystemUserDB
-    SystemUserStatus:
-      type: string
-      enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
-    PasswordResetEmailResponse:
-      properties: {}
-      type: object
-      title: PasswordResetEmailResponse
     ValidationError:
       properties:
         loc:
@@ -200,51 +245,6 @@ components:
       - msg
       - type
       title: ValidationError
-    UserPasswordResetRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        password:
-          anyOf:
-          - type: string
-            format: password
-            writeOnly: true
-          - type: 'null'
-          title: Password
-        email_is_verified:
-          type: boolean
-          title: Email Is Verified
-          default: true
-      type: object
-      required:
-      - email
-      title: UserPasswordResetRequest
-    SystemRole:
-      type: string
-      enum:
-      - system_admin
-      - system_user
-      title: SystemRole
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    EmailVerificationRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-      type: object
-      required:
-      - email
-      title: EmailVerificationRequest
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

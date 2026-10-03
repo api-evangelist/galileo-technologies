@@ -170,6 +170,45 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CursorProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: cursor
+          title: Provider
+        provider_organization_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Organization Id
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      - provider_organization_id
+      title: CursorProviderManagementAPIIntegrationCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ProviderManagementAPIIntegrationMetadataUpdate:
       properties:
         provider_account_name:
@@ -182,6 +221,99 @@ components:
       additionalProperties: false
       type: object
       title: ProviderManagementAPIIntegrationMetadataUpdate
+    WindsurfProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: windsurf
+          title: Provider
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      title: WindsurfProviderManagementAPIIntegrationCreate
+    GitHubCopilotProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: github_copilot
+          title: Provider
+        provider_organization_slug:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Organization Slug
+        provider_enterprise_slug:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Enterprise Slug
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      title: GitHubCopilotProviderManagementAPIIntegrationCreate
+    ProviderManagementAPIAuthenticationType:
+      type: string
+      enum:
+      - api_key
+      title: ProviderManagementAPIAuthenticationType
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ClaudeCodeProviderManagementAPIIntegrationCreate:
       properties:
         provider_account_name:
@@ -212,6 +344,15 @@ components:
       - provider
       - provider_organization_id
       title: ClaudeCodeProviderManagementAPIIntegrationCreate
+    ProviderManagementAPIProvider:
+      type: string
+      enum:
+      - cursor
+      - claude_code
+      - codex
+      - github_copilot
+      - windsurf
+      title: ProviderManagementAPIProvider
     ProviderManagementAPIIntegrationResponse:
       properties:
         id:
@@ -278,71 +419,6 @@ components:
       - created_at
       - updated_at
       title: ProviderManagementAPIIntegrationResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CursorProviderManagementAPIIntegrationCreate:
-      properties:
-        provider_account_name:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Account Name
-        api_key:
-          type: string
-          maxLength: 8192
-          minLength: 1
-          title: Api Key
-        provider:
-          type: string
-          const: cursor
-          title: Provider
-        provider_organization_id:
-          type: string
-          maxLength: 256
-          minLength: 1
-          title: Provider Organization Id
-      additionalProperties: false
-      type: object
-      required:
-      - api_key
-      - provider
-      - provider_organization_id
-      title: CursorProviderManagementAPIIntegrationCreate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     CodexProviderManagementAPIIntegrationCreate:
       properties:
         provider_account_name:
@@ -373,82 +449,6 @@ components:
       - provider
       - provider_workspace_id
       title: CodexProviderManagementAPIIntegrationCreate
-    ProviderManagementAPIAuthenticationType:
-      type: string
-      enum:
-      - api_key
-      title: ProviderManagementAPIAuthenticationType
-    WindsurfProviderManagementAPIIntegrationCreate:
-      properties:
-        provider_account_name:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Account Name
-        api_key:
-          type: string
-          maxLength: 8192
-          minLength: 1
-          title: Api Key
-        provider:
-          type: string
-          const: windsurf
-          title: Provider
-      additionalProperties: false
-      type: object
-      required:
-      - api_key
-      - provider
-      title: WindsurfProviderManagementAPIIntegrationCreate
-    GitHubCopilotProviderManagementAPIIntegrationCreate:
-      properties:
-        provider_account_name:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Account Name
-        api_key:
-          type: string
-          maxLength: 8192
-          minLength: 1
-          title: Api Key
-        provider:
-          type: string
-          const: github_copilot
-          title: Provider
-        provider_organization_slug:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Organization Slug
-        provider_enterprise_slug:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Enterprise Slug
-      additionalProperties: false
-      type: object
-      required:
-      - api_key
-      - provider
-      title: GitHubCopilotProviderManagementAPIIntegrationCreate
-    ProviderManagementAPIProvider:
-      type: string
-      enum:
-      - cursor
-      - claude_code
-      - codex
-      - github_copilot
-      - windsurf
-      title: ProviderManagementAPIProvider
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

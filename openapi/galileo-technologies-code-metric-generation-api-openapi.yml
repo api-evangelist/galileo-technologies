@@ -85,46 +85,39 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    OutputTypeEnum:
-      type: string
-      enum:
-      - boolean
-      - categorical
-      - count
-      - discrete
-      - freeform
-      - percentage
-      - multilabel
-      - retrieved_chunk_list_boolean
-      - boolean_multilabel
-      title: OutputTypeEnum
-      description: Enumeration of output types.
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CodeMetricGenerationStatusResponse:
+      properties:
+        id:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          format: uuid4
+          title: Id
+        status:
+          $ref: '#/components/schemas/CodeMetricGenerationStatus'
+        generated_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Generated Code
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - id
+      - status
+      title: CodeMetricGenerationStatusResponse
+      description: Lightweight polling response.
     CreateCodeMetricGenerationRequest:
       properties:
         user_message:
@@ -157,30 +150,46 @@ components:
       - user_message
       title: CreateCodeMetricGenerationRequest
       description: Request to generate scorer code from a user message.
-    CodeMetricGenerationStatusResponse:
+    ValidationError:
       properties:
-        id:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          format: uuid4
-          title: Id
-        status:
-          $ref: '#/components/schemas/CodeMetricGenerationStatus'
-        generated_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Generated Code
-        error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Message
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - id
-      - status
-      title: CodeMetricGenerationStatusResponse
-      description: Lightweight polling response.
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
     CreateCodeMetricGenerationResponse:
       properties:
         id:
@@ -195,15 +204,6 @@ components:
       - status
       title: CreateCodeMetricGenerationResponse
       description: Response with generation ID for polling.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     CodeMetricGenerationStatus:
       type: string
       enum:

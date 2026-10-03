@@ -85,13 +85,43 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    UsageLimitNames:
-      type: string
-      enum:
-      - traces_per_month
-      - orgs_per_user
-      - users_per_org
-      title: UsageLimitNames
+    UsageLimitResponse:
+      properties:
+        name:
+          $ref: '#/components/schemas/UsageLimitNames'
+        limit:
+          type: integer
+          title: Limit
+        current_usage:
+          type: integer
+          title: Current Usage
+      type: object
+      required:
+      - name
+      - limit
+      - current_usage
+      title: UsageLimitResponse
+    UsageLimit:
+      properties:
+        name:
+          $ref: '#/components/schemas/UsageLimitNames'
+        limit:
+          type: integer
+          title: Limit
+      type: object
+      required:
+      - name
+      - limit
+      title: UsageLimit
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ListUsageLimitsResponse:
       properties:
         starting_token:
@@ -130,6 +160,13 @@ components:
       required:
       - limit
       title: CreateUsageLimitRequest
+    UsageLimitNames:
+      type: string
+      enum:
+      - traces_per_month
+      - orgs_per_user
+      - users_per_org
+      title: UsageLimitNames
     ValidationError:
       properties:
         loc:
@@ -156,43 +193,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UsageLimit:
-      properties:
-        name:
-          $ref: '#/components/schemas/UsageLimitNames'
-        limit:
-          type: integer
-          title: Limit
-      type: object
-      required:
-      - name
-      - limit
-      title: UsageLimit
-    UsageLimitResponse:
-      properties:
-        name:
-          $ref: '#/components/schemas/UsageLimitNames'
-        limit:
-          type: integer
-          title: Limit
-        current_usage:
-          type: integer
-          title: Current Usage
-      type: object
-      required:
-      - name
-      - limit
-      - current_usage
-      title: UsageLimitResponse
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

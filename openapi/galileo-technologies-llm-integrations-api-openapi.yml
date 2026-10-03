@@ -211,77 +211,6 @@ components:
       - vertex_ai
       - writer
       title: IntegrationProvider
-    RecommendedModelsResponse:
-      properties:
-        supported:
-          additionalProperties:
-            additionalProperties:
-              items:
-                type: string
-              type: array
-            type: object
-          propertyNames:
-            $ref: '#/components/schemas/RecommendedModelPurpose'
-          type: object
-          title: Supported
-        available:
-          additionalProperties:
-            additionalProperties:
-              items:
-                type: string
-              type: array
-            type: object
-          propertyNames:
-            $ref: '#/components/schemas/RecommendedModelPurpose'
-          type: object
-          title: Available
-      type: object
-      required:
-      - supported
-      - available
-      title: RecommendedModelsResponse
-    LLMIntegration:
-      type: string
-      enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: LLMIntegration
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     RecommendedModelPurpose:
       type: string
       enum:
@@ -351,6 +280,87 @@ components:
       - models
       - scorer_models
       title: IntegrationModelsResponse
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    RecommendedModelsResponse:
+      properties:
+        supported:
+          additionalProperties:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+          propertyNames:
+            $ref: '#/components/schemas/RecommendedModelPurpose'
+          type: object
+          title: Supported
+        available:
+          additionalProperties:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+          propertyNames:
+            $ref: '#/components/schemas/RecommendedModelPurpose'
+          type: object
+          title: Available
+      type: object
+      required:
+      - supported
+      - available
+      title: RecommendedModelsResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
     api__schemas__integration__llm_integration__ModelProperties:
       properties:
         alias:
@@ -375,16 +385,6 @@ components:
       - name
       - input_modalities
       title: ModelProperties
-    ContentModality:
-      type: string
-      enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

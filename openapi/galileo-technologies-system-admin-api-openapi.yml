@@ -47,19 +47,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    OrganizationMember:
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      title: UserRole
+    HTTPValidationError:
       properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    JoinOrganizationRequest:
+      properties:
         role:
           $ref: '#/components/schemas/UserRole'
+          default: user
       type: object
-      required:
-      - id
-      - role
-      title: OrganizationMember
+      title: JoinOrganizationRequest
     ValidationError:
       properties:
         loc:
@@ -86,30 +97,19 @@ components:
       - msg
       - type
       title: ValidationError
-    UserRole:
-      type: string
-      enum:
-      - admin
-      - manager
-      - user
-      - read_only
-      title: UserRole
-    JoinOrganizationRequest:
+    OrganizationMember:
       properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
         role:
           $ref: '#/components/schemas/UserRole'
-          default: user
       type: object
-      title: JoinOrganizationRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      required:
+      - id
+      - role
+      title: OrganizationMember
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

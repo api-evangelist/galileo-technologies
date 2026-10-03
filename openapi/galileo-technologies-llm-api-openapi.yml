@@ -72,20 +72,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
-          type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
-      type: object
-      required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
     GeneratedScorerTaskResultResponse:
       properties:
         id:
@@ -119,23 +105,15 @@ components:
       - status
       - result_type
       title: GeneratedScorerTaskResultResponse
-    FineTunedScorerWeightsUploadRequest:
+    HTTPValidationError:
       properties:
-        lora_task_id:
-          type: integer
-          minimum: 1.0
-          title: Lora Task Id
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - lora_task_id
-      title: FineTunedScorerWeightsUploadRequest
-    GeneratedScorerTaskResultType:
-      type: string
-      enum:
-      - scorer_auto_gen
-      - scorer_auto_gen_v2
-      - scorer_validation
-      title: GeneratedScorerTaskResultType
+      title: HTTPValidationError
     GeneratedScorerValidationResult:
       properties:
         rating:
@@ -155,78 +133,6 @@ components:
       - explanation
       title: GeneratedScorerValidationResult
       description: Result of a generated scorer validation job.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    TaskResultStatus:
-      type: string
-      enum:
-      - pending
-      - started
-      - completed
-      - failed
-      title: TaskResultStatus
-    FineTunedScorerWeightsUploadResponse:
-      properties:
-        bucket:
-          type: string
-          title: Bucket
-        lora_weights_path:
-          type: string
-          title: Lora Weights Path
-        upload_urls:
-          additionalProperties:
-            type: string
-          type: object
-          title: Upload Urls
-        object_paths:
-          additionalProperties:
-            type: string
-          type: object
-          title: Object Paths
-        presigned_url_expiry_seconds:
-          type: integer
-          title: Presigned Url Expiry Seconds
-      type: object
-      required:
-      - bucket
-      - lora_weights_path
-      - upload_urls
-      - object_paths
-      - presigned_url_expiry_seconds
-      title: FineTunedScorerWeightsUploadResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ChainPollTemplate:
       properties:
         metric_system_prompt:
@@ -275,6 +181,100 @@ components:
       description: 'Template for a chainpoll metric prompt,
 
         containing all the info necessary to send a chainpoll prompt.'
+    GeneratedScorerTaskResultType:
+      type: string
+      enum:
+      - scorer_auto_gen
+      - scorer_auto_gen_v2
+      - scorer_validation
+      title: GeneratedScorerTaskResultType
+    FineTunedScorerWeightsUploadRequest:
+      properties:
+        lora_task_id:
+          type: integer
+          minimum: 1.0
+          title: Lora Task Id
+      type: object
+      required:
+      - lora_task_id
+      title: FineTunedScorerWeightsUploadRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    FewShotExample:
+      properties:
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
+      type: object
+      required:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
+    FineTunedScorerWeightsUploadResponse:
+      properties:
+        bucket:
+          type: string
+          title: Bucket
+        lora_weights_path:
+          type: string
+          title: Lora Weights Path
+        upload_urls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Upload Urls
+        object_paths:
+          additionalProperties:
+            type: string
+          type: object
+          title: Object Paths
+        presigned_url_expiry_seconds:
+          type: integer
+          title: Presigned Url Expiry Seconds
+      type: object
+      required:
+      - bucket
+      - lora_weights_path
+      - upload_urls
+      - object_paths
+      - presigned_url_expiry_seconds
+      title: FineTunedScorerWeightsUploadResponse
+    TaskResultStatus:
+      type: string
+      enum:
+      - pending
+      - started
+      - completed
+      - failed
+      title: TaskResultStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

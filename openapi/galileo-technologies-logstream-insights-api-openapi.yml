@@ -961,6 +961,49 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    SpanLinkV2:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        span_id:
+          type: string
+          title: Span Id
+        span_sub_narrative:
+          type: string
+          title: Span Sub Narrative
+      type: object
+      required:
+      - trace_id
+      - span_id
+      - span_sub_narrative
+      title: SpanLinkV2
+    LogstreamInsightTokenUsageCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: LogstreamInsightTokenUsageCreatedAtFilter
     LogStreamInsightTokenUsageDB:
       properties:
         id:
@@ -993,101 +1036,40 @@ components:
       - project_id
       - log_stream_id
       title: LogStreamInsightTokenUsageDB
-    SpanNote:
+    InsightExampleOccurrenceV2:
       properties:
-        span_id:
+        session_id:
           type: string
-          title: Span Id
-        span_note:
+          title: Session Id
+        example_narrative:
           type: string
-          title: Span Note
-        unique_span_identifying_substring:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Unique Span Identifying Substring
-      type: object
-      required:
-      - span_id
-      - span_note
-      title: SpanNote
-    InsightsJobStatusResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        status:
-          anyOf:
-          - $ref: '#/components/schemas/JobStatus'
-          - type: 'null'
-        is_update_job:
-          type: boolean
-          title: Is Update Job
-        updated_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Updated At
-        job_run_summary:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Job Run Summary
-      type: object
-      required:
-      - id
-      - status
-      - is_update_job
-      - updated_at
-      title: InsightsJobStatusResponse
-    SpanLink:
-      properties:
-        span_id:
-          type: string
-          title: Span Id
-        span_sub_narrative:
-          type: string
-          title: Span Sub Narrative
-      type: object
-      required:
-      - span_id
-      - span_sub_narrative
-      title: SpanLink
-    LogstreamInsightTokenUsageRequest:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        filters:
+          title: Example Narrative
+        span_links:
           items:
-            oneOf:
-            - $ref: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtFilter'
-            - $ref: '#/components/schemas/LogstreamInsightTokenUsageUpdatedAtFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtFilter'
-                updated_at: '#/components/schemas/LogstreamInsightTokenUsageUpdatedAtFilter'
+            $ref: '#/components/schemas/SpanLinkV2'
           type: array
-          title: Filters
-        sort:
-          anyOf:
-          - $ref: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtSort'
-          - type: 'null'
-          default:
-            name: created_at
-            ascending: false
-            sort_type: column
+          title: Span Links
       type: object
-      title: LogstreamInsightTokenUsageRequest
+      required:
+      - session_id
+      - example_narrative
+      - span_links
+      title: InsightExampleOccurrenceV2
+    LogstreamInsightsCreateOrUpdate:
+      properties:
+        insights:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/InsightDBV2'
+            type: array
+          - items:
+              $ref: '#/components/schemas/InsightDB'
+            type: array
+          title: Insights
+      type: object
+      required:
+      - insights
+      title: LogstreamInsightsCreateOrUpdate
     LogstreamInsightsResponseCreateJobResponse:
       properties:
         job_created:
@@ -1101,21 +1083,6 @@ components:
       - job_created
       - is_update_job
       title: LogstreamInsightsResponseCreateJobResponse
-    InsightOccurrence:
-      properties:
-        trace_id:
-          type: string
-          title: Trace Id
-        span_ids:
-          items:
-            type: string
-          type: array
-          title: Span Ids
-      type: object
-      required:
-      - trace_id
-      - span_ids
-      title: InsightOccurrence
     Insight:
       properties:
         title:
@@ -1168,7 +1135,47 @@ components:
       - example_occurrences
       - priority
       title: Insight
-    LogstreamInsightsCreateOrUpdate:
+    SessionNotesResponse:
+      properties:
+        session_id_to_session_notes:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/SessionNote'
+            type: array
+          propertyNames:
+            format: uuid4
+          type: object
+          title: Session Id To Session Notes
+      type: object
+      required:
+      - session_id_to_session_notes
+      title: SessionNotesResponse
+    TokenUsage:
+      properties:
+        input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Input Tokens
+        output_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Tokens
+        cache_read_input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Cache Read Input Tokens
+        cache_creation_input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Cache Creation Input Tokens
+      type: object
+      title: TokenUsage
+      description: Token usage information for insights generation.
+    LogstreamInsightsResponse:
       properties:
         insights:
           anyOf:
@@ -1178,123 +1185,54 @@ components:
           - items:
               $ref: '#/components/schemas/InsightDB'
             type: array
-          title: Insights
-      type: object
-      required:
-      - insights
-      title: LogstreamInsightsCreateOrUpdate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TraceNotesResponse:
-      properties:
-        trace_id_to_trace_notes:
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/TraceNote'
-            type: array
-          propertyNames:
-            format: uuid4
-          type: object
-          title: Trace Id To Trace Notes
-      type: object
-      required:
-      - trace_id_to_trace_notes
-      title: TraceNotesResponse
-    SpanNoteV2:
-      properties:
-        trace_id:
-          type: string
-          title: Trace Id
-        span_id:
-          type: string
-          title: Span Id
-        span_note:
-          type: string
-          title: Span Note
-        unique_span_identifying_substring:
-          anyOf:
-          - type: string
           - type: 'null'
-          title: Unique Span Identifying Substring
-      type: object
-      required:
-      - trace_id
-      - span_id
-      - span_note
-      title: SpanNoteV2
-    InsightOccurrenceV2:
-      properties:
-        session_id:
-          type: string
-          title: Session Id
-        spans_involved:
-          items:
-            $ref: '#/components/schemas/SpanInvolved'
-          type: array
-          title: Spans Involved
-        session_created_at:
+          title: Insights
+        job_status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+        is_update_job:
+          type: boolean
+          title: Is Update Job
+        job_updated_at:
           anyOf:
           - type: string
             format: date-time
           - type: 'null'
-          title: Session Created At
+          title: Job Updated At
+        job_run_summary:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Job Run Summary
       type: object
       required:
-      - session_id
-      - spans_involved
-      title: InsightOccurrenceV2
-    InsightExampleOccurrenceV2:
+      - insights
+      - job_status
+      - is_update_job
+      - job_updated_at
+      title: LogstreamInsightsResponse
+    InsightDB:
       properties:
-        session_id:
+        id:
           type: string
-          title: Session Id
-        example_narrative:
-          type: string
-          title: Example Narrative
-        span_links:
-          items:
-            $ref: '#/components/schemas/SpanLinkV2'
-          type: array
-          title: Span Links
-      type: object
-      required:
-      - session_id
-      - example_narrative
-      - span_links
-      title: InsightExampleOccurrenceV2
-    LogstreamInsightTokenUsageCreatedAtFilter:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
+          format: uuid4
+          title: Id
+        created_at:
           type: string
           format: date-time
-          title: Value
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        insight:
+          $ref: '#/components/schemas/Insight'
       type: object
       required:
-      - operator
-      - value
-      title: LogstreamInsightTokenUsageCreatedAtFilter
+      - insight
+      title: InsightDB
     LogstreamInsightTokenUsageUpdatedAtFilter:
       properties:
         name:
@@ -1321,19 +1259,30 @@ components:
       - operator
       - value
       title: LogstreamInsightTokenUsageUpdatedAtFilter
-    SpanInvolved:
+    InsightOccurrence:
       properties:
         trace_id:
           type: string
           title: Trace Id
-        span_id:
-          type: string
-          title: Span Id
+        span_ids:
+          items:
+            type: string
+          type: array
+          title: Span Ids
       type: object
       required:
       - trace_id
-      - span_id
-      title: SpanInvolved
+      - span_ids
+      title: InsightOccurrence
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TraceNote:
       properties:
         note_text:
@@ -1375,30 +1324,99 @@ components:
       - msg
       - type
       title: ValidationError
-    EmptyResponse:
-      properties: {}
-      type: object
-      title: EmptyResponse
-    InsightDB:
+    LogstreamInsightTokenUsageRequest:
       properties:
-        id:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtFilter'
+            - $ref: '#/components/schemas/LogstreamInsightTokenUsageUpdatedAtFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtFilter'
+                updated_at: '#/components/schemas/LogstreamInsightTokenUsageUpdatedAtFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - $ref: '#/components/schemas/LogstreamInsightTokenUsageCreatedAtSort'
+          - type: 'null'
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: LogstreamInsightTokenUsageRequest
+    InsightExampleOccurrence:
+      properties:
+        trace_id:
           type: string
-          format: uuid4
-          title: Id
-        created_at:
+          title: Trace Id
+        example_narrative:
           type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        insight:
-          $ref: '#/components/schemas/Insight'
+          title: Example Narrative
+        span_links:
+          items:
+            $ref: '#/components/schemas/SpanLink'
+          type: array
+          title: Span Links
       type: object
       required:
-      - insight
-      title: InsightDB
+      - trace_id
+      - example_narrative
+      - span_links
+      title: InsightExampleOccurrence
+    JobStatus:
+      type: string
+      enum:
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
+    InsightOccurrenceV2:
+      properties:
+        session_id:
+          type: string
+          title: Session Id
+        spans_involved:
+          items:
+            $ref: '#/components/schemas/SpanInvolved'
+          type: array
+          title: Spans Involved
+        session_created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Session Created At
+      type: object
+      required:
+      - session_id
+      - spans_involved
+      title: InsightOccurrenceV2
+    LogstreamInsightsCreateJobRequest:
+      properties:
+        model_alias:
+          anyOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
+          title: Model Alias
+          description: Optional model alias to use for this insights generation job.
+      type: object
+      title: LogstreamInsightsCreateJobRequest
     InsightDBV2:
       properties:
         id:
@@ -1419,24 +1437,6 @@ components:
       required:
       - insight
       title: InsightDBV2
-    LogstreamInsightTokenUsageCreatedAtSort:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: LogstreamInsightTokenUsageCreatedAtSort
     SessionTitlesResponse:
       properties:
         session_id_to_session_title:
@@ -1450,31 +1450,6 @@ components:
           title: Session Id To Session Title
       type: object
       title: SessionTitlesResponse
-    TokenUsage:
-      properties:
-        input_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Input Tokens
-        output_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Output Tokens
-        cache_read_input_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Cache Read Input Tokens
-        cache_creation_input_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Cache Creation Input Tokens
-      type: object
-      title: TokenUsage
-      description: Token usage information for insights generation.
     LogstreamInsightTokenUsageResponse:
       properties:
         starting_token:
@@ -1501,6 +1476,39 @@ components:
           title: Token Usages
       type: object
       title: LogstreamInsightTokenUsageResponse
+    SpanNote:
+      properties:
+        span_id:
+          type: string
+          title: Span Id
+        span_note:
+          type: string
+          title: Span Note
+        unique_span_identifying_substring:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Unique Span Identifying Substring
+      type: object
+      required:
+      - span_id
+      - span_note
+      title: SpanNote
+    TraceNotesResponse:
+      properties:
+        trace_id_to_trace_notes:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/TraceNote'
+            type: array
+          propertyNames:
+            format: uuid4
+          type: object
+          title: Trace Id To Trace Notes
+      type: object
+      required:
+      - trace_id_to_trace_notes
+      title: TraceNotesResponse
     InsightV2:
       properties:
         title:
@@ -1553,74 +1561,76 @@ components:
       - example_occurrences
       - priority
       title: InsightV2
-    LogstreamInsightsResponse:
+    LogstreamInsightTokenUsageCreatedAtSort:
       properties:
-        insights:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/InsightDBV2'
-            type: array
-          - items:
-              $ref: '#/components/schemas/InsightDB'
-            type: array
-          - type: 'null'
-          title: Insights
-        job_status:
-          anyOf:
-          - $ref: '#/components/schemas/JobStatus'
-          - type: 'null'
-        is_update_job:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
           type: boolean
-          title: Is Update Job
-        job_updated_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Job Updated At
-        job_run_summary:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Job Run Summary
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
       type: object
-      required:
-      - insights
-      - job_status
-      - is_update_job
-      - job_updated_at
-      title: LogstreamInsightsResponse
-    LogstreamInsightsCreateJobRequest:
-      properties:
-        model_alias:
-          anyOf:
-          - type: string
-            maxLength: 255
-          - type: 'null'
-          title: Model Alias
-          description: Optional model alias to use for this insights generation job.
-      type: object
-      title: LogstreamInsightsCreateJobRequest
-    InsightExampleOccurrence:
+      title: LogstreamInsightTokenUsageCreatedAtSort
+    SpanInvolved:
       properties:
         trace_id:
           type: string
           title: Trace Id
-        example_narrative:
+        span_id:
           type: string
-          title: Example Narrative
-        span_links:
-          items:
-            $ref: '#/components/schemas/SpanLink'
-          type: array
-          title: Span Links
+          title: Span Id
       type: object
       required:
       - trace_id
-      - example_narrative
-      - span_links
-      title: InsightExampleOccurrence
+      - span_id
+      title: SpanInvolved
+    EmptyResponse:
+      properties: {}
+      type: object
+      title: EmptyResponse
+    SpanNoteV2:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        span_id:
+          type: string
+          title: Span Id
+        span_note:
+          type: string
+          title: Span Note
+        unique_span_identifying_substring:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Unique Span Identifying Substring
+      type: object
+      required:
+      - trace_id
+      - span_id
+      - span_note
+      title: SpanNoteV2
+    SpanLink:
+      properties:
+        span_id:
+          type: string
+          title: Span Id
+        span_sub_narrative:
+          type: string
+          title: Span Sub Narrative
+      type: object
+      required:
+      - span_id
+      - span_sub_narrative
+      title: SpanLink
     TraceTitlesResponse:
       properties:
         trace_id_to_trace_title:
@@ -1634,6 +1644,38 @@ components:
           title: Trace Id To Trace Title
       type: object
       title: TraceTitlesResponse
+    InsightsJobStatusResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/JobStatus'
+          - type: 'null'
+        is_update_job:
+          type: boolean
+          title: Is Update Job
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+        job_run_summary:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Job Run Summary
+      type: object
+      required:
+      - id
+      - status
+      - is_update_job
+      - updated_at
+      title: InsightsJobStatusResponse
     SessionNote:
       properties:
         note_text:
@@ -1649,48 +1691,6 @@ components:
       - note_text
       - spans_involved
       title: SessionNote
-    SessionNotesResponse:
-      properties:
-        session_id_to_session_notes:
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/SessionNote'
-            type: array
-          propertyNames:
-            format: uuid4
-          type: object
-          title: Session Id To Session Notes
-      type: object
-      required:
-      - session_id_to_session_notes
-      title: SessionNotesResponse
-    SpanLinkV2:
-      properties:
-        trace_id:
-          type: string
-          title: Trace Id
-        span_id:
-          type: string
-          title: Span Id
-        span_sub_narrative:
-          type: string
-          title: Span Sub Narrative
-      type: object
-      required:
-      - trace_id
-      - span_id
-      - span_sub_narrative
-      title: SpanLinkV2
-    JobStatus:
-      type: string
-      enum:
-      - unstarted
-      - in_progress
-      - processed
-      - completed
-      - error
-      - failed
-      title: JobStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

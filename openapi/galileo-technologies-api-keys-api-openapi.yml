@@ -343,6 +343,55 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      title: CollaboratorRole
+    CreateApiKeyRequest:
+      properties:
+        description:
+          type: string
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+          description: Expiry date for the API key
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        project_role:
+          anyOf:
+          - $ref: '#/components/schemas/CollaboratorRole'
+          - type: 'null'
+        api_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Key
+          description: Optional pre-generated API key value. If not provided, one will be generated automatically. This is used for setups where the same API key needs to exist on multiple clusters.
+      type: object
+      required:
+      - description
+      title: CreateApiKeyRequest
     ApiKeyDeleteResponse:
       properties:
         message:
@@ -406,110 +455,6 @@ components:
       - msg
       - type
       title: ValidationError
-    CollaboratorRole:
-      type: string
-      enum:
-      - owner
-      - editor
-      - annotator
-      - viewer
-      title: CollaboratorRole
-    CreateApiKeyRequest:
-      properties:
-        description:
-          type: string
-          title: Description
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-          description: Expiry date for the API key
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        project_role:
-          anyOf:
-          - $ref: '#/components/schemas/CollaboratorRole'
-          - type: 'null'
-        api_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Api Key
-          description: Optional pre-generated API key value. If not provided, one will be generated automatically. This is used for setups where the same API key needs to exist on multiple clusters.
-      type: object
-      required:
-      - description
-      title: CreateApiKeyRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    GetApiKeyResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        description:
-          type: string
-          title: Description
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        last_used:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Used
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        project_role:
-          anyOf:
-          - $ref: '#/components/schemas/CollaboratorRole'
-          - type: 'null'
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        truncated:
-          type: string
-          title: Truncated
-      type: object
-      required:
-      - id
-      - description
-      - created_at
-      - updated_at
-      - created_by
-      - truncated
-      title: GetApiKeyResponse
     CreateApiKeyResponse:
       properties:
         id:
@@ -569,6 +514,61 @@ components:
       - truncated
       - api_key
       title: CreateApiKeyResponse
+    GetApiKeyResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        description:
+          type: string
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        last_used:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Used
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        project_role:
+          anyOf:
+          - $ref: '#/components/schemas/CollaboratorRole'
+          - type: 'null'
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        truncated:
+          type: string
+          title: Truncated
+      type: object
+      required:
+      - id
+      - description
+      - created_at
+      - updated_at
+      - created_by
+      - truncated
+      title: GetApiKeyResponse
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

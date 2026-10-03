@@ -268,13 +268,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RunInsightsRequest:
-      properties:
-        insights:
-          $ref: '#/components/schemas/RunInsightsSettingsSchema'
-          description: The insights configuration for the run.
-      type: object
-      title: RunInsightsRequest
     RunInsightsSettingsSchema:
       properties:
         logstream:
@@ -282,6 +275,15 @@ components:
           description: Logstream insights configuration.
       type: object
       title: RunInsightsSettingsSchema
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -324,15 +326,6 @@ components:
           description: Start time for generating logstream insights.
       type: object
       title: LogstreamInsightConfig
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     RunInsightsResponse:
       properties:
         insights:
@@ -347,6 +340,13 @@ components:
       required:
       - run_id
       title: RunInsightsResponse
+    RunInsightsRequest:
+      properties:
+        insights:
+          $ref: '#/components/schemas/RunInsightsSettingsSchema'
+          description: The insights configuration for the run.
+      type: object
+      title: RunInsightsRequest
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

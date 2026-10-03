@@ -1953,45 +1953,156 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    GeneratedScorerAction:
+    UserCollaborator:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        user_id:
+          type: string
+          format: uuid4
+          title: User Id
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - id
+      - role
+      - created_at
+      - user_id
+      - first_name
+      - last_name
+      - email
+      title: UserCollaborator
+    UserDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      title: UserDB
+    ListUserCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/UserCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListUserCollaboratorsResponse
+    GroupAction:
       type: string
       enum:
       - update
-      - delete
-      title: GeneratedScorerAction
-    api__schemas__project__ProjectUpdatedAtFilter:
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    api__schemas__project__ProjectUpdatedAtSort:
       properties:
         name:
           type: string
           const: updated_at
           title: Name
           default: updated_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ProjectUpdatedAtFilter
-    api__schemas__project_v2__ProjectNameSort:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
         ascending:
           type: boolean
           title: Ascending
@@ -2002,25 +2113,13 @@ components:
           title: Sort Type
           default: column
       type: object
-      title: ProjectNameSortV2
-    api__schemas__project_v2__ProjectCreatedAtSort:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: ProjectCreatedAtSortV2
+      title: ProjectUpdatedAtSortV1
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
     api__schemas__project__ProjectBookmarkFilter:
       properties:
         name:
@@ -2035,15 +2134,6 @@ components:
       required:
       - value
       title: ProjectBookmarkFilter
-    DatasetAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
     RunTagDB:
       properties:
         key:
@@ -2093,6 +2183,52 @@ components:
       - created_at
       - updated_at
       title: RunTagDB
+    api__schemas__project__ProjectNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNameSortV1
+    api__schemas__project_v2__ProjectBookmarkFilter:
+      properties:
+        name:
+          type: string
+          const: bookmark
+          title: Name
+          default: bookmark
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: ProjectBookmarkFilterV2
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
     ProjectCreate:
       properties:
         name:
@@ -2116,46 +2252,35 @@ components:
       required:
       - name
       title: ProjectCreate
-    FineTunedScorerAction:
+    ProjectAction:
       type: string
       enum:
       - update
       - delete
-      title: FineTunedScorerAction
-    api__schemas__project__ProjectCreatedAtFilter:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ProjectCreatedAtFilter
-    ProjectType:
-      type: string
-      enum:
-      - prompt_evaluation
-      - llm_monitor
-      - protect
-      - gen_ai
-      title: ProjectType
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
     api__schemas__project_v2__ProjectCreatorFilter:
       properties:
         name:
@@ -2189,207 +2314,7 @@ components:
       required:
       - value
       title: ProjectCreatorFilterV2
-    GroupCollaboratorCreate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-          default: viewer
-        group_id:
-          type: string
-          format: uuid4
-          title: Group Id
-      type: object
-      required:
-      - group_id
-      title: GroupCollaboratorCreate
-    api__schemas__project_v2__ProjectUpdatedAtSort:
-      properties:
-        name:
-          type: string
-          const: updated_at
-          title: Name
-          default: updated_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: ProjectUpdatedAtSortV2
-    ProjectLabels:
-      type: string
-      enum:
-      - sample
-      title: ProjectLabels
-      description: Enum for project labels used in the UI.
-    ScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - autotune_apply
-      title: ScorerAction
-    RunDBThin:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Name
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        num_samples:
-          type: integer
-          title: Num Samples
-        winner:
-          type: boolean
-          title: Winner
-        dataset_hash:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Dataset Hash
-        dataset_version_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Dataset Version Id
-        prompt_template_version_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Prompt Template Version Id
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        task_type:
-          anyOf:
-          - $ref: '#/components/schemas/TaskType'
-          - type: 'null'
-        last_updated_by:
-          type: string
-          format: uuid4
-          title: Last Updated By
-        run_tags:
-          items:
-            $ref: '#/components/schemas/RunTagDB'
-          type: array
-          title: Run Tags
-        example_content_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Example Content Id
-        creator:
-          $ref: '#/components/schemas/UserDB'
-        logged_splits:
-          items:
-            type: string
-          type: array
-          title: Logged Splits
-        logged_inference_names:
-          items:
-            type: string
-          type: array
-          title: Logged Inference Names
-      type: object
-      required:
-      - created_by
-      - num_samples
-      - winner
-      - id
-      - created_at
-      - updated_at
-      - last_updated_by
-      - creator
-      title: RunDBThin
-    ListUserCollaboratorsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        collaborators:
-          items:
-            $ref: '#/components/schemas/UserCollaborator'
-          type: array
-          title: Collaborators
-      type: object
-      required:
-      - collaborators
-      title: ListUserCollaboratorsResponse
-    api__schemas__project__ProjectNameSort:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: ProjectNameSortV1
-    api__schemas__project_v2__ProjectBookmarkFilter:
-      properties:
-        name:
-          type: string
-          const: bookmark
-          title: Name
-          default: bookmark
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: ProjectBookmarkFilterV2
-    ProjectUpdateResponse:
+    ProjectCreateResponse:
       properties:
         name:
           anyOf:
@@ -2418,54 +2343,133 @@ components:
           type: string
           format: date-time
           title: Updated At
-        labels:
-          items:
-            $ref: '#/components/schemas/ProjectLabels'
-          type: array
-          title: Labels
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
       type: object
       required:
       - id
       - created_at
       - updated_at
-      title: ProjectUpdateResponse
-    api__schemas__project_v2__ProjectNameFilter:
+      title: ProjectCreateResponse
+    ProjectDBThin:
       properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
         name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
           anyOf:
           - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
+          - type: 'null'
+          title: Name
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        runs:
+          items:
+            $ref: '#/components/schemas/RunDBThin'
+          type: array
+          title: Runs
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        bookmark:
           type: boolean
-          title: Case Sensitive
-          default: true
+          title: Bookmark
+          default: false
       type: object
       required:
-      - operator
-      - value
-      title: ProjectNameFilterV2
+      - id
+      - created_by
+      - runs
+      - created_at
+      - updated_at
+      title: ProjectDBThin
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      title: UserRole
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    api__schemas__project_v2__ProjectCollectionParams:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectNameFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatorFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtFilter'
+            - $ref: '#/components/schemas/ProjectNumLogstreamsFilter'
+            - $ref: '#/components/schemas/ProjectNumExperimentsFilter'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectBookmarkFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                bookmark: '#/components/schemas/api__schemas__project_v2__ProjectBookmarkFilter'
+                created_at: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtFilter'
+                creator: '#/components/schemas/api__schemas__project_v2__ProjectCreatorFilter'
+                name: '#/components/schemas/api__schemas__project_v2__ProjectNameFilter'
+                num_experiments: '#/components/schemas/ProjectNumExperimentsFilter'
+                num_logstreams: '#/components/schemas/ProjectNumLogstreamsFilter'
+                updated_at: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectNameSort'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtSort'
+            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtSort'
+            - $ref: '#/components/schemas/ProjectNumLogstreamsSort'
+            - $ref: '#/components/schemas/ProjectNumExperimentsSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtSort'
+                name: '#/components/schemas/api__schemas__project_v2__ProjectNameSort'
+                num_experiments: '#/components/schemas/ProjectNumExperimentsSort'
+                num_logstreams: '#/components/schemas/ProjectNumLogstreamsSort'
+                updated_at: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: ProjectCollectionParams
     api__schemas__project_v2__ProjectCreatedAtFilter:
       properties:
         name:
@@ -2492,24 +2496,50 @@ components:
       - operator
       - value
       title: ProjectCreatedAtFilterV2
-    OrganizationAction:
-      type: string
-      enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
-    api__schemas__project__ProjectCreatedAtSort:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    api__schemas__project__GetProjectsPaginatedResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        projects:
+          items:
+            $ref: '#/components/schemas/ProjectDB'
+          type: array
+          title: Projects
+      type: object
+      required:
+      - projects
+      title: GetProjectsPaginatedResponse
+    api__schemas__project_v2__ProjectUpdatedAtSort:
       properties:
         name:
           type: string
-          const: created_at
+          const: updated_at
           title: Name
-          default: created_at
+          default: updated_at
         ascending:
           type: boolean
           title: Ascending
@@ -2520,7 +2550,34 @@ components:
           title: Sort Type
           default: column
       type: object
-      title: ProjectCreatedAtSortV1
+      title: ProjectUpdatedAtSortV2
+    ProjectRunsSort:
+      properties:
+        name:
+          type: string
+          const: runs
+          title: Name
+          default: runs
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: ProjectRunsSort
+    ProjectDeleteResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: ProjectDeleteResponse
     ProjectIDFilter:
       properties:
         name:
@@ -2554,129 +2611,41 @@ components:
       required:
       - value
       title: ProjectIDFilter
-    ProjectRunsSort:
+    ValidationError:
       properties:
-        name:
-          type: string
-          const: runs
-          title: Name
-          default: runs
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: custom
-          title: Sort Type
-          default: custom
-      type: object
-      title: ProjectRunsSort
-    HTTPValidationError:
-      properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ProjectNumExperimentsFilter:
-      properties:
-        name:
-          type: string
-          const: num_experiments
-          title: Name
-          default: num_experiments
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          - between
-          title: Operator
-        value:
-          anyOf:
-          - type: integer
-          - type: number
-          - items:
-              type: integer
-            type: array
-          - items:
-              type: number
-            type: array
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ProjectNumExperimentsFilterV2
-    ControlResourceAction:
-      type: string
-      enum:
-      - create
-      - read
-      - update
-      - delete
-      title: ControlResourceAction
-      description: Actions on Agent Control's org-scoped ``control`` resource.
-    ProjectDeleteResponse:
-      properties:
-        message:
+          title: Location
+        msg:
           type: string
           title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - message
-      title: ProjectDeleteResponse
-    CollaboratorRoleInfo:
-      properties:
-        name:
-          $ref: '#/components/schemas/CollaboratorRole'
-          examples:
-          - owner
-        display_name:
-          type: string
-          title: Display Name
-          examples:
-          - Owner
-        description:
-          type: string
-          title: Description
-          examples:
-          - Can do anything with the resource.
-      type: object
-      required:
-      - name
-      - display_name
-      - description
-      title: CollaboratorRoleInfo
-    UserCollaborator:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserInfo:
       properties:
         id:
           type: string
           format: uuid4
           title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-        created_at:
+        email:
           type: string
-          format: date-time
-          title: Created At
-        user_id:
-          type: string
-          format: uuid4
-          title: User Id
+          title: Email
         first_name:
           anyOf:
           - type: string
@@ -2687,44 +2656,31 @@ components:
           - type: string
           - type: 'null'
           title: Last Name
-        email:
-          type: string
-          title: Email
       type: object
       required:
       - id
-      - role
-      - created_at
-      - user_id
-      - first_name
-      - last_name
       - email
-      title: UserCollaborator
-    UserCollaboratorCreate:
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    ProjectLabels:
+      type: string
+      enum:
+      - sample
+      title: ProjectLabels
+      description: Enum for project labels used in the UI.
+    GroupCollaboratorCreate:
       properties:
         role:
           $ref: '#/components/schemas/CollaboratorRole'
           default: viewer
-        user_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: User Id
-        user_email:
-          anyOf:
-          - type: string
-            format: email
-          - type: 'null'
-          title: User Email
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
       type: object
-      title: UserCollaboratorCreate
-      description: 'Create a user collaborator using either user_id or email.
-
-
-        When using email, if the user doesn''t exist in the organization,
-
-        they will be invited automatically.'
+      required:
+      - group_id
+      title: GroupCollaboratorCreate
     api__schemas__project__ProjectCollectionParams:
       properties:
         filters:
@@ -2783,87 +2739,47 @@ components:
       - update
       - delete
       title: RegisteredScorerAction
-    ProjectDB:
+    LogStreamInfo:
       properties:
         id:
           type: string
           format: uuid4
           title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
         name:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Name
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/ProjectType'
-          - type: 'null'
-        created_by_user:
-          $ref: '#/components/schemas/UserInfo'
-        runs:
-          items:
-            $ref: '#/components/schemas/RunDB'
-          type: array
-          title: Runs
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        bookmark:
-          type: boolean
-          title: Bookmark
-          default: false
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        labels:
-          items:
-            $ref: '#/components/schemas/ProjectLabels'
-          type: array
-          title: Labels
       type: object
       required:
       - id
-      - created_by
-      - created_by_user
-      - runs
-      - created_at
-      - updated_at
-      title: ProjectDB
-    api__schemas__project__ProjectUpdatedAtSort:
+      - name
+      title: LogStreamInfo
+      description: Minimal log stream representation (id and name only).
+    api__schemas__project__ProjectUpdatedAtFilter:
       properties:
         name:
           type: string
           const: updated_at
           title: Name
           default: updated_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
+        operator:
           type: string
-          const: column
-          title: Sort Type
-          default: column
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
       type: object
-      title: ProjectUpdatedAtSortV1
+      required:
+      - operator
+      - value
+      title: ProjectUpdatedAtFilter
     Permission:
       properties:
         action:
@@ -2990,199 +2906,57 @@ components:
       - last_updated_by
       - creator
       title: RunDB
-    ProjectTypeFilter:
-      properties:
-        name:
-          type: string
-          const: type
-          title: Name
-          default: type
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-            description: Single enum value - specific options depend on the concrete enum type used
-            example: ENUM_VALUE
-          - items:
-              type: string
-              example: ENUM_VALUE
-            type: array
-            description: Array of enum values
-            example:
-            - ENUM_VALUE_1
-            - ENUM_VALUE_2
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ProjectTypeFilter
-    ListGroupCollaboratorsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        collaborators:
-          items:
-            $ref: '#/components/schemas/GroupCollaborator'
-          type: array
-          title: Collaborators
-      type: object
-      required:
-      - collaborators
-      title: ListGroupCollaboratorsResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    IntegrationAction:
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    DatasetAction:
       type: string
       enum:
       - update
       - delete
       - share
-      - read_secrets
-      title: IntegrationAction
-    UserInfo:
+      - export
+      - rename
+      title: DatasetAction
+    GroupCollaborator:
       properties:
         id:
           type: string
           format: uuid4
           title: Id
-        email:
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        created_at:
           type: string
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
+          format: date-time
+          title: Created At
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+        group_name:
+          type: string
+          title: Group Name
       type: object
       required:
       - id
-      - email
-      title: UserInfo
-      description: A user's basic information, used for display purposes.
-    UserAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - read_api_keys
-      - change_role_to_admin
-      - change_role_to_manager
-      - change_role_to_user
-      - change_role_to_read_only
-      title: UserAction
-    ProjectBookmarkSort:
-      properties:
-        name:
-          type: string
-          const: bookmark
-          title: Name
-          default: bookmark
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: custom
-          title: Sort Type
-          default: custom
-      type: object
-      title: ProjectBookmarkSort
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
-    ProjectAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - rename
-      - share
-      - create_run
-      - delete_run
-      - rename_run
-      - move_run
-      - export_data
-      - configure_human_feedback
-      - record_human_feedback
-      - log_data
-      - toggle_metric
-      - edit_alert
-      - create_stage
-      - edit_stage
-      - configure_crown_logic
-      - delete_data
-      - set_metric
-      - edit_run_tags
-      - dismiss_alert
-      - edit_slice
-      - edit_edit
-      - update_control_bindings
-      - use_control_runtime
-      title: ProjectAction
-    CollaboratorUpdate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-      type: object
-      required:
       - role
-      title: CollaboratorUpdate
+      - created_at
+      - group_id
+      - group_name
+      title: GroupCollaborator
     ProjectNumLogstreamsFilter:
       properties:
         name:
@@ -3217,22 +2991,67 @@ components:
       - operator
       - value
       title: ProjectNumLogstreamsFilterV2
-    AnnotationQueueAction:
+    api__schemas__project_v2__ProjectNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectNameFilterV2
+    api__schemas__project_v2__ProjectCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectCreatedAtSortV2
+    OrganizationAction:
       type: string
       enum:
-      - update
+      - rename
       - delete
-      - share
-      - record_annotation
-      title: AnnotationQueueAction
-    GroupAction:
-      type: string
-      enum:
-      - update
-      - list_members
-      - join
-      - request_to_join
-      title: GroupAction
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
     ProjectItem:
       properties:
         id:
@@ -3303,160 +3122,32 @@ components:
       - updated_at
       title: ProjectItem
       description: Represents a single project item for the UI list.
-    AuthMethod:
-      type: string
-      enum:
-      - email
-      - google
-      - github
-      - okta
-      - azure-ad
-      - custom
-      - saml
-      - invite
-      title: AuthMethod
-    LogStreamInfo:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - id
-      - name
-      title: LogStreamInfo
-      description: Minimal log stream representation (id and name only).
-    GroupCollaborator:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        group_id:
-          type: string
-          format: uuid4
-          title: Group Id
-        group_name:
-          type: string
-          title: Group Name
-      type: object
-      required:
-      - id
-      - role
-      - created_at
-      - group_id
-      - group_name
-      title: GroupCollaborator
-    TaskType:
-      type: integer
-      enum:
-      - 7
-      - 9
-      - 12
-      - 13
-      - 15
-      - 16
-      - 17
-      - 18
-      title: TaskType
-      description: 'Valid task types for modeling.
-
-
-        We store these as ints instead of strings because we will be looking this up in the database frequently.'
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
-    ProjectUpdate:
+    api__schemas__project_v2__ProjectUpdatedAtFilter:
       properties:
         name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        labels:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Labels
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      additionalProperties: false
-      type: object
-      title: ProjectUpdate
-    ProjectDBThin:
-      properties:
-        id:
           type: string
-          format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
+          const: updated_at
           title: Name
-        created_by:
+          default: updated_at
+        operator:
           type: string
-          format: uuid4
-          title: Created By
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/ProjectType'
-          - type: 'null'
-        runs:
-          items:
-            $ref: '#/components/schemas/RunDBThin'
-          type: array
-          title: Runs
-        created_at:
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
           type: string
           format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        bookmark:
-          type: boolean
-          title: Bookmark
-          default: false
+          title: Value
       type: object
       required:
-      - id
-      - created_by
-      - runs
-      - created_at
-      - updated_at
-      title: ProjectDBThin
+      - operator
+      - value
+      title: ProjectUpdatedAtFilterV2
     api__schemas__project_v2__GetProjectsPaginatedResponse:
       properties:
         starting_token:
@@ -3491,264 +3182,14 @@ components:
       - total_count
       title: GetProjectsPaginatedResponse
       description: Response model for the V2 projects paginated endpoint.
-    api__schemas__project__GetProjectsPaginatedResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        projects:
-          items:
-            $ref: '#/components/schemas/ProjectDB'
-          type: array
-          title: Projects
-      type: object
-      required:
-      - projects
-      title: GetProjectsPaginatedResponse
-    ProjectNumLogstreamsSort:
-      properties:
-        name:
-          type: string
-          const: num_logstreams
-          title: Name
-          default: num_logstreams
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: ProjectNumLogstreamsSort
-    ProjectCreateResponse:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Created By
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/ProjectType'
-          - type: 'null'
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - created_at
-      - updated_at
-      title: ProjectCreateResponse
-    CollaboratorRole:
+    AnnotationQueueAction:
       type: string
       enum:
-      - owner
-      - editor
-      - annotator
-      - viewer
-      title: CollaboratorRole
-    UserDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        email:
-          type: string
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-          default: ''
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-          default: ''
-        auth_method:
-          $ref: '#/components/schemas/AuthMethod'
-          default: email
-        role:
-          $ref: '#/components/schemas/UserRole'
-          default: read_only
-        email_is_verified:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Email Is Verified
-        organization_id:
-          type: string
-          format: uuid4
-          title: Organization Id
-        organization_name:
-          type: string
-          title: Organization Name
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - email
-      - organization_id
-      - organization_name
-      - created_at
-      - updated_at
-      title: UserDB
-    UserRole:
-      type: string
-      enum:
-      - admin
-      - manager
-      - user
-      - read_only
-      title: UserRole
-    api__schemas__project_v2__ProjectCollectionParams:
-      properties:
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectNameFilter'
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatorFilter'
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtFilter'
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtFilter'
-            - $ref: '#/components/schemas/ProjectNumLogstreamsFilter'
-            - $ref: '#/components/schemas/ProjectNumExperimentsFilter'
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectBookmarkFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                bookmark: '#/components/schemas/api__schemas__project_v2__ProjectBookmarkFilter'
-                created_at: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtFilter'
-                creator: '#/components/schemas/api__schemas__project_v2__ProjectCreatorFilter'
-                name: '#/components/schemas/api__schemas__project_v2__ProjectNameFilter'
-                num_experiments: '#/components/schemas/ProjectNumExperimentsFilter'
-                num_logstreams: '#/components/schemas/ProjectNumLogstreamsFilter'
-                updated_at: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtFilter'
-          type: array
-          title: Filters
-        sort:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectNameSort'
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtSort'
-            - $ref: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtSort'
-            - $ref: '#/components/schemas/ProjectNumLogstreamsSort'
-            - $ref: '#/components/schemas/ProjectNumExperimentsSort'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/api__schemas__project_v2__ProjectCreatedAtSort'
-                name: '#/components/schemas/api__schemas__project_v2__ProjectNameSort'
-                num_experiments: '#/components/schemas/ProjectNumExperimentsSort'
-                num_logstreams: '#/components/schemas/ProjectNumLogstreamsSort'
-                updated_at: '#/components/schemas/api__schemas__project_v2__ProjectUpdatedAtSort'
-          - type: 'null'
-          title: Sort
-          default:
-            name: created_at
-            ascending: false
-            sort_type: column
-      type: object
-      title: ProjectCollectionParams
-    ProjectNumExperimentsSort:
-      properties:
-        name:
-          type: string
-          const: num_experiments
-          title: Name
-          default: num_experiments
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: ProjectNumExperimentsSort
-    api__schemas__project__ProjectCreatorFilter:
-      properties:
-        name:
-          type: string
-          const: creator
-          title: Name
-          default: creator
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
-          anyOf:
-          - type: string
-            format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
-          - type: string
-          title: Value
-      type: object
-      required:
-      - value
-      title: ProjectCreatorFilter
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
     ProjectTypeSort:
       properties:
         name:
@@ -3767,6 +3208,130 @@ components:
           default: column
       type: object
       title: ProjectTypeSort
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    CollaboratorRoleInfo:
+      properties:
+        name:
+          $ref: '#/components/schemas/CollaboratorRole'
+          examples:
+          - owner
+        display_name:
+          type: string
+          title: Display Name
+          examples:
+          - Owner
+        description:
+          type: string
+          title: Description
+          examples:
+          - Can do anything with the resource.
+      type: object
+      required:
+      - name
+      - display_name
+      - description
+      title: CollaboratorRoleInfo
+    AuthMethod:
+      type: string
+      enum:
+      - email
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      - invite
+      title: AuthMethod
+    ListGroupCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/GroupCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListGroupCollaboratorsResponse
+    api__schemas__project__ProjectCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectCreatedAtFilter
+    UserCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: User Id
+        user_email:
+          anyOf:
+          - type: string
+            format: email
+          - type: 'null'
+          title: User Email
+      type: object
+      title: UserCollaboratorCreate
+      description: 'Create a user collaborator using either user_id or email.
+
+
+        When using email, if the user doesn''t exist in the organization,
+
+        they will be invited automatically.'
     ProjectRunsFilter:
       properties:
         name:
@@ -3801,6 +3366,134 @@ components:
       - operator
       - value
       title: ProjectRunsFilter
+    ProjectNumExperimentsFilter:
+      properties:
+        name:
+          type: string
+          const: num_experiments
+          title: Name
+          default: num_experiments
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ProjectNumExperimentsFilterV2
+    RunDBThin:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        num_samples:
+          type: integer
+          title: Num Samples
+        winner:
+          type: boolean
+          title: Winner
+        dataset_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset Hash
+        dataset_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Dataset Version Id
+        prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Prompt Template Version Id
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        task_type:
+          anyOf:
+          - $ref: '#/components/schemas/TaskType'
+          - type: 'null'
+        last_updated_by:
+          type: string
+          format: uuid4
+          title: Last Updated By
+        run_tags:
+          items:
+            $ref: '#/components/schemas/RunTagDB'
+          type: array
+          title: Run Tags
+        example_content_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Example Content Id
+        creator:
+          $ref: '#/components/schemas/UserDB'
+        logged_splits:
+          items:
+            type: string
+          type: array
+          title: Logged Splits
+        logged_inference_names:
+          items:
+            type: string
+          type: array
+          title: Logged Inference Names
+      type: object
+      required:
+      - created_by
+      - num_samples
+      - winner
+      - id
+      - created_at
+      - updated_at
+      - last_updated_by
+      - creator
+      title: RunDBThin
     api__schemas__project__ProjectNameFilter:
       properties:
         name:
@@ -3833,32 +3526,339 @@ components:
       - operator
       - value
       title: ProjectNameFilter
-    api__schemas__project_v2__ProjectUpdatedAtFilter:
+    CollaboratorUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+      type: object
+      required:
+      - role
+      title: CollaboratorUpdate
+    ProjectTypeFilter:
       properties:
         name:
           type: string
-          const: updated_at
+          const: type
           title: Name
-          default: updated_at
+          default: type
         operator:
           type: string
           enum:
           - eq
           - ne
-          - gt
-          - gte
-          - lt
-          - lte
+          - one_of
+          - not_in
           title: Operator
         value:
-          type: string
-          format: date-time
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
           title: Value
       type: object
       required:
       - operator
       - value
-      title: ProjectUpdatedAtFilterV2
+      title: ProjectTypeFilter
+    ProjectUpdateResponse:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        labels:
+          items:
+            $ref: '#/components/schemas/ProjectLabels'
+          type: array
+          title: Labels
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      title: ProjectUpdateResponse
+    ProjectUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        labels:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Labels
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      additionalProperties: false
+      type: object
+      title: ProjectUpdate
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      title: CollaboratorRole
+    api__schemas__project__ProjectCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectCreatedAtSortV1
+    api__schemas__project_v2__ProjectNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNameSortV2
+    ProjectNumLogstreamsSort:
+      properties:
+        name:
+          type: string
+          const: num_logstreams
+          title: Name
+          default: num_logstreams
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNumLogstreamsSort
+    ProjectNumExperimentsSort:
+      properties:
+        name:
+          type: string
+          const: num_experiments
+          title: Name
+          default: num_experiments
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ProjectNumExperimentsSort
+    ProjectDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectType'
+          - type: 'null'
+        created_by_user:
+          $ref: '#/components/schemas/UserInfo'
+        runs:
+          items:
+            $ref: '#/components/schemas/RunDB'
+          type: array
+          title: Runs
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        bookmark:
+          type: boolean
+          title: Bookmark
+          default: false
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        labels:
+          items:
+            $ref: '#/components/schemas/ProjectLabels'
+          type: array
+          title: Labels
+      type: object
+      required:
+      - id
+      - created_by
+      - created_by_user
+      - runs
+      - created_at
+      - updated_at
+      title: ProjectDB
+    ProjectBookmarkSort:
+      properties:
+        name:
+          type: string
+          const: bookmark
+          title: Name
+          default: bookmark
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: ProjectBookmarkSort
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    api__schemas__project__ProjectCreatorFilter:
+      properties:
+        name:
+          type: string
+          const: creator
+          title: Name
+          default: creator
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: ProjectCreatorFilter
+    ProjectType:
+      type: string
+      enum:
+      - prompt_evaluation
+      - llm_monitor
+      - protect
+      - gen_ai
+      title: ProjectType
+    TaskType:
+      type: integer
+      enum:
+      - 7
+      - 9
+      - 12
+      - 13
+      - 15
+      - 16
+      - 17
+      - 18
+      title: TaskType
+      description: 'Valid task types for modeling.
+
+
+        We store these as ints instead of strings because we will be looking this up in the database frequently.'
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey
