@@ -288,188 +288,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ExperimentGroupCreateRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      type: object
-      required:
-      - name
-      title: ExperimentGroupCreateRequest
-      description: Request to create an empty experiment group.
-    ExperimentGroupDatasetResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - id
-      - name
-      title: ExperimentGroupDatasetResponse
-      description: Distinct dataset summary associated with an experiment group.
-    ExperimentGroupNameSort:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: ExperimentGroupNameSort
-    MetricWeight:
-      properties:
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-        group_label:
-          anyOf:
-          - $ref: '#/components/schemas/GroupLabel'
-          - type: 'null'
-        description:
-          anyOf:
-          - $ref: '#/components/schemas/MetricDescriptions'
-          - type: 'null'
-        weight:
-          type: number
-          title: Weight
-          default: 0.5
-      type: object
-      title: MetricWeight
-    ExperimentGroupMetricSettingsResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        metric_weights_configuration:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/MetricWeight'
-            type: object
-          - type: 'null'
-          title: Metric Weights Configuration
-      type: object
-      required:
-      - id
-      title: ExperimentGroupMetricSettingsResponse
-      description: Response for the metric-settings sub-resource.
-    ExperimentGroupLatestActivityFilter:
-      properties:
-        name:
-          type: string
-          const: latest_activity
-          title: Name
-          default: latest_activity
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ExperimentGroupLatestActivityFilter
-    api__schemas__experiment_group__ExperimentGroupNameFilter:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: ExperimentGroupNameFilter
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     UserInfo:
       properties:
         id:
@@ -495,68 +313,39 @@ components:
       - email
       title: UserInfo
       description: A user's basic information, used for display purposes.
-    ExperimentGroupListResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        experiment_groups:
-          items:
-            $ref: '#/components/schemas/ExperimentGroupResponse'
-          type: array
-          title: Experiment Groups
-      type: object
-      title: ExperimentGroupListResponse
-      description: Paginated response for listing experiment groups.
-    ExperimentGroupMetricSettingsRequest:
-      properties:
-        metric_weights_configuration:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/MetricWeight'
-            type: object
-          - type: 'null'
-          title: Metric Weights Configuration
-      type: object
-      title: ExperimentGroupMetricSettingsRequest
-      description: 'Request to set per-group ranking weights. Replaces the full configuration.
-
-
-        Pass None to clear a group override and inherit project-level defaults.
-
-        Mirrors `ProjectSettingsUpdate.metric_weights_configuration` in api/routers/project_settings.py.'
-    ExperimentGroupLatestActivitySort:
+    ExperimentGroupCreatedByFilter:
       properties:
         name:
           type: string
-          const: latest_activity
+          const: created_by
           title: Name
-          default: latest_activity
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
+          default: created_by
+        operator:
           type: string
-          const: column
-          title: Sort Type
-          default: column
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
       type: object
-      title: ExperimentGroupLatestActivitySort
+      required:
+      - value
+      title: ExperimentGroupCreatedByFilter
     ExperimentGroupSearchRequest:
       properties:
         starting_token:
@@ -605,6 +394,173 @@ components:
       type: object
       title: ExperimentGroupSearchRequest
       description: Search/list experiment groups with filtering, sorting, and pagination.
+    api__schemas__experiment_group__ExperimentGroupIDFilter:
+      properties:
+        name:
+          type: string
+          const: id
+          title: Name
+          default: id
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: ExperimentGroupIDFilter
+    MetricWeight:
+      properties:
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        group_label:
+          anyOf:
+          - $ref: '#/components/schemas/GroupLabel'
+          - type: 'null'
+        description:
+          anyOf:
+          - $ref: '#/components/schemas/MetricDescriptions'
+          - type: 'null'
+        weight:
+          type: number
+          title: Weight
+          default: 0.5
+      type: object
+      title: MetricWeight
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ExperimentGroupCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ExperimentGroupCreatedAtFilter
+    ExperimentGroupCreateRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - name
+      title: ExperimentGroupCreateRequest
+      description: Request to create an empty experiment group.
+    ExperimentGroupMetricSettingsRequest:
+      properties:
+        metric_weights_configuration:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MetricWeight'
+            type: object
+          - type: 'null'
+          title: Metric Weights Configuration
+      type: object
+      title: ExperimentGroupMetricSettingsRequest
+      description: 'Request to set per-group ranking weights. Replaces the full configuration.
+
+
+        Pass None to clear a group override and inherit project-level defaults.
+
+        Mirrors `ProjectSettingsUpdate.metric_weights_configuration` in api/routers/project_settings.py.'
+    ExperimentGroupListResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        experiment_groups:
+          items:
+            $ref: '#/components/schemas/ExperimentGroupResponse'
+          type: array
+          title: Experiment Groups
+      type: object
+      title: ExperimentGroupListResponse
+      description: Paginated response for listing experiment groups.
     ExperimentGroupResponse:
       properties:
         id:
@@ -669,6 +625,122 @@ components:
       - project_id
       title: ExperimentGroupResponse
       description: Response for a single experiment group.
+    GroupLabel:
+      type: string
+      enum:
+      - Input Quality
+      - Output Quality
+      - Configuration
+      - LLM Parameters
+      - RAG Quality
+      - RAG Parameters
+      - Generic Parameters
+      - Safety Metrics
+      - Protect
+      - System Metrics
+      - Rating Summary
+      - Annotation Agreement
+      - Custom Metrics
+      - Security
+      - Dataset
+      - Agent Quality
+      - Text to SQL Metrics
+      title: GroupLabel
+      description: Group labels for prompt rows.
+    ExperimentGroupMetricSettingsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        metric_weights_configuration:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MetricWeight'
+            type: object
+          - type: 'null'
+          title: Metric Weights Configuration
+      type: object
+      required:
+      - id
+      title: ExperimentGroupMetricSettingsResponse
+      description: Response for the metric-settings sub-resource.
+    api__schemas__experiment_group__ExperimentGroupNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: ExperimentGroupNameFilter
+    ExperimentGroupLatestActivityFilter:
+      properties:
+        name:
+          type: string
+          const: latest_activity
+          title: Name
+          default: latest_activity
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ExperimentGroupLatestActivityFilter
+    ExperimentGroupCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: ExperimentGroupCreatedAtSort
     ExperimentGroupUpdateRequest:
       properties:
         name:
@@ -686,36 +758,6 @@ components:
       type: object
       title: ExperimentGroupUpdateRequest
       description: Request to update an experiment group name/description.
-    BulkMoveExperimentsRequest:
-      properties:
-        experiment_ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          minItems: 1
-          title: Experiment Ids
-          description: List of experiment IDs to move
-        target_experiment_group_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Target Experiment Group Id
-          description: ID of the target experiment group (mutually exclusive with target_experiment_group_name)
-        target_experiment_group_name:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Target Experiment Group Name
-          description: Name of the target experiment group; created if it does not exist (mutually exclusive with target_experiment_group_id)
-      type: object
-      required:
-      - experiment_ids
-      title: BulkMoveExperimentsRequest
-      description: Request to move experiments between experiment groups.
     MetricDescriptions:
       type: string
       enum:
@@ -796,13 +838,28 @@ components:
       required:
       - value
       title: ExperimentGroupIsSystemFilter
-    ExperimentGroupCreatedAtSort:
+    ExperimentGroupDatasetResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: ExperimentGroupDatasetResponse
+      description: Distinct dataset summary associated with an experiment group.
+    ExperimentGroupLatestActivitySort:
       properties:
         name:
           type: string
-          const: created_at
+          const: latest_activity
           title: Name
-          default: created_at
+          default: latest_activity
         ascending:
           type: boolean
           title: Ascending
@@ -813,121 +870,64 @@ components:
           title: Sort Type
           default: column
       type: object
-      title: ExperimentGroupCreatedAtSort
-    api__schemas__experiment_group__ExperimentGroupIDFilter:
+      title: ExperimentGroupLatestActivitySort
+    BulkMoveExperimentsRequest:
       properties:
-        name:
-          type: string
-          const: id
-          title: Name
-          default: id
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
+        experiment_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          minItems: 1
+          title: Experiment Ids
+          description: List of experiment IDs to move
+        target_experiment_group_id:
           anyOf:
           - type: string
             format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
-          - type: string
-          title: Value
-      type: object
-      required:
-      - value
-      title: ExperimentGroupIDFilter
-    GroupLabel:
-      type: string
-      enum:
-      - Input Quality
-      - Output Quality
-      - Configuration
-      - LLM Parameters
-      - RAG Quality
-      - RAG Parameters
-      - Generic Parameters
-      - Safety Metrics
-      - Protect
-      - System Metrics
-      - Rating Summary
-      - Annotation Agreement
-      - Custom Metrics
-      - Security
-      - Dataset
-      - Agent Quality
-      - Text to SQL Metrics
-      title: GroupLabel
-      description: Group labels for prompt rows.
-    ExperimentGroupCreatedByFilter:
-      properties:
-        name:
-          type: string
-          const: created_by
-          title: Name
-          default: created_by
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
+          - type: 'null'
+          title: Target Experiment Group Id
+          description: ID of the target experiment group (mutually exclusive with target_experiment_group_name)
+        target_experiment_group_name:
           anyOf:
           - type: string
-            format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
-          - type: string
-          title: Value
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Target Experiment Group Name
+          description: Name of the target experiment group; created if it does not exist (mutually exclusive with target_experiment_group_id)
       type: object
       required:
-      - value
-      title: ExperimentGroupCreatedByFilter
-    ExperimentGroupCreatedAtFilter:
+      - experiment_ids
+      title: BulkMoveExperimentsRequest
+      description: Request to move experiments between experiment groups.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ExperimentGroupNameSort:
       properties:
         name:
           type: string
-          const: created_at
+          const: name
           title: Name
-          default: created_at
-        operator:
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
           type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
+          const: column
+          title: Sort Type
+          default: column
       type: object
-      required:
-      - operator
-      - value
-      title: ExperimentGroupCreatedAtFilter
+      title: ExperimentGroupNameSort
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

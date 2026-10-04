@@ -85,71 +85,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CodeMetricGenerationStatusResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        status:
-          $ref: '#/components/schemas/CodeMetricGenerationStatus'
-        generated_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Generated Code
-        error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Message
-      type: object
-      required:
-      - id
-      - status
-      title: CodeMetricGenerationStatusResponse
-      description: Lightweight polling response.
-    CreateCodeMetricGenerationRequest:
-      properties:
-        user_message:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: User Message
-          description: Natural language, code, or combination
-        node_type:
-          anyOf:
-          - type: string
-            maxLength: 64
-          - type: 'null'
-          title: Node Type
-          description: Selected scoreable node type (llm, retriever, trace, agent, workflow, tool, session)
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-          description: Selected output type (boolean, percentage, count, discrete, categorical, multilabel, freeform)
-        model_name:
-          anyOf:
-          - type: string
-            maxLength: 128
-          - type: 'null'
-          title: Model Name
-          description: Model alias to use for generation. Defaults to best available.
-      type: object
-      required:
-      - user_message
-      title: CreateCodeMetricGenerationRequest
-      description: Request to generate scorer code from a user message.
     ValidationError:
       properties:
         loc:
@@ -204,6 +139,30 @@ components:
       - status
       title: CreateCodeMetricGenerationResponse
       description: Response with generation ID for polling.
+    CodeMetricGenerationStatusResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        status:
+          $ref: '#/components/schemas/CodeMetricGenerationStatus'
+        generated_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Generated Code
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+      type: object
+      required:
+      - id
+      - status
+      title: CodeMetricGenerationStatusResponse
+      description: Lightweight polling response.
     CodeMetricGenerationStatus:
       type: string
       enum:
@@ -211,6 +170,47 @@ components:
       - completed
       - failed
       title: CodeMetricGenerationStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateCodeMetricGenerationRequest:
+      properties:
+        user_message:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: User Message
+          description: Natural language, code, or combination
+        node_type:
+          anyOf:
+          - type: string
+            maxLength: 64
+          - type: 'null'
+          title: Node Type
+          description: Selected scoreable node type (llm, retriever, trace, agent, workflow, tool, session)
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: Selected output type (boolean, percentage, count, discrete, categorical, multilabel, freeform)
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Model Name
+          description: Model alias to use for generation. Defaults to best available.
+      type: object
+      required:
+      - user_message
+      title: CreateCodeMetricGenerationRequest
+      description: Request to generate scorer code from a user message.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

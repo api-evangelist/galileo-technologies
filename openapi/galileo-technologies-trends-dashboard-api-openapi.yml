@@ -2002,99 +2002,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
-    : anyOf:
-      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-    WidgetType:
-      type: string
-      enum:
-      - bar_chart
-      - line_chart
-      - number
-      - table
-      title: WidgetType
-    LogRecordsTextFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-        type:
-          type: string
-          const: text
-          title: Type
-          default: text
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsTextFilter
-    MetricAggregation:
-      type: string
-      enum:
-      - Count
-      - Sum
-      - Average
-      - Min
-      - Max
-      - P50
-      - P90
-      - P95
-      - P99
-      - PercentageFalse
-      - PercentageTrue
-      title: MetricAggregation
-    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
     : properties:
-        and:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          type: array
-          title: And
+        not:
+          anyOf:
+          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          title: Not
       type: object
       required:
-      - and
-      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    WidgetResponse:
+      - not
+      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    WidgetCreateRequest:
       properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
         name:
           type: string
+          maxLength: 100
+          minLength: 1
           title: Name
         description:
           anyOf:
           - type: string
+            maxLength: 500
           - type: 'null'
           title: Description
         type:
@@ -2113,6 +2044,7 @@ components:
           title: Dataset
         metric:
           type: string
+          minLength: 1
           title: Metric
         aggregation:
           $ref: '#/components/schemas/MetricAggregation'
@@ -2124,12 +2056,59 @@ components:
           title: Section Id
       type: object
       required:
-      - id
       - name
       - type
       - metric
       - aggregation
-      title: WidgetResponse
+      title: WidgetCreateRequest
+      description: Request to create a widget.
+    TrendsDashboardDuplicateRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+        visibility:
+          anyOf:
+          - $ref: '#/components/schemas/TrendsDashboardVisibility'
+          - type: 'null'
+          description: '''user'' or ''project''. Defaults to source''s visibility.'
+      type: object
+      required:
+      - name
+      title: TrendsDashboardDuplicateRequest
+      description: Request to duplicate a dashboard.
+    SectionUpdateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Description
+        color:
+          anyOf:
+          - type: string
+            maxLength: 7
+            pattern: ^#[0-9A-Fa-f]{6}$
+          - type: 'null'
+          title: Color
+      type: object
+      title: SectionUpdateRequest
     TrendsDashboardSummary:
       properties:
         id:
@@ -2178,112 +2157,6 @@ components:
       - updated_at
       title: TrendsDashboardSummary
       description: Lightweight dashboard summary for list endpoint.
-    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
-    : anyOf:
-      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-    WidgetUpdateRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 100
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 500
-          - type: 'null'
-          title: Description
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/WidgetType'
-          - type: 'null'
-        dataset:
-          anyOf:
-          - items:
-              additionalProperties:
-                items:
-                  type: string
-                type: array
-              type: object
-            type: array
-            maxItems: 50
-          - type: 'null'
-          title: Dataset
-        metric:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric
-        aggregation:
-          anyOf:
-          - $ref: '#/components/schemas/MetricAggregation'
-          - type: 'null'
-        section_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Section Id
-      type: object
-      title: WidgetUpdateRequest
-    LogRecordsFullyAnnotatedFilter:
-      properties:
-        column_id:
-          type: string
-          const: fully_annotated
-          title: Column Id
-          description: Queue-scoped filter identifier. This filter only works for annotation-queue searches that provide queue context.
-          default: fully_annotated
-        type:
-          type: string
-          const: fully_annotated
-          title: Type
-          default: fully_annotated
-        user_ids:
-          anyOf:
-          - items:
-              type: string
-              format: uuid4
-            type: array
-            minItems: 1
-          - type: 'null'
-          title: User Ids
-          description: Optional queue member IDs to require for full annotation in a queue-scoped search. If omitted, all tracked queue members visible to the requester are used.
-      type: object
-      title: LogRecordsFullyAnnotatedFilter
-      description: Queue-scoped filter for records rated across all queue templates.
-    ? FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____
-    : properties:
-        filter:
-          oneOf:
-          - $ref: '#/components/schemas/LogRecordsIDFilter'
-          - $ref: '#/components/schemas/LogRecordsDateFilter'
-          - $ref: '#/components/schemas/LogRecordsNumberFilter'
-          - $ref: '#/components/schemas/LogRecordsBooleanFilter'
-          - $ref: '#/components/schemas/LogRecordsCollectionFilter'
-          - $ref: '#/components/schemas/LogRecordsTextFilter'
-          - $ref: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
-          title: Filter
-          discriminator:
-            propertyName: type
-            mapping:
-              boolean: '#/components/schemas/LogRecordsBooleanFilter'
-              collection: '#/components/schemas/LogRecordsCollectionFilter'
-              date: '#/components/schemas/LogRecordsDateFilter'
-              fully_annotated: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
-              id: '#/components/schemas/LogRecordsIDFilter'
-              number: '#/components/schemas/LogRecordsNumberFilter'
-              text: '#/components/schemas/LogRecordsTextFilter'
-      type: object
-      required:
-      - filter
-      title: FilterLeaf[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
     TrendsDashboardResponse:
       properties:
         id:
@@ -2374,92 +2247,6 @@ components:
       - start_time
       - end_time
       title: TrendsDashboardResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
-    : properties:
-        or:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          type: array
-          title: Or
-      type: object
-      required:
-      - or
-      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    LogRecordsCollectionFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-        type:
-          type: string
-          const: collection
-          title: Type
-          default: collection
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsCollectionFilter
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     LogRecordsDateFilter:
       properties:
         column_id:
@@ -2491,205 +2278,6 @@ components:
       - operator
       - value
       title: LogRecordsDateFilter
-    LogRecordsBooleanFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          title: Operator
-          default: eq
-        value:
-          type: boolean
-          title: Value
-        type:
-          type: string
-          const: boolean
-          title: Type
-          default: boolean
-      type: object
-      required:
-      - column_id
-      - value
-      title: LogRecordsBooleanFilter
-    LogRecordsIDFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
-          anyOf:
-          - type: string
-            format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
-          - type: string
-          title: Value
-        type:
-          type: string
-          const: id
-          title: Type
-          default: id
-      type: object
-      required:
-      - column_id
-      - value
-      title: LogRecordsIDFilter
-    TrendsDashboardVisibility:
-      type: string
-      enum:
-      - user
-      - project
-      title: TrendsDashboardVisibility
-    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
-    : properties:
-        not:
-          anyOf:
-          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
-          title: Not
-      type: object
-      required:
-      - not
-      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    SectionResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        color:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Color
-        widgets:
-          items:
-            $ref: '#/components/schemas/WidgetResponse'
-          type: array
-          maxItems: 50
-          title: Widgets
-      type: object
-      required:
-      - id
-      - name
-      title: SectionResponse
-    LogRecordsNumberFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          - between
-          title: Operator
-        value:
-          anyOf:
-          - type: integer
-          - type: number
-          - items:
-              type: integer
-            type: array
-          - items:
-              type: number
-            type: array
-          title: Value
-        type:
-          type: string
-          const: number
-          title: Type
-          default: number
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsNumberFilter
-    WidgetCreateRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 100
-          minLength: 1
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 500
-          - type: 'null'
-          title: Description
-        type:
-          $ref: '#/components/schemas/WidgetType'
-        dataset:
-          anyOf:
-          - items:
-              additionalProperties:
-                items:
-                  type: string
-                type: array
-              type: object
-            type: array
-            maxItems: 50
-          - type: 'null'
-          title: Dataset
-        metric:
-          type: string
-          minLength: 1
-          title: Metric
-        aggregation:
-          $ref: '#/components/schemas/MetricAggregation'
-        section_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Section Id
-      type: object
-      required:
-      - name
-      - type
-      - metric
-      - aggregation
-      title: WidgetCreateRequest
-      description: Request to create a widget.
     TrendsDashboardUpdateRequest:
       properties:
         name:
@@ -2754,7 +2342,132 @@ components:
         Time range: provide either (start_time, end_time) for absolute timestamps, or relative_time
 
         (e.g. "last_7_days", "last_12_hours", "last_3_months") for a rolling window from now.'
-    SectionUpdateRequest:
+    LogRecordsNumberFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+        type:
+          type: string
+          const: number
+          title: Type
+          default: number
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsNumberFilter
+    LogRecordsTextFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: text
+          title: Type
+          default: text
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsTextFilter
+    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        and:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          type: array
+          title: And
+      type: object
+      required:
+      - and
+      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    WidgetType:
+      type: string
+      enum:
+      - bar_chart
+      - line_chart
+      - number
+      - table
+      title: WidgetType
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WidgetUpdateRequest:
       properties:
         name:
           anyOf:
@@ -2769,15 +2482,75 @@ components:
             maxLength: 500
           - type: 'null'
           title: Description
-        color:
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/WidgetType'
+          - type: 'null'
+        dataset:
+          anyOf:
+          - items:
+              additionalProperties:
+                items:
+                  type: string
+                type: array
+              type: object
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Dataset
+        metric:
           anyOf:
           - type: string
-            maxLength: 7
-            pattern: ^#[0-9A-Fa-f]{6}$
           - type: 'null'
-          title: Color
+          title: Metric
+        aggregation:
+          anyOf:
+          - $ref: '#/components/schemas/MetricAggregation'
+          - type: 'null'
+        section_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Section Id
       type: object
-      title: SectionUpdateRequest
+      title: WidgetUpdateRequest
+    LogRecordsCollectionFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: collection
+          title: Type
+          default: collection
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsCollectionFilter
     SectionCreateRequest:
       properties:
         name:
@@ -2803,29 +2576,140 @@ components:
       - name
       title: SectionCreateRequest
       description: Request to create a section.
-    TrendsDashboardDuplicateRequest:
+    MetricAggregation:
+      type: string
+      enum:
+      - Count
+      - Sum
+      - Average
+      - Min
+      - Max
+      - P50
+      - P90
+      - P95
+      - P99
+      - PercentageFalse
+      - PercentageTrue
+      title: MetricAggregation
+    LogRecordsBooleanFilter:
       properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+        type:
+          type: string
+          const: boolean
+          title: Type
+          default: boolean
+      type: object
+      required:
+      - column_id
+      - value
+      title: LogRecordsBooleanFilter
+    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        not:
+          anyOf:
+          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          title: Not
+      type: object
+      required:
+      - not
+      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    SectionResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
         name:
           type: string
-          maxLength: 255
-          minLength: 1
           title: Name
         description:
           anyOf:
           - type: string
-            maxLength: 1000
           - type: 'null'
           title: Description
-        visibility:
+        color:
           anyOf:
-          - $ref: '#/components/schemas/TrendsDashboardVisibility'
+          - type: string
           - type: 'null'
-          description: '''user'' or ''project''. Defaults to source''s visibility.'
+          title: Color
+        widgets:
+          items:
+            $ref: '#/components/schemas/WidgetResponse'
+          type: array
+          maxItems: 50
+          title: Widgets
       type: object
       required:
+      - id
       - name
-      title: TrendsDashboardDuplicateRequest
-      description: Request to duplicate a dashboard.
+      title: SectionResponse
+    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : anyOf:
+      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+    TrendsDashboardVisibility:
+      type: string
+      enum:
+      - user
+      - project
+      title: TrendsDashboardVisibility
+    LogRecordsIDFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+        type:
+          type: string
+          const: id
+          title: Type
+          default: id
+      type: object
+      required:
+      - column_id
+      - value
+      title: LogRecordsIDFilter
     ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
     : properties:
         or:
@@ -2841,34 +2725,150 @@ components:
       required:
       - or
       title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    WidgetResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        type:
+          $ref: '#/components/schemas/WidgetType'
+        dataset:
+          anyOf:
+          - items:
+              additionalProperties:
+                items:
+                  type: string
+                type: array
+              type: object
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Dataset
+        metric:
+          type: string
+          title: Metric
+        aggregation:
+          $ref: '#/components/schemas/MetricAggregation'
+        section_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Section Id
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - metric
+      - aggregation
+      title: WidgetResponse
+    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : properties:
+        or:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          type: array
+          title: Or
+      type: object
+      required:
+      - or
+      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
     : properties:
         and:
           items:
             anyOf:
             - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
           type: array
           title: And
       type: object
       required:
       - and
       title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
-    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
-    : properties:
-        not:
+    LogRecordsFullyAnnotatedFilter:
+      properties:
+        column_id:
+          type: string
+          const: fully_annotated
+          title: Column Id
+          description: Queue-scoped filter identifier. This filter only works for annotation-queue searches that provide queue context.
+          default: fully_annotated
+        type:
+          type: string
+          const: fully_annotated
+          title: Type
+          default: fully_annotated
+        user_ids:
           anyOf:
-          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
-          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
-          title: Not
+          - items:
+              type: string
+              format: uuid4
+            type: array
+            minItems: 1
+          - type: 'null'
+          title: User Ids
+          description: Optional queue member IDs to require for full annotation in a queue-scoped search. If omitted, all tracked queue members visible to the requester are used.
+      type: object
+      title: LogRecordsFullyAnnotatedFilter
+      description: Queue-scoped filter for records rated across all queue templates.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : anyOf:
+      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+    ? FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____
+    : properties:
+        filter:
+          oneOf:
+          - $ref: '#/components/schemas/LogRecordsIDFilter'
+          - $ref: '#/components/schemas/LogRecordsDateFilter'
+          - $ref: '#/components/schemas/LogRecordsNumberFilter'
+          - $ref: '#/components/schemas/LogRecordsBooleanFilter'
+          - $ref: '#/components/schemas/LogRecordsCollectionFilter'
+          - $ref: '#/components/schemas/LogRecordsTextFilter'
+          - $ref: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+          title: Filter
+          discriminator:
+            propertyName: type
+            mapping:
+              boolean: '#/components/schemas/LogRecordsBooleanFilter'
+              collection: '#/components/schemas/LogRecordsCollectionFilter'
+              date: '#/components/schemas/LogRecordsDateFilter'
+              fully_annotated: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+              id: '#/components/schemas/LogRecordsIDFilter'
+              number: '#/components/schemas/LogRecordsNumberFilter'
+              text: '#/components/schemas/LogRecordsTextFilter'
       type: object
       required:
-      - not
-      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+      - filter
+      title: FilterLeaf[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

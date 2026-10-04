@@ -220,25 +220,53 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ContentModality:
+    ModelPriceEntry:
+      properties:
+        input_price:
+          type: number
+          minimum: 0.0
+          title: Input Price
+          description: Price in USD per 1M tokens
+        output_price:
+          type: number
+          minimum: 0.0
+          title: Output Price
+          description: Price in USD per 1M tokens
+      type: object
+      required:
+      - input_price
+      - output_price
+      title: ModelPriceEntry
+      description: A pair of input/output prices — used for requests and responses.
+    ModelWithPriceOverrides:
+      properties:
+        name:
+          type: string
+          title: Name
+        price_overrides:
+          $ref: '#/components/schemas/ModelPriceEntry'
+      type: object
+      required:
+      - name
+      - price_overrides
+      title: ModelWithPriceOverrides
+      description: Single item in GET /models/price_overrides response.
+    LLMIntegration:
       type: string
       enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
     ModelPricesResponse:
       properties:
         override:
@@ -266,24 +294,51 @@ components:
       - name
       title: ModelWithPrices
       description: Single item in GET /models response.
-    ModelPriceEntry:
+    ValidationError:
       properties:
-        input_price:
-          type: number
-          minimum: 0.0
-          title: Input Price
-          description: Price in USD per 1M tokens
-        output_price:
-          type: number
-          minimum: 0.0
-          title: Output Price
-          description: Price in USD per 1M tokens
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - input_price
-      - output_price
-      title: ModelPriceEntry
-      description: A pair of input/output prices — used for requests and responses.
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
     ModelInfo:
       properties:
         name:
@@ -328,61 +383,6 @@ components:
         information to actually execute requests against the model, but that is not necessary
 
         to surface to the user.'
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ModelWithPriceOverrides:
-      properties:
-        name:
-          type: string
-          title: Name
-        price_overrides:
-          $ref: '#/components/schemas/ModelPriceEntry'
-      type: object
-      required:
-      - name
-      - price_overrides
-      title: ModelWithPriceOverrides
-      description: Single item in GET /models/price_overrides response.
-    LLMIntegration:
-      type: string
-      enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: LLMIntegration
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

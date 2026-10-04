@@ -195,7 +195,7 @@ components:
       - vision
       - audio
       title: MultimodalCapability
-    IntegrationProvider:
+    LLMIntegration:
       type: string
       enum:
       - anthropic
@@ -210,86 +210,31 @@ components:
       - vegas_gateway
       - vertex_ai
       - writer
-      title: IntegrationProvider
-    RecommendedModelPurpose:
-      type: string
-      enum:
-      - custom_metric_judge
-      - custom_metric_autogen
-      - autotune
-      - signals
-      - ai_assistant
-      title: RecommendedModelPurpose
-    HTTPValidationError:
+      title: LLMIntegration
+    api__schemas__integration__llm_integration__ModelProperties:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    IntegrationModelsResponse:
-      properties:
-        integration_name:
+        alias:
           type: string
-          title: Integration Name
-        integration_id:
+          title: Alias
+        name:
           type: string
-          format: uuid4
-          title: Integration Id
-        provider:
-          $ref: '#/components/schemas/IntegrationProvider'
-        models:
+          title: Name
+        input_modalities:
           items:
-            type: string
+            $ref: '#/components/schemas/ContentModality'
           type: array
-          title: Models
-        scorer_models:
+          title: Input Modalities
+        multimodal_capabilities:
           items:
-            type: string
+            $ref: '#/components/schemas/MultimodalCapability'
           type: array
-          title: Scorer Models
-        recommended_models:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          propertyNames:
-            $ref: '#/components/schemas/RecommendedModelPurpose'
-          type: object
-          title: Recommended Models
-        supports_num_judges:
-          type: boolean
-          title: Supports Num Judges
-          default: true
-        supports_file_uploads:
-          type: boolean
-          title: Supports File Uploads
-          default: false
-        model_properties:
-          items:
-            $ref: '#/components/schemas/api__schemas__integration__llm_integration__ModelProperties'
-          type: array
-          title: Model Properties
+          title: Multimodal Capabilities
       type: object
       required:
-      - integration_name
-      - integration_id
-      - provider
-      - models
-      - scorer_models
-      title: IntegrationModelsResponse
-    ContentModality:
-      type: string
-      enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
+      - alias
+      - name
+      - input_modalities
+      title: ModelProperties
     RecommendedModelsResponse:
       properties:
         supported:
@@ -345,7 +290,86 @@ components:
       - msg
       - type
       title: ValidationError
-    LLMIntegration:
+    IntegrationModelsResponse:
+      properties:
+        integration_name:
+          type: string
+          title: Integration Name
+        integration_id:
+          type: string
+          format: uuid4
+          title: Integration Id
+        provider:
+          $ref: '#/components/schemas/IntegrationProvider'
+        models:
+          items:
+            type: string
+          type: array
+          title: Models
+        scorer_models:
+          items:
+            type: string
+          type: array
+          title: Scorer Models
+        recommended_models:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          propertyNames:
+            $ref: '#/components/schemas/RecommendedModelPurpose'
+          type: object
+          title: Recommended Models
+        supports_num_judges:
+          type: boolean
+          title: Supports Num Judges
+          default: true
+        supports_file_uploads:
+          type: boolean
+          title: Supports File Uploads
+          default: false
+        model_properties:
+          items:
+            $ref: '#/components/schemas/api__schemas__integration__llm_integration__ModelProperties'
+          type: array
+          title: Model Properties
+      type: object
+      required:
+      - integration_name
+      - integration_id
+      - provider
+      - models
+      - scorer_models
+      title: IntegrationModelsResponse
+    RecommendedModelPurpose:
+      type: string
+      enum:
+      - custom_metric_judge
+      - custom_metric_autogen
+      - autotune
+      - signals
+      - ai_assistant
+      title: RecommendedModelPurpose
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    IntegrationProvider:
       type: string
       enum:
       - anthropic
@@ -360,31 +384,7 @@ components:
       - vegas_gateway
       - vertex_ai
       - writer
-      title: LLMIntegration
-    api__schemas__integration__llm_integration__ModelProperties:
-      properties:
-        alias:
-          type: string
-          title: Alias
-        name:
-          type: string
-          title: Name
-        input_modalities:
-          items:
-            $ref: '#/components/schemas/ContentModality'
-          type: array
-          title: Input Modalities
-        multimodal_capabilities:
-          items:
-            $ref: '#/components/schemas/MultimodalCapability'
-          type: array
-          title: Multimodal Capabilities
-      type: object
-      required:
-      - alias
-      - name
-      - input_modalities
-      title: ModelProperties
+      title: IntegrationProvider
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

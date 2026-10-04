@@ -72,48 +72,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    GeneratedScorerTaskResultResponse:
+    FewShotExample:
       properties:
-        id:
+        generation_prompt_and_response:
           type: string
-          format: uuid4
-          title: Id
-        created_at:
+          title: Generation Prompt And Response
+        evaluating_response:
           type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        status:
-          $ref: '#/components/schemas/TaskResultStatus'
-        result_type:
-          $ref: '#/components/schemas/GeneratedScorerTaskResultType'
-        result:
-          anyOf:
-          - $ref: '#/components/schemas/ChainPollTemplate'
-          - $ref: '#/components/schemas/GeneratedScorerValidationResult'
-          - type: string
-          - type: 'null'
-          title: Result
+          title: Evaluating Response
       type: object
       required:
-      - id
-      - created_at
-      - updated_at
-      - status
-      - result_type
-      title: GeneratedScorerTaskResultResponse
-    HTTPValidationError:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
+    FineTunedScorerWeightsUploadRequest:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        lora_task_id:
+          type: integer
+          minimum: 1.0
+          title: Lora Task Id
       type: object
-      title: HTTPValidationError
+      required:
+      - lora_task_id
+      title: FineTunedScorerWeightsUploadRequest
     GeneratedScorerValidationResult:
       properties:
         rating:
@@ -181,23 +163,6 @@ components:
       description: 'Template for a chainpoll metric prompt,
 
         containing all the info necessary to send a chainpoll prompt.'
-    GeneratedScorerTaskResultType:
-      type: string
-      enum:
-      - scorer_auto_gen
-      - scorer_auto_gen_v2
-      - scorer_validation
-      title: GeneratedScorerTaskResultType
-    FineTunedScorerWeightsUploadRequest:
-      properties:
-        lora_task_id:
-          type: integer
-          minimum: 1.0
-          title: Lora Task Id
-      type: object
-      required:
-      - lora_task_id
-      title: FineTunedScorerWeightsUploadRequest
     ValidationError:
       properties:
         loc:
@@ -224,20 +189,6 @@ components:
       - msg
       - type
       title: ValidationError
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
-          type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
-      type: object
-      required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
     FineTunedScorerWeightsUploadResponse:
       properties:
         bucket:
@@ -267,6 +218,55 @@ components:
       - object_paths
       - presigned_url_expiry_seconds
       title: FineTunedScorerWeightsUploadResponse
+    GeneratedScorerTaskResultType:
+      type: string
+      enum:
+      - scorer_auto_gen
+      - scorer_auto_gen_v2
+      - scorer_validation
+      title: GeneratedScorerTaskResultType
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    GeneratedScorerTaskResultResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        status:
+          $ref: '#/components/schemas/TaskResultStatus'
+        result_type:
+          $ref: '#/components/schemas/GeneratedScorerTaskResultType'
+        result:
+          anyOf:
+          - $ref: '#/components/schemas/ChainPollTemplate'
+          - $ref: '#/components/schemas/GeneratedScorerValidationResult'
+          - type: string
+          - type: 'null'
+          title: Result
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - status
+      - result_type
+      title: GeneratedScorerTaskResultResponse
     TaskResultStatus:
       type: string
       enum:

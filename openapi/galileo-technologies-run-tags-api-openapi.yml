@@ -250,15 +250,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     DeleteRunResponse:
       properties:
         message:
@@ -268,6 +259,60 @@ components:
       required:
       - message
       title: DeleteRunResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RunTagCreateRequest:
+      properties:
+        key:
+          type: string
+          maxLength: 256
+          title: Key
+        value:
+          type: string
+          maxLength: 256
+          title: Value
+        tag_type:
+          type: string
+          title: Tag Type
+      type: object
+      required:
+      - key
+      - value
+      - tag_type
+      title: RunTagCreateRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     RunTagDB:
       properties:
         key:
@@ -317,51 +362,6 @@ components:
       - created_at
       - updated_at
       title: RunTagDB
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    RunTagCreateRequest:
-      properties:
-        key:
-          type: string
-          maxLength: 256
-          title: Key
-        value:
-          type: string
-          maxLength: 256
-          title: Value
-        tag_type:
-          type: string
-          title: Tag Type
-      type: object
-      required:
-      - key
-      - value
-      - tag_type
-      title: RunTagCreateRequest
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

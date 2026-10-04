@@ -343,6 +343,96 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GetApiKeyResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        description:
+          type: string
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        last_used:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Used
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        project_role:
+          anyOf:
+          - $ref: '#/components/schemas/CollaboratorRole'
+          - type: 'null'
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        truncated:
+          type: string
+          title: Truncated
+      type: object
+      required:
+      - id
+      - description
+      - created_at
+      - updated_at
+      - created_by
+      - truncated
+      title: GetApiKeyResponse
+    ApiKeyDeleteResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: ApiKeyDeleteResponse
     HTTPValidationError:
       properties:
         detail:
@@ -360,6 +450,34 @@ components:
       - annotator
       - viewer
       title: CollaboratorRole
+    ListApiKeyResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        api_keys:
+          items:
+            $ref: '#/components/schemas/GetApiKeyResponse'
+          type: array
+          title: Api Keys
+      type: object
+      required:
+      - api_keys
+      title: ListApiKeyResponse
     CreateApiKeyRequest:
       properties:
         description:
@@ -392,69 +510,6 @@ components:
       required:
       - description
       title: CreateApiKeyRequest
-    ApiKeyDeleteResponse:
-      properties:
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - message
-      title: ApiKeyDeleteResponse
-    ListApiKeyResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        api_keys:
-          items:
-            $ref: '#/components/schemas/GetApiKeyResponse'
-          type: array
-          title: Api Keys
-      type: object
-      required:
-      - api_keys
-      title: ListApiKeyResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     CreateApiKeyResponse:
       properties:
         id:
@@ -514,61 +569,6 @@ components:
       - truncated
       - api_key
       title: CreateApiKeyResponse
-    GetApiKeyResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        description:
-          type: string
-          title: Description
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        last_used:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Used
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        project_role:
-          anyOf:
-          - $ref: '#/components/schemas/CollaboratorRole'
-          - type: 'null'
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        truncated:
-          type: string
-          title: Truncated
-      type: object
-      required:
-      - id
-      - description
-      - created_at
-      - updated_at
-      - created_by
-      - truncated
-      title: GetApiKeyResponse
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

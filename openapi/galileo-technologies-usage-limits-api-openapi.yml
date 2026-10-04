@@ -85,6 +85,16 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CreateUsageLimitRequest:
+      properties:
+        limit:
+          type: integer
+          exclusiveMinimum: 0.0
+          title: Limit
+      type: object
+      required:
+      - limit
+      title: CreateUsageLimitRequest
     UsageLimitResponse:
       properties:
         name:
@@ -101,27 +111,32 @@ components:
       - limit
       - current_usage
       title: UsageLimitResponse
-    UsageLimit:
+    ValidationError:
       properties:
-        name:
-          $ref: '#/components/schemas/UsageLimitNames'
-        limit:
-          type: integer
-          title: Limit
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - name
-      - limit
-      title: UsageLimit
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ListUsageLimitsResponse:
       properties:
         starting_token:
@@ -150,16 +165,15 @@ components:
       required:
       - usage_limits
       title: ListUsageLimitsResponse
-    CreateUsageLimitRequest:
+    HTTPValidationError:
       properties:
-        limit:
-          type: integer
-          exclusiveMinimum: 0.0
-          title: Limit
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - limit
-      title: CreateUsageLimitRequest
+      title: HTTPValidationError
     UsageLimitNames:
       type: string
       enum:
@@ -167,32 +181,18 @@ components:
       - orgs_per_user
       - users_per_org
       title: UsageLimitNames
-    ValidationError:
+    UsageLimit:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+        name:
+          $ref: '#/components/schemas/UsageLimitNames'
+        limit:
+          type: integer
+          title: Limit
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - name
+      - limit
+      title: UsageLimit
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

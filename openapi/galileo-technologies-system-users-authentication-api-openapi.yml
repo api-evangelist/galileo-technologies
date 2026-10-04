@@ -109,29 +109,6 @@ paths:
       - OAuth2PasswordBearer: []
 components:
   schemas:
-    PasswordResetEmailResponse:
-      properties: {}
-      type: object
-      title: PasswordResetEmailResponse
-    ResendVerificationEmailResponse:
-      properties: {}
-      type: object
-      title: ResendVerificationEmailResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SystemRole:
-      type: string
-      enum:
-      - system_admin
-      - system_user
-      title: SystemRole
     UserPasswordResetRequest:
       properties:
         email:
@@ -152,24 +129,6 @@ components:
       required:
       - email
       title: UserPasswordResetRequest
-    EmailVerificationRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-      type: object
-      required:
-      - email
-      title: EmailVerificationRequest
-    SystemUserStatus:
-      type: string
-      enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
     SystemUserDB:
       properties:
         id:
@@ -245,6 +204,47 @@ components:
       - msg
       - type
       title: ValidationError
+    ResendVerificationEmailResponse:
+      properties: {}
+      type: object
+      title: ResendVerificationEmailResponse
+    EmailVerificationRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - email
+      title: EmailVerificationRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PasswordResetEmailResponse:
+      properties: {}
+      type: object
+      title: PasswordResetEmailResponse
+    SystemRole:
+      type: string
+      enum:
+      - system_admin
+      - system_user
+      title: SystemRole
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

@@ -1037,113 +1037,87 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AnnotationQueueNumTemplatesSort:
-      properties:
-        name:
-          type: string
-          const: num_templates
-          title: Name
-          default: num_templates
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: AnnotationQueueNumTemplatesSort
-    AnnotationTemplateUpdate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-      type: object
-      required:
-      - name
-      - criteria
-      title: AnnotationTemplateUpdate
-    api__schemas__annotation__LikeDislikeConstraints:
+    api__schemas__annotation__ChoiceConstraints:
       properties:
         annotation_type:
           type: string
-          const: like_dislike
+          const: choice
           title: Annotation Type
+        choices:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          title: Choices
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
       type: object
       required:
       - annotation_type
-      title: LikeDislikeConstraints
-    AnnotationTagsAggregate:
-      properties:
-        annotation_type:
-          type: string
-          const: tags
-          title: Annotation Type
-          default: tags
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - counts
-      - unrated_count
-      title: AnnotationTagsAggregate
-    AnnotationQueueNumUsersFilter:
+      - choices
+      title: ChoiceConstraints
+    CreateAnnotationQueueRequest:
       properties:
         name:
-          type: string
-          const: num_users
-          title: Name
-          default: num_users
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          - between
-          title: Operator
-        value:
+          $ref: '#/components/schemas/Name'
+        description:
           anyOf:
-          - type: integer
-          - type: number
-          - items:
-              type: integer
-            type: array
-          - items:
-              type: number
-            type: array
-          title: Value
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Description
+        annotator_emails:
+          items:
+            type: string
+            format: email
+          type: array
+          title: Annotator Emails
+        copy_templates_from_queue_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy Templates From Queue Id
+          description: Optional ID of an existing annotation queue to copy templates from
       type: object
       required:
-      - operator
-      - value
-      title: AnnotationQueueNumUsersFilter
-    AnnotationQueueNumLogRecordsSort:
+      - name
+      title: CreateAnnotationQueueRequest
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    AnnotationQueueCreatedBySort:
       properties:
         name:
           type: string
-          const: num_log_records
+          const: created_by
           title: Name
-          default: num_log_records
+          default: created_by
         ascending:
           type: boolean
           title: Ascending
@@ -1154,7 +1128,48 @@ components:
           title: Sort Type
           default: column
       type: object
-      title: AnnotationQueueNumLogRecordsSort
+      title: AnnotationQueueCreatedBySort
+    AnnotationQueueUpdatedAtSort:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: AnnotationQueueUpdatedAtSort
+    TreeChoiceDBConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: tree_choice
+          title: Annotation Type
+        choices_tree:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
+          type: array
+          maxItems: 50
+          title: Choices Tree
+        choices_tree_yaml:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Choices Tree Yaml
+      type: object
+      required:
+      - annotation_type
+      - choices_tree
+      - choices_tree_yaml
+      title: TreeChoiceDBConstraints
     AnnotationQueueNameSort:
       properties:
         name:
@@ -1173,54 +1188,45 @@ components:
           default: column
       type: object
       title: AnnotationQueueNameSort
-    GroupAction:
-      type: string
-      enum:
-      - update
-      - list_members
-      - join
-      - request_to_join
-      title: GroupAction
-    AnnotationQueueNumTemplatesFilter:
+    AnnotationChoiceAggregate:
       properties:
-        name:
+        annotation_type:
           type: string
-          const: num_templates
-          title: Name
-          default: num_templates
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          - between
-          title: Operator
-        value:
-          anyOf:
-          - type: integer
-          - type: number
-          - items:
-              type: integer
-            type: array
-          - items:
-              type: number
-            type: array
-          title: Value
+          const: choice
+          title: Annotation Type
+          default: choice
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
       type: object
       required:
-      - operator
-      - value
-      title: AnnotationQueueNumTemplatesFilter
-    FineTunedScorerAction:
+      - counts
+      - unrated_count
+      title: AnnotationChoiceAggregate
+    ScorerAction:
       type: string
       enum:
       - update
       - delete
-      title: FineTunedScorerAction
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    api__schemas__annotation__StarConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: star
+          title: Annotation Type
+      type: object
+      required:
+      - annotation_type
+      title: StarConstraints
     ListAnnotationQueueParams:
       properties:
         filters:
@@ -1310,6 +1316,359 @@ components:
       - dislike_count
       - unrated_count
       title: AnnotationLikeDislikeAggregate
+    AnnotationQueueUpdatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: AnnotationQueueUpdatedAtFilter
+    AnnotationQueueNumTemplatesSort:
+      properties:
+        name:
+          type: string
+          const: num_templates
+          title: Name
+          default: num_templates
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: AnnotationQueueNumTemplatesSort
+    AnnotationStarAggregate:
+      properties:
+        annotation_type:
+          type: string
+          const: star
+          title: Annotation Type
+          default: star
+        average:
+          type: number
+          title: Average
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - average
+      - counts
+      - unrated_count
+      title: AnnotationStarAggregate
+    AnnotationQueueNumLogRecordsSort:
+      properties:
+        name:
+          type: string
+          const: num_log_records
+          title: Name
+          default: num_log_records
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: AnnotationQueueNumLogRecordsSort
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    AnnotationQueueCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: AnnotationQueueCreatedAtFilter
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    AnnotationQueueCountResponse:
+      properties:
+        total_count:
+          type: integer
+          title: Total Count
+          description: Total number of annotation queues matching the filters
+      type: object
+      required:
+      - total_count
+      title: AnnotationQueueCountResponse
+    ScoreBucket:
+      properties:
+        min_inclusive:
+          type: integer
+          title: Min Inclusive
+        max_exclusive:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Exclusive
+        count:
+          type: integer
+          title: Count
+      type: object
+      required:
+      - min_inclusive
+      - max_exclusive
+      - count
+      title: ScoreBucket
+    AnnotationQueueNumAnnotatorsFilter:
+      properties:
+        name:
+          type: string
+          const: num_annotators
+          title: Name
+          default: num_annotators
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: AnnotationQueueNumAnnotatorsFilter
+    AnnotationQueueUserCollaboratorUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        track_progress:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Track Progress
+      type: object
+      required:
+      - role
+      title: AnnotationQueueUserCollaboratorUpdate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateQueueTemplateRequest:
+      properties:
+        template:
+          anyOf:
+          - $ref: '#/components/schemas/AnnotationTemplateCreate'
+          - type: 'null'
+          description: Template to create. Required if copy_from_queue_id is not provided.
+        copy_from_queue_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy From Queue Id
+          description: Source queue ID to copy all templates from. Required if template is not provided.
+      type: object
+      title: CreateQueueTemplateRequest
+      description: 'Request to create templates in an annotation queue.
+
+
+        Supports two scenarios:
+
+        1. Create a single template (template field)
+
+        2. Copy all templates from a source queue (copy_from_queue_id field)'
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    AnnotationTemplateDB:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        include_explanation:
+          type: boolean
+          title: Include Explanation
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
+        constraints:
+          oneOf:
+          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__StarConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TagsConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TextConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
+          - $ref: '#/components/schemas/TreeChoiceDBConstraints'
+          title: Constraints
+          discriminator:
+            propertyName: annotation_type
+            mapping:
+              choice: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
+              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
+              score: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
+              star: '#/components/schemas/api__schemas__annotation__StarConstraints'
+              tags: '#/components/schemas/api__schemas__annotation__TagsConstraints'
+              text: '#/components/schemas/api__schemas__annotation__TextConstraints'
+              tree_choice: '#/components/schemas/TreeChoiceDBConstraints'
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        position:
+          type: integer
+          title: Position
+        usage_count:
+          type: integer
+          title: Usage Count
+          description: Number of annotation ratings using the template.
+      type: object
+      required:
+      - name
+      - include_explanation
+      - constraints
+      - id
+      - created_at
+      - created_by
+      - position
+      - usage_count
+      title: AnnotationTemplateDB
+    AnnotationScoreAggregate:
+      properties:
+        annotation_type:
+          type: string
+          const: score
+          title: Annotation Type
+          default: score
+        buckets:
+          items:
+            $ref: '#/components/schemas/ScoreBucket'
+          type: array
+          title: Buckets
+        average:
+          type: number
+          title: Average
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - buckets
+      - average
+      - unrated_count
+      title: AnnotationScoreAggregate
     UserAnnotationQueueCollaborator:
       properties:
         id:
@@ -1370,77 +1729,166 @@ components:
       - annotation_queue_id
       title: UserAnnotationQueueCollaborator
       description: User collaborator for an annotation queue, extends shared UserCollaborator with annotation_queue_id.
-    CreateQueueTemplateRequest:
+    AnnotationTemplateReorder:
       properties:
-        template:
-          anyOf:
-          - $ref: '#/components/schemas/AnnotationTemplateCreate'
-          - type: 'null'
-          description: Template to create. Required if copy_from_queue_id is not provided.
-        copy_from_queue_id:
-          anyOf:
-          - type: string
+        ordering:
+          items:
+            type: string
             format: uuid4
-          - type: 'null'
-          title: Copy From Queue Id
-          description: Source queue ID to copy all templates from. Required if template is not provided.
+          type: array
+          title: Ordering
       type: object
-      title: CreateQueueTemplateRequest
-      description: 'Request to create templates in an annotation queue.
+      required:
+      - ordering
+      title: AnnotationTemplateReorder
+      description: 'Request to re-order the annotation templates of a project.
 
 
-        Supports two scenarios:
+        - Expects a list of strings where each string is the ID of a template in the project in the order
 
-        1. Create a single template (template field)
+        we want the templates to appear in.
 
-        2. Copy all templates from a source queue (copy_from_queue_id field)'
-    IntegrationAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - read_secrets
-      title: IntegrationAction
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
-    AnnotationQueueIDFilter:
+        - Expects the list to be complete list of all template IDs.'
+    ListAnnotationQueueCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/UserAnnotationQueueCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListAnnotationQueueCollaboratorsResponse
+    api__schemas__annotation__LikeDislikeConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: like_dislike
+          title: Annotation Type
+      type: object
+      required:
+      - annotation_type
+      title: LikeDislikeConstraints
+    AnnotationQueueCreatedAtSort:
       properties:
         name:
           type: string
-          const: id
+          const: created_at
           title: Name
-          default: id
-        operator:
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
           type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: AnnotationQueueCreatedAtSort
+    AnnotationQueueUserCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        user_id:
           anyOf:
           - type: string
             format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
+          - type: 'null'
+          title: User Id
+        user_email:
+          anyOf:
           - type: string
-          title: Value
+            format: email
+          - type: 'null'
+          title: User Email
+        track_progress:
+          type: boolean
+          title: Track Progress
+          default: true
+      type: object
+      title: AnnotationQueueUserCollaboratorCreate
+    api__schemas__annotation__TreeChoiceNode-Output:
+      properties:
+        label:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Label
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Id
+        children:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
+          type: array
+          maxItems: 50
+          title: Children
       type: object
       required:
-      - value
-      title: AnnotationQueueIDFilter
+      - label
+      - id
+      title: TreeChoiceNode
+    AnnotationQueueDetailsResponse:
+      properties:
+        num_logs_fully_annotated:
+          type: integer
+          title: Num Logs Fully Annotated
+          description: Count of queue logs that have a rating for every queue template from each annotation-capable collaborator with track_progress enabled.
+          default: 0
+        annotation_aggregates:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/AnnotationAggregate'
+            propertyNames:
+              format: uuid4
+            type: object
+          - type: 'null'
+          title: Annotation Aggregates
+          description: Queue-wide aggregates keyed by annotation template UUID. Null when the caller cannot view queue-wide aggregates.
+        annotation_aggregates_by_annotator:
+          anyOf:
+          - additionalProperties:
+              additionalProperties:
+                $ref: '#/components/schemas/AnnotationAggregate'
+              propertyNames:
+                format: uuid4
+              type: object
+            propertyNames:
+              format: uuid4
+            type: object
+          - type: 'null'
+          title: Annotation Aggregates By Annotator
+          description: Per-user aggregates keyed by annotation-capable collaborator UUID, then annotation template UUID. Null when the caller cannot view all per-user aggregates for the queue.
+        overall_annotation_agreement:
+          anyOf:
+          - $ref: '#/components/schemas/AnnotationAgreementAggregate'
+          - type: 'null'
+          description: Queue-wide aggregate of record-level overall annotator agreement. Null when the caller cannot view queue-wide aggregates.
+      type: object
+      title: AnnotationQueueDetailsResponse
     api__schemas__annotation__TextConstraints:
       properties:
         annotation_type:
@@ -1451,6 +1899,15 @@ components:
       required:
       - annotation_type
       title: TextConstraints
+    DatasetAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
     ProjectAction:
       type: string
       enum:
@@ -1480,30 +1937,12 @@ components:
       - update_control_bindings
       - use_control_runtime
       title: ProjectAction
-    AnnotationStarAggregate:
-      properties:
-        annotation_type:
-          type: string
-          const: star
-          title: Annotation Type
-          default: star
-        average:
-          type: number
-          title: Average
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - average
-      - counts
-      - unrated_count
-      title: AnnotationStarAggregate
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
     api__schemas__annotation__TagsConstraints:
       properties:
         annotation_type:
@@ -1526,397 +1965,6 @@ components:
       - annotation_type
       - tags
       title: TagsConstraints
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
-    AnnotationQueueCountResponse:
-      properties:
-        total_count:
-          type: integer
-          title: Total Count
-          description: Total number of annotation queues matching the filters
-      type: object
-      required:
-      - total_count
-      title: AnnotationQueueCountResponse
-    ScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - autotune_apply
-      title: ScorerAction
-    AnnotationQueueNumLogRecordsFilter:
-      properties:
-        name:
-          type: string
-          const: num_log_records
-          title: Name
-          default: num_log_records
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          - between
-          title: Operator
-        value:
-          anyOf:
-          - type: integer
-          - type: number
-          - items:
-              type: integer
-            type: array
-          - items:
-              type: number
-            type: array
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: AnnotationQueueNumLogRecordsFilter
-    AnnotationQueueNumAnnotatorsSort:
-      properties:
-        name:
-          type: string
-          const: num_annotators
-          title: Name
-          default: num_annotators
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: AnnotationQueueNumAnnotatorsSort
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AnnotationTemplateReorder:
-      properties:
-        ordering:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Ordering
-      type: object
-      required:
-      - ordering
-      title: AnnotationTemplateReorder
-      description: 'Request to re-order the annotation templates of a project.
-
-
-        - Expects a list of strings where each string is the ID of a template in the project in the order
-
-        we want the templates to appear in.
-
-        - Expects the list to be complete list of all template IDs.'
-    ScoreBucket:
-      properties:
-        min_inclusive:
-          type: integer
-          title: Min Inclusive
-        max_exclusive:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Exclusive
-        count:
-          type: integer
-          title: Count
-      type: object
-      required:
-      - min_inclusive
-      - max_exclusive
-      - count
-      title: ScoreBucket
-    api__schemas__annotation__TreeChoiceNode-Input:
-      properties:
-        label:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Label
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Id
-        children:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
-          type: array
-          maxItems: 50
-          title: Children
-      type: object
-      required:
-      - label
-      - id
-      title: TreeChoiceNode
-    AnnotationQueueUserCollaboratorUpdate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-        track_progress:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Track Progress
-      type: object
-      required:
-      - role
-      title: AnnotationQueueUserCollaboratorUpdate
-    api__schemas__annotation__ScoreConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: score
-          title: Annotation Type
-        min:
-          type: integer
-          minimum: 0.0
-          title: Min
-        max:
-          type: integer
-          minimum: 0.0
-          title: Max
-      type: object
-      required:
-      - annotation_type
-      - min
-      - max
-      title: ScoreConstraints
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    UserInfo:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        email:
-          type: string
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-      type: object
-      required:
-      - id
-      - email
-      title: UserInfo
-      description: A user's basic information, used for display purposes.
-    TreeChoiceDBConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-        choices_tree:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
-          type: array
-          maxItems: 50
-          title: Choices Tree
-        choices_tree_yaml:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Choices Tree Yaml
-      type: object
-      required:
-      - annotation_type
-      - choices_tree
-      - choices_tree_yaml
-      title: TreeChoiceDBConstraints
-    AnnotationQueueUserCollaboratorCreate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-          default: viewer
-        user_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: User Id
-        user_email:
-          anyOf:
-          - type: string
-            format: email
-          - type: 'null'
-          title: User Email
-        track_progress:
-          type: boolean
-          title: Track Progress
-          default: true
-      type: object
-      title: AnnotationQueueUserCollaboratorCreate
-    AnnotationChoiceAggregate:
-      properties:
-        annotation_type:
-          type: string
-          const: choice
-          title: Annotation Type
-          default: choice
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - counts
-      - unrated_count
-      title: AnnotationChoiceAggregate
-    AnnotationQueueCreatedAtFilter:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: AnnotationQueueCreatedAtFilter
-    AnnotationQueueUpdatedAtFilter:
-      properties:
-        name:
-          type: string
-          const: updated_at
-          title: Name
-          default: updated_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: AnnotationQueueUpdatedAtFilter
-    RegisteredScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: RegisteredScorerAction
-    Name:
-      properties:
-        value:
-          type: string
-          maxLength: 128
-          minLength: 1
-          title: Value
-        append_suffix_if_duplicate:
-          type: boolean
-          title: Append Suffix If Duplicate
-          default: false
-      type: object
-      required:
-      - value
-      title: Name
-      description: Global name class for handling unique naming across the application.
-    AnnotationAgreementBucket:
-      properties:
-        min_inclusive:
-          type: number
-          title: Min Inclusive
-        max_exclusive:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Max Exclusive
-        count:
-          type: integer
-          title: Count
-      type: object
-      required:
-      - min_inclusive
-      - max_exclusive
-      - count
-      title: AnnotationAgreementBucket
     Permission:
       properties:
         action:
@@ -1949,73 +1997,31 @@ components:
       - action
       - allowed
       title: Permission
-    AnnotationTreeChoiceAggregate:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-          default: tree_choice
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - counts
-      - unrated_count
-      title: AnnotationTreeChoiceAggregate
-    api__schemas__annotation__ChoiceConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: choice
-          title: Annotation Type
-        choices:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          title: Choices
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
-      type: object
-      required:
-      - annotation_type
-      - choices
-      title: ChoiceConstraints
-    ControlResourceAction:
-      type: string
-      enum:
-      - create
-      - read
-      - update
-      - delete
-      title: ControlResourceAction
-      description: Actions on Agent Control's org-scoped ``control`` resource.
-    DatasetAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
-    AnnotationQueueUpdatedAtSort:
+    AnnotationTemplateUpdate:
       properties:
         name:
           type: string
-          const: updated_at
+          maxLength: 255
+          minLength: 1
           title: Name
-          default: updated_at
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
+      type: object
+      required:
+      - name
+      - criteria
+      title: AnnotationTemplateUpdate
+    AnnotationQueueNumAnnotatorsSort:
+      properties:
+        name:
+          type: string
+          const: num_annotators
+          title: Name
+          default: num_annotators
         ascending:
           type: boolean
           title: Ascending
@@ -2026,14 +2032,22 @@ components:
           title: Sort Type
           default: column
       type: object
-      title: AnnotationQueueUpdatedAtSort
-    AnnotationQueueNumAnnotatorsFilter:
+      title: AnnotationQueueNumAnnotatorsSort
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    AnnotationQueueNumTemplatesFilter:
       properties:
         name:
           type: string
-          const: num_annotators
+          const: num_templates
           title: Name
-          default: num_annotators
+          default: num_templates
         operator:
           type: string
           enum:
@@ -2060,79 +2074,186 @@ components:
       required:
       - operator
       - value
-      title: AnnotationQueueNumAnnotatorsFilter
-    AnnotationQueueCreatedBySort:
-      properties:
-        name:
-          type: string
-          const: created_by
-          title: Name
-          default: created_by
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: AnnotationQueueCreatedBySort
-    AnnotationAgreementAggregate:
-      properties:
-        buckets:
-          items:
-            $ref: '#/components/schemas/AnnotationAgreementBucket'
-          type: array
-          title: Buckets
-        average_agreement:
-          type: number
-          title: Average Agreement
-      type: object
-      required:
-      - buckets
-      - average_agreement
-      title: AnnotationAgreementAggregate
-    OrganizationAction:
+      title: AnnotationQueueNumTemplatesFilter
+    GroupAction:
       type: string
       enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
-    CreateAnnotationQueueRequest:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    api__schemas__annotation__TreeChoiceNode-Input:
+      properties:
+        label:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Label
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Id
+        children:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
+          type: array
+          maxItems: 50
+          title: Children
+      type: object
+      required:
+      - label
+      - id
+      title: TreeChoiceNode
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      title: CollaboratorRole
+    UpdateAnnotationQueueRequest:
       properties:
         name:
-          $ref: '#/components/schemas/Name'
+          anyOf:
+          - $ref: '#/components/schemas/Name'
+          - type: 'null'
         description:
           anyOf:
           - type: string
             maxLength: 256
           - type: 'null'
           title: Description
-        annotator_emails:
-          items:
-            type: string
-            format: email
-          type: array
-          title: Annotator Emails
-        copy_templates_from_queue_id:
+      type: object
+      title: UpdateAnnotationQueueRequest
+    AnnotationAgreementBucket:
+      properties:
+        min_inclusive:
+          type: number
+          title: Min Inclusive
+        max_exclusive:
           anyOf:
-          - type: string
-            format: uuid4
+          - type: number
           - type: 'null'
-          title: Copy Templates From Queue Id
-          description: Optional ID of an existing annotation queue to copy templates from
+          title: Max Exclusive
+        count:
+          type: integer
+          title: Count
       type: object
       required:
-      - name
-      title: CreateAnnotationQueueRequest
-    ListAnnotationQueueCollaboratorsResponse:
+      - min_inclusive
+      - max_exclusive
+      - count
+      title: AnnotationAgreementBucket
+    AnnotationQueueProjectFilter:
+      properties:
+        name:
+          type: string
+          const: project_id
+          title: Name
+          default: project_id
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: AnnotationQueueProjectFilter
+    AnnotationQueueNumUsersFilter:
+      properties:
+        name:
+          type: string
+          const: num_users
+          title: Name
+          default: num_users
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: AnnotationQueueNumUsersFilter
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    AnnotationTagsAggregate:
+      properties:
+        annotation_type:
+          type: string
+          const: tags
+          title: Annotation Type
+          default: tags
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - counts
+      - unrated_count
+      title: AnnotationTagsAggregate
+    AnnotationTextAggregate:
+      properties:
+        annotation_type:
+          type: string
+          const: text
+          title: Annotation Type
+          default: text
+        count:
+          type: integer
+          title: Count
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - count
+      - unrated_count
+      title: AnnotationTextAggregate
+    ListAnnotationQueueResponse:
       properties:
         starting_token:
           type: integer
@@ -2151,118 +2272,70 @@ components:
           - type: integer
           - type: 'null'
           title: Next Starting Token
-        collaborators:
+        annotation_queues:
           items:
-            $ref: '#/components/schemas/UserAnnotationQueueCollaborator'
+            $ref: '#/components/schemas/AnnotationQueueResponse'
           type: array
-          title: Collaborators
+          title: Annotation Queues
       type: object
       required:
-      - collaborators
-      title: ListAnnotationQueueCollaboratorsResponse
-    AnnotationQueueOverallProgressSort:
+      - annotation_queues
+      title: ListAnnotationQueueResponse
+    AnnotationAgreementAggregate:
       properties:
-        name:
-          type: string
-          const: overall_progress
-          title: Name
-          default: overall_progress
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
+        buckets:
+          items:
+            $ref: '#/components/schemas/AnnotationAgreementBucket'
+          type: array
+          title: Buckets
+        average_agreement:
+          type: number
+          title: Average Agreement
       type: object
-      title: AnnotationQueueOverallProgressSort
-    AnnotationScoreAggregate:
+      required:
+      - buckets
+      - average_agreement
+      title: AnnotationAgreementAggregate
+    AnnotationTreeChoiceAggregate:
       properties:
         annotation_type:
           type: string
-          const: score
+          const: tree_choice
           title: Annotation Type
-          default: score
-        buckets:
-          items:
-            $ref: '#/components/schemas/ScoreBucket'
-          type: array
-          title: Buckets
-        average:
-          type: number
-          title: Average
+          default: tree_choice
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
         unrated_count:
           type: integer
           title: Unrated Count
       type: object
       required:
-      - buckets
-      - average
+      - counts
       - unrated_count
-      title: AnnotationScoreAggregate
-    AnnotationQueueAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - record_annotation
-      title: AnnotationQueueAction
-    UserAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - read_api_keys
-      - change_role_to_admin
-      - change_role_to_manager
-      - change_role_to_user
-      - change_role_to_read_only
-      title: UserAction
-    AnnotationTemplateCreate:
+      title: AnnotationTreeChoiceAggregate
+    api__schemas__annotation__ScoreConstraints:
       properties:
-        name:
+        annotation_type:
           type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        include_explanation:
-          type: boolean
-          title: Include Explanation
-          default: false
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-        constraints:
-          oneOf:
-          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__StarConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TagsConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TextConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
-          title: Constraints
-          discriminator:
-            propertyName: annotation_type
-            mapping:
-              choice: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
-              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
-              score: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
-              star: '#/components/schemas/api__schemas__annotation__StarConstraints'
-              tags: '#/components/schemas/api__schemas__annotation__TagsConstraints'
-              text: '#/components/schemas/api__schemas__annotation__TextConstraints'
-              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
+          const: score
+          title: Annotation Type
+        min:
+          type: integer
+          minimum: 0.0
+          title: Min
+        max:
+          type: integer
+          minimum: 0.0
+          title: Max
       type: object
       required:
-      - name
-      - constraints
-      title: AnnotationTemplateCreate
+      - annotation_type
+      - min
+      - max
+      title: ScoreConstraints
     AnnotationQueueResponse:
       properties:
         id:
@@ -2348,30 +2421,64 @@ components:
       - updated_at
       - created_by_user
       title: AnnotationQueueResponse
-    api__schemas__annotation__TreeChoiceNode-Output:
+    AnnotationQueueNameFilter:
       properties:
-        label:
+        name:
           type: string
-          maxLength: 255
-          minLength: 1
-          title: Label
-        id:
+          const: name
+          title: Name
+          default: name
+        operator:
           type: string
-          maxLength: 255
-          minLength: 1
-          title: Id
-        children:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
-          type: array
-          maxItems: 50
-          title: Children
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
       type: object
       required:
-      - label
-      - id
-      title: TreeChoiceNode
-    AnnotationTemplateDB:
+      - operator
+      - value
+      title: AnnotationQueueNameFilter
+    api__schemas__annotation__TreeChoiceConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: tree_choice
+          title: Annotation Type
+        choices_tree:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Choices Tree
+        choices_tree_yaml:
+          anyOf:
+          - type: string
+            maxLength: 10000
+            minLength: 1
+          - type: 'null'
+          title: Choices Tree Yaml
+      type: object
+      required:
+      - annotation_type
+      title: TreeChoiceConstraints
+    AnnotationTemplateCreate:
       properties:
         name:
           type: string
@@ -2381,6 +2488,7 @@ components:
         include_explanation:
           type: boolean
           title: Include Explanation
+          default: false
         criteria:
           anyOf:
           - type: string
@@ -2395,7 +2503,7 @@ components:
           - $ref: '#/components/schemas/api__schemas__annotation__TagsConstraints'
           - $ref: '#/components/schemas/api__schemas__annotation__TextConstraints'
           - $ref: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
-          - $ref: '#/components/schemas/TreeChoiceDBConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
           title: Constraints
           discriminator:
             propertyName: annotation_type
@@ -2406,39 +2514,12 @@ components:
               star: '#/components/schemas/api__schemas__annotation__StarConstraints'
               tags: '#/components/schemas/api__schemas__annotation__TagsConstraints'
               text: '#/components/schemas/api__schemas__annotation__TextConstraints'
-              tree_choice: '#/components/schemas/TreeChoiceDBConstraints'
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Created By
-        position:
-          type: integer
-          title: Position
-        usage_count:
-          type: integer
-          title: Usage Count
-          description: Number of annotation ratings using the template.
+              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
       type: object
       required:
       - name
-      - include_explanation
       - constraints
-      - id
-      - created_at
-      - created_by
-      - position
-      - usage_count
-      title: AnnotationTemplateDB
+      title: AnnotationTemplateCreate
     AnnotationAggregate:
       properties:
         aggregate:
@@ -2465,47 +2546,155 @@ components:
       required:
       - aggregate
       title: AnnotationAggregate
-    AnnotationTextAggregate:
-      properties:
-        annotation_type:
-          type: string
-          const: text
-          title: Annotation Type
-          default: text
-        count:
-          type: integer
-          title: Count
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - count
-      - unrated_count
-      title: AnnotationTextAggregate
-    CollaboratorRole:
+    ControlResourceAction:
       type: string
       enum:
-      - owner
-      - editor
-      - annotator
-      - viewer
-      title: CollaboratorRole
-    AnnotationQueueProjectFilter:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    Name:
+      properties:
+        value:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Value
+        append_suffix_if_duplicate:
+          type: boolean
+          title: Append Suffix If Duplicate
+          default: false
+      type: object
+      required:
+      - value
+      title: Name
+      description: Global name class for handling unique naming across the application.
+    AnnotationQueueOverallProgressSort:
       properties:
         name:
           type: string
-          const: project_id
+          const: overall_progress
           title: Name
-          default: project_id
-        value:
+          default: overall_progress
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
           type: string
-          format: uuid4
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: AnnotationQueueOverallProgressSort
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    AnnotationQueueNumUsersSort:
+      properties:
+        name:
+          type: string
+          const: num_users
+          title: Name
+          default: num_users
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: AnnotationQueueNumUsersSort
+    AnnotationQueueIDFilter:
+      properties:
+        name:
+          type: string
+          const: id
+          title: Name
+          default: id
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
           title: Value
       type: object
       required:
       - value
-      title: AnnotationQueueProjectFilter
+      title: AnnotationQueueIDFilter
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    AnnotationQueueNumLogRecordsFilter:
+      properties:
+        name:
+          type: string
+          const: num_log_records
+          title: Name
+          default: num_log_records
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: AnnotationQueueNumLogRecordsFilter
     AnnotationQueueOverallProgressFilter:
       properties:
         name:
@@ -2540,195 +2729,6 @@ components:
       - operator
       - value
       title: AnnotationQueueOverallProgressFilter
-    AnnotationQueueNameFilter:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: AnnotationQueueNameFilter
-    ListAnnotationQueueResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        annotation_queues:
-          items:
-            $ref: '#/components/schemas/AnnotationQueueResponse'
-          type: array
-          title: Annotation Queues
-      type: object
-      required:
-      - annotation_queues
-      title: ListAnnotationQueueResponse
-    api__schemas__annotation__TreeChoiceConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-        choices_tree:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
-            type: array
-            maxItems: 50
-          - type: 'null'
-          title: Choices Tree
-        choices_tree_yaml:
-          anyOf:
-          - type: string
-            maxLength: 10000
-            minLength: 1
-          - type: 'null'
-          title: Choices Tree Yaml
-      type: object
-      required:
-      - annotation_type
-      title: TreeChoiceConstraints
-    AnnotationQueueNumUsersSort:
-      properties:
-        name:
-          type: string
-          const: num_users
-          title: Name
-          default: num_users
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: AnnotationQueueNumUsersSort
-    AnnotationQueueCreatedAtSort:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: AnnotationQueueCreatedAtSort
-    api__schemas__annotation__StarConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: star
-          title: Annotation Type
-      type: object
-      required:
-      - annotation_type
-      title: StarConstraints
-    GeneratedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: GeneratedScorerAction
-    UpdateAnnotationQueueRequest:
-      properties:
-        name:
-          anyOf:
-          - $ref: '#/components/schemas/Name'
-          - type: 'null'
-        description:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Description
-      type: object
-      title: UpdateAnnotationQueueRequest
-    AnnotationQueueDetailsResponse:
-      properties:
-        num_logs_fully_annotated:
-          type: integer
-          title: Num Logs Fully Annotated
-          description: Count of queue logs that have a rating for every queue template from each annotation-capable collaborator with track_progress enabled.
-          default: 0
-        annotation_aggregates:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/AnnotationAggregate'
-            propertyNames:
-              format: uuid4
-            type: object
-          - type: 'null'
-          title: Annotation Aggregates
-          description: Queue-wide aggregates keyed by annotation template UUID. Null when the caller cannot view queue-wide aggregates.
-        annotation_aggregates_by_annotator:
-          anyOf:
-          - additionalProperties:
-              additionalProperties:
-                $ref: '#/components/schemas/AnnotationAggregate'
-              propertyNames:
-                format: uuid4
-              type: object
-            propertyNames:
-              format: uuid4
-            type: object
-          - type: 'null'
-          title: Annotation Aggregates By Annotator
-          description: Per-user aggregates keyed by annotation-capable collaborator UUID, then annotation template UUID. Null when the caller cannot view all per-user aggregates for the queue.
-        overall_annotation_agreement:
-          anyOf:
-          - $ref: '#/components/schemas/AnnotationAgreementAggregate'
-          - type: 'null'
-          description: Queue-wide aggregate of record-level overall annotator agreement. Null when the caller cannot view queue-wide aggregates.
-      type: object
-      title: AnnotationQueueDetailsResponse
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey
