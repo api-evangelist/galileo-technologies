@@ -185,6 +185,19 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ModelPricesResponse:
+      properties:
+        override:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+        default:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+      type: object
+      title: ModelPricesResponse
+      description: Response for GET /models/{model_name}/prices.
     ModelPriceEntry:
       properties:
         input_price:
@@ -203,32 +216,15 @@ components:
       - output_price
       title: ModelPriceEntry
       description: A pair of input/output prices — used for requests and responses.
-    ModelWithPriceOverrides:
+    HTTPValidationError:
       properties:
-        name:
-          type: string
-          title: Name
-        price_overrides:
-          $ref: '#/components/schemas/ModelPriceEntry'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - name
-      - price_overrides
-      title: ModelWithPriceOverrides
-      description: Single item in GET /models/price_overrides response.
-    ModelPricesResponse:
-      properties:
-        override:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
-          - type: 'null'
-        default:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
-          - type: 'null'
-      type: object
-      title: ModelPricesResponse
-      description: Response for GET /models/{model_name}/prices.
+      title: HTTPValidationError
     ModelWithPrices:
       properties:
         name:
@@ -269,15 +265,19 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    ModelWithPriceOverrides:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        name:
+          type: string
+          title: Name
+        price_overrides:
+          $ref: '#/components/schemas/ModelPriceEntry'
       type: object
-      title: HTTPValidationError
+      required:
+      - name
+      - price_overrides
+      title: ModelWithPriceOverrides
+      description: Single item in GET /models/price_overrides response.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

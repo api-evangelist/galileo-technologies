@@ -72,6 +72,95 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    GeneratedScorerTaskResultResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        status:
+          $ref: '#/components/schemas/TaskResultStatus'
+        result_type:
+          $ref: '#/components/schemas/GeneratedScorerTaskResultType'
+        result:
+          anyOf:
+          - $ref: '#/components/schemas/ChainPollTemplate'
+          - $ref: '#/components/schemas/GeneratedScorerValidationResult'
+          - type: string
+          - type: 'null'
+          title: Result
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - status
+      - result_type
+      title: GeneratedScorerTaskResultResponse
+    TaskResultStatus:
+      type: string
+      enum:
+      - pending
+      - started
+      - completed
+      - failed
+      title: TaskResultStatus
+    FineTunedScorerWeightsUploadRequest:
+      properties:
+        lora_task_id:
+          type: integer
+          minimum: 1.0
+          title: Lora Task Id
+      type: object
+      required:
+      - lora_task_id
+      title: FineTunedScorerWeightsUploadRequest
+    FineTunedScorerWeightsUploadResponse:
+      properties:
+        bucket:
+          type: string
+          title: Bucket
+        lora_weights_path:
+          type: string
+          title: Lora Weights Path
+        upload_urls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Upload Urls
+        object_paths:
+          additionalProperties:
+            type: string
+          type: object
+          title: Object Paths
+        presigned_url_expiry_seconds:
+          type: integer
+          title: Presigned Url Expiry Seconds
+      type: object
+      required:
+      - bucket
+      - lora_weights_path
+      - upload_urls
+      - object_paths
+      - presigned_url_expiry_seconds
+      title: FineTunedScorerWeightsUploadResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     FewShotExample:
       properties:
         generation_prompt_and_response:
@@ -86,16 +175,39 @@ components:
       - evaluating_response
       title: FewShotExample
       description: Few-shot example for a chainpoll metric prompt.
-    FineTunedScorerWeightsUploadRequest:
+    GeneratedScorerTaskResultType:
+      type: string
+      enum:
+      - scorer_auto_gen
+      - scorer_auto_gen_v2
+      - scorer_validation
+      title: GeneratedScorerTaskResultType
+    ValidationError:
       properties:
-        lora_task_id:
-          type: integer
-          minimum: 1.0
-          title: Lora Task Id
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - lora_task_id
-      title: FineTunedScorerWeightsUploadRequest
+      - loc
+      - msg
+      - type
+      title: ValidationError
     GeneratedScorerValidationResult:
       properties:
         rating:
@@ -163,118 +275,6 @@ components:
       description: 'Template for a chainpoll metric prompt,
 
         containing all the info necessary to send a chainpoll prompt.'
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    FineTunedScorerWeightsUploadResponse:
-      properties:
-        bucket:
-          type: string
-          title: Bucket
-        lora_weights_path:
-          type: string
-          title: Lora Weights Path
-        upload_urls:
-          additionalProperties:
-            type: string
-          type: object
-          title: Upload Urls
-        object_paths:
-          additionalProperties:
-            type: string
-          type: object
-          title: Object Paths
-        presigned_url_expiry_seconds:
-          type: integer
-          title: Presigned Url Expiry Seconds
-      type: object
-      required:
-      - bucket
-      - lora_weights_path
-      - upload_urls
-      - object_paths
-      - presigned_url_expiry_seconds
-      title: FineTunedScorerWeightsUploadResponse
-    GeneratedScorerTaskResultType:
-      type: string
-      enum:
-      - scorer_auto_gen
-      - scorer_auto_gen_v2
-      - scorer_validation
-      title: GeneratedScorerTaskResultType
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    GeneratedScorerTaskResultResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        status:
-          $ref: '#/components/schemas/TaskResultStatus'
-        result_type:
-          $ref: '#/components/schemas/GeneratedScorerTaskResultType'
-        result:
-          anyOf:
-          - $ref: '#/components/schemas/ChainPollTemplate'
-          - $ref: '#/components/schemas/GeneratedScorerValidationResult'
-          - type: string
-          - type: 'null'
-          title: Result
-      type: object
-      required:
-      - id
-      - created_at
-      - updated_at
-      - status
-      - result_type
-      title: GeneratedScorerTaskResultResponse
-    TaskResultStatus:
-      type: string
-      enum:
-      - pending
-      - started
-      - completed
-      - failed
-      title: TaskResultStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

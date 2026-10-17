@@ -3743,13 +3743,21 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DatasetRowsSort:
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      title: CollaboratorRole
+    DatasetUpdatedAtSort:
       properties:
         name:
           type: string
-          const: num_rows
+          const: updated_at
           title: Name
-          default: num_rows
+          default: updated_at
         ascending:
           type: boolean
           title: Ascending
@@ -3760,110 +3768,46 @@ components:
           title: Sort Type
           default: column
       type: object
-      title: DatasetRowsSort
-    DatasetProject:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        name:
-          type: string
-          title: Name
-        created_by_user:
-          anyOf:
-          - $ref: '#/components/schemas/UserInfo'
-          - type: 'null'
-      type: object
-      required:
-      - id
-      - created_at
-      - updated_at
-      - name
-      - created_by_user
-      title: DatasetProject
-    LLMIntegration:
+      title: DatasetUpdatedAtSort
+    ProjectAction:
       type: string
       enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: LLMIntegration
-    DatasetUpdateRow:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    DatasetVersionDB:
       properties:
-        row_id:
-          type: string
-          format: uuid4
-          title: Row Id
-        edit_type:
-          type: string
-          const: update_row
-          title: Edit Type
-          default: update_row
-        values:
-          additionalProperties:
-            anyOf:
-            - type: string
-            - type: integer
-            - type: number
-            - additionalProperties:
-                anyOf:
-                - type: string
-                - type: integer
-                - type: number
-                - type: 'null'
-              type: object
-            - type: 'null'
-          type: object
-          title: Values
-      type: object
-      required:
-      - row_id
-      - values
-      title: DatasetUpdateRow
-    JsonPrimitive-Output:
-      anyOf:
-      - type: string
-      - type: integer
-      - type: number
-      - type: boolean
-      - type: 'null'
-    ListDatasetVersionParams:
-      properties:
-        sort:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/DatasetVersionIndexSort'
-            discriminator:
-              propertyName: name
-              mapping:
-                version_index: '#/components/schemas/DatasetVersionIndexSort'
-          - type: 'null'
-          title: Sort
-      type: object
-      title: ListDatasetVersionParams
-    DatasetRowMetadata:
-      properties:
-        created_in_version:
+        version_index:
           type: integer
-          title: Created In Version
+          title: Version Index
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
         created_at:
           type: string
           format: date-time
@@ -3872,69 +3816,47 @@ components:
           anyOf:
           - $ref: '#/components/schemas/UserInfo'
           - type: 'null'
-        updated_in_version:
+        num_rows:
           type: integer
-          title: Updated In Version
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        updated_by_user:
-          anyOf:
-          - $ref: '#/components/schemas/UserInfo'
-          - type: 'null'
-      type: object
-      required:
-      - created_in_version
-      - created_at
-      - created_by_user
-      - updated_in_version
-      - updated_at
-      - updated_by_user
-      title: DatasetRowMetadata
-    BulkDeleteDatasetsResponse:
-      properties:
-        deleted_count:
-          type: integer
-          title: Deleted Count
-        failed_deletions:
+          title: Num Rows
+        column_names:
           items:
-            $ref: '#/components/schemas/api__schemas__content__dataset__BulkDeleteFailure'
+            type: string
           type: array
-          title: Failed Deletions
-        message:
-          type: string
-          title: Message
+          title: Column Names
+        rows_added:
+          type: integer
+          title: Rows Added
+        rows_removed:
+          type: integer
+          title: Rows Removed
+        rows_edited:
+          type: integer
+          title: Rows Edited
+        columns_added:
+          type: integer
+          title: Columns Added
+        columns_removed:
+          type: integer
+          title: Columns Removed
+        columns_renamed:
+          type: integer
+          title: Columns Renamed
       type: object
       required:
-      - deleted_count
-      - message
-      title: BulkDeleteDatasetsResponse
-      description: Response from bulk deletion operation.
-    DatasetProjectsSort:
-      properties:
-        name:
-          type: string
-          const: project_count
-          title: Name
-          default: project_count
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: custom
-          title: Sort Type
-          default: custom
-      type: object
-      title: DatasetProjectsSort
-    ModelCostBy:
-      type: string
-      enum:
-      - tokens
-      - characters
-      title: ModelCostBy
+      - version_index
+      - name
+      - created_at
+      - created_by_user
+      - num_rows
+      - column_names
+      - rows_added
+      - rows_removed
+      - rows_edited
+      - columns_added
+      - columns_removed
+      - columns_renamed
+      title: DatasetVersionDB
     QueryDatasetParams:
       properties:
         filters:
@@ -3948,193 +3870,41 @@ components:
           - type: 'null'
       type: object
       title: QueryDatasetParams
-    SyntheticDataTypes:
+    OrganizationAction:
       type: string
       enum:
-      - General Query
-      - Prompt Injection
-      - Off-Topic Query
-      - Toxic Content in Query
-      - Multiple Questions in Query
-      - Sexist Content in Query
-      title: SyntheticDataTypes
-    ListDatasetProjectsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        projects:
-          items:
-            $ref: '#/components/schemas/DatasetProject'
-          type: array
-          title: Projects
-      type: object
-      title: ListDatasetProjectsResponse
-    DatasetContent:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        column_names:
-          items:
-            type: string
-          type: array
-          title: Column Names
-        warning_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Warning Message
-        rows:
-          items:
-            $ref: '#/components/schemas/DatasetRow'
-          type: array
-          title: Rows
-      type: object
-      title: DatasetContent
-    UserCollaboratorCreate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-          default: viewer
-        user_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: User Id
-        user_email:
-          anyOf:
-          - type: string
-            format: email
-          - type: 'null'
-          title: User Email
-      type: object
-      title: UserCollaboratorCreate
-      description: 'Create a user collaborator using either user_id or email.
-
-
-        When using email, if the user doesn''t exist in the organization,
-
-        they will be invited automatically.'
-    JobProgress:
-      properties:
-        progress_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Progress Message
-        steps_completed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Steps Completed
-        steps_total:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Steps Total
-      type: object
-      title: JobProgress
-    FineTunedScorerAction:
-      type: string
-      enum:
-      - update
+      - rename
       - delete
-      title: FineTunedScorerAction
-    Permission:
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    DatasetLastEditedByUserAtSort:
       properties:
-        action:
-          anyOf:
-          - $ref: '#/components/schemas/UserAction'
-          - $ref: '#/components/schemas/GroupAction'
-          - $ref: '#/components/schemas/GroupMemberAction'
-          - $ref: '#/components/schemas/ProjectAction'
-          - $ref: '#/components/schemas/ScorerAction'
-          - $ref: '#/components/schemas/RegisteredScorerAction'
-          - $ref: '#/components/schemas/ApiKeyAction'
-          - $ref: '#/components/schemas/GeneratedScorerAction'
-          - $ref: '#/components/schemas/FineTunedScorerAction'
-          - $ref: '#/components/schemas/DatasetAction'
-          - $ref: '#/components/schemas/IntegrationAction'
-          - $ref: '#/components/schemas/OrganizationAction'
-          - $ref: '#/components/schemas/AnnotationQueueAction'
-          - $ref: '#/components/schemas/ControlResourceAction'
-          title: Action
-        allowed:
+        name:
+          type: string
+          const: last_edited_by_user_at
+          title: Name
+          default: last_edited_by_user_at
+        ascending:
           type: boolean
-          title: Allowed
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-      type: object
-      required:
-      - action
-      - allowed
-      title: Permission
-    GroupCollaborator:
-      properties:
-        id:
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom_uuid
+          title: Sort Type
+          default: custom_uuid
+        value:
           type: string
           format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        group_id:
-          type: string
-          format: uuid4
-          title: Group Id
-        group_name:
-          type: string
-          title: Group Name
+          title: Value
       type: object
       required:
-      - id
-      - role
-      - created_at
-      - group_id
-      - group_name
-      title: GroupCollaborator
+      - value
+      title: DatasetLastEditedByUserAtSort
     DatasetRow:
       properties:
         row_id:
@@ -4188,287 +3958,88 @@ components:
       - values_dict
       - metadata
       title: DatasetRow
-    DatasetFilterRows:
+    ScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    BulkDeleteDatasetsRequest:
       properties:
-        edit_type:
-          type: string
-          const: filter_rows
-          title: Edit Type
-          default: filter_rows
-        row_ids:
+        dataset_ids:
           items:
             type: string
             format: uuid4
           type: array
+          maxItems: 100
           minItems: 1
-          title: Row Ids
+          title: Dataset Ids
       type: object
       required:
-      - row_ids
-      title: DatasetFilterRows
-      description: This global operation filters a set of rows and discard the rest.
-    DatasetLastEditedByUserAtSort:
+      - dataset_ids
+      title: BulkDeleteDatasetsRequest
+      description: Request to delete multiple datasets.
+    ListDatasetProjectsResponse:
       properties:
-        name:
-          type: string
-          const: last_edited_by_user_at
-          title: Name
-          default: last_edited_by_user_at
-        ascending:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
           type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: custom_uuid
-          title: Sort Type
-          default: custom_uuid
-        value:
-          type: string
-          format: uuid4
-          title: Value
-      type: object
-      required:
-      - value
-      title: DatasetLastEditedByUserAtSort
-    DatasetNameFilter:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: DatasetNameFilter
-    DatasetProjectLastUsedAtSort:
-      properties:
-        name:
-          type: string
-          const: project_last_used_at
-          title: Name
-          default: project_last_used_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: custom_uuid
-          title: Sort Type
-          default: custom_uuid
-        value:
-          type: string
-          format: uuid4
-          title: Value
-      type: object
-      required:
-      - value
-      title: DatasetProjectLastUsedAtSort
-    DatasetPrependRow:
-      properties:
-        edit_type:
-          type: string
-          const: prepend_row
-          title: Edit Type
-          default: prepend_row
-        values:
-          additionalProperties:
-            anyOf:
-            - type: string
-            - type: integer
-            - type: number
-            - additionalProperties:
-                anyOf:
-                - type: string
-                - type: integer
-                - type: number
-                - type: 'null'
-              type: object
-            - type: 'null'
-          type: object
-          title: Values
-        row_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Row Id
-      type: object
-      required:
-      - values
-      title: DatasetPrependRow
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    InputMap:
-      properties:
-        prompt:
-          type: string
-          title: Prompt
-        prefix:
-          type: string
-          title: Prefix
-          default: ''
-        suffix:
-          type: string
-          title: Suffix
-          default: ''
-      type: object
-      required:
-      - prompt
-      title: InputMap
-    DatasetUsedInProjectFilter:
-      properties:
-        name:
-          type: string
-          const: used_in_project
-          title: Name
-          default: used_in_project
-        value:
-          type: string
-          format: uuid4
-          title: Value
-      type: object
-      required:
-      - value
-      title: DatasetUsedInProjectFilter
-    DatasetNotInProjectFilter:
-      properties:
-        name:
-          type: string
-          const: not_in_project
-          title: Name
-          default: not_in_project
-        value:
-          type: string
-          format: uuid4
-          title: Value
-      type: object
-      required:
-      - value
-      title: DatasetNotInProjectFilter
-    ColumnMapping:
-      properties:
-        input:
-          anyOf:
-          - $ref: '#/components/schemas/ColumnMappingConfig'
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Input
-        output:
-          anyOf:
-          - $ref: '#/components/schemas/ColumnMappingConfig'
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Output
-        generated_output:
-          anyOf:
-          - $ref: '#/components/schemas/ColumnMappingConfig'
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Generated Output
-        metadata:
-          anyOf:
-          - $ref: '#/components/schemas/ColumnMappingConfig'
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Metadata
-        mgt:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/ColumnMappingConfig'
-            type: object
-          - type: 'null'
-          title: Mgt
-      additionalProperties: true
-      type: object
-      title: ColumnMapping
-    Body_create_dataset_v2_datasets_post:
-      properties:
-        draft:
-          type: boolean
-          title: Draft
+          title: Paginated
           default: false
-        hidden:
-          type: boolean
-          title: Hidden
-          default: false
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        append_suffix_if_duplicate:
-          type: boolean
-          title: Append Suffix If Duplicate
-          default: false
-        file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: File
-        copy_from_dataset_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Copy From Dataset Id
-        copy_from_dataset_version_index:
+        next_starting_token:
           anyOf:
           - type: integer
           - type: 'null'
-          title: Copy From Dataset Version Index
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        column_mapping:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Column Mapping
+          title: Next Starting Token
+        projects:
+          items:
+            $ref: '#/components/schemas/DatasetProject'
+          type: array
+          title: Projects
       type: object
-      title: Body_create_dataset_v2_datasets_post
+      title: ListDatasetProjectsResponse
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
     JsonValue:
       anyOf:
       - $ref: '#/components/schemas/JsonPrimitive-Output'
@@ -4478,124 +4049,7 @@ components:
       - additionalProperties:
           $ref: '#/components/schemas/JsonValue'
         type: object
-    GeneratedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: GeneratedScorerAction
-    DatasetFormat:
-      type: string
-      enum:
-      - csv
-      - feather
-      - json
-      - jsonl
-      title: DatasetFormat
-    UpdateDatasetContentRequest:
-      properties:
-        edits:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/DatasetPrependRow'
-            - $ref: '#/components/schemas/DatasetAppendRow'
-            - $ref: '#/components/schemas/DatasetUpdateRow'
-            - $ref: '#/components/schemas/DatasetDeleteRow'
-            - $ref: '#/components/schemas/DatasetFilterRows'
-            - $ref: '#/components/schemas/DatasetCopyRecordData'
-            - $ref: '#/components/schemas/DatasetRemoveColumn'
-            - $ref: '#/components/schemas/DatasetRenameColumn'
-            discriminator:
-              propertyName: edit_type
-              mapping:
-                append_row: '#/components/schemas/DatasetAppendRow'
-                copy_record_data: '#/components/schemas/DatasetCopyRecordData'
-                delete_row: '#/components/schemas/DatasetDeleteRow'
-                filter_rows: '#/components/schemas/DatasetFilterRows'
-                prepend_row: '#/components/schemas/DatasetPrependRow'
-                remove_column: '#/components/schemas/DatasetRemoveColumn'
-                rename_column: '#/components/schemas/DatasetRenameColumn'
-                update_row: '#/components/schemas/DatasetUpdateRow'
-          type: array
-          minItems: 1
-          title: Edits
-          error: Edits list cannot be empty.
-      type: object
-      required:
-      - edits
-      title: UpdateDatasetContentRequest
-      description: "This structure represent the valid edits operations that can be performed on a dataset.\nThere edit operations are:\n- Row edits: These edits are performed on a specific row of the dataset.\n    - EditMode.id: The edit is performed on the index (numeric index). DEPRECATED\n    - EditMode.row_id: The edit is performed on the row_id of the row.\n- Global edits: These edits are performed on the entire dataset and should not be mixed with row edits.\n    - EditMode.global_edit"
-    UpdateDatasetRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - $ref: '#/components/schemas/Name'
-          - type: 'null'
-          title: Name
-        column_mapping:
-          anyOf:
-          - $ref: '#/components/schemas/ColumnMapping'
-          - type: 'null'
-        draft:
-          anyOf:
-          - type: boolean
-            const: false
-          - type: 'null'
-          title: Draft
-      type: object
-      title: UpdateDatasetRequest
-    GroupCollaboratorCreate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-          default: viewer
-        group_id:
-          type: string
-          format: uuid4
-          title: Group Id
-      type: object
-      required:
-      - group_id
-      title: GroupCollaboratorCreate
-    ProjectAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - rename
-      - share
-      - create_run
-      - delete_run
-      - rename_run
-      - move_run
-      - export_data
-      - configure_human_feedback
-      - record_human_feedback
-      - log_data
-      - toggle_metric
-      - edit_alert
-      - create_stage
-      - edit_stage
-      - configure_crown_logic
-      - delete_data
-      - set_metric
-      - edit_run_tags
-      - dismiss_alert
-      - edit_slice
-      - edit_edit
-      - update_control_bindings
-      - use_control_runtime
-      title: ProjectAction
-    GroupAction:
-      type: string
-      enum:
-      - update
-      - list_members
-      - join
-      - request_to_join
-      title: GroupAction
-    ListGroupCollaboratorsResponse:
+    ListUserCollaboratorsResponse:
       properties:
         starting_token:
           type: integer
@@ -4616,111 +4070,41 @@ components:
           title: Next Starting Token
         collaborators:
           items:
-            $ref: '#/components/schemas/GroupCollaborator'
+            $ref: '#/components/schemas/UserCollaborator'
           type: array
           title: Collaborators
       type: object
       required:
       - collaborators
-      title: ListGroupCollaboratorsResponse
-    CollaboratorRole:
-      type: string
-      enum:
-      - owner
-      - editor
-      - annotator
-      - viewer
-      title: CollaboratorRole
-    DatasetCopyRecordData:
+      title: ListUserCollaboratorsResponse
+    OpenAIFunction:
       properties:
-        edit_type:
+        name:
           type: string
-          const: copy_record_data
-          title: Edit Type
-          default: copy_record_data
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        queue_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Queue Id
-        ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Ids
-          description: List of trace or span IDs to copy data from
-        prepend:
-          type: boolean
-          title: Prepend
-          description: A flag to control appending vs prepending
-          default: true
-        use_generated_output_column:
-          type: boolean
-          title: Use Generated Output Column
-          description: If True, write trace output to generated_output column; if False, write to output column (backward compatible)
-          default: false
+          title: Name
       type: object
       required:
-      - ids
-      title: DatasetCopyRecordData
-      description: Prepend or append trace or span data to dataset.
-    Body_create_dataset_public_v2_datasets_post:
+      - name
+      title: OpenAIFunction
+    api__schemas__content__dataset__BulkDeleteFailure:
       properties:
-        draft:
-          type: boolean
-          title: Draft
-          default: false
-        hidden:
-          type: boolean
-          title: Hidden
-          default: false
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        append_suffix_if_duplicate:
-          type: boolean
-          title: Append Suffix If Duplicate
-          default: false
-        file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: File
-        copy_from_dataset_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Copy From Dataset Id
-        copy_from_dataset_version_index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Copy From Dataset Version Index
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        column_mapping:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Column Mapping
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+        dataset_name:
+          type: string
+          title: Dataset Name
+        reason:
+          type: string
+          title: Reason
       type: object
-      title: Body_create_dataset_public_v2_datasets_post
+      required:
+      - dataset_id
+      - dataset_name
+      - reason
+      title: BulkDeleteFailure
+      description: Details about a failed deletion.
     DatasetIDFilter:
       properties:
         name:
@@ -4754,78 +4138,329 @@ components:
       required:
       - value
       title: DatasetIDFilter
-    AnnotationQueueAction:
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    DatasetRenameColumn:
+      properties:
+        edit_type:
+          type: string
+          const: rename_column
+          title: Edit Type
+          default: rename_column
+        column_name:
+          type: string
+          maxLength: 255
+          title: Column Name
+        new_column_name:
+          type: string
+          maxLength: 255
+          title: New Column Name
+      type: object
+      required:
+      - column_name
+      - new_column_name
+      title: DatasetRenameColumn
+      description: Rename a column in the dataset schema, preserving values.
+    GroupCollaborator:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+        group_name:
+          type: string
+          title: Group Name
+      type: object
+      required:
+      - id
+      - role
+      - created_at
+      - group_id
+      - group_name
+      title: GroupCollaborator
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    ListDatasetVersionResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        versions:
+          items:
+            $ref: '#/components/schemas/DatasetVersionDB'
+          type: array
+          title: Versions
+      type: object
+      required:
+      - versions
+      title: ListDatasetVersionResponse
+    DatasetAction:
       type: string
       enum:
       - update
       - delete
       - share
-      - record_annotation
-      title: AnnotationQueueAction
-    Body_create_dataset_datasets_post:
+      - export
+      - rename
+      title: DatasetAction
+    UpdateDatasetRequest:
       properties:
+        name:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/Name'
+          - type: 'null'
+          title: Name
+        column_mapping:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMapping'
+          - type: 'null'
         draft:
-          type: boolean
+          anyOf:
+          - type: boolean
+            const: false
+          - type: 'null'
           title: Draft
-          default: false
-        hidden:
-          type: boolean
-          title: Hidden
-          default: false
+      type: object
+      title: UpdateDatasetRequest
+    UpdateDatasetVersionRequest:
+      properties:
         name:
           anyOf:
           - type: string
           - type: 'null'
           title: Name
+      type: object
+      title: UpdateDatasetVersionRequest
+    ListDatasetResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        datasets:
+          items:
+            $ref: '#/components/schemas/DatasetDB'
+          type: array
+          title: Datasets
+      type: object
+      title: ListDatasetResponse
+    DatasetAppendRow:
+      properties:
+        edit_type:
+          type: string
+          const: append_row
+          title: Edit Type
+          default: append_row
+        values:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: number
+            - additionalProperties:
+                anyOf:
+                - type: string
+                - type: integer
+                - type: number
+                - type: 'null'
+              type: object
+            - type: 'null'
+          type: object
+          title: Values
+        row_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Row Id
+      type: object
+      required:
+      - values
+      title: DatasetAppendRow
+    DatasetContentSortClause:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+      type: object
+      required:
+      - column_name
+      title: DatasetContentSortClause
+    DatasetNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetNameSort
+    DatasetProjectLastUsedAtSort:
+      properties:
+        name:
+          type: string
+          const: project_last_used_at
+          title: Name
+          default: project_last_used_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom_uuid
+          title: Sort Type
+          default: custom_uuid
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetProjectLastUsedAtSort
+    ListGroupCollaboratorsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        collaborators:
+          items:
+            $ref: '#/components/schemas/GroupCollaborator'
+          type: array
+          title: Collaborators
+      type: object
+      required:
+      - collaborators
+      title: ListGroupCollaboratorsResponse
+    Name:
+      properties:
+        value:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Value
         append_suffix_if_duplicate:
           type: boolean
           title: Append Suffix If Duplicate
           default: false
-        file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: File
-        copy_from_dataset_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Copy From Dataset Id
-        copy_from_dataset_version_index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Copy From Dataset Version Index
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        column_mapping:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Column Mapping
-      type: object
-      title: Body_create_dataset_datasets_post
-    BulkDeleteDatasetsRequest:
-      properties:
-        dataset_ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          maxItems: 100
-          minItems: 1
-          title: Dataset Ids
       type: object
       required:
-      - dataset_ids
-      title: BulkDeleteDatasetsRequest
-      description: Request to delete multiple datasets.
+      - value
+      title: Name
+      description: Global name class for handling unique naming across the application.
+    DatasetProjectsSort:
+      properties:
+        name:
+          type: string
+          const: project_count
+          title: Name
+          default: project_count
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: DatasetProjectsSort
+    SyntheticDataTypes:
+      type: string
+      enum:
+      - General Query
+      - Prompt Injection
+      - Off-Topic Query
+      - Toxic Content in Query
+      - Multiple Questions in Query
+      - Sexist Content in Query
+      title: SyntheticDataTypes
     PromptRunSettings-Input:
       properties:
         logprobs:
@@ -4922,35 +4557,370 @@ components:
       type: object
       title: PromptRunSettings
       description: Prompt run settings.
-    OutputMap:
+    DatasetNotInProjectFilter:
       properties:
-        response:
+        name:
           type: string
-          title: Response
-        token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Token Count
-        input_token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Input Token Count
-        output_token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output Token Count
-        completion_reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Completion Reason
+          const: not_in_project
+          title: Name
+          default: not_in_project
+        value:
+          type: string
+          format: uuid4
+          title: Value
       type: object
       required:
-      - response
-      title: OutputMap
+      - value
+      title: DatasetNotInProjectFilter
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    InputMap:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+        prefix:
+          type: string
+          title: Prefix
+          default: ''
+        suffix:
+          type: string
+          title: Suffix
+          default: ''
+      type: object
+      required:
+      - prompt
+      title: InputMap
+    DatasetCopyRecordData:
+      properties:
+        edit_type:
+          type: string
+          const: copy_record_data
+          title: Edit Type
+          default: copy_record_data
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        queue_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Queue Id
+        ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Ids
+          description: List of trace or span IDs to copy data from
+        prepend:
+          type: boolean
+          title: Prepend
+          description: A flag to control appending vs prepending
+          default: true
+        use_generated_output_column:
+          type: boolean
+          title: Use Generated Output Column
+          description: If True, write trace output to generated_output column; if False, write to output column (backward compatible)
+          default: false
+      type: object
+      required:
+      - ids
+      title: DatasetCopyRecordData
+      description: Prepend or append trace or span data to dataset.
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    CollaboratorUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+      type: object
+      required:
+      - role
+      title: CollaboratorUpdate
+    DatasetUsedInProjectFilter:
+      properties:
+        name:
+          type: string
+          const: used_in_project
+          title: Name
+          default: used_in_project
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: DatasetUsedInProjectFilter
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    DatasetRowMetadata:
+      properties:
+        created_in_version:
+          type: integer
+          title: Created In Version
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        updated_in_version:
+          type: integer
+          title: Updated In Version
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        updated_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+      type: object
+      required:
+      - created_in_version
+      - created_at
+      - created_by_user
+      - updated_in_version
+      - updated_at
+      - updated_by_user
+      title: DatasetRowMetadata
+    DatasetContentFilter:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        value:
+          type: string
+          title: Value
+        operator:
+          $ref: '#/components/schemas/DatasetContentFilterOperator'
+          default: contains
+      type: object
+      required:
+      - column_name
+      - value
+      title: DatasetContentFilter
+    DatasetVersionIndexSort:
+      properties:
+        name:
+          type: string
+          const: version_index
+          title: Name
+          default: version_index
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetVersionIndexSort
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    DatasetRowsSort:
+      properties:
+        name:
+          type: string
+          const: num_rows
+          title: Name
+          default: num_rows
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetRowsSort
+    ListDatasetParams:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/DatasetNameFilter'
+            - $ref: '#/components/schemas/DatasetDraftFilter'
+            - $ref: '#/components/schemas/DatasetUsedInProjectFilter'
+            - $ref: '#/components/schemas/DatasetIDFilter'
+            - $ref: '#/components/schemas/DatasetNotInProjectFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                draft: '#/components/schemas/DatasetDraftFilter'
+                id: '#/components/schemas/DatasetIDFilter'
+                name: '#/components/schemas/DatasetNameFilter'
+                not_in_project: '#/components/schemas/DatasetNotInProjectFilter'
+                used_in_project: '#/components/schemas/DatasetUsedInProjectFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/DatasetNameSort'
+            - $ref: '#/components/schemas/DatasetCreatedAtSort'
+            - $ref: '#/components/schemas/DatasetUpdatedAtSort'
+            - $ref: '#/components/schemas/DatasetProjectLastUsedAtSort'
+            - $ref: '#/components/schemas/DatasetProjectsSort'
+            - $ref: '#/components/schemas/DatasetRowsSort'
+            - $ref: '#/components/schemas/DatasetLastEditedByUserAtSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/DatasetCreatedAtSort'
+                last_edited_by_user_at: '#/components/schemas/DatasetLastEditedByUserAtSort'
+                name: '#/components/schemas/DatasetNameSort'
+                num_rows: '#/components/schemas/DatasetRowsSort'
+                project_count: '#/components/schemas/DatasetProjectsSort'
+                project_last_used_at: '#/components/schemas/DatasetProjectLastUsedAtSort'
+                updated_at: '#/components/schemas/DatasetUpdatedAtSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+      type: object
+      title: ListDatasetParams
+    DatasetFormat:
+      type: string
+      enum:
+      - csv
+      - feather
+      - json
+      - jsonl
+      title: DatasetFormat
+    ColumnMappingConfig:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        flatten:
+          type: boolean
+          title: Flatten
+          default: false
+      type: object
+      required:
+      - columns
+      title: ColumnMappingConfig
+    Body_create_dataset_v2_datasets_post:
+      properties:
+        draft:
+          type: boolean
+          title: Draft
+          default: false
+        hidden:
+          type: boolean
+          title: Hidden
+          default: false
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        append_suffix_if_duplicate:
+          type: boolean
+          title: Append Suffix If Duplicate
+          default: false
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        copy_from_dataset_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy From Dataset Id
+        copy_from_dataset_version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Copy From Dataset Version Index
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        column_mapping:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Column Mapping
+      type: object
+      title: Body_create_dataset_v2_datasets_post
     UserCollaborator:
       properties:
         id:
@@ -4996,58 +4966,76 @@ components:
       - last_name
       - email
       title: UserCollaborator
-    PreviewDatasetRequest:
+    DatasetUpdateRow:
       properties:
-        column_mapping:
-          anyOf:
-          - $ref: '#/components/schemas/ColumnMapping'
-          - type: 'null'
+        row_id:
+          type: string
+          format: uuid4
+          title: Row Id
+        edit_type:
+          type: string
+          const: update_row
+          title: Edit Type
+          default: update_row
+        values:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: number
+            - additionalProperties:
+                anyOf:
+                - type: string
+                - type: integer
+                - type: number
+                - type: 'null'
+              type: object
+            - type: 'null'
+          type: object
+          title: Values
       type: object
-      title: PreviewDatasetRequest
-    ListDatasetResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        datasets:
-          items:
-            $ref: '#/components/schemas/DatasetDB'
-          type: array
-          title: Datasets
-      type: object
-      title: ListDatasetResponse
-    DatasetCreatedAtSort:
+      required:
+      - row_id
+      - values
+      title: DatasetUpdateRow
+    ModelCostBy:
+      type: string
+      enum:
+      - tokens
+      - characters
+      title: ModelCostBy
+    DatasetDraftFilter:
       properties:
         name:
           type: string
-          const: created_at
+          const: draft
           title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
+          default: draft
+        operator:
           type: string
-          const: column
-          title: Sort Type
-          default: column
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
       type: object
-      title: DatasetCreatedAtSort
+      required:
+      - value
+      title: DatasetDraftFilter
+    SyntheticDatasetExtensionResponse:
+      properties:
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+      type: object
+      required:
+      - dataset_id
+      title: SyntheticDatasetExtensionResponse
+      description: Response for synthetic dataset extension requests.
     SyntheticDatasetExtensionRequest:
       properties:
         prompt_settings:
@@ -5092,6 +5080,115 @@ components:
       type: object
       title: SyntheticDatasetExtensionRequest
       description: Request for a synthetic dataset run job.
+    BulkDeleteDatasetsResponse:
+      properties:
+        deleted_count:
+          type: integer
+          title: Deleted Count
+        failed_deletions:
+          items:
+            $ref: '#/components/schemas/api__schemas__content__dataset__BulkDeleteFailure'
+          type: array
+          title: Failed Deletions
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - deleted_count
+      - message
+      title: BulkDeleteDatasetsResponse
+      description: Response from bulk deletion operation.
+    DatasetDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          type: string
+          title: Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        project_count:
+          type: integer
+          title: Project Count
+        num_rows:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Rows
+        column_names:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Column Names
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+        current_version_index:
+          type: integer
+          title: Current Version Index
+        draft:
+          type: boolean
+          title: Draft
+      type: object
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      - project_count
+      - num_rows
+      - column_names
+      - created_by_user
+      - current_version_index
+      - draft
+      title: DatasetDB
+    OutputMap:
+      properties:
+        response:
+          type: string
+          title: Response
+        token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Count
+        input_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input Token Count
+        output_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Token Count
+        completion_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Completion Reason
+      type: object
+      required:
+      - response
+      title: OutputMap
     DatasetDeleteRow:
       properties:
         row_id:
@@ -5107,223 +5204,6 @@ components:
       required:
       - row_id
       title: DatasetDeleteRow
-    RegisteredScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: RegisteredScorerAction
-    OrganizationAction:
-      type: string
-      enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
-    RunParamsMap:
-      properties:
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model
-        temperature:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Temperature
-        max_tokens:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Max Tokens
-        stop_sequences:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Stop Sequences
-        top_p:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Top P
-        top_k:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Top K
-        frequency_penalty:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Frequency Penalty
-        presence_penalty:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Presence Penalty
-        echo:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Echo
-        logprobs:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logprobs
-        top_logprobs:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Top Logprobs
-        n:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: N
-        api_version:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Api Version
-        tools:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Tools
-        tool_choice:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Tool Choice
-        response_format:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Response Format
-        reasoning_effort:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Reasoning Effort
-        verbosity:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Verbosity
-        deployment_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Deployment Name
-      type: object
-      title: RunParamsMap
-      description: 'Maps the internal settings parameters (left) to the serialized parameters (right) we want to send in the API
-
-        requests.'
-    SyntheticDatasetExtensionResponse:
-      properties:
-        dataset_id:
-          type: string
-          format: uuid4
-          title: Dataset Id
-      type: object
-      required:
-      - dataset_id
-      title: SyntheticDatasetExtensionResponse
-      description: Response for synthetic dataset extension requests.
-    OpenAIFunction:
-      properties:
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - name
-      title: OpenAIFunction
-    ContentModality:
-      type: string
-      enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
-    DatasetContentFilter:
-      properties:
-        column_name:
-          type: string
-          title: Column Name
-        value:
-          type: string
-          title: Value
-        operator:
-          $ref: '#/components/schemas/DatasetContentFilterOperator'
-          default: contains
-      type: object
-      required:
-      - column_name
-      - value
-      title: DatasetContentFilter
-    DatasetAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
-    UpdateDatasetVersionRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-      type: object
-      title: UpdateDatasetVersionRequest
-    IntegrationAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - read_secrets
-      title: IntegrationAction
-    DatasetNameSort:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: DatasetNameSort
-    CollaboratorUpdate:
-      properties:
-        role:
-          $ref: '#/components/schemas/CollaboratorRole'
-      type: object
-      required:
-      - role
-      title: CollaboratorUpdate
     Model:
       properties:
         name:
@@ -5428,322 +5308,90 @@ components:
       - name
       - alias
       title: Model
-    DatasetContentFilterOperator:
-      type: string
-      enum:
-      - eq
-      - ne
-      - contains
-      title: DatasetContentFilterOperator
-    UserAction:
+    GroupCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        group_id:
+          type: string
+          format: uuid4
+          title: Group Id
+      type: object
+      required:
+      - group_id
+      title: GroupCollaboratorCreate
+    FineTunedScorerAction:
       type: string
       enum:
       - update
       - delete
-      - read_api_keys
-      - change_role_to_admin
-      - change_role_to_manager
-      - change_role_to_user
-      - change_role_to_read_only
-      title: UserAction
-    RollbackRequest:
+      title: FineTunedScorerAction
+    UpdateDatasetContentRequest:
       properties:
-        rollback_version:
-          type: integer
-          title: Rollback Version
-      type: object
-      required:
-      - rollback_version
-      title: RollbackRequest
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
-    DatasetVersionIndexSort:
-      properties:
-        name:
-          type: string
-          const: version_index
-          title: Name
-          default: version_index
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: DatasetVersionIndexSort
-    ListDatasetVersionResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        versions:
+        edits:
           items:
-            $ref: '#/components/schemas/DatasetVersionDB'
+            oneOf:
+            - $ref: '#/components/schemas/DatasetPrependRow'
+            - $ref: '#/components/schemas/DatasetAppendRow'
+            - $ref: '#/components/schemas/DatasetUpdateRow'
+            - $ref: '#/components/schemas/DatasetDeleteRow'
+            - $ref: '#/components/schemas/DatasetFilterRows'
+            - $ref: '#/components/schemas/DatasetCopyRecordData'
+            - $ref: '#/components/schemas/DatasetRemoveColumn'
+            - $ref: '#/components/schemas/DatasetRenameColumn'
+            discriminator:
+              propertyName: edit_type
+              mapping:
+                append_row: '#/components/schemas/DatasetAppendRow'
+                copy_record_data: '#/components/schemas/DatasetCopyRecordData'
+                delete_row: '#/components/schemas/DatasetDeleteRow'
+                filter_rows: '#/components/schemas/DatasetFilterRows'
+                prepend_row: '#/components/schemas/DatasetPrependRow'
+                remove_column: '#/components/schemas/DatasetRemoveColumn'
+                rename_column: '#/components/schemas/DatasetRenameColumn'
+                update_row: '#/components/schemas/DatasetUpdateRow'
           type: array
-          title: Versions
+          minItems: 1
+          title: Edits
+          error: Edits list cannot be empty.
       type: object
       required:
-      - versions
-      title: ListDatasetVersionResponse
-    DatasetDB:
+      - edits
+      title: UpdateDatasetContentRequest
+      description: "This structure represent the valid edits operations that can be performed on a dataset.\nThere edit operations are:\n- Row edits: These edits are performed on a specific row of the dataset.\n    - EditMode.id: The edit is performed on the index (numeric index). DEPRECATED\n    - EditMode.row_id: The edit is performed on the row_id of the row.\n- Global edits: These edits are performed on the entire dataset and should not be mixed with row edits.\n    - EditMode.global_edit"
+    Permission:
       properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
-        name:
-          type: string
-          title: Name
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        project_count:
-          type: integer
-          title: Project Count
-        num_rows:
+        action:
           anyOf:
-          - type: integer
-          - type: 'null'
-          title: Num Rows
-        column_names:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Column Names
-        created_by_user:
-          anyOf:
-          - $ref: '#/components/schemas/UserInfo'
-          - type: 'null'
-        current_version_index:
-          type: integer
-          title: Current Version Index
-        draft:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
           type: boolean
-          title: Draft
-      type: object
-      required:
-      - id
-      - name
-      - created_at
-      - updated_at
-      - project_count
-      - num_rows
-      - column_names
-      - created_by_user
-      - current_version_index
-      - draft
-      title: DatasetDB
-    UserInfo:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        email:
-          type: string
-          title: Email
-        first_name:
+          title: Allowed
+        message:
           anyOf:
           - type: string
           - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-      type: object
-      required:
-      - id
-      - email
-      title: UserInfo
-      description: A user's basic information, used for display purposes.
-    DatasetDraftFilter:
-      properties:
-        name:
-          type: string
-          const: draft
-          title: Name
-          default: draft
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          title: Operator
-          default: eq
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: DatasetDraftFilter
-    DatasetRenameColumn:
-      properties:
-        edit_type:
-          type: string
-          const: rename_column
-          title: Edit Type
-          default: rename_column
-        column_name:
-          type: string
-          maxLength: 255
-          title: Column Name
-        new_column_name:
-          type: string
-          maxLength: 255
-          title: New Column Name
-      type: object
-      required:
-      - column_name
-      - new_column_name
-      title: DatasetRenameColumn
-      description: Rename a column in the dataset schema, preserving values.
-    ScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - autotune_apply
-      title: ScorerAction
-    ColumnMappingConfig:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        flatten:
-          type: boolean
-          title: Flatten
-          default: false
-      type: object
-      required:
-      - columns
-      title: ColumnMappingConfig
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
           title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DatasetVersionDB:
-      properties:
-        version_index:
-          type: integer
-          title: Version Index
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        created_by_user:
-          anyOf:
-          - $ref: '#/components/schemas/UserInfo'
-          - type: 'null'
-        num_rows:
-          type: integer
-          title: Num Rows
-        column_names:
-          items:
-            type: string
-          type: array
-          title: Column Names
-        rows_added:
-          type: integer
-          title: Rows Added
-        rows_removed:
-          type: integer
-          title: Rows Removed
-        rows_edited:
-          type: integer
-          title: Rows Edited
-        columns_added:
-          type: integer
-          title: Columns Added
-        columns_removed:
-          type: integer
-          title: Columns Removed
-        columns_renamed:
-          type: integer
-          title: Columns Renamed
-      type: object
-      required:
-      - version_index
-      - name
-      - created_at
-      - created_by_user
-      - num_rows
-      - column_names
-      - rows_added
-      - rows_removed
-      - rows_edited
-      - columns_added
-      - columns_removed
-      - columns_renamed
-      title: DatasetVersionDB
+      - action
+      - allowed
+      title: Permission
     SyntheticDataSourceDataset:
       properties:
         dataset_id:
@@ -5768,116 +5416,34 @@ components:
       - dataset_id
       title: SyntheticDataSourceDataset
       description: Configuration for dataset examples in synthetic data generation.
-    ListUserCollaboratorsResponse:
+    HTTPValidationError:
       properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    JobProgress:
+      properties:
+        progress_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Progress Message
+        steps_completed:
           anyOf:
           - type: integer
           - type: 'null'
-          title: Next Starting Token
-        collaborators:
-          items:
-            $ref: '#/components/schemas/UserCollaborator'
-          type: array
-          title: Collaborators
-      type: object
-      required:
-      - collaborators
-      title: ListUserCollaboratorsResponse
-    DatasetContentSortClause:
-      properties:
-        column_name:
-          type: string
-          title: Column Name
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-      type: object
-      required:
-      - column_name
-      title: DatasetContentSortClause
-    api__schemas__content__dataset__BulkDeleteFailure:
-      properties:
-        dataset_id:
-          type: string
-          format: uuid4
-          title: Dataset Id
-        dataset_name:
-          type: string
-          title: Dataset Name
-        reason:
-          type: string
-          title: Reason
-      type: object
-      required:
-      - dataset_id
-      - dataset_name
-      - reason
-      title: BulkDeleteFailure
-      description: Details about a failed deletion.
-    UpsertDatasetContentRequest:
-      properties:
-        dataset_id:
-          type: string
-          format: uuid4
-          title: Dataset Id
-          description: The ID of the dataset to copy content from.
-        version_index:
+          title: Steps Completed
+        steps_total:
           anyOf:
           - type: integer
           - type: 'null'
-          title: Version Index
-          description: The version index of the dataset to copy content from. If not provided, the content will be copied from the latest version of the dataset.
+          title: Steps Total
       type: object
-      required:
-      - dataset_id
-      title: UpsertDatasetContentRequest
-    DatasetInputJsonField:
-      properties:
-        key:
-          type: string
-          title: Key
-        values:
-          items:
-            $ref: '#/components/schemas/JsonValue'
-          type: array
-          title: Values
-      type: object
-      required:
-      - key
-      - values
-      title: DatasetInputJsonField
-    DatasetUpdatedAtSort:
-      properties:
-        name:
-          type: string
-          const: updated_at
-          title: Name
-          default: updated_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: DatasetUpdatedAtSort
+      title: JobProgress
     DatasetRemoveColumn:
       properties:
         edit_type:
@@ -5894,22 +5460,32 @@ components:
       - column_name
       title: DatasetRemoveColumn
       description: Drop a column from the dataset schema.
-    ControlResourceAction:
-      type: string
-      enum:
-      - create
-      - read
-      - update
-      - delete
-      title: ControlResourceAction
-      description: Actions on Agent Control's org-scoped ``control`` resource.
-    DatasetAppendRow:
+    DatasetFilterRows:
       properties:
         edit_type:
           type: string
-          const: append_row
+          const: filter_rows
           title: Edit Type
-          default: append_row
+          default: filter_rows
+        row_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          minItems: 1
+          title: Row Ids
+      type: object
+      required:
+      - row_ids
+      title: DatasetFilterRows
+      description: This global operation filters a set of rows and discard the rest.
+    DatasetPrependRow:
+      properties:
+        edit_type:
+          type: string
+          const: prepend_row
+          title: Edit Type
+          default: prepend_row
         values:
           additionalProperties:
             anyOf:
@@ -5935,71 +5511,450 @@ components:
       type: object
       required:
       - values
-      title: DatasetAppendRow
-    Name:
+      title: DatasetPrependRow
+    DatasetCreatedAtSort:
       properties:
-        value:
+        name:
           type: string
-          maxLength: 128
-          minLength: 1
-          title: Value
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: DatasetCreatedAtSort
+    Body_create_dataset_datasets_post:
+      properties:
+        draft:
+          type: boolean
+          title: Draft
+          default: false
+        hidden:
+          type: boolean
+          title: Hidden
+          default: false
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
         append_suffix_if_duplicate:
           type: boolean
           title: Append Suffix If Duplicate
           default: false
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        copy_from_dataset_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy From Dataset Id
+        copy_from_dataset_version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Copy From Dataset Version Index
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        column_mapping:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Column Mapping
+      type: object
+      title: Body_create_dataset_datasets_post
+    DatasetNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
       type: object
       required:
+      - operator
       - value
-      title: Name
-      description: Global name class for handling unique naming across the application.
-    ListDatasetParams:
+      title: DatasetNameFilter
+    JsonPrimitive-Output:
+      anyOf:
+      - type: string
+      - type: integer
+      - type: number
+      - type: boolean
+      - type: 'null'
+    GroupAction:
+      type: string
+      enum:
+      - update
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    UserInfo:
       properties:
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/DatasetNameFilter'
-            - $ref: '#/components/schemas/DatasetDraftFilter'
-            - $ref: '#/components/schemas/DatasetUsedInProjectFilter'
-            - $ref: '#/components/schemas/DatasetIDFilter'
-            - $ref: '#/components/schemas/DatasetNotInProjectFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                draft: '#/components/schemas/DatasetDraftFilter'
-                id: '#/components/schemas/DatasetIDFilter'
-                name: '#/components/schemas/DatasetNameFilter'
-                not_in_project: '#/components/schemas/DatasetNotInProjectFilter'
-                used_in_project: '#/components/schemas/DatasetUsedInProjectFilter'
-          type: array
-          title: Filters
-        sort:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
           anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/DatasetNameSort'
-            - $ref: '#/components/schemas/DatasetCreatedAtSort'
-            - $ref: '#/components/schemas/DatasetUpdatedAtSort'
-            - $ref: '#/components/schemas/DatasetProjectLastUsedAtSort'
-            - $ref: '#/components/schemas/DatasetProjectsSort'
-            - $ref: '#/components/schemas/DatasetRowsSort'
-            - $ref: '#/components/schemas/DatasetLastEditedByUserAtSort'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/DatasetCreatedAtSort'
-                last_edited_by_user_at: '#/components/schemas/DatasetLastEditedByUserAtSort'
-                name: '#/components/schemas/DatasetNameSort'
-                num_rows: '#/components/schemas/DatasetRowsSort'
-                project_count: '#/components/schemas/DatasetProjectsSort'
-                project_last_used_at: '#/components/schemas/DatasetProjectLastUsedAtSort'
-                updated_at: '#/components/schemas/DatasetUpdatedAtSort'
+          - type: string
           - type: 'null'
-          title: Sort
-          default:
-            name: created_at
-            ascending: false
-            sort_type: column
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
       type: object
-      title: ListDatasetParams
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    DatasetContent:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        column_names:
+          items:
+            type: string
+          type: array
+          title: Column Names
+        warning_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Warning Message
+        rows:
+          items:
+            $ref: '#/components/schemas/DatasetRow'
+          type: array
+          title: Rows
+      type: object
+      title: DatasetContent
+    RollbackRequest:
+      properties:
+        rollback_version:
+          type: integer
+          title: Rollback Version
+      type: object
+      required:
+      - rollback_version
+      title: RollbackRequest
+    Body_create_dataset_public_v2_datasets_post:
+      properties:
+        draft:
+          type: boolean
+          title: Draft
+          default: false
+        hidden:
+          type: boolean
+          title: Hidden
+          default: false
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        append_suffix_if_duplicate:
+          type: boolean
+          title: Append Suffix If Duplicate
+          default: false
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        copy_from_dataset_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Copy From Dataset Id
+        copy_from_dataset_version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Copy From Dataset Version Index
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        column_mapping:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Column Mapping
+      type: object
+      title: Body_create_dataset_public_v2_datasets_post
+    UserCollaboratorCreate:
+      properties:
+        role:
+          $ref: '#/components/schemas/CollaboratorRole'
+          default: viewer
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: User Id
+        user_email:
+          anyOf:
+          - type: string
+            format: email
+          - type: 'null'
+          title: User Email
+      type: object
+      title: UserCollaboratorCreate
+      description: 'Create a user collaborator using either user_id or email.
+
+
+        When using email, if the user doesn''t exist in the organization,
+
+        they will be invited automatically.'
+    DatasetContentFilterOperator:
+      type: string
+      enum:
+      - eq
+      - ne
+      - contains
+      title: DatasetContentFilterOperator
+    RunParamsMap:
+      properties:
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+        temperature:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Max Tokens
+        stop_sequences:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top P
+        top_k:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top K
+        frequency_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Presence Penalty
+        echo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Echo
+        logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logprobs
+        top_logprobs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Top Logprobs
+        n:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: N
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        tools:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+        reasoning_effort:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Effort
+        verbosity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verbosity
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+      type: object
+      title: RunParamsMap
+      description: 'Maps the internal settings parameters (left) to the serialized parameters (right) we want to send in the API
+
+        requests.'
+    DatasetInputJsonField:
+      properties:
+        key:
+          type: string
+          title: Key
+        values:
+          items:
+            $ref: '#/components/schemas/JsonValue'
+          type: array
+          title: Values
+      type: object
+      required:
+      - key
+      - values
+      title: DatasetInputJsonField
+    UpsertDatasetContentRequest:
+      properties:
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+          description: The ID of the dataset to copy content from.
+        version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Version Index
+          description: The version index of the dataset to copy content from. If not provided, the content will be copied from the latest version of the dataset.
+      type: object
+      required:
+      - dataset_id
+      title: UpsertDatasetContentRequest
+    ColumnMapping:
+      properties:
+        input:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Input
+        output:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Output
+        generated_output:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Generated Output
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMappingConfig'
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Metadata
+        mgt:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/ColumnMappingConfig'
+            type: object
+          - type: 'null'
+          title: Mgt
+      additionalProperties: true
+      type: object
+      title: ColumnMapping
     OpenAIToolChoice:
       properties:
         type:
@@ -6012,12 +5967,57 @@ components:
       required:
       - function
       title: OpenAIToolChoice
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
+    PreviewDatasetRequest:
+      properties:
+        column_mapping:
+          anyOf:
+          - $ref: '#/components/schemas/ColumnMapping'
+          - type: 'null'
+      type: object
+      title: PreviewDatasetRequest
+    DatasetProject:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        name:
+          type: string
+          title: Name
+        created_by_user:
+          anyOf:
+          - $ref: '#/components/schemas/UserInfo'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - created_by_user
+      title: DatasetProject
+    ListDatasetVersionParams:
+      properties:
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/DatasetVersionIndexSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                version_index: '#/components/schemas/DatasetVersionIndexSort'
+          - type: 'null'
+          title: Sort
+      type: object
+      title: ListDatasetVersionParams
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

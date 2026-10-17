@@ -186,34 +186,26 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    Ruleset:
+    SubscriptionConfig:
       properties:
-        rules:
+        statuses:
           items:
-            $ref: '#/components/schemas/Rule'
+            $ref: '#/components/schemas/ExecutionStatus'
           type: array
-          minItems: 1
-          title: Rules
-          description: List of rules to evaluate. Atleast 1 rule is required.
-        action:
-          oneOf:
-          - $ref: '#/components/schemas/OverrideAction'
-          - $ref: '#/components/schemas/PassthroughAction'
-          title: Action
-          description: Action to take if all the rules are met.
-          discriminator:
-            propertyName: type
-            mapping:
-              OVERRIDE: '#/components/schemas/OverrideAction'
-              PASSTHROUGH: '#/components/schemas/PassthroughAction'
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Description of the ruleset.
+          title: Statuses
+          description: List of statuses that will cause a notification to be sent to the configured URL.
+          default:
+          - triggered
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: URL to send the event to. This can be a webhook URL, a message queue URL, an event bus or a custom endpoint that can receive an HTTP POST request.
       type: object
-      title: Ruleset
+      required:
+      - url
+      title: SubscriptionConfig
     PassthroughAction:
       properties:
         type:
@@ -229,31 +221,43 @@ components:
           description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
       type: object
       title: PassthroughAction
-    Rule:
+    StageWithRulesets:
       properties:
-        metric:
+        prioritized_rulesets:
+          items:
+            $ref: '#/components/schemas/Ruleset'
+          type: array
+          title: Prioritized Rulesets
+          description: Rulesets to be applied to the payload.
+        name:
           type: string
-          title: Metric
-          description: Name of the metric.
-        operator:
-          $ref: '#/components/schemas/RuleOperator'
-          description: Operator to use for comparison.
-        target_value:
+          title: Name
+          description: Name of the stage. Must be unique within the project.
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: ID of the project to which this stage belongs.
+        description:
           anyOf:
           - type: string
-          - type: number
-          - type: integer
-          - items: {}
-            type: array
           - type: 'null'
-          title: Target Value
-          description: Value to compare with for this metric (right hand side).
+          title: Description
+          description: Optional human-readable description of the goals of this guardrail.
+        type:
+          $ref: '#/components/schemas/StageType'
+          description: Type of the stage.
+          default: local
+        paused:
+          type: boolean
+          title: Paused
+          description: Whether the action is enabled. If False, the action will not be applied.
+          default: false
       type: object
       required:
-      - metric
-      - operator
-      - target_value
-      title: Rule
+      - name
+      - project_id
+      title: StageWithRulesets
     RuleOperator:
       type: string
       enum:
@@ -293,6 +297,21 @@ components:
       required:
       - choices
       title: OverrideAction
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StageType:
+      type: string
+      enum:
+      - local
+      - central
+      title: StageType
     ValidationError:
       properties:
         loc:
@@ -319,6 +338,46 @@ components:
       - msg
       - type
       title: ValidationError
+    Ruleset:
+      properties:
+        rules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+          minItems: 1
+          title: Rules
+          description: List of rules to evaluate. Atleast 1 rule is required.
+        action:
+          oneOf:
+          - $ref: '#/components/schemas/OverrideAction'
+          - $ref: '#/components/schemas/PassthroughAction'
+          title: Action
+          description: Action to take if all the rules are met.
+          discriminator:
+            propertyName: type
+            mapping:
+              OVERRIDE: '#/components/schemas/OverrideAction'
+              PASSTHROUGH: '#/components/schemas/PassthroughAction'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Description of the ruleset.
+      type: object
+      title: Ruleset
+    ExecutionStatus:
+      type: string
+      enum:
+      - triggered
+      - failed
+      - error
+      - timeout
+      - paused
+      - not_triggered
+      - skipped
+      title: ExecutionStatus
+      description: Status of the execution.
     StageDB:
       properties:
         name:
@@ -365,38 +424,31 @@ components:
       - created_by
       - id
       title: StageDB
-    ExecutionStatus:
-      type: string
-      enum:
-      - triggered
-      - failed
-      - error
-      - timeout
-      - paused
-      - not_triggered
-      - skipped
-      title: ExecutionStatus
-      description: Status of the execution.
-    SubscriptionConfig:
+    Rule:
       properties:
-        statuses:
-          items:
-            $ref: '#/components/schemas/ExecutionStatus'
-          type: array
-          title: Statuses
-          description: List of statuses that will cause a notification to be sent to the configured URL.
-          default:
-          - triggered
-        url:
+        metric:
           type: string
-          minLength: 1
-          format: uri
-          title: Url
-          description: URL to send the event to. This can be a webhook URL, a message queue URL, an event bus or a custom endpoint that can receive an HTTP POST request.
+          title: Metric
+          description: Name of the metric.
+        operator:
+          $ref: '#/components/schemas/RuleOperator'
+          description: Operator to use for comparison.
+        target_value:
+          anyOf:
+          - type: string
+          - type: number
+          - type: integer
+          - items: {}
+            type: array
+          - type: 'null'
+          title: Target Value
+          description: Value to compare with for this metric (right hand side).
       type: object
       required:
-      - url
-      title: SubscriptionConfig
+      - metric
+      - operator
+      - target_value
+      title: Rule
     RulesetsMixin:
       properties:
         prioritized_rulesets:
@@ -407,58 +459,6 @@ components:
           description: Rulesets to be applied to the payload.
       type: object
       title: RulesetsMixin
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    StageType:
-      type: string
-      enum:
-      - local
-      - central
-      title: StageType
-    StageWithRulesets:
-      properties:
-        prioritized_rulesets:
-          items:
-            $ref: '#/components/schemas/Ruleset'
-          type: array
-          title: Prioritized Rulesets
-          description: Rulesets to be applied to the payload.
-        name:
-          type: string
-          title: Name
-          description: Name of the stage. Must be unique within the project.
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-          description: ID of the project to which this stage belongs.
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Optional human-readable description of the goals of this guardrail.
-        type:
-          $ref: '#/components/schemas/StageType'
-          description: Type of the stage.
-          default: local
-        paused:
-          type: boolean
-          title: Paused
-          description: Whether the action is enabled. If False, the action will not be applied.
-          default: false
-      type: object
-      required:
-      - name
-      - project_id
-      title: StageWithRulesets
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

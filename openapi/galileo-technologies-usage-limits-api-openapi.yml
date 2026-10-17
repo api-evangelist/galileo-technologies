@@ -95,48 +95,6 @@ components:
       required:
       - limit
       title: CreateUsageLimitRequest
-    UsageLimitResponse:
-      properties:
-        name:
-          $ref: '#/components/schemas/UsageLimitNames'
-        limit:
-          type: integer
-          title: Limit
-        current_usage:
-          type: integer
-          title: Current Usage
-      type: object
-      required:
-      - name
-      - limit
-      - current_usage
-      title: UsageLimitResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     ListUsageLimitsResponse:
       properties:
         starting_token:
@@ -165,6 +123,22 @@ components:
       required:
       - usage_limits
       title: ListUsageLimitsResponse
+    UsageLimitResponse:
+      properties:
+        name:
+          $ref: '#/components/schemas/UsageLimitNames'
+        limit:
+          type: integer
+          title: Limit
+        current_usage:
+          type: integer
+          title: Current Usage
+      type: object
+      required:
+      - name
+      - limit
+      - current_usage
+      title: UsageLimitResponse
     HTTPValidationError:
       properties:
         detail:
@@ -174,13 +148,32 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    UsageLimitNames:
-      type: string
-      enum:
-      - traces_per_month
-      - orgs_per_user
-      - users_per_org
-      title: UsageLimitNames
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     UsageLimit:
       properties:
         name:
@@ -193,6 +186,13 @@ components:
       - name
       - limit
       title: UsageLimit
+    UsageLimitNames:
+      type: string
+      enum:
+      - traces_per_month
+      - orgs_per_user
+      - users_per_org
+      title: UsageLimitNames
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

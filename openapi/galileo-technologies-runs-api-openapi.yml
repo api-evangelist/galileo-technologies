@@ -360,47 +360,116 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    UserRole:
+    IntegrationAction:
       type: string
       enum:
-      - admin
-      - manager
-      - user
-      - read_only
-      title: UserRole
-    FeedbackAggregate:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    ProjectAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    Permission:
       properties:
-        aggregate:
-          oneOf:
-          - $ref: '#/components/schemas/LikeDislikeAggregate'
-          - $ref: '#/components/schemas/StarAggregate'
-          - $ref: '#/components/schemas/ScoreAggregate'
-          - $ref: '#/components/schemas/TagsAggregate'
-          - $ref: '#/components/schemas/TextAggregate'
-          - $ref: '#/components/schemas/ChoiceAggregate'
-          - $ref: '#/components/schemas/TreeChoiceAggregate'
-          title: Aggregate
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/ChoiceAggregate'
-              like_dislike: '#/components/schemas/LikeDislikeAggregate'
-              score: '#/components/schemas/ScoreAggregate'
-              star: '#/components/schemas/StarAggregate'
-              tags: '#/components/schemas/TagsAggregate'
-              text: '#/components/schemas/TextAggregate'
-              tree_choice: '#/components/schemas/TreeChoiceAggregate'
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
       type: object
       required:
-      - aggregate
-      title: FeedbackAggregate
-    ChoiceAggregate:
+      - action
+      - allowed
+      title: Permission
+    LikeDislikeAggregate:
       properties:
         feedback_type:
           type: string
-          const: choice
+          const: like_dislike
           title: Feedback Type
-          default: choice
+          default: like_dislike
+        like_count:
+          type: integer
+          title: Like Count
+        dislike_count:
+          type: integer
+          title: Dislike Count
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - like_count
+      - dislike_count
+      - unrated_count
+      title: LikeDislikeAggregate
+    TreeChoiceAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+          default: tree_choice
         counts:
           additionalProperties:
             type: integer
@@ -413,31 +482,27 @@ components:
       required:
       - counts
       - unrated_count
-      title: ChoiceAggregate
-    StarAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: star
-          title: Feedback Type
-          default: star
-        average:
-          type: number
-          title: Average
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - average
-      - counts
-      - unrated_count
-      title: StarAggregate
+      title: TreeChoiceAggregate
+    OrganizationAction:
+      type: string
+      enum:
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      title: OrganizationAction
+    DatasetAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
     RunCreate:
       properties:
         name:
@@ -496,26 +561,38 @@ components:
       - name
       - task_type
       title: RunCreate
-    TagsAggregate:
+    HTTPValidationError:
       properties:
-        feedback_type:
-          type: string
-          const: tags
-          title: Feedback Type
-          default: tags
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - counts
-      - unrated_count
-      title: TagsAggregate
+      title: HTTPValidationError
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      title: UserRole
     ScorerAction:
       type: string
       enum:
@@ -525,25 +602,31 @@ components:
       - export
       - autotune_apply
       title: ScorerAction
-    RunTagCreateRequest:
+    RunLinkResponse:
       properties:
-        key:
+        link:
           type: string
-          maxLength: 256
-          title: Key
-        value:
-          type: string
-          maxLength: 256
-          title: Value
-        tag_type:
-          type: string
-          title: Tag Type
+          title: Link
       type: object
       required:
-      - key
-      - value
-      - tag_type
-      title: RunTagCreateRequest
+      - link
+      title: RunLinkResponse
+    RunUpdateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+      type: object
+      title: RunUpdateRequest
+    ApiKeyAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: ApiKeyAction
     TaskType:
       type: integer
       enum:
@@ -560,213 +643,6 @@ components:
 
 
         We store these as ints instead of strings because we will be looking this up in the database frequently.'
-    AuthMethod:
-      type: string
-      enum:
-      - email
-      - google
-      - github
-      - okta
-      - azure-ad
-      - custom
-      - saml
-      - invite
-      title: AuthMethod
-    RunMetricDB:
-      properties:
-        key:
-          type: string
-          title: Key
-        value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Value
-        object_value:
-          anyOf:
-          - $ref: '#/components/schemas/FeedbackAggregate'
-          - type: 'null'
-        epoch:
-          type: integer
-          title: Epoch
-          default: 0
-        extra:
-          anyOf:
-          - items: {}
-            type: array
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - key
-      - run_id
-      - created_at
-      - updated_at
-      title: RunMetricDB
-    LikeDislikeAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: like_dislike
-          title: Feedback Type
-          default: like_dislike
-        like_count:
-          type: integer
-          title: Like Count
-        dislike_count:
-          type: integer
-          title: Dislike Count
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - like_count
-      - dislike_count
-      - unrated_count
-      title: LikeDislikeAggregate
-    RegisteredScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: RegisteredScorerAction
-    OrganizationAction:
-      type: string
-      enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
-    DeleteRunResponse:
-      properties:
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - message
-      title: DeleteRunResponse
-    UpdateRunResponse:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Name
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        num_samples:
-          type: integer
-          title: Num Samples
-        winner:
-          type: boolean
-          title: Winner
-        dataset_hash:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Dataset Hash
-        dataset_version_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Dataset Version Id
-        prompt_template_version_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Prompt Template Version Id
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        task_type:
-          anyOf:
-          - $ref: '#/components/schemas/TaskType'
-          - type: 'null'
-        last_updated_by:
-          type: string
-          format: uuid4
-          title: Last Updated By
-        run_tags:
-          items:
-            $ref: '#/components/schemas/RunTagDB'
-          type: array
-          title: Run Tags
-      type: object
-      required:
-      - created_by
-      - num_samples
-      - winner
-      - id
-      - created_at
-      - updated_at
-      - last_updated_by
-      title: UpdateRunResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     RunDB:
       properties:
         name:
@@ -861,12 +737,35 @@ components:
       - last_updated_by
       - creator
       title: RunDB
-    GeneratedScorerAction:
+    GroupAction:
       type: string
       enum:
       - update
-      - delete
-      title: GeneratedScorerAction
+      - list_members
+      - join
+      - request_to_join
+      title: GroupAction
+    DeleteRunsRequest:
+      properties:
+        run_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Run Ids
+      type: object
+      required:
+      - run_ids
+      title: DeleteRunsRequest
+    DeleteRunResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: DeleteRunResponse
     RunTagDB:
       properties:
         key:
@@ -916,70 +815,42 @@ components:
       - created_at
       - updated_at
       title: RunTagDB
-    DeleteRunsResponse:
-      properties:
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - message
-      title: DeleteRunsResponse
-    ScoreAggregate:
+    AuthMethod:
+      type: string
+      enum:
+      - email
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      - invite
+      title: AuthMethod
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    StarAggregate:
       properties:
         feedback_type:
           type: string
-          const: score
+          const: star
           title: Feedback Type
-          default: score
+          default: star
         average:
           type: number
           title: Average
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - average
-      - unrated_count
-      title: ScoreAggregate
-    RunMetricCreateRequest:
-      properties:
-        key:
-          type: string
-          title: Key
-        value:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Value
-        object_value:
-          anyOf:
-          - $ref: '#/components/schemas/FeedbackAggregate'
-          - type: 'null'
-        epoch:
-          type: integer
-          title: Epoch
-          default: 0
-        extra:
-          anyOf:
-          - items: {}
-            type: array
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra
-      type: object
-      required:
-      - key
-      title: RunMetricCreateRequest
-    TreeChoiceAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: tree_choice
-          title: Feedback Type
-          default: tree_choice
         counts:
           additionalProperties:
             type: integer
@@ -990,124 +861,10 @@ components:
           title: Unrated Count
       type: object
       required:
+      - average
       - counts
       - unrated_count
-      title: TreeChoiceAggregate
-    DatasetAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
-    ProjectAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - rename
-      - share
-      - create_run
-      - delete_run
-      - rename_run
-      - move_run
-      - export_data
-      - configure_human_feedback
-      - record_human_feedback
-      - log_data
-      - toggle_metric
-      - edit_alert
-      - create_stage
-      - edit_stage
-      - configure_crown_logic
-      - delete_data
-      - set_metric
-      - edit_run_tags
-      - dismiss_alert
-      - edit_slice
-      - edit_edit
-      - update_control_bindings
-      - use_control_runtime
-      title: ProjectAction
-    FineTunedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: FineTunedScorerAction
-    Permission:
-      properties:
-        action:
-          anyOf:
-          - $ref: '#/components/schemas/UserAction'
-          - $ref: '#/components/schemas/GroupAction'
-          - $ref: '#/components/schemas/GroupMemberAction'
-          - $ref: '#/components/schemas/ProjectAction'
-          - $ref: '#/components/schemas/ScorerAction'
-          - $ref: '#/components/schemas/RegisteredScorerAction'
-          - $ref: '#/components/schemas/ApiKeyAction'
-          - $ref: '#/components/schemas/GeneratedScorerAction'
-          - $ref: '#/components/schemas/FineTunedScorerAction'
-          - $ref: '#/components/schemas/DatasetAction'
-          - $ref: '#/components/schemas/IntegrationAction'
-          - $ref: '#/components/schemas/OrganizationAction'
-          - $ref: '#/components/schemas/AnnotationQueueAction'
-          - $ref: '#/components/schemas/ControlResourceAction'
-          title: Action
-        allowed:
-          type: boolean
-          title: Allowed
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-      type: object
-      required:
-      - action
-      - allowed
-      title: Permission
-    IntegrationAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - read_secrets
-      title: IntegrationAction
-    GroupAction:
-      type: string
-      enum:
-      - update
-      - list_members
-      - join
-      - request_to_join
-      title: GroupAction
-    DeleteRunsRequest:
-      properties:
-        run_ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Run Ids
-      type: object
-      required:
-      - run_ids
-      title: DeleteRunsRequest
-    UserAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - read_api_keys
-      - change_role_to_admin
-      - change_role_to_manager
-      - change_role_to_user
-      - change_role_to_read_only
-      title: UserAction
+      title: StarAggregate
     UserDB:
       properties:
         id:
@@ -1170,63 +927,32 @@ components:
       - created_at
       - updated_at
       title: UserDB
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
-    AnnotationQueueAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - record_annotation
-      title: AnnotationQueueAction
-    ControlResourceAction:
-      type: string
-      enum:
-      - create
-      - read
-      - update
-      - delete
-      title: ControlResourceAction
-      description: Actions on Agent Control's org-scoped ``control`` resource.
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    RunUpdateRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Name
-      type: object
-      title: RunUpdateRequest
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
-    RunLinkResponse:
-      properties:
-        link:
+          title: Location
+        msg:
           type: string
-          title: Link
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - link
-      title: RunLinkResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
     TextAggregate:
       properties:
         feedback_type:
@@ -1245,6 +971,280 @@ components:
       - count
       - unrated_count
       title: TextAggregate
+    RunTagCreateRequest:
+      properties:
+        key:
+          type: string
+          maxLength: 256
+          title: Key
+        value:
+          type: string
+          maxLength: 256
+          title: Value
+        tag_type:
+          type: string
+          title: Tag Type
+      type: object
+      required:
+      - key
+      - value
+      - tag_type
+      title: RunTagCreateRequest
+    UpdateRunResponse:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        num_samples:
+          type: integer
+          title: Num Samples
+        winner:
+          type: boolean
+          title: Winner
+        dataset_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset Hash
+        dataset_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Dataset Version Id
+        prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Prompt Template Version Id
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        task_type:
+          anyOf:
+          - $ref: '#/components/schemas/TaskType'
+          - type: 'null'
+        last_updated_by:
+          type: string
+          format: uuid4
+          title: Last Updated By
+        run_tags:
+          items:
+            $ref: '#/components/schemas/RunTagDB'
+          type: array
+          title: Run Tags
+      type: object
+      required:
+      - created_by
+      - num_samples
+      - winner
+      - id
+      - created_at
+      - updated_at
+      - last_updated_by
+      title: UpdateRunResponse
+    UserAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - read_api_keys
+      - change_role_to_admin
+      - change_role_to_manager
+      - change_role_to_user
+      - change_role_to_read_only
+      title: UserAction
+    DeleteRunsResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: DeleteRunsResponse
+    FeedbackAggregate:
+      properties:
+        aggregate:
+          oneOf:
+          - $ref: '#/components/schemas/LikeDislikeAggregate'
+          - $ref: '#/components/schemas/StarAggregate'
+          - $ref: '#/components/schemas/ScoreAggregate'
+          - $ref: '#/components/schemas/TagsAggregate'
+          - $ref: '#/components/schemas/TextAggregate'
+          - $ref: '#/components/schemas/ChoiceAggregate'
+          - $ref: '#/components/schemas/TreeChoiceAggregate'
+          title: Aggregate
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/ChoiceAggregate'
+              like_dislike: '#/components/schemas/LikeDislikeAggregate'
+              score: '#/components/schemas/ScoreAggregate'
+              star: '#/components/schemas/StarAggregate'
+              tags: '#/components/schemas/TagsAggregate'
+              text: '#/components/schemas/TextAggregate'
+              tree_choice: '#/components/schemas/TreeChoiceAggregate'
+      type: object
+      required:
+      - aggregate
+      title: FeedbackAggregate
+    RunMetricDB:
+      properties:
+        key:
+          type: string
+          title: Key
+        value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Value
+        object_value:
+          anyOf:
+          - $ref: '#/components/schemas/FeedbackAggregate'
+          - type: 'null'
+        epoch:
+          type: integer
+          title: Epoch
+          default: 0
+        extra:
+          anyOf:
+          - items: {}
+            type: array
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - key
+      - run_id
+      - created_at
+      - updated_at
+      title: RunMetricDB
+    ChoiceAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: choice
+          title: Feedback Type
+          default: choice
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - counts
+      - unrated_count
+      title: ChoiceAggregate
+    RunMetricCreateRequest:
+      properties:
+        key:
+          type: string
+          title: Key
+        value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Value
+        object_value:
+          anyOf:
+          - $ref: '#/components/schemas/FeedbackAggregate'
+          - type: 'null'
+        epoch:
+          type: integer
+          title: Epoch
+          default: 0
+        extra:
+          anyOf:
+          - items: {}
+            type: array
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra
+      type: object
+      required:
+      - key
+      title: RunMetricCreateRequest
+    ScoreAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: score
+          title: Feedback Type
+          default: score
+        average:
+          type: number
+          title: Average
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - average
+      - unrated_count
+      title: ScoreAggregate
+    TagsAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: tags
+          title: Feedback Type
+          default: tags
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - counts
+      - unrated_count
+      title: TagsAggregate
     CreateRunResponse:
       properties:
         name:

@@ -97,60 +97,6 @@ paths:
       - Audit Logs
 components:
   schemas:
-    AuditAction:
-      type: string
-      enum:
-      - http_request
-      - login
-      - logout
-      - resource
-      - refresh_token
-      - failed_login
-      - account_lockout
-      title: AuditAction
-    AuditLogListResponse:
-      properties:
-        records:
-          items:
-            $ref: '#/components/schemas/AuditLogRecord'
-          type: array
-          title: Records
-        next_cursor_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Cursor Id
-      type: object
-      required:
-      - records
-      title: AuditLogListResponse
-      description: Response for audit log list endpoint.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     AuditLogRecord:
       properties:
         id:
@@ -181,6 +127,34 @@ components:
       - raw_event
       title: AuditLogRecord
       description: Single audit log record for query responses.
+    AuditLogListResponse:
+      properties:
+        records:
+          items:
+            $ref: '#/components/schemas/AuditLogRecord'
+          type: array
+          title: Records
+        next_cursor_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Cursor Id
+      type: object
+      required:
+      - records
+      title: AuditLogListResponse
+      description: Response for audit log list endpoint.
+    AuditAction:
+      type: string
+      enum:
+      - http_request
+      - login
+      - logout
+      - resource
+      - refresh_token
+      - failed_login
+      - account_lockout
+      title: AuditAction
     HTTPValidationError:
       properties:
         detail:
@@ -190,6 +164,32 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

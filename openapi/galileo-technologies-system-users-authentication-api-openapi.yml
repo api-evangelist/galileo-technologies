@@ -109,26 +109,18 @@ paths:
       - OAuth2PasswordBearer: []
 components:
   schemas:
-    UserPasswordResetRequest:
-      properties:
-        email:
-          type: string
-          title: Email
-        password:
-          anyOf:
-          - type: string
-            format: password
-            writeOnly: true
-          - type: 'null'
-          title: Password
-        email_is_verified:
-          type: boolean
-          title: Email Is Verified
-          default: true
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
+    PasswordResetEmailResponse:
+      properties: {}
       type: object
-      required:
-      - email
-      title: UserPasswordResetRequest
+      title: PasswordResetEmailResponse
     SystemUserDB:
       properties:
         id:
@@ -178,6 +170,41 @@ components:
       - role
       - auth_method
       title: SystemUserDB
+    SystemRole:
+      type: string
+      enum:
+      - system_admin
+      - system_user
+      title: SystemRole
+    UserPasswordResetRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          anyOf:
+          - type: string
+            format: password
+            writeOnly: true
+          - type: 'null'
+          title: Password
+        email_is_verified:
+          type: boolean
+          title: Email Is Verified
+          default: true
+      type: object
+      required:
+      - email
+      title: UserPasswordResetRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -218,33 +245,6 @@ components:
       required:
       - email
       title: EmailVerificationRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PasswordResetEmailResponse:
-      properties: {}
-      type: object
-      title: PasswordResetEmailResponse
-    SystemRole:
-      type: string
-      enum:
-      - system_admin
-      - system_user
-      title: SystemRole
-    SystemUserStatus:
-      type: string
-      enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

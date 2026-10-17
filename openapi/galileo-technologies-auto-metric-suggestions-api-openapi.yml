@@ -102,27 +102,16 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AutoMetric:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        implementation:
-          type: string
-          title: Implementation
-          default: galileo
-        code:
-          type: string
-          title: Code
-          default: ''
-      type: object
-      required:
-      - name
-      - description
-      title: AutoMetric
+    JobStatus:
+      type: string
+      enum:
+      - unstarted
+      - in_progress
+      - processed
+      - completed
+      - error
+      - failed
+      title: JobStatus
     ChatWithMetricRequest:
       properties:
         project_id:
@@ -153,16 +142,36 @@ components:
       - log_stream_id
       - metric_name
       title: ChatWithMetricRequest
-    JobStatus:
-      type: string
-      enum:
-      - unstarted
-      - in_progress
-      - processed
-      - completed
-      - error
-      - failed
-      title: JobStatus
+    AutoMetricSuggestionGetRequest:
+      properties:
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        log_stream_id:
+          type: string
+          format: uuid4
+          title: Log Stream Id
+        label:
+          anyOf:
+          - $ref: '#/components/schemas/AutoMetricSuggestionLabel'
+          - type: 'null'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        is_restart:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Restart
+          default: false
+      type: object
+      required:
+      - project_id
+      - log_stream_id
+      title: AutoMetricSuggestionGetRequest
     ValidationError:
       properties:
         loc:
@@ -189,14 +198,6 @@ components:
       - msg
       - type
       title: ValidationError
-    AutoMetricSuggestionLabel:
-      type: string
-      enum:
-      - Retriever Augmented Generation (RAG)
-      - Agent
-      - Code Generation
-      - Multi-turn dialogue system
-      title: AutoMetricSuggestionLabel
     AutoMetricSuggestionGetResponse:
       properties:
         project_id:
@@ -278,36 +279,35 @@ components:
       - chat_query
       - metric_name
       title: ChatWithMetricResponse
-    AutoMetricSuggestionGetRequest:
+    AutoMetricSuggestionLabel:
+      type: string
+      enum:
+      - Retriever Augmented Generation (RAG)
+      - Agent
+      - Code Generation
+      - Multi-turn dialogue system
+      title: AutoMetricSuggestionLabel
+    AutoMetric:
       properties:
-        project_id:
+        name:
           type: string
-          format: uuid4
-          title: Project Id
-        log_stream_id:
-          type: string
-          format: uuid4
-          title: Log Stream Id
-        label:
-          anyOf:
-          - $ref: '#/components/schemas/AutoMetricSuggestionLabel'
-          - type: 'null'
+          title: Name
         description:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Description
-        is_restart:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Restart
-          default: false
+        implementation:
+          type: string
+          title: Implementation
+          default: galileo
+        code:
+          type: string
+          title: Code
+          default: ''
       type: object
       required:
-      - project_id
-      - log_stream_id
-      title: AutoMetricSuggestionGetRequest
+      - name
+      - description
+      title: AutoMetric
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

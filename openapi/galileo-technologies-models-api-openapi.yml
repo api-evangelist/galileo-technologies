@@ -220,6 +220,35 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ModelPricesResponse:
+      properties:
+        override:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+        default:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+      type: object
+      title: ModelPricesResponse
+      description: Response for GET /models/{model_name}/prices.
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vegas_gateway
+      - vertex_ai
+      - writer
+      title: LLMIntegration
     ModelPriceEntry:
       properties:
         input_price:
@@ -238,107 +267,6 @@ components:
       - output_price
       title: ModelPriceEntry
       description: A pair of input/output prices — used for requests and responses.
-    ModelWithPriceOverrides:
-      properties:
-        name:
-          type: string
-          title: Name
-        price_overrides:
-          $ref: '#/components/schemas/ModelPriceEntry'
-      type: object
-      required:
-      - name
-      - price_overrides
-      title: ModelWithPriceOverrides
-      description: Single item in GET /models/price_overrides response.
-    LLMIntegration:
-      type: string
-      enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: LLMIntegration
-    ModelPricesResponse:
-      properties:
-        override:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
-          - type: 'null'
-        default:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
-          - type: 'null'
-      type: object
-      title: ModelPricesResponse
-      description: Response for GET /models/{model_name}/prices.
-    ModelWithPrices:
-      properties:
-        name:
-          type: string
-          title: Name
-        prices:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPricesResponse'
-          - type: 'null'
-      type: object
-      required:
-      - name
-      title: ModelWithPrices
-      description: Single item in GET /models response.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ContentModality:
-      type: string
-      enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
     ModelInfo:
       properties:
         name:
@@ -383,6 +311,78 @@ components:
         information to actually execute requests against the model, but that is not necessary
 
         to surface to the user.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ModelWithPrices:
+      properties:
+        name:
+          type: string
+          title: Name
+        prices:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPricesResponse'
+          - type: 'null'
+      type: object
+      required:
+      - name
+      title: ModelWithPrices
+      description: Single item in GET /models response.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    ModelWithPriceOverrides:
+      properties:
+        name:
+          type: string
+          title: Name
+        price_overrides:
+          $ref: '#/components/schemas/ModelPriceEntry'
+      type: object
+      required:
+      - name
+      - price_overrides
+      title: ModelWithPriceOverrides
+      description: Single item in GET /models/price_overrides response.
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

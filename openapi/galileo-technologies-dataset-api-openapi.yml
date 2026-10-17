@@ -110,6 +110,15 @@ components:
       - name
       - created_at
       title: V1DatasetEntry
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     V1ListDatasetsResponse:
       properties:
         starting_token:
@@ -162,15 +171,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey

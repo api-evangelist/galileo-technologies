@@ -273,21 +273,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AlertConditionType:
-      type: string
-      enum:
-      - metric/numeric/1
-      - metric/string/1
-      - metric/array_string/1
-      - root/numeric/1
-      - metric/numeric/v2
-      - metric/boolean/v2
-      - metric/categorical/v2
-      - metric/multilabel/v2
-      - root/column/v2
-      - root/record_count/v2
-      title: AlertConditionType
-    NumericMetricConditionV2:
+    RootColumnConditionV2:
       properties:
         field:
           type: string
@@ -321,9 +307,9 @@ components:
           title: Window
         type:
           type: string
-          const: metric/numeric/v2
+          const: root/column/v2
           title: Type
-          default: metric/numeric/v2
+          default: root/column/v2
         aggregation:
           type: string
           enum:
@@ -331,12 +317,23 @@ components:
           - max
           - min
           - sum
+          - count
           title: Aggregation
         value:
           anyOf:
           - type: number
           - type: integer
           title: Value
+        target_value:
+          anyOf:
+          - type: number
+          - type: integer
+          - type: 'null'
+          title: Target Value
+        target_operator:
+          anyOf:
+          - $ref: '#/components/schemas/Operator'
+          - type: 'null'
       type: object
       required:
       - field
@@ -344,7 +341,247 @@ components:
       - window
       - aggregation
       - value
-      title: NumericMetricConditionV2
+      title: RootColumnConditionV2
+    MultilabelMetricConditionV2:
+      properties:
+        field:
+          type: string
+          title: Field
+        metric_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Id
+        legacy_metric_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Legacy Metric Name
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+        operator:
+          $ref: '#/components/schemas/Operator'
+        window:
+          type: integer
+          minimum: 900.0
+          title: Window
+        type:
+          type: string
+          const: metric/multilabel/v2
+          title: Type
+          default: metric/multilabel/v2
+        aggregation:
+          type: string
+          const: count
+          title: Aggregation
+        target_value:
+          type: string
+          title: Target Value
+        value:
+          type: integer
+          title: Value
+      type: object
+      required:
+      - field
+      - operator
+      - window
+      - aggregation
+      - target_value
+      - value
+      title: MultilabelMetricConditionV2
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AlertConfigurationResponse:
+      properties:
+        conditions:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Conditions
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AlertNameFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                node_name: '#/components/schemas/AlertNameFilter'
+          type: array
+          title: Filters
+        interval:
+          type: integer
+          title: Interval
+        schema_version:
+          $ref: '#/components/schemas/AlertType'
+          default: multi_condition/object/1
+        active:
+          type: boolean
+          title: Active
+          default: true
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - conditions
+      - interval
+      - id
+      - created_by
+      - project_id
+      - run_id
+      - created_at
+      - updated_at
+      title: AlertConfigurationResponse
+    AlertType:
+      type: string
+      enum:
+      - multi_condition/object/1
+      - multi_condition/object/2
+      title: AlertType
+    Operator:
+      type: string
+      enum:
+      - eq
+      - ne
+      - gt
+      - gte
+      - lt
+      - lte
+      - in
+      - not_in
+      - contains
+      - has_all
+      - between
+      - like
+      title: Operator
+    CreateAlertConfigurationV1Request:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/AlertCondition'
+          type: array
+          title: Conditions
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AlertNameFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                node_name: '#/components/schemas/AlertNameFilter'
+          type: array
+          title: Filters
+        interval:
+          type: integer
+          title: Interval
+        schema_version:
+          type: string
+          const: multi_condition/object/1
+          title: Schema Version
+          default: multi_condition/object/1
+        active:
+          type: boolean
+          title: Active
+          default: true
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Run Id
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+      type: object
+      required:
+      - conditions
+      - interval
+      title: CreateAlertConfigurationV1Request
+    ListAlertConfigurationsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        alerts:
+          items:
+            $ref: '#/components/schemas/AlertConfigurationResponse'
+          type: array
+          title: Alerts
+      type: object
+      title: ListAlertConfigurationsResponse
+    Aggregator:
+      type: string
+      enum:
+      - count
+      - sum
+      - avg
+      - max
+      - min
+      - percentage_true
+      - percentage_false
+      title: Aggregator
+      description: Aggregation functions for alert conditions.
     BooleanMetricConditionV2:
       properties:
         field:
@@ -403,17 +640,56 @@ components:
       - aggregation
       - value
       title: BooleanMetricConditionV2
-    AlertType:
+    AlertConditionType:
       type: string
       enum:
-      - multi_condition/object/1
-      - multi_condition/object/2
-      title: AlertType
-    MultilabelMetricConditionV2:
+      - metric/numeric/1
+      - metric/string/1
+      - metric/array_string/1
+      - root/numeric/1
+      - metric/numeric/v2
+      - metric/boolean/v2
+      - metric/categorical/v2
+      - metric/multilabel/v2
+      - root/column/v2
+      - root/record_count/v2
+      title: AlertConditionType
+    AlertCondition:
       properties:
         field:
           type: string
           title: Field
+        aggregation:
+          anyOf:
+          - $ref: '#/components/schemas/Aggregator'
+          - type: string
+          title: Aggregation
+        operator:
+          $ref: '#/components/schemas/Operator'
+        value:
+          anyOf:
+          - type: number
+          - type: integer
+          - type: string
+          title: Value
+        filter_value:
+          anyOf:
+          - type: string
+          - type: number
+          - type: integer
+          - type: 'null'
+          title: Filter Value
+        filter_operator:
+          anyOf:
+          - $ref: '#/components/schemas/Operator'
+          - type: 'null'
+        window:
+          type: integer
+          minimum: 900.0
+          title: Window
+        condition_type:
+          $ref: '#/components/schemas/AlertConditionType'
+          default: metric/numeric/1
         metric_id:
           anyOf:
           - type: string
@@ -424,47 +700,14 @@ components:
           - type: string
           - type: 'null'
           title: Legacy Metric Name
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-        scoreable_node_types:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Scoreable Node Types
-        operator:
-          $ref: '#/components/schemas/Operator'
-        window:
-          type: integer
-          minimum: 900.0
-          title: Window
-        type:
-          type: string
-          const: metric/multilabel/v2
-          title: Type
-          default: metric/multilabel/v2
-        aggregation:
-          type: string
-          const: count
-          title: Aggregation
-        target_value:
-          type: string
-          title: Target Value
-        value:
-          type: integer
-          title: Value
       type: object
       required:
       - field
-      - operator
-      - window
       - aggregation
-      - target_value
+      - operator
       - value
-      title: MultilabelMetricConditionV2
+      - window
+      title: AlertCondition
     ValidationError:
       properties:
         loc:
@@ -491,101 +734,20 @@ components:
       - msg
       - type
       title: ValidationError
-    UpdateAlertConfigurationRequest:
-      properties:
-        conditions:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Conditions
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/AlertNameFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                node_name: '#/components/schemas/AlertNameFilter'
-          type: array
-          title: Filters
-        interval:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Interval
-        active:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Active
-        processed_by:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Processed By
-        last_triggered:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Triggered
-        last_sent:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Sent
-        alert_sent:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Alert Sent
-        counter_since_last_sent:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Counter Since Last Sent
-        counter:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Counter
-        schema_version:
-          anyOf:
-          - $ref: '#/components/schemas/AlertType'
-          - type: 'null'
-      type: object
-      title: UpdateAlertConfigurationRequest
-    ListAlertConfigurationsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        alerts:
-          items:
-            $ref: '#/components/schemas/AlertConfigurationResponse'
-          type: array
-          title: Alerts
-      type: object
-      title: ListAlertConfigurationsResponse
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      title: OutputTypeEnum
+      description: Enumeration of output types.
     CategoricalMetricConditionV2:
       properties:
         field:
@@ -642,134 +804,6 @@ components:
       - target_value
       - value
       title: CategoricalMetricConditionV2
-    Aggregator:
-      type: string
-      enum:
-      - count
-      - sum
-      - avg
-      - max
-      - min
-      - percentage_true
-      - percentage_false
-      title: Aggregator
-      description: Aggregation functions for alert conditions.
-    OutputTypeEnum:
-      type: string
-      enum:
-      - boolean
-      - categorical
-      - count
-      - discrete
-      - freeform
-      - percentage
-      - multilabel
-      - retrieved_chunk_list_boolean
-      - boolean_multilabel
-      title: OutputTypeEnum
-      description: Enumeration of output types.
-    AlertNameFilter:
-      properties:
-        name:
-          type: string
-          const: node_name
-          title: Name
-          default: node_name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: AlertNameFilter
-    Operator:
-      type: string
-      enum:
-      - eq
-      - ne
-      - gt
-      - gte
-      - lt
-      - lte
-      - in
-      - not_in
-      - contains
-      - has_all
-      - between
-      - like
-      title: Operator
-    AlertCondition:
-      properties:
-        field:
-          type: string
-          title: Field
-        aggregation:
-          anyOf:
-          - $ref: '#/components/schemas/Aggregator'
-          - type: string
-          title: Aggregation
-        operator:
-          $ref: '#/components/schemas/Operator'
-        value:
-          anyOf:
-          - type: number
-          - type: integer
-          - type: string
-          title: Value
-        filter_value:
-          anyOf:
-          - type: string
-          - type: number
-          - type: integer
-          - type: 'null'
-          title: Filter Value
-        filter_operator:
-          anyOf:
-          - $ref: '#/components/schemas/Operator'
-          - type: 'null'
-        window:
-          type: integer
-          minimum: 900.0
-          title: Window
-        condition_type:
-          $ref: '#/components/schemas/AlertConditionType'
-          default: metric/numeric/1
-        metric_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric Id
-        legacy_metric_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Legacy Metric Name
-      type: object
-      required:
-      - field
-      - aggregation
-      - operator
-      - value
-      - window
-      title: AlertCondition
     RecordCountConditionV2:
       properties:
         field:
@@ -841,13 +875,15 @@ components:
           title: Id
       type: object
       title: AlertStatusResponse
-    AlertConfigurationResponse:
+    UpdateAlertConfigurationRequest:
       properties:
         conditions:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
           title: Conditions
         filters:
           items:
@@ -860,119 +896,54 @@ components:
           type: array
           title: Filters
         interval:
-          type: integer
+          anyOf:
+          - type: integer
+          - type: 'null'
           title: Interval
-        schema_version:
-          $ref: '#/components/schemas/AlertType'
-          default: multi_condition/object/1
         active:
-          type: boolean
+          anyOf:
+          - type: boolean
+          - type: 'null'
           title: Active
-          default: true
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - conditions
-      - interval
-      - id
-      - created_by
-      - project_id
-      - run_id
-      - created_at
-      - updated_at
-      title: AlertConfigurationResponse
-    RootColumnConditionV2:
-      properties:
-        field:
-          type: string
-          title: Field
-        metric_id:
+        processed_by:
           anyOf:
           - type: string
+            format: uuid4
           - type: 'null'
-          title: Metric Id
-        legacy_metric_name:
+          title: Processed By
+        last_triggered:
           anyOf:
           - type: string
+            format: date-time
           - type: 'null'
-          title: Legacy Metric Name
-        output_type:
+          title: Last Triggered
+        last_sent:
           anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: string
+            format: date-time
           - type: 'null'
-        scoreable_node_types:
+          title: Last Sent
+        alert_sent:
           anyOf:
-          - items:
-              type: string
-            type: array
+          - type: boolean
           - type: 'null'
-          title: Scoreable Node Types
-        operator:
-          $ref: '#/components/schemas/Operator'
-        window:
-          type: integer
-          minimum: 900.0
-          title: Window
-        type:
-          type: string
-          const: root/column/v2
-          title: Type
-          default: root/column/v2
-        aggregation:
-          type: string
-          enum:
-          - avg
-          - max
-          - min
-          - sum
-          - count
-          title: Aggregation
-        value:
+          title: Alert Sent
+        counter_since_last_sent:
           anyOf:
-          - type: number
-          - type: integer
-          title: Value
-        target_value:
-          anyOf:
-          - type: number
           - type: integer
           - type: 'null'
-          title: Target Value
-        target_operator:
+          title: Counter Since Last Sent
+        counter:
           anyOf:
-          - $ref: '#/components/schemas/Operator'
+          - type: integer
+          - type: 'null'
+          title: Counter
+        schema_version:
+          anyOf:
+          - $ref: '#/components/schemas/AlertType'
           - type: 'null'
       type: object
-      required:
-      - field
-      - operator
-      - window
-      - aggregation
-      - value
-      title: RootColumnConditionV2
+      title: UpdateAlertConfigurationRequest
     CreateAlertConfigurationV2Request:
       properties:
         schema_version:
@@ -1030,67 +1001,96 @@ components:
       - conditions
       - interval
       title: CreateAlertConfigurationV2Request
-    HTTPValidationError:
+    NumericMetricConditionV2:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CreateAlertConfigurationV1Request:
-      properties:
-        conditions:
-          items:
-            $ref: '#/components/schemas/AlertCondition'
-          type: array
-          title: Conditions
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/AlertNameFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                node_name: '#/components/schemas/AlertNameFilter'
-          type: array
-          title: Filters
-        interval:
-          type: integer
-          title: Interval
-        schema_version:
+        field:
           type: string
-          const: multi_condition/object/1
-          title: Schema Version
-          default: multi_condition/object/1
-        active:
-          type: boolean
-          title: Active
-          default: true
-        project_id:
+          title: Field
+        metric_id:
           anyOf:
           - type: string
-            format: uuid4
           - type: 'null'
-          title: Project Id
-        run_id:
+          title: Metric Id
+        legacy_metric_name:
           anyOf:
           - type: string
-            format: uuid4
           - type: 'null'
-          title: Run Id
-        created_by:
+          title: Legacy Metric Name
+        output_type:
           anyOf:
-          - type: string
-            format: uuid4
+          - $ref: '#/components/schemas/OutputTypeEnum'
           - type: 'null'
-          title: Created By
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+        operator:
+          $ref: '#/components/schemas/Operator'
+        window:
+          type: integer
+          minimum: 900.0
+          title: Window
+        type:
+          type: string
+          const: metric/numeric/v2
+          title: Type
+          default: metric/numeric/v2
+        aggregation:
+          type: string
+          enum:
+          - avg
+          - max
+          - min
+          - sum
+          title: Aggregation
+        value:
+          anyOf:
+          - type: number
+          - type: integer
+          title: Value
       type: object
       required:
-      - conditions
-      - interval
-      title: CreateAlertConfigurationV1Request
+      - field
+      - operator
+      - window
+      - aggregation
+      - value
+      title: NumericMetricConditionV2
+    AlertNameFilter:
+      properties:
+        name:
+          type: string
+          const: node_name
+          title: Name
+          default: node_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: AlertNameFilter
   securitySchemes:
     ClassicAPIKeyHeader:
       type: apiKey
