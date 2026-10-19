@@ -1,13 +1,31 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Tokenomics API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
 tags:
 - name: Tokenomics
 paths:
+  /tokenomics/access-context:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics Access Context
+      operationId: get_tokenomics_access_context_tokenomics_access_context_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsAccessContextResponse'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
   /tokenomics/usage-metrics:
     post:
       tags:
@@ -34,8 +52,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /tokenomics/usage-trends:
@@ -64,8 +82,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /tokenomics/adoption:
@@ -94,8 +112,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /tokenomics/adoption-trends:
@@ -124,8 +142,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /tokenomics/users:
@@ -154,8 +172,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /tokenomics/filter-options:
@@ -184,48 +202,1621 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
+  /tokenomics/v1/canonical-users:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Canonical Users
+      operationId: get_tokenomics_v1_canonical_users_tokenomics_v1_canonical_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsCanonicalUsersRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsCanonicalUsersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/directory/search:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Directory Search
+      operationId: get_tokenomics_v1_directory_search_tokenomics_v1_directory_search_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsDirectorySearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsDirectorySearchResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/team-rollup:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Team Rollup
+      operationId: get_tokenomics_v1_team_rollup_tokenomics_v1_team_rollup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsTeamRollupRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsTeamRollupResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/breakdowns:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Breakdowns
+      operationId: get_tokenomics_v1_breakdowns_tokenomics_v1_breakdowns_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsBreakdownsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsBreakdownsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/filter-options:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Filter Options
+      operationId: get_tokenomics_v1_filter_options_tokenomics_v1_filter_options_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsFilterOptionsV1Request'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsFilterOptionsV1Response'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/usage-trends:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Usage Trends
+      operationId: get_tokenomics_v1_usage_trends_tokenomics_v1_usage_trends_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsUsageTrendsV1Request'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/TokenomicsDailyUsageTrendsV1Response'
+                - $ref: '#/components/schemas/TokenomicsFiscalUsageTrendsV1Response'
+                - $ref: '#/components/schemas/TokenomicsCustomUsageTrendsV1Response'
+                title: Response Get Tokenomics V1 Usage Trends Tokenomics V1 Usage Trends Post
+                discriminator:
+                  propertyName: interval
+                  mapping:
+                    day: '#/components/schemas/TokenomicsDailyUsageTrendsV1Response'
+                    fiscal_week: '#/components/schemas/TokenomicsFiscalUsageTrendsV1Response'
+                    fiscal_month: '#/components/schemas/TokenomicsFiscalUsageTrendsV1Response'
+                    custom: '#/components/schemas/TokenomicsCustomUsageTrendsV1Response'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/adoption-trends:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Adoption Trends
+      operationId: get_tokenomics_v1_adoption_trends_tokenomics_v1_adoption_trends_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsAdoptionTrendsV1Request'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/TokenomicsDailyAdoptionTrendsV1Response'
+                - $ref: '#/components/schemas/TokenomicsFiscalAdoptionTrendsV1Response'
+                - $ref: '#/components/schemas/TokenomicsCustomAdoptionTrendsV1Response'
+                title: Response Get Tokenomics V1 Adoption Trends Tokenomics V1 Adoption Trends Post
+                discriminator:
+                  propertyName: interval
+                  mapping:
+                    day: '#/components/schemas/TokenomicsDailyAdoptionTrendsV1Response'
+                    fiscal_week: '#/components/schemas/TokenomicsFiscalAdoptionTrendsV1Response'
+                    fiscal_month: '#/components/schemas/TokenomicsFiscalAdoptionTrendsV1Response'
+                    custom: '#/components/schemas/TokenomicsCustomAdoptionTrendsV1Response'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/provider-ingestion-status:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics Provider Ingestion Status
+      description: Return provider refresh state and latest fully committed data date.
+      operationId: get_tokenomics_provider_ingestion_status_tokenomics_v1_provider_ingestion_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsProviderIngestionStatusResponse'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/ingestion-cycles/latest:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics Ingestion Cycle
+      description: Return the latest organization-level provider refresh cycle.
+      operationId: get_tokenomics_ingestion_cycle_tokenomics_v1_ingestion_cycles_latest_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsIngestionCycleResponse'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/finance/breakdown:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Finance Breakdown
+      operationId: get_tokenomics_v1_finance_breakdown_tokenomics_v1_finance_breakdown_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinanceBreakdownRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinanceBreakdownResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/directory/import:
+    post:
+      tags:
+      - Tokenomics
+      summary: Import Tokenomics Directory
+      operationId: import_tokenomics_directory_tokenomics_directory_import_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_import_tokenomics_directory_tokenomics_directory_import_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsDirectoryImportResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/tree-tables/backfill:
+    post:
+      tags:
+      - Tokenomics
+      summary: Start Tokenomics Tree Backfill
+      description: Cover the org's usage with its HR chart, then backfill its tree tables in runners, one month per task.
+      operationId: start_tokenomics_tree_backfill_tokenomics_v1_tree_tables_backfill_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartTokenomicsTreeBackfillRequest'
+        required: true
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartTokenomicsTreeBackfillResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/finance/hierarchy/import:
+    post:
+      tags:
+      - Tokenomics
+      summary: Import Tokenomics Finance Hierarchy
+      operationId: import_tokenomics_finance_hierarchy_tokenomics_v1_finance_hierarchy_import_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_import_tokenomics_finance_hierarchy_tokenomics_v1_finance_hierarchy_import_post'
+        required: true
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinanceHierarchyGenerationResponse'
+        '422':
+          description: Invalid multipart request or finance hierarchy CSV content. The response is either FastAPI's request-validation detail or a structured finance hierarchy validation report.
+        '413':
+          description: The finance hierarchy CSV exceeds the 25 MiB upload limit.
+        '415':
+          description: Unsupported media type. Accepted types are text/csv, application/csv, and application/vnd.ms-excel.
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/finance/hierarchy/generations/{finance_generation_id}:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics Finance Hierarchy Generation
+      operationId: get_tokenomics_finance_hierarchy_generation_tokenomics_v1_finance_hierarchy_generations__finance_generation_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: finance_generation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Finance Generation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinanceHierarchyGenerationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/finance/hierarchy/active:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Active Tokenomics Finance Hierarchy
+      operationId: get_active_tokenomics_finance_hierarchy_tokenomics_v1_finance_hierarchy_active_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinanceHierarchyGenerationResponse'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/finance/hierarchy:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics Finance Hierarchy
+      operationId: get_tokenomics_finance_hierarchy_tokenomics_v1_finance_hierarchy_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveFinanceHierarchyResponse'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/forecast-results:
+    post:
+      tags:
+      - Tokenomics
+      summary: Get Tokenomics V1 Forecast Results
+      operationId: get_tokenomics_v1_forecast_results_tokenomics_v1_forecast_results_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenomicsForecastResultsV1Request'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenomicsForecastResultsV1Response'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/fiscal-calendar:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Fiscal Calendar
+      operationId: get_fiscal_calendar_tokenomics_v1_fiscal_calendar_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: fiscal_year_number
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            maximum: 9999
+            minimum: 1
+          - type: 'null'
+          title: Fiscal Year Number
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Tokenomics
+      summary: Update Fiscal Calendar
+      operationId: update_fiscal_calendar_tokenomics_v1_fiscal_calendar_put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/StructuredFiscalCalendarUpdate'
+              - $ref: '#/components/schemas/JsonFiscalCalendarUpdate'
+              discriminator:
+                propertyName: configuration_mode
+                mapping:
+                  structured: '#/components/schemas/StructuredFiscalCalendarUpdate'
+                  json: '#/components/schemas/JsonFiscalCalendarUpdate'
+              title: Request
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/fiscal-calendar/preview:
+    post:
+      tags:
+      - Tokenomics
+      summary: Preview Fiscal Calendar
+      operationId: preview_fiscal_calendar_tokenomics_v1_fiscal_calendar_preview_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/StructuredFiscalCalendarPreview'
+              - $ref: '#/components/schemas/JsonFiscalCalendarPreview'
+              title: Request
+              discriminator:
+                propertyName: configuration_mode
+                mapping:
+                  structured: '#/components/schemas/StructuredFiscalCalendarPreview'
+                  json: '#/components/schemas/JsonFiscalCalendarPreview'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarPreviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/fiscal-calendar/reset:
+    post:
+      tags:
+      - Tokenomics
+      summary: Reset Fiscal Calendar
+      operationId: reset_fiscal_calendar_tokenomics_v1_fiscal_calendar_reset_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FiscalCalendarReset'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/fiscal-calendar/versions:
+    get:
+      tags:
+      - Tokenomics
+      summary: List Fiscal Calendar Versions
+      operationId: list_fiscal_calendar_versions_tokenomics_v1_fiscal_calendar_versions_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarVersionListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/fiscal-calendar/versions/{version_id}:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Fiscal Calendar Version
+      operationId: get_fiscal_calendar_version_tokenomics_v1_fiscal_calendar_versions__version_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Version Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarVersion'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/forecast-configs:
+    post:
+      tags:
+      - Tokenomics
+      summary: Create Forecast Config V1
+      operationId: create_forecast_config_v1_tokenomics_v1_forecast_configs_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Tokenomics
+      summary: List Forecast Configs V1
+      operationId: list_forecast_configs_v1_tokenomics_v1_forecast_configs_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListForecastConfigsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/forecast-configs:
+    post:
+      tags:
+      - Tokenomics
+      summary: Create Forecast Config
+      operationId: create_forecast_config_tokenomics_forecast_configs_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegacyCreateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Tokenomics
+      summary: List Forecast Configs
+      operationId: list_forecast_configs_tokenomics_forecast_configs_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyListForecastConfigsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/forecast-configs/{forecast_config_id}:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Forecast Config V1
+      operationId: get_forecast_config_v1_tokenomics_v1_forecast_configs__forecast_config_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Tokenomics
+      summary: Update Forecast Config V1
+      operationId: update_forecast_config_v1_tokenomics_v1_forecast_configs__forecast_config_id__put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Tokenomics
+      summary: Delete Forecast Config V1
+      operationId: delete_forecast_config_v1_tokenomics_v1_forecast_configs__forecast_config_id__delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/forecast-configs/{forecast_config_id}:
+    get:
+      tags:
+      - Tokenomics
+      summary: Get Forecast Config
+      operationId: get_forecast_config_tokenomics_forecast_configs__forecast_config_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Tokenomics
+      summary: Update Forecast Config
+      operationId: update_forecast_config_tokenomics_forecast_configs__forecast_config_id__put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegacyUpdateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Tokenomics
+      summary: Delete Forecast Config
+      operationId: delete_forecast_config_tokenomics_forecast_configs__forecast_config_id__delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    TokenomicsUsageMetricsBreakdowns:
+    TokenomicsCanonicalUsersResponse:
       properties:
-        provider:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        users:
           items:
-            $ref: '#/components/schemas/TokenomicsProviderBreakdownRow'
+            $ref: '#/components/schemas/TokenomicsCanonicalUserRow'
           type: array
-          title: Provider
-        model:
-          items:
-            $ref: '#/components/schemas/TokenomicsModelBreakdownRow'
-          type: array
-          title: Model
+          title: Users
+        unmatched:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsUnmatchedSummary'
+          - type: 'null'
+        pagination:
+          $ref: '#/components/schemas/TokenomicsUsersPagination'
       type: object
       required:
-      - provider
-      - model
-      title: TokenomicsUsageMetricsBreakdowns
-    HTTPValidationError:
+      - date_range
+      - directory
+      - data_freshness
+      - users
+      - pagination
+      title: TokenomicsCanonicalUsersResponse
+    TokenomicsAccessContextResponse:
       properties:
-        detail:
+        allowed_views:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            type: string
+            enum:
+            - individual
+            - team
+            - organization
           type: array
-          title: Detail
+          maxItems: 3
+          minItems: 1
+          title: Allowed Views
+        default_view:
+          type: string
+          enum:
+          - individual
+          - team
+          - organization
+          title: Default View
+        directory_ready:
+          type: boolean
+          title: Directory Ready
       type: object
-      title: HTTPValidationError
-    TokenomicsDataFreshness:
+      required:
+      - allowed_views
+      - default_view
+      - directory_ready
+      title: TokenomicsAccessContextResponse
+    TokenomicsFiscalTimeRange:
       properties:
-        last_updated_at:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
+      type: object
+      required:
+      - start_date
+      - end_date
+      title: TokenomicsFiscalTimeRange
+    TokenomicsTeamRollupResponse:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        groups:
+          items:
+            $ref: '#/components/schemas/TokenomicsTeamRollupGroup'
+          type: array
+          title: Groups
+      type: object
+      required:
+      - date_range
+      - directory
+      - data_freshness
+      - groups
+      title: TokenomicsTeamRollupResponse
+    TokenomicsTeamChildRow:
+      properties:
+        user_key:
+          type: string
+          title: User Key
+        display_name:
           anyOf:
           - type: string
-            format: date-time
           - type: 'null'
-          title: Last Updated At
+          title: Display Name
+        department:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Department
+        job_function:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Job Function
+        has_children:
+          type: boolean
+          title: Has Children
+        is_manager_self:
+          type: boolean
+          title: Is Manager Self
+          default: false
+        direct_report_count:
+          type: integer
+          title: Direct Report Count
+        subtree_headcount:
+          type: integer
+          title: Subtree Headcount
+        active_users:
+          type: integer
+          title: Active Users
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+        usage_cost_pct:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Pct
+        active_users_pct:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Active Users Pct
+        cost_data_status:
+          type: string
+          enum:
+          - complete
+          - partial
+          - unavailable
+          title: Cost Data Status
+        provider_breakdown:
+          items:
+            $ref: '#/components/schemas/TokenomicsTeamProviderBreakdown'
+          type: array
+          title: Provider Breakdown
       type: object
-      title: TokenomicsDataFreshness
+      required:
+      - user_key
+      - has_children
+      - direct_report_count
+      - subtree_headcount
+      - active_users
+      - cost_data_status
+      title: TokenomicsTeamChildRow
+    TokenomicsBreakdownTotals:
+      properties:
+        headcount:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Headcount
+        active_users:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Active Users
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      title: TokenomicsBreakdownTotals
+      description: Aggregate metrics may all be null when the selected window has no facts.
+    TokenomicsIngestionCycleResponse:
+      properties:
+        cycle:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsIngestionCycle'
+          - type: 'null'
+      type: object
+      title: TokenomicsIngestionCycleResponse
+    TokenomicsCustomAdoptionTrendsV1Response:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        interval:
+          type: string
+          const: custom
+          title: Interval
+          default: custom
+        fiscal_calendar_version_id:
+          type: 'null'
+          title: Fiscal Calendar Version Id
+        buckets:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1CustomTrendBucket'
+          type: array
+          title: Buckets
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1CustomAdoptionTrendBucket'
+          type: array
+          title: Series
+      type: object
+      required:
+      - date_range
+      - directory
+      - data_freshness
+      - buckets
+      - series
+      title: TokenomicsCustomAdoptionTrendsV1Response
+    StructuredFiscalCalendarPreview:
+      properties:
+        configuration_mode:
+          type: string
+          const: structured
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/StructuredFiscalCalendarConfiguration'
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - fiscal_year_number
+      title: StructuredFiscalCalendarPreview
+    TokenomicsV1FiscalAdoptionTrendBucket:
+      properties:
+        fiscal_period_id:
+          type: string
+          title: Fiscal Period Id
+        label:
+          type: string
+          title: Label
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        included_start_date:
+          type: string
+          format: date
+          title: Included Start Date
+        included_end_date:
+          type: string
+          format: date
+          title: Included End Date
+        is_partial:
+          type: boolean
+          title: Is Partial
+        value:
+          type: string
+          title: Value
+        active_users:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Active Users
+      type: object
+      required:
+      - fiscal_period_id
+      - label
+      - start_date
+      - end_date
+      - included_start_date
+      - included_end_date
+      - is_partial
+      - value
+      title: TokenomicsV1FiscalAdoptionTrendBucket
+    TokenomicsDateRange:
+      properties:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      type: object
+      required:
+      - start_date
+      - end_date
+      title: TokenomicsDateRange
+    TokenomicsBreakdownsResponse:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        totals:
+          $ref: '#/components/schemas/TokenomicsBreakdownTotals'
+        breakdowns:
+          items:
+            $ref: '#/components/schemas/TokenomicsBreakdownResult'
+          type: array
+          title: Breakdowns
+      type: object
+      required:
+      - date_range
+      - directory
+      - data_freshness
+      - totals
+      - breakdowns
+      title: TokenomicsBreakdownsResponse
+    TokenomicsUsageTrendsV1Request:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsLeadershipFiscalCapableFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        group_by:
+          type: string
+          enum:
+          - provider
+          - model
+          title: Group By
+          default: provider
+        interval:
+          type: string
+          enum:
+          - day
+          - fiscal_week
+          - fiscal_month
+          - custom
+          title: Interval
+          default: day
+        fiscal_calendar_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Fiscal Calendar Version Id
+        buckets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TokenomicsTrendBucketInput'
+            type: array
+            maxItems: 55
+            minItems: 1
+          - type: 'null'
+          title: Buckets
+      additionalProperties: false
+      type: object
+      title: TokenomicsUsageTrendsV1Request
+    TokenomicsTeamRollupRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsLeadershipWorkforceFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        navigation_user_key:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Navigation User Key
+        sort_by:
+          anyOf:
+          - type: string
+            enum:
+            - display_name
+            - subtree_headcount
+            - active_users
+            - usage_cost_usd
+            - total_tokens
+            - usage_cost_pct
+          - type: 'null'
+          title: Sort By
+        sort_direction:
+          type: string
+          enum:
+          - asc
+          - desc
+          title: Sort Direction
+          default: desc
+        pagination:
+          $ref: '#/components/schemas/TokenomicsPaginationRequest'
+      additionalProperties: false
+      type: object
+      title: TokenomicsTeamRollupRequest
+    JsonFiscalCalendarPreview:
+      properties:
+        configuration_mode:
+          type: string
+          const: json
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - fiscal_year_number
+      title: JsonFiscalCalendarPreview
+    TokenomicsAdoptionTrendsRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsAdoptionFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        bucket:
+          type: string
+          const: day
+          title: Bucket
+          default: day
+      additionalProperties: false
+      type: object
+      title: TokenomicsAdoptionTrendsRequest
+    TokenomicsAdoptionFilters:
+      properties:
+        departments:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Departments
+        job_functions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Functions
+        job_families:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Families
+        regions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Regions
+        countries:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Countries
+        activity_status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - inactive
+            - all
+          - type: 'null'
+          title: Activity Status
+        time_range:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsTimeRange'
+          - type: 'null'
+        providers:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 50
+            minItems: 1
+          - type: 'null'
+          title: Providers
+      additionalProperties: false
+      type: object
+      title: TokenomicsAdoptionFilters
+      description: Filters for adoption reads. Adoption is per provider/day and has no model dimension, so models is absent.
+    FiscalQuarter:
+      properties:
+        fiscal_quarter_number:
+          type: integer
+          maximum: 4.0
+          minimum: 1.0
+          title: Fiscal Quarter Number
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_quarter_number
+      - start_date
+      - end_date
+      title: FiscalQuarter
     TokenomicsModelBreakdownRow:
       properties:
         key:
@@ -249,8 +1840,237 @@ components:
       - key
       - provider
       title: TokenomicsModelBreakdownRow
-    TokenomicsTimeRange:
+    ValidationError:
       properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TokenomicsFiscalForecastResultV1:
+      properties:
+        forecast_config_id:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+        generated_at:
+          type: string
+          format: date-time
+          title: Generated At
+        group_by:
+          type: string
+          const: total
+          title: Group By
+          default: total
+        interval:
+          type: string
+          enum:
+          - fiscal_week
+          - fiscal_month
+          title: Interval
+        fiscal_calendar_version_id:
+          type: string
+          format: uuid4
+          title: Fiscal Calendar Version Id
+        periods:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1FiscalTrendPeriod'
+          type: array
+          title: Periods
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1FiscalForecastBucket'
+          type: array
+          title: Series
+      type: object
+      required:
+      - forecast_config_id
+      - generated_at
+      - interval
+      - fiscal_calendar_version_id
+      - periods
+      - series
+      title: TokenomicsFiscalForecastResultV1
+    TokenomicsLeadershipFiscalCapableAdoptionFilters:
+      properties:
+        departments:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Departments
+        job_functions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Functions
+        job_families:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Families
+        regions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Regions
+        countries:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Countries
+        activity_status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - inactive
+            - all
+          - type: 'null'
+          title: Activity Status
+        time_range:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsFiscalTimeRange'
+          - type: 'null'
+        providers:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 50
+            minItems: 1
+          - type: 'null'
+          title: Providers
+        leader_user_key:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Leader User Key
+      additionalProperties: false
+      type: object
+      title: TokenomicsLeadershipFiscalCapableAdoptionFilters
+    TokenomicsUsageTrendBucket:
+      properties:
+        bucket_date:
+          type: string
+          format: date
+          title: Bucket Date
+        provider:
+          type: string
+          title: Provider
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      required:
+      - bucket_date
+      - provider
+      title: TokenomicsUsageTrendBucket
+    TokenomicsTeamSummary:
+      properties:
+        headcount:
+          type: integer
+          title: Headcount
+        active_users:
+          type: integer
+          title: Active Users
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+        cost_data_status:
+          type: string
+          enum:
+          - complete
+          - partial
+          - unavailable
+          title: Cost Data Status
+        provider_breakdown:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TokenomicsTeamProviderBreakdown'
+            type: array
+          - type: 'null'
+          title: Provider Breakdown
+      type: object
+      required:
+      - headcount
+      - active_users
+      - cost_data_status
+      title: TokenomicsTeamSummary
+    TokenomicsV1FiscalTrendPeriod:
+      properties:
+        fiscal_period_id:
+          type: string
+          title: Fiscal Period Id
+        label:
+          type: string
+          title: Label
         start_date:
           type: string
           format: date
@@ -259,34 +2079,411 @@ components:
           type: string
           format: date
           title: End Date
+        included_start_date:
+          type: string
+          format: date
+          title: Included Start Date
+        included_end_date:
+          type: string
+          format: date
+          title: Included End Date
+        is_partial:
+          type: boolean
+          title: Is Partial
+      type: object
+      required:
+      - fiscal_period_id
+      - label
+      - start_date
+      - end_date
+      - included_start_date
+      - included_end_date
+      - is_partial
+      title: TokenomicsV1FiscalTrendPeriod
+    FiscalCalendarPreviewResponse:
+      properties:
+        resolved_calendar:
+          anyOf:
+          - $ref: '#/components/schemas/FiscalYear'
+          - type: 'null'
+        generated_json:
+          anyOf:
+          - $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+          - type: 'null'
       additionalProperties: false
       type: object
       required:
-      - start_date
-      - end_date
-      title: TokenomicsTimeRange
-    TokenomicsUsageTrendsResponse:
+      - resolved_calendar
+      - generated_json
+      title: FiscalCalendarPreviewResponse
+    TokenomicsCanonicalUsersRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsLeadershipWorkforceFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        by_model:
+          type: boolean
+          title: By Model
+          default: false
+        search:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Search
+        sort_by:
+          anyOf:
+          - type: string
+            enum:
+            - display_name
+            - user_key
+            - department
+            - job_function
+            - job_family
+            - is_active
+            - last_active_at
+            - usage_cost_usd
+            - total_tokens
+          - type: 'null'
+          title: Sort By
+        sort_direction:
+          type: string
+          enum:
+          - asc
+          - desc
+          title: Sort Direction
+          default: desc
+        pagination:
+          $ref: '#/components/schemas/TokenomicsPaginationRequest'
+      additionalProperties: false
+      type: object
+      title: TokenomicsCanonicalUsersRequest
+    TokenomicsFiscalAdoptionTrendsV1Response:
       properties:
         date_range:
           $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
         data_freshness:
-          $ref: '#/components/schemas/TokenomicsDataFreshness'
-        bucket:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        interval:
           type: string
-          const: day
-          title: Bucket
+          enum:
+          - fiscal_week
+          - fiscal_month
+          title: Interval
+        fiscal_calendar_version_id:
+          type: string
+          format: uuid4
+          title: Fiscal Calendar Version Id
+        periods:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1FiscalTrendPeriod'
+          type: array
+          title: Periods
         series:
           items:
-            $ref: '#/components/schemas/TokenomicsUsageTrendBucket'
+            $ref: '#/components/schemas/TokenomicsV1FiscalAdoptionTrendBucket'
           type: array
           title: Series
       type: object
       required:
       - date_range
+      - directory
       - data_freshness
-      - bucket
+      - interval
+      - fiscal_calendar_version_id
+      - periods
       - series
-      title: TokenomicsUsageTrendsResponse
+      title: TokenomicsFiscalAdoptionTrendsV1Response
+    TokenomicsPaginationRequest:
+      properties:
+        limit:
+          type: integer
+          maximum: 500.0
+          minimum: 1.0
+          title: Limit
+          default: 50
+        cursor:
+          anyOf:
+          - type: string
+            maxLength: 1024
+            minLength: 1
+          - type: 'null'
+          title: Cursor
+      additionalProperties: false
+      type: object
+      title: TokenomicsPaginationRequest
+    TokenomicsDailyUsageTrendsV1Response:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        group_by:
+          type: string
+          enum:
+          - provider
+          - model
+          title: Group By
+        interval:
+          type: string
+          const: day
+          title: Interval
+          default: day
+        fiscal_calendar_version_id:
+          type: 'null'
+          title: Fiscal Calendar Version Id
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1UsageTrendBucket'
+          type: array
+          title: Series
+      type: object
+      required:
+      - date_range
+      - directory
+      - data_freshness
+      - group_by
+      - series
+      title: TokenomicsDailyUsageTrendsV1Response
+    TokenomicsV1UsageTrendBucket:
+      properties:
+        bucket_date:
+          type: string
+          format: date
+          title: Bucket Date
+        value:
+          type: string
+          title: Value
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      required:
+      - bucket_date
+      - value
+      title: TokenomicsV1UsageTrendBucket
+    FinanceBreakdownRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsWorkforceFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+          description: 'Ignored: the finance breakdown is always organization-scoped.'
+        ancestor_node_ids:
+          items:
+            type: string
+            maxLength: 512
+            minLength: 1
+          type: array
+          maxItems: 200
+          minItems: 1
+          title: Ancestor Node Ids
+        cost_categories:
+          anyOf:
+          - items:
+              type: string
+              enum:
+              - OPEX
+              - CX COGS
+              - SC COGS
+            type: array
+            maxItems: 3
+            minItems: 1
+          - type: 'null'
+          title: Cost Categories
+        include_unclassified:
+          type: boolean
+          title: Include Unclassified
+          default: false
+      additionalProperties: false
+      type: object
+      required:
+      - ancestor_node_ids
+      title: FinanceBreakdownRequest
+    FiscalWeekPatternMonthDefinition:
+      properties:
+        type:
+          type: string
+          const: week_pattern
+          title: Type
+          default: week_pattern
+        pattern:
+          type: string
+          enum:
+          - four_four_five
+          - four_five_four
+          - five_four_four
+          title: Pattern
+        catch_up_months:
+          items:
+            $ref: '#/components/schemas/FiscalCatchUpMonth'
+          type: array
+          maxItems: 100
+          title: Catch Up Months
+      additionalProperties: false
+      type: object
+      required:
+      - pattern
+      title: FiscalWeekPatternMonthDefinition
+    TokenomicsUsersResponse:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshness'
+        pagination:
+          $ref: '#/components/schemas/TokenomicsUsersPagination'
+        users:
+          items:
+            $ref: '#/components/schemas/TokenomicsUserRow'
+          type: array
+          title: Users
+      type: object
+      required:
+      - date_range
+      - data_freshness
+      - pagination
+      - users
+      title: TokenomicsUsersResponse
+    TokenomicsV1DailyForecastBucket:
+      properties:
+        value:
+          type: string
+          const: total
+          title: Value
+          default: total
+        mean:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Mean
+        lower:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Lower
+        upper:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Upper
+        bucket_date:
+          type: string
+          format: date
+          title: Bucket Date
+      type: object
+      required:
+      - bucket_date
+      title: TokenomicsV1DailyForecastBucket
+    FinanceBreakdownRow:
+      properties:
+        ancestor_node_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ancestor Node Id
+        cost_category:
+          anyOf:
+          - type: string
+            enum:
+            - OPEX
+            - CX COGS
+            - SC COGS
+          - type: 'null'
+          title: Cost Category
+        headcount:
+          type: integer
+          minimum: 0.0
+          title: Headcount
+        active_users:
+          type: integer
+          minimum: 0.0
+          title: Active Users
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      required:
+      - headcount
+      - active_users
+      title: FinanceBreakdownRow
+    FinanceHierarchyNodeResponse:
+      properties:
+        node_id:
+          type: string
+          title: Node Id
+        parent_node_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Node Id
+        display_name:
+          type: string
+          title: Display Name
+        department_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Department Id
+        cost_category:
+          anyOf:
+          - type: string
+            enum:
+            - OPEX
+            - CX COGS
+            - SC COGS
+          - type: 'null'
+          title: Cost Category
+      type: object
+      required:
+      - node_id
+      - display_name
+      title: FinanceHierarchyNodeResponse
+    TokenomicsDataFreshness:
+      properties:
+        last_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Updated At
+      type: object
+      title: TokenomicsDataFreshness
     TokenomicsAdoptionTrendsResponse:
       properties:
         date_range:
@@ -309,6 +2506,630 @@ components:
       - bucket
       - series
       title: TokenomicsAdoptionTrendsResponse
+    TokenomicsDirectorySearchFilters:
+      properties:
+        departments:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Departments
+        job_functions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Functions
+        job_families:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Families
+        regions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Regions
+        countries:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Countries
+        activity_status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - inactive
+            - all
+          - type: 'null'
+          title: Activity Status
+        has_direct_reports:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Has Direct Reports
+      additionalProperties: false
+      type: object
+      title: TokenomicsDirectorySearchFilters
+    HierarchyType:
+      type: string
+      enum:
+      - hr
+      - finance
+      title: HierarchyType
+      description: Which tree a tokenomics chart edge or tree-table row belongs to.
+    TokenomicsBreakdownMetrics:
+      properties:
+        headcount:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Headcount
+        active_users:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Active Users
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      title: TokenomicsBreakdownMetrics
+    TokenomicsLeadershipWorkforceFilters:
+      properties:
+        departments:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Departments
+        job_functions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Functions
+        job_families:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Families
+        regions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Regions
+        countries:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Countries
+        activity_status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - inactive
+            - all
+          - type: 'null'
+          title: Activity Status
+        time_range:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsTimeRange'
+          - type: 'null'
+        providers:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 50
+            minItems: 1
+          - type: 'null'
+          title: Providers
+        models:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Models
+        leader_user_key:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Leader User Key
+      additionalProperties: false
+      type: object
+      title: TokenomicsLeadershipWorkforceFilters
+      description: V1 analytical filters that may narrow organization view to one manager subtree.
+    FinanceHierarchyCoverage:
+      properties:
+        departments_not_found_in_directory:
+          items:
+            type: string
+          type: array
+          title: Departments Not Found In Directory
+        directory_departments_not_in_finance:
+          items:
+            type: string
+          type: array
+          title: Directory Departments Not In Finance
+      type: object
+      required:
+      - departments_not_found_in_directory
+      - directory_departments_not_in_finance
+      title: FinanceHierarchyCoverage
+    TokenomicsV1CustomAdoptionTrendBucket:
+      properties:
+        bucket_index:
+          type: integer
+          title: Bucket Index
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        value:
+          type: string
+          title: Value
+        active_users:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Active Users
+      type: object
+      required:
+      - bucket_index
+      - start_date
+      - end_date
+      - value
+      title: TokenomicsV1CustomAdoptionTrendBucket
+    TokenomicsCustomUsageTrendsV1Response:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        group_by:
+          type: string
+          enum:
+          - provider
+          - model
+          title: Group By
+        interval:
+          type: string
+          const: custom
+          title: Interval
+          default: custom
+        fiscal_calendar_version_id:
+          type: 'null'
+          title: Fiscal Calendar Version Id
+        buckets:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1CustomTrendBucket'
+          type: array
+          title: Buckets
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1CustomUsageTrendBucket'
+          type: array
+          title: Series
+      type: object
+      required:
+      - date_range
+      - directory
+      - data_freshness
+      - group_by
+      - buckets
+      - series
+      title: TokenomicsCustomUsageTrendsV1Response
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TokenomicsUsageMetricsTotals:
+      properties:
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      title: TokenomicsUsageMetricsTotals
+    TokenomicsUsageTrendsResponse:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshness'
+        bucket:
+          type: string
+          const: day
+          title: Bucket
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsUsageTrendBucket'
+          type: array
+          title: Series
+      type: object
+      required:
+      - date_range
+      - data_freshness
+      - bucket
+      - series
+      title: TokenomicsUsageTrendsResponse
+    FiscalCalendarReset:
+      properties:
+        expected_fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Expected Fiscal Calendar Version Id
+      additionalProperties: false
+      type: object
+      required:
+      - expected_fiscal_calendar_version_id
+      title: FiscalCalendarReset
+    TokenomicsTeamProviderBreakdown:
+      properties:
+        provider:
+          type: string
+          title: Provider
+        active_users:
+          type: integer
+          title: Active Users
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+        cost_data_status:
+          anyOf:
+          - type: string
+            enum:
+            - complete
+            - partial
+            - unavailable
+          - type: 'null'
+          title: Cost Data Status
+      type: object
+      required:
+      - provider
+      - active_users
+      title: TokenomicsTeamProviderBreakdown
+    FiscalAutomaticMonthDefinition:
+      properties:
+        type:
+          type: string
+          const: automatic
+          title: Type
+          default: automatic
+      additionalProperties: false
+      type: object
+      title: FiscalAutomaticMonthDefinition
+    TokenomicsAdoptionTrendsV1Request:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsLeadershipFiscalCapableAdoptionFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        interval:
+          type: string
+          enum:
+          - day
+          - fiscal_week
+          - fiscal_month
+          - custom
+          title: Interval
+          default: day
+        fiscal_calendar_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Fiscal Calendar Version Id
+        buckets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TokenomicsTrendBucketInput'
+            type: array
+            maxItems: 55
+            minItems: 1
+          - type: 'null'
+          title: Buckets
+      additionalProperties: false
+      type: object
+      title: TokenomicsAdoptionTrendsV1Request
+      description: Daily, fiscal, or custom-bucketed v1 adoption trends, always broken down by provider.
+    TokenomicsV1FiscalUsageTrendBucket:
+      properties:
+        fiscal_period_id:
+          type: string
+          title: Fiscal Period Id
+        label:
+          type: string
+          title: Label
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        included_start_date:
+          type: string
+          format: date
+          title: Included Start Date
+        included_end_date:
+          type: string
+          format: date
+          title: Included End Date
+        is_partial:
+          type: boolean
+          title: Is Partial
+        value:
+          type: string
+          title: Value
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      required:
+      - fiscal_period_id
+      - label
+      - start_date
+      - end_date
+      - included_start_date
+      - included_end_date
+      - is_partial
+      - value
+      title: TokenomicsV1FiscalUsageTrendBucket
+    FiscalYear:
+      properties:
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        quarters:
+          items:
+            $ref: '#/components/schemas/FiscalQuarter'
+          type: array
+          maxItems: 4
+          minItems: 4
+          title: Quarters
+        months:
+          items:
+            $ref: '#/components/schemas/FiscalMonth'
+          type: array
+          maxItems: 12
+          minItems: 12
+          title: Months
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_year_number
+      - start_date
+      - end_date
+      - quarters
+      - months
+      title: FiscalYear
+    TokenomicsLeadershipFiscalCapableFilters:
+      properties:
+        departments:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Departments
+        job_functions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Functions
+        job_families:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Families
+        regions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Regions
+        countries:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Countries
+        activity_status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - inactive
+            - all
+          - type: 'null'
+          title: Activity Status
+        time_range:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsFiscalTimeRange'
+          - type: 'null'
+        providers:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 50
+            minItems: 1
+          - type: 'null'
+          title: Providers
+        models:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Models
+        leader_user_key:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Leader User Key
+      additionalProperties: false
+      type: object
+      title: TokenomicsLeadershipFiscalCapableFilters
     TokenomicsAdoptionResponse:
       properties:
         date_range:
@@ -330,39 +3151,637 @@ components:
       - total_active_users
       - providers
       title: TokenomicsAdoptionResponse
-    TokenomicsAdoptionFilters:
+    TokenomicsBreakdownRow:
       properties:
-        time_range:
-          anyOf:
-          - $ref: '#/components/schemas/TokenomicsTimeRange'
-          - type: 'null'
-        providers:
-          anyOf:
-          - items:
-              type: string
-              maxLength: 256
-              minLength: 1
-            type: array
-            maxItems: 50
-            minItems: 1
-          - type: 'null'
-          title: Providers
+        value:
+          type: string
+          title: Value
+        label:
+          type: string
+          title: Label
+        metrics:
+          $ref: '#/components/schemas/TokenomicsBreakdownMetrics'
+        cost_data_status:
+          type: string
+          enum:
+          - complete
+          - partial
+          - unavailable
+          title: Cost Data Status
+      type: object
+      required:
+      - value
+      - label
+      - metrics
+      - cost_data_status
+      title: TokenomicsBreakdownRow
+    TokenomicsFilterOptionsV1Response:
+      properties:
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        dimension:
+          type: string
+          enum:
+          - provider
+          - model
+          - department
+          - job_family
+          - region
+          title: Dimension
+        options:
+          items:
+            $ref: '#/components/schemas/TokenomicsFilterOptionRow'
+          type: array
+          title: Options
+        pagination:
+          $ref: '#/components/schemas/TokenomicsUsersPagination'
+      type: object
+      required:
+      - directory
+      - dimension
+      - options
+      - pagination
+      title: TokenomicsFilterOptionsV1Response
+    StructuredFiscalCalendarConfiguration:
+      properties:
+        timezone:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Timezone
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+        fiscal_year_start_date:
+          type: string
+          format: date
+          title: Fiscal Year Start Date
+        month_definition:
+          oneOf:
+          - $ref: '#/components/schemas/FiscalAutomaticMonthDefinition'
+          - $ref: '#/components/schemas/FiscalWeekPatternMonthDefinition'
+          title: Month Definition
+          discriminator:
+            propertyName: type
+            mapping:
+              automatic: '#/components/schemas/FiscalAutomaticMonthDefinition'
+              week_pattern: '#/components/schemas/FiscalWeekPatternMonthDefinition'
       additionalProperties: false
       type: object
-      title: TokenomicsAdoptionFilters
-      description: Filters for adoption reads. Adoption is per provider/day and has no model dimension, so models is absent.
-    TokenomicsAdoptionTrendsRequest:
+      required:
+      - timezone
+      - fiscal_year_number
+      - fiscal_year_start_date
+      - month_definition
+      title: StructuredFiscalCalendarConfiguration
+    TokenomicsProviderAccountRef:
+      properties:
+        provider_user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider User Id
+        user_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Email
+      type: object
+      title: TokenomicsProviderAccountRef
+    TokenomicsDirectoryImportResponse:
+      properties:
+        status:
+          type: string
+          enum:
+          - staged
+          - failed
+          title: Status
+        import_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Import Id
+        is_valid:
+          type: boolean
+          title: Is Valid
+        source_hash:
+          type: string
+          pattern: ^[0-9a-f]{64}$
+          title: Source Hash
+        row_count:
+          type: integer
+          minimum: 0.0
+          title: Row Count
+        included_count:
+          type: integer
+          minimum: 0.0
+          title: Included Count
+        ignored_columns:
+          items:
+            type: string
+          type: array
+          title: Ignored Columns
+        root_count:
+          type: integer
+          minimum: 0.0
+          title: Root Count
+        max_depth:
+          type: integer
+          minimum: 0.0
+          title: Max Depth
+        error_count:
+          type: integer
+          minimum: 0.0
+          title: Error Count
+        errors:
+          items:
+            $ref: '#/components/schemas/TokenomicsDirectoryValidationError'
+          type: array
+          maxItems: 100
+          title: Errors
+      type: object
+      required:
+      - status
+      - is_valid
+      - source_hash
+      - row_count
+      - included_count
+      - ignored_columns
+      - root_count
+      - max_depth
+      - error_count
+      - errors
+      title: TokenomicsDirectoryImportResponse
+    TokenomicsCanonicalUserModelBreakdown:
+      properties:
+        model:
+          type: string
+          title: Model
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      required:
+      - model
+      title: TokenomicsCanonicalUserModelBreakdown
+    StartTokenomicsTreeBackfillResponse:
+      properties:
+        enqueued:
+          type: boolean
+          title: Enqueued
+      type: object
+      required:
+      - enqueued
+      title: StartTokenomicsTreeBackfillResponse
+    TokenomicsTeamRollupGroup:
+      properties:
+        parent_user_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent User Key
+        scope:
+          $ref: '#/components/schemas/TokenomicsTeamScope'
+        summary:
+          $ref: '#/components/schemas/TokenomicsTeamSummary'
+        children:
+          items:
+            $ref: '#/components/schemas/TokenomicsTeamChildRow'
+          type: array
+          title: Children
+        unmatched:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsUnmatchedSummary'
+          - type: 'null'
+        pagination:
+          $ref: '#/components/schemas/TokenomicsUsersPagination'
+      type: object
+      required:
+      - scope
+      - summary
+      - children
+      - pagination
+      title: TokenomicsTeamRollupGroup
+    TokenomicsUsersRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        sort_by:
+          anyOf:
+          - type: string
+            enum:
+            - provider
+            - provider_user_id
+            - user_email
+            - is_active
+            - last_active_at
+            - usage_cost_usd
+            - total_tokens
+          - type: 'null'
+          title: Sort By
+        sort_direction:
+          type: string
+          enum:
+          - asc
+          - desc
+          title: Sort Direction
+          default: desc
+        pagination:
+          $ref: '#/components/schemas/TokenomicsPaginationRequest'
+      additionalProperties: false
+      type: object
+      title: TokenomicsUsersRequest
+    FiscalMonth:
+      properties:
+        fiscal_month_number:
+          type: integer
+          maximum: 12.0
+          minimum: 1.0
+          title: Fiscal Month Number
+        label:
+          type: string
+          maxLength: 32
+          minLength: 1
+          title: Label
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        is_catch_up_month:
+          type: boolean
+          title: Is Catch Up Month
+          default: false
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_month_number
+      - label
+      - start_date
+      - end_date
+      title: FiscalMonth
+    FinanceHierarchyGenerationResponse:
+      properties:
+        finance_generation_id:
+          type: string
+          format: uuid4
+          title: Finance Generation Id
+        status:
+          type: string
+          enum:
+          - queued
+          - projecting
+          - active
+          - failed
+          - superseded
+          title: Status
+        node_count:
+          type: integer
+          minimum: 0.0
+          title: Node Count
+        department_count:
+          type: integer
+          minimum: 0.0
+          title: Department Count
+        imported_at:
+          type: string
+          format: date-time
+          title: Imported At
+        activated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Activated At
+        failure_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Reason
+        coverage:
+          anyOf:
+          - $ref: '#/components/schemas/FinanceHierarchyCoverage'
+          - type: 'null'
+      additionalProperties: false
+      type: object
+      required:
+      - finance_generation_id
+      - status
+      - node_count
+      - department_count
+      - imported_at
+      title: FinanceHierarchyGenerationResponse
+    UpdateForecastConfigRequest:
+      properties:
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+      additionalProperties: false
+      type: object
+      title: UpdateForecastConfigRequest
+    TokenomicsProviderIngestionStatus:
+      properties:
+        provider:
+          type: string
+          title: Provider
+        provider_scope_id:
+          type: string
+          title: Provider Scope Id
+        ingestion_run_id:
+          type: string
+          title: Ingestion Run Id
+        status:
+          type: string
+          enum:
+          - in_progress
+          - succeeded
+          title: Status
+        next_update_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Next Update Time
+        scheduled_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Scheduled At
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        completed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Completed At
+        latest_data_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Latest Data Date
+        attempted_start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Attempted Start Date
+        attempted_end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Attempted End Date
+      type: object
+      required:
+      - provider
+      - provider_scope_id
+      - ingestion_run_id
+      - status
+      title: TokenomicsProviderIngestionStatus
+    TokenomicsCanonicalUserProviderBreakdown:
+      properties:
+        provider:
+          type: string
+          title: Provider
+        is_active:
+          type: boolean
+          title: Is Active
+        last_active_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Active At
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+        cost_data_status:
+          anyOf:
+          - type: string
+            enum:
+            - complete
+            - partial
+            - unavailable
+          - type: 'null'
+          title: Cost Data Status
+        accounts:
+          items:
+            $ref: '#/components/schemas/TokenomicsProviderAccountRef'
+          type: array
+          title: Accounts
+        model_breakdown:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TokenomicsCanonicalUserModelBreakdown'
+            type: array
+          - type: 'null'
+          title: Model Breakdown
+      type: object
+      required:
+      - provider
+      - is_active
+      title: TokenomicsCanonicalUserProviderBreakdown
+    TokenomicsV1CustomTrendBucket:
+      properties:
+        bucket_index:
+          type: integer
+          title: Bucket Index
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      type: object
+      required:
+      - bucket_index
+      - start_date
+      - end_date
+      title: TokenomicsV1CustomTrendBucket
+      description: A caller-defined bucket boundary, echoed back so a response is self-describing.
+    ActiveFinanceHierarchyResponse:
+      properties:
+        finance_generation_id:
+          type: string
+          format: uuid4
+          title: Finance Generation Id
+        activated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Activated At
+        nodes:
+          items:
+            $ref: '#/components/schemas/FinanceHierarchyNodeResponse'
+          type: array
+          title: Nodes
+      type: object
+      required:
+      - finance_generation_id
+      - nodes
+      title: ActiveFinanceHierarchyResponse
+    TokenomicsV1FiscalForecastBucket:
+      properties:
+        value:
+          type: string
+          const: total
+          title: Value
+          default: total
+        mean:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Mean
+        lower:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Lower
+        upper:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Upper
+        fiscal_period_id:
+          type: string
+          title: Fiscal Period Id
+        label:
+          type: string
+          title: Label
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        included_start_date:
+          type: string
+          format: date
+          title: Included Start Date
+        included_end_date:
+          type: string
+          format: date
+          title: Included End Date
+        is_partial:
+          type: boolean
+          title: Is Partial
+      type: object
+      required:
+      - fiscal_period_id
+      - label
+      - start_date
+      - end_date
+      - included_start_date
+      - included_end_date
+      - is_partial
+      title: TokenomicsV1FiscalForecastBucket
+    TokenomicsDirectorySearchRequest:
+      properties:
+        query:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Query
+        filters:
+          $ref: '#/components/schemas/TokenomicsDirectorySearchFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        sort_by:
+          type: string
+          enum:
+          - relevance
+          - display_name
+          title: Sort By
+          default: relevance
+        pagination:
+          $ref: '#/components/schemas/TokenomicsPaginationRequest'
+      additionalProperties: false
+      type: object
+      required:
+      - query
+      title: TokenomicsDirectorySearchRequest
+    TokenomicsTimeRange:
+      properties:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
+      type: object
+      required:
+      - start_date
+      - end_date
+      title: TokenomicsTimeRange
+    TokenomicsAdoptionRequest:
       properties:
         filters:
           $ref: '#/components/schemas/TokenomicsAdoptionFilters'
-        bucket:
-          type: string
-          const: day
-          title: Bucket
-          default: day
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
       additionalProperties: false
       type: object
-      title: TokenomicsAdoptionTrendsRequest
+      title: TokenomicsAdoptionRequest
     TokenomicsAdoptionTrendBucket:
       properties:
         bucket_date:
@@ -381,17 +3800,67 @@ components:
       - provider
       - active_users
       title: TokenomicsAdoptionTrendBucket
-    TokenomicsFilterOptionsRequest:
+    TokenomicsProviderIngestionStatusResponse:
       properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsFilters'
+        providers:
+          items:
+            $ref: '#/components/schemas/TokenomicsProviderIngestionStatus'
+          type: array
+          title: Providers
+      type: object
+      required:
+      - providers
+      title: TokenomicsProviderIngestionStatusResponse
+    FiscalCatchUpMonth:
+      properties:
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+        fiscal_month_number:
+          type: integer
+          maximum: 12.0
+          minimum: 1.0
+          title: Fiscal Month Number
       additionalProperties: false
       type: object
-      title: TokenomicsFilterOptionsRequest
+      required:
+      - fiscal_year_number
+      - fiscal_month_number
+      title: FiscalCatchUpMonth
+    TokenomicsBreakdownResult:
+      properties:
+        dimension:
+          type: string
+          enum:
+          - department
+          - job_family
+          - region
+          title: Dimension
+        rows:
+          items:
+            $ref: '#/components/schemas/TokenomicsBreakdownRow'
+          type: array
+          title: Rows
+      type: object
+      required:
+      - dimension
+      - rows
+      title: TokenomicsBreakdownResult
     TokenomicsUsageMetricsRequest:
       properties:
         filters:
           $ref: '#/components/schemas/TokenomicsFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
         group_by:
           items:
             type: string
@@ -424,6 +3893,369 @@ components:
       additionalProperties: false
       type: object
       title: TokenomicsUsageMetricsRequest
+    TokenomicsDailyForecastResultV1:
+      properties:
+        forecast_config_id:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+        generated_at:
+          type: string
+          format: date-time
+          title: Generated At
+        group_by:
+          type: string
+          const: total
+          title: Group By
+          default: total
+        interval:
+          type: string
+          const: day
+          title: Interval
+          default: day
+        fiscal_calendar_version_id:
+          type: 'null'
+          title: Fiscal Calendar Version Id
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1DailyForecastBucket'
+          type: array
+          title: Series
+      type: object
+      required:
+      - forecast_config_id
+      - generated_at
+      - series
+      title: TokenomicsDailyForecastResultV1
+    TokenomicsFilters:
+      properties:
+        departments:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Departments
+        job_functions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Functions
+        job_families:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Families
+        regions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Regions
+        countries:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Countries
+        activity_status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - inactive
+            - all
+          - type: 'null'
+          title: Activity Status
+        time_range:
+          anyOf:
+          - $ref: '#/components/schemas/TokenomicsTimeRange'
+          - type: 'null'
+        providers:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 50
+            minItems: 1
+          - type: 'null'
+          title: Providers
+        models:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Models
+      additionalProperties: false
+      type: object
+      title: TokenomicsFilters
+    FiscalCalendarVersion:
+      properties:
+        fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Fiscal Calendar Version Id
+        configuration_mode:
+          type: string
+          enum:
+          - structured
+          - json
+          title: Configuration Mode
+        configuration:
+          anyOf:
+          - $ref: '#/components/schemas/StructuredFiscalCalendarConfiguration'
+          - $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+          title: Configuration
+        source:
+          type: string
+          enum:
+          - system_default
+          - user_defined
+          title: Source
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Created By
+        activated_at:
+          type: string
+          format: date-time
+          title: Activated At
+        deactivated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Deactivated At
+        is_active:
+          type: boolean
+          title: Is Active
+        resolved_calendar:
+          anyOf:
+          - $ref: '#/components/schemas/FiscalYear'
+          - type: 'null'
+        range_options:
+          items:
+            $ref: '#/components/schemas/FiscalRangeOption'
+          type: array
+          title: Range Options
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_calendar_version_id
+      - configuration_mode
+      - configuration
+      - source
+      - created_by
+      - activated_at
+      - deactivated_at
+      - is_active
+      - resolved_calendar
+      - range_options
+      title: FiscalCalendarVersion
+    TokenomicsCanonicalUserRow:
+      properties:
+        user_key:
+          type: string
+          title: User Key
+        manager_user_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Manager User Key
+        manager_display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Manager Display Name
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        primary_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Primary Email
+        department:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Department
+        job_function:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Job Function
+        job_family:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Job Family
+        region:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region
+        is_active:
+          type: boolean
+          title: Is Active
+        last_active_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Active At
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+        cost_data_status:
+          type: string
+          enum:
+          - complete
+          - partial
+          - unavailable
+          title: Cost Data Status
+        provider_breakdown:
+          items:
+            $ref: '#/components/schemas/TokenomicsCanonicalUserProviderBreakdown'
+          type: array
+          title: Provider Breakdown
+      type: object
+      required:
+      - user_key
+      - is_active
+      - cost_data_status
+      - provider_breakdown
+      title: TokenomicsCanonicalUserRow
+    TokenomicsFilterOptionsRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+      additionalProperties: false
+      type: object
+      title: TokenomicsFilterOptionsRequest
+    FinanceBreakdownResponse:
+      properties:
+        finance_generation_id:
+          type: string
+          format: uuid4
+          title: Finance Generation Id
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        rows:
+          items:
+            $ref: '#/components/schemas/FinanceBreakdownRow'
+          type: array
+          title: Rows
+      type: object
+      required:
+      - finance_generation_id
+      - date_range
+      - data_freshness
+      - rows
+      title: FinanceBreakdownResponse
+    TokenomicsDirectorySnapshot:
+      properties:
+        directory_generation_id:
+          type: string
+          format: uuid4
+          title: Directory Generation Id
+        import_id:
+          type: string
+          format: uuid4
+          title: Import Id
+        imported_at:
+          type: string
+          format: date-time
+          title: Imported At
+      type: object
+      required:
+      - directory_generation_id
+      - import_id
+      - imported_at
+      title: TokenomicsDirectorySnapshot
+    TokenomicsDailyAdoptionTrendsV1Response:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        interval:
+          type: string
+          const: day
+          title: Interval
+          default: day
+        fiscal_calendar_version_id:
+          type: 'null'
+          title: Fiscal Calendar Version Id
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1AdoptionTrendBucket'
+          type: array
+          title: Series
+      type: object
+      required:
+      - date_range
+      - directory
+      - data_freshness
+      - series
+      title: TokenomicsDailyAdoptionTrendsV1Response
     TokenomicsAdoptionProviderRow:
       properties:
         provider:
@@ -437,20 +4269,703 @@ components:
       - provider
       - active_users
       title: TokenomicsAdoptionProviderRow
-    TokenomicsUsersPagination:
+    TokenomicsUsageMetricsResponse:
       properties:
-        limit:
-          type: integer
-          title: Limit
-        next_cursor:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshness'
+        group_by:
+          items:
+            type: string
+            enum:
+            - provider
+            - model
+            - user
+          type: array
+          title: Group By
+        totals:
+          $ref: '#/components/schemas/TokenomicsUsageMetricsTotals'
+        rows:
+          items:
+            $ref: '#/components/schemas/TokenomicsUsageMetricsRow'
+          type: array
+          title: Rows
+        breakdowns:
+          $ref: '#/components/schemas/TokenomicsUsageMetricsBreakdowns'
+      type: object
+      required:
+      - date_range
+      - data_freshness
+      - group_by
+      - totals
+      - rows
+      - breakdowns
+      title: TokenomicsUsageMetricsResponse
+    Body_import_tokenomics_finance_hierarchy_tokenomics_v1_finance_hierarchy_import_post:
+      properties:
+        finance_hierarchy:
+          type: string
+          contentMediaType: application/octet-stream
+          title: Finance Hierarchy
+      type: object
+      required:
+      - finance_hierarchy
+      title: Body_import_tokenomics_finance_hierarchy_tokenomics_v1_finance_hierarchy_import_post
+    TokenomicsUsageMetricsRow:
+      properties:
+        provider:
           anyOf:
           - type: string
           - type: 'null'
-          title: Next Cursor
+          title: Provider
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+        user_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Email
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      title: TokenomicsUsageMetricsRow
+    TokenomicsBreakdownSpec:
+      properties:
+        dimension:
+          type: string
+          enum:
+          - department
+          - job_family
+          - region
+          title: Dimension
+        metrics:
+          items:
+            type: string
+            enum:
+            - headcount
+            - active_users
+            - usage_cost_usd
+            - total_tokens
+          type: array
+          maxItems: 4
+          minItems: 1
+          title: Metrics
+        sort_by:
+          anyOf:
+          - type: string
+            enum:
+            - value
+            - label
+            - headcount
+            - active_users
+            - usage_cost_usd
+            - total_tokens
+          - type: 'null'
+          title: Sort By
+        sort_direction:
+          type: string
+          enum:
+          - asc
+          - desc
+          title: Sort Direction
+          default: desc
+        limit:
+          type: integer
+          maximum: 100.0
+          minimum: 1.0
+          title: Limit
+          default: 20
+      additionalProperties: false
       type: object
       required:
-      - limit
-      title: TokenomicsUsersPagination
+      - dimension
+      - metrics
+      title: TokenomicsBreakdownSpec
+    StructuredFiscalCalendarUpdate:
+      properties:
+        configuration_mode:
+          type: string
+          const: structured
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/StructuredFiscalCalendarConfiguration'
+        expected_fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Expected Fiscal Calendar Version Id
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - expected_fiscal_calendar_version_id
+      title: StructuredFiscalCalendarUpdate
+    TokenomicsV1CustomUsageTrendBucket:
+      properties:
+        bucket_index:
+          type: integer
+          title: Bucket Index
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        value:
+          type: string
+          title: Value
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+      type: object
+      required:
+      - bucket_index
+      - start_date
+      - end_date
+      - value
+      title: TokenomicsV1CustomUsageTrendBucket
+    ListForecastConfigsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        forecast_configs:
+          items:
+            $ref: '#/components/schemas/ForecastConfigResponse'
+          type: array
+          title: Forecast Configs
+      type: object
+      title: ListForecastConfigsResponse
+    TokenomicsDirectorySearchResponse:
+      properties:
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        users:
+          items:
+            $ref: '#/components/schemas/TokenomicsDirectorySearchRow'
+          type: array
+          title: Users
+        pagination:
+          $ref: '#/components/schemas/TokenomicsUsersPagination'
+      type: object
+      required:
+      - directory
+      - users
+      - pagination
+      title: TokenomicsDirectorySearchResponse
+    CreateForecastConfigRequest:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+      additionalProperties: false
+      type: object
+      title: CreateForecastConfigRequest
+    JsonFiscalCalendarConfiguration:
+      properties:
+        timezone:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Timezone
+        week_start_day:
+          type: string
+          enum:
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+          title: Week Start Day
+        fiscal_years:
+          items:
+            $ref: '#/components/schemas/FiscalYear'
+          type: array
+          maxItems: 25
+          minItems: 1
+          title: Fiscal Years
+      additionalProperties: false
+      type: object
+      required:
+      - timezone
+      - week_start_day
+      - fiscal_years
+      title: JsonFiscalCalendarConfiguration
+    TokenomicsIngestionCycle:
+      properties:
+        organization_id:
+          type: string
+          title: Organization Id
+        id:
+          type: string
+          title: Id
+        cycle_id:
+          type: string
+          title: Cycle Id
+        attempted_start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Attempted Start Date
+        ingestion_status:
+          type: string
+          enum:
+          - running
+          - completed
+          - partial_success
+          title: Ingestion Status
+        scheduled_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Scheduled At
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        completed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Completed At
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        next_update_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Next Update Time
+        expected_provider_count:
+          type: integer
+          title: Expected Provider Count
+          default: 0
+        completed_provider_count:
+          type: integer
+          title: Completed Provider Count
+          default: 0
+        successful_provider_count:
+          type: integer
+          title: Successful Provider Count
+          default: 0
+        failed_provider_count:
+          type: integer
+          title: Failed Provider Count
+          default: 0
+        providers_running:
+          type: integer
+          title: Providers Running
+          default: 0
+        providers_pending:
+          type: integer
+          title: Providers Pending
+          default: 0
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+      type: object
+      required:
+      - organization_id
+      - id
+      - cycle_id
+      - ingestion_status
+      title: TokenomicsIngestionCycle
+    TokenomicsUsageTrendsRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        bucket:
+          type: string
+          const: day
+          title: Bucket
+          default: day
+      additionalProperties: false
+      type: object
+      title: TokenomicsUsageTrendsRequest
+    TokenomicsDirectorySearchRow:
+      properties:
+        user_key:
+          type: string
+          title: User Key
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        primary_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Primary Email
+        department:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Department
+        job_function:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Job Function
+        has_direct_reports:
+          type: boolean
+          title: Has Direct Reports
+        direct_report_count:
+          type: integer
+          title: Direct Report Count
+        breadcrumb:
+          items:
+            $ref: '#/components/schemas/TokenomicsDirectoryBreadcrumbEntry'
+          type: array
+          title: Breadcrumb
+      type: object
+      required:
+      - user_key
+      - has_direct_reports
+      - direct_report_count
+      - breadcrumb
+      title: TokenomicsDirectorySearchRow
+    TokenomicsBreakdownsRequest:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsLeadershipWorkforceFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        breakdowns:
+          items:
+            $ref: '#/components/schemas/TokenomicsBreakdownSpec'
+          type: array
+          maxItems: 5
+          minItems: 1
+          title: Breakdowns
+      additionalProperties: false
+      type: object
+      required:
+      - breakdowns
+      title: TokenomicsBreakdownsRequest
+    TokenomicsDirectoryValidationError:
+      properties:
+        code:
+          type: string
+          title: Code
+        phase:
+          type: string
+          enum:
+          - parse
+          - record
+          - alias
+          - hierarchy
+          title: Phase
+        message:
+          type: string
+          title: Message
+        row:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Row
+        column:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Column
+        worker_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Worker Id
+        related_row:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Related Row
+        alias_fingerprint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Alias Fingerprint
+      type: object
+      required:
+      - code
+      - phase
+      - message
+      title: TokenomicsDirectoryValidationError
+    TokenomicsDataFreshnessV1:
+      properties:
+        usage_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Usage Updated At
+        adoption_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Adoption Updated At
+      type: object
+      title: TokenomicsDataFreshnessV1
+    TokenomicsTeamScope:
+      properties:
+        type:
+          type: string
+          enum:
+          - root
+          - manager
+          - individual
+          title: Type
+        user_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Key
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+      type: object
+      required:
+      - type
+      title: TokenomicsTeamScope
+    StartTokenomicsTreeBackfillRequest:
+      properties:
+        hierarchy_type:
+          $ref: '#/components/schemas/HierarchyType'
+          default: hr
+        from_month:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: From Month
+        force:
+          type: boolean
+          title: Force
+          default: false
+      type: object
+      title: StartTokenomicsTreeBackfillRequest
+      description: The public route's body; the org comes from the caller's auth.
+    TokenomicsFilterOptionsV1Request:
+      properties:
+        dimension:
+          type: string
+          enum:
+          - provider
+          - model
+          - department
+          - job_family
+          - region
+          title: Dimension
+        search:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Search
+        filters:
+          $ref: '#/components/schemas/TokenomicsLeadershipWorkforceFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        sort_by:
+          type: string
+          enum:
+          - label
+          - user_count
+          title: Sort By
+          default: label
+        sort_direction:
+          type: string
+          enum:
+          - asc
+          - desc
+          title: Sort Direction
+          default: asc
+        pagination:
+          $ref: '#/components/schemas/TokenomicsPaginationRequest'
+      additionalProperties: false
+      type: object
+      required:
+      - dimension
+      title: TokenomicsFilterOptionsV1Request
+    TokenomicsDirectoryBreadcrumbEntry:
+      properties:
+        user_key:
+          type: string
+          title: User Key
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+      type: object
+      required:
+      - user_key
+      title: TokenomicsDirectoryBreadcrumbEntry
+    TokenomicsForecastResultsV1Request:
+      properties:
+        filters:
+          $ref: '#/components/schemas/TokenomicsLeadershipFiscalCapableFilters'
+        view:
+          anyOf:
+          - type: string
+            enum:
+            - individual
+            - team
+            - organization
+          - type: 'null'
+          title: View
+        forecast_config_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Forecast Config Id
+        group_by:
+          type: string
+          const: total
+          title: Group By
+          default: total
+        interval:
+          type: string
+          enum:
+          - day
+          - fiscal_week
+          - fiscal_month
+          title: Interval
+          default: day
+        fiscal_calendar_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Fiscal Calendar Version Id
+      additionalProperties: false
+      type: object
+      title: TokenomicsForecastResultsV1Request
+      description: 'Forward-looking, bucketed read. ``filters.time_range.start_date`` is ignored -- the series
+
+        always begins today (or later, if the stored forecast is stale); only ``end_date`` optionally
+
+        caps how far out it runs. Fiscal period resolution uses dates the service computes itself
+
+        (see TokenomicsService.get_forecast_results), not the caller''s start_date -- which is why this
+
+        does not reuse the shared ``_validate_fiscal_trend_interval`` validator usage/adoption trends
+
+        use: that validator requires a full time_range for a fiscal interval, because those endpoints
+
+        are reading a historical, caller-defined window. Forecast has no such window.
+
+
+        ``filters`` uses the fiscal-capable filters, so ``time_range`` has no window cap. The 128-day
+
+        horizon already bounds the response. A fiscal-year-to-date request runs from today to the year''s
+
+        end, and in a 53-week fiscal year that range can exceed the 366-day read cap.
+
+
+        ``leader_user_key`` is deliberately accepted under BOTH views, matching
+
+        /tokenomics/v1/team-rollup: it selects which team''s forecast to read, while ``view`` selects
+
+        which authorization rule proves the caller may read it (organization view -> any manager in
+
+        the directory; team view -> only managers inside the caller''s own subtree). Requiring
+
+        view="team" would force every team read down the team branch, which resolves the caller''s own
+
+        directory identity -- locking out an organization admin who is not a mapped worker, and
+
+        limiting a mapped manager to their own subtree. See _resolve_forecast_effective_scope, which
+
+        asks resolve_scope for a directory whenever a leader_user_key is present so the organization
+
+        view still arrives with directory_generation_id set.
+
+
+        No ``custom`` interval (no caller-supplied bucket boundaries) and no real ``group_by``
+
+        breakdown -- ``group_by`` accepts only ``"total"`` today, reserved for a future per-provider/
+
+        model forecast.'
     TokenomicsUserRow:
       properties:
         provider:
@@ -489,37 +5004,83 @@ components:
       - user_email
       - is_active
       title: TokenomicsUserRow
-    TokenomicsUsersRequest:
+    FiscalCalendarVersionListResponse:
       properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsFilters'
-        sort_by:
-          anyOf:
-          - type: string
-            enum:
-            - provider
-            - provider_user_id
-            - user_email
-            - is_active
-            - last_active_at
-            - usage_cost_usd
-            - total_tokens
-          - type: 'null'
-          title: Sort By
-        sort_direction:
-          type: string
-          enum:
-          - asc
-          - desc
-          title: Sort Direction
-          default: desc
-        pagination:
-          $ref: '#/components/schemas/TokenomicsPaginationRequest'
+        items:
+          items:
+            $ref: '#/components/schemas/FiscalCalendarVersion'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        limit:
+          type: integer
+          title: Limit
+        offset:
+          type: integer
+          title: Offset
       additionalProperties: false
       type: object
-      title: TokenomicsUsersRequest
-    TokenomicsUsageMetricsTotals:
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      title: FiscalCalendarVersionListResponse
+    LegacyForecastConfigResponse:
       properties:
+        provider:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Provider
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Model Name
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        forecast_metric:
+          type: string
+          const: total_cost
+          title: Forecast Metric
+          default: total_cost
+        forecast_to_day:
+          type: integer
+          maximum: 31.0
+          minimum: 0.0
+          title: Forecast To Day
+          default: 0
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+      type: object
+      required:
+      - id
+      - organization_id
+      title: LegacyForecastConfigResponse
+    TokenomicsUnmatchedSummary:
+      properties:
+        account_count:
+          type: integer
+          title: Account Count
         usage_cost_usd:
           anyOf:
           - type: number
@@ -531,62 +5092,244 @@ components:
           - type: 'null'
           title: Total Tokens
       type: object
-      title: TokenomicsUsageMetricsTotals
-    ValidationError:
+      required:
+      - account_count
+      title: TokenomicsUnmatchedSummary
+    LegacyUpdateForecastConfigRequest:
       properties:
-        loc:
+        provider:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Provider
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Model Name
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+        forecast_metric:
+          anyOf:
+          - type: string
+            const: total_cost
+          - type: 'null'
+          title: Forecast Metric
+        forecast_to_day:
+          anyOf:
+          - type: integer
+            maximum: 31.0
+            minimum: 0.0
+          - type: 'null'
+          title: Forecast To Day
+      type: object
+      title: LegacyUpdateForecastConfigRequest
+    TokenomicsProviderBreakdownRow:
+      properties:
+        key:
+          type: string
+          title: Key
+        usage_cost_usd:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Usage Cost Usd
+      type: object
+      required:
+      - key
+      title: TokenomicsProviderBreakdownRow
+    ForecastConfigResponse:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+      type: object
+      required:
+      - id
+      - organization_id
+      title: ForecastConfigResponse
+    LegacyCreateForecastConfigRequest:
+      properties:
+        provider:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Provider
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Model Name
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        forecast_metric:
+          type: string
+          const: total_cost
+          title: Forecast Metric
+          default: total_cost
+        forecast_to_day:
+          type: integer
+          maximum: 31.0
+          minimum: 0.0
+          title: Forecast To Day
+          default: 0
+      type: object
+      title: LegacyCreateForecastConfigRequest
+    TokenomicsFiscalUsageTrendsV1Response:
+      properties:
+        date_range:
+          $ref: '#/components/schemas/TokenomicsDateRange'
+        directory:
+          $ref: '#/components/schemas/TokenomicsDirectorySnapshot'
+        data_freshness:
+          $ref: '#/components/schemas/TokenomicsDataFreshnessV1'
+        group_by:
+          type: string
+          enum:
+          - provider
+          - model
+          title: Group By
+        interval:
+          type: string
+          enum:
+          - fiscal_week
+          - fiscal_month
+          title: Interval
+        fiscal_calendar_version_id:
+          type: string
+          format: uuid4
+          title: Fiscal Calendar Version Id
+        periods:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/TokenomicsV1FiscalTrendPeriod'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Periods
+        series:
+          items:
+            $ref: '#/components/schemas/TokenomicsV1FiscalUsageTrendBucket'
+          type: array
+          title: Series
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    TokenomicsUsageTrendsRequest:
+      - date_range
+      - directory
+      - data_freshness
+      - group_by
+      - interval
+      - fiscal_calendar_version_id
+      - periods
+      - series
+      title: TokenomicsFiscalUsageTrendsV1Response
+    TokenomicsUsersPagination:
       properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsFilters'
-        bucket:
-          type: string
-          const: day
-          title: Bucket
-          default: day
-      additionalProperties: false
-      type: object
-      title: TokenomicsUsageTrendsRequest
-    TokenomicsDateRange:
-      properties:
-        start_date:
-          type: string
-          format: date
-          title: Start Date
-        end_date:
-          type: string
-          format: date
-          title: End Date
+        limit:
+          type: integer
+          title: Limit
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
       type: object
       required:
-      - start_date
-      - end_date
-      title: TokenomicsDateRange
-    TokenomicsFilters:
+      - limit
+      title: TokenomicsUsersPagination
+    TokenomicsWorkforceFilters:
       properties:
+        departments:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Departments
+        job_functions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Functions
+        job_families:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Job Families
+        regions:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Regions
+        countries:
+          anyOf:
+          - items:
+              type: string
+              maxLength: 256
+              minLength: 1
+            type: array
+            maxItems: 200
+            minItems: 1
+          - type: 'null'
+          title: Countries
+        activity_status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - inactive
+            - all
+          - type: 'null'
+          title: Activity Status
         time_range:
           anyOf:
           - $ref: '#/components/schemas/TokenomicsTimeRange'
@@ -615,132 +5358,152 @@ components:
           title: Models
       additionalProperties: false
       type: object
-      title: TokenomicsFilters
-    TokenomicsPaginationRequest:
+      title: TokenomicsWorkforceFilters
+      description: Workforce filters for v1 usage reads, including model filtering.
+    TokenomicsTrendBucketInput:
       properties:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
+      type: object
+      required:
+      - start_date
+      - end_date
+      title: TokenomicsTrendBucketInput
+      description: One caller-defined bucket boundary for a ``custom`` interval trend request.
+    FiscalRangeOption:
+      properties:
+        id:
+          type: string
+          enum:
+          - fiscal_month_to_date
+          - fiscal_quarter_to_date
+          - fiscal_year_to_date
+          title: Id
+        label:
+          type: string
+          title: Label
+        calendar_type:
+          type: string
+          const: fiscal
+          title: Calendar Type
+          default: fiscal
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - label
+      - start_date
+      - end_date
+      title: FiscalRangeOption
+    Body_import_tokenomics_directory_tokenomics_directory_import_post:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        effective_from:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Effective From
+          description: Between 1970-01-02 and 2149-06-06.
+      type: object
+      title: Body_import_tokenomics_directory_tokenomics_directory_import_post
+    LegacyListForecastConfigsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
         limit:
           type: integer
-          maximum: 500.0
-          minimum: 1.0
           title: Limit
-          default: 50
-        cursor:
-          anyOf:
-          - type: string
-            maxLength: 1024
-            minLength: 1
-          - type: 'null'
-          title: Cursor
-      additionalProperties: false
-      type: object
-      title: TokenomicsPaginationRequest
-    TokenomicsAdoptionRequest:
-      properties:
-        filters:
-          $ref: '#/components/schemas/TokenomicsAdoptionFilters'
-      additionalProperties: false
-      type: object
-      title: TokenomicsAdoptionRequest
-    TokenomicsUsageMetricsRow:
-      properties:
-        provider:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Provider
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model
-        user_email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Email
-        usage_cost_usd:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Usage Cost Usd
-        total_tokens:
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
           anyOf:
           - type: integer
           - type: 'null'
-          title: Total Tokens
+          title: Next Starting Token
+        forecast_configs:
+          items:
+            $ref: '#/components/schemas/LegacyForecastConfigResponse'
+          type: array
+          title: Forecast Configs
       type: object
-      title: TokenomicsUsageMetricsRow
-    TokenomicsUsageTrendBucket:
+      title: LegacyListForecastConfigsResponse
+    TokenomicsV1AdoptionTrendBucket:
       properties:
         bucket_date:
           type: string
           format: date
           title: Bucket Date
-        provider:
+        value:
           type: string
-          title: Provider
-        usage_cost_usd:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Usage Cost Usd
-        total_tokens:
+          title: Value
+        active_users:
           anyOf:
           - type: integer
           - type: 'null'
-          title: Total Tokens
+          title: Active Users
       type: object
       required:
       - bucket_date
-      - provider
-      title: TokenomicsUsageTrendBucket
-    TokenomicsUsageMetricsResponse:
+      - value
+      title: TokenomicsV1AdoptionTrendBucket
+    TokenomicsFilterOptionRow:
       properties:
-        date_range:
-          $ref: '#/components/schemas/TokenomicsDateRange'
-        data_freshness:
-          $ref: '#/components/schemas/TokenomicsDataFreshness'
-        group_by:
-          items:
-            type: string
-            enum:
-            - provider
-            - model
-            - user
-          type: array
-          title: Group By
-        totals:
-          $ref: '#/components/schemas/TokenomicsUsageMetricsTotals'
-        rows:
-          items:
-            $ref: '#/components/schemas/TokenomicsUsageMetricsRow'
-          type: array
-          title: Rows
-        breakdowns:
-          $ref: '#/components/schemas/TokenomicsUsageMetricsBreakdowns'
-      type: object
-      required:
-      - date_range
-      - data_freshness
-      - group_by
-      - totals
-      - rows
-      - breakdowns
-      title: TokenomicsUsageMetricsResponse
-    TokenomicsProviderBreakdownRow:
-      properties:
-        key:
+        value:
           type: string
-          title: Key
-        usage_cost_usd:
+          title: Value
+        label:
+          type: string
+          title: Label
+        user_count:
           anyOf:
-          - type: number
+          - type: integer
           - type: 'null'
-          title: Usage Cost Usd
+          title: User Count
       type: object
       required:
-      - key
-      title: TokenomicsProviderBreakdownRow
+      - value
+      - label
+      title: TokenomicsFilterOptionRow
+    FiscalCalendarResponse:
+      properties:
+        status:
+          type: string
+          const: active
+          title: Status
+          default: active
+        active:
+          $ref: '#/components/schemas/FiscalCalendarVersion'
+      additionalProperties: false
+      type: object
+      required:
+      - active
+      title: FiscalCalendarResponse
     TokenomicsFilterOptionsResponse:
       properties:
         providers:
@@ -758,35 +5521,89 @@ components:
       - providers
       - models
       title: TokenomicsFilterOptionsResponse
-    TokenomicsUsersResponse:
+    TokenomicsUsageMetricsBreakdowns:
       properties:
-        date_range:
-          $ref: '#/components/schemas/TokenomicsDateRange'
-        data_freshness:
-          $ref: '#/components/schemas/TokenomicsDataFreshness'
-        pagination:
-          $ref: '#/components/schemas/TokenomicsUsersPagination'
-        users:
+        provider:
           items:
-            $ref: '#/components/schemas/TokenomicsUserRow'
+            $ref: '#/components/schemas/TokenomicsProviderBreakdownRow'
           type: array
-          title: Users
+          title: Provider
+        model:
+          items:
+            $ref: '#/components/schemas/TokenomicsModelBreakdownRow'
+          type: array
+          title: Model
       type: object
       required:
-      - date_range
-      - data_freshness
-      - pagination
-      - users
-      title: TokenomicsUsersResponse
+      - provider
+      - model
+      title: TokenomicsUsageMetricsBreakdowns
+    JsonFiscalCalendarUpdate:
+      properties:
+        configuration_mode:
+          type: string
+          const: json
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+        expected_fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Expected Fiscal Calendar Version Id
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - expected_fiscal_calendar_version_id
+      title: JsonFiscalCalendarUpdate
+    TokenomicsForecastResultsV1Response:
+      properties:
+        result:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/TokenomicsDailyForecastResultV1'
+            - $ref: '#/components/schemas/TokenomicsFiscalForecastResultV1'
+            discriminator:
+              propertyName: interval
+              mapping:
+                day: '#/components/schemas/TokenomicsDailyForecastResultV1'
+                fiscal_month: '#/components/schemas/TokenomicsFiscalForecastResultV1'
+                fiscal_week: '#/components/schemas/TokenomicsFiscalForecastResultV1'
+          - type: 'null'
+          title: Result
+        unavailable_reason:
+          anyOf:
+          - type: string
+            enum:
+            - no_forecast_config
+            - insufficient_history
+            - stale_directory
+            - invalid_forecast
+            - forecast_expired
+            - range_ended
+            - not_available
+          - type: 'null'
+          title: Unavailable Reason
+      type: object
+      required:
+      - result
+      title: TokenomicsForecastResultsV1Response
+      description: '``unavailable_reason`` says why ``result`` is null, so the UI can explain a missing forecast.
+
+
+        ``not_available`` covers every case without a stored row for the scope: the sweep has not run
+
+        yet, the run failed, or the team is too small to forecast.'
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

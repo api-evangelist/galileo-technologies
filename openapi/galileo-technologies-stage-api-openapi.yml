@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Stage API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,10 +13,30 @@ paths:
       tags:
       - Stage
       summary: Create Stage
+      description: 'Create a stage for a project, optionally seeding a first version.
+
+
+        Args:
+
+        stage_request: The stage to create, including its type and (for central stages) rulesets.
+
+        ctx: Async request context.
+
+        project: The project to create the stage in, resolved from the URL.
+
+
+        Returns:
+
+        The created stage, with its current version set if it''s a central stage.
+
+
+        Raises:
+
+        HTTPException: 422 if the project isn''t a protect or gen_ai project.'
       operationId: create_stage_projects__project_id__stages_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -50,10 +70,34 @@ paths:
       tags:
       - Stage
       summary: Get Stage
+      description: 'Get a stage by ID or by (project ID and name).
+
+
+        Args:
+
+        project_id: Project the stage belongs to, resolved from the URL.
+
+        stage_name: Stage name to look up (used with project_id when stage_id is omitted).
+
+        stage_id: Stage ID to look up directly.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The matching stage.
+
+
+        Raises:
+
+        HTTPException: 422 if neither stage_id nor stage_name is provided.
+
+        GalileoServerException: 404 if the stage exists but belongs to a different project.'
       operationId: get_stage_projects__project_id__stages_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -94,15 +138,113 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/stages/paginated:
+    get:
+      tags:
+      - Stage
+      summary: List Stages Paginated
+      description: 'List the stages of a project.
+
+
+        `get_stage` resolves one stage the caller can already name. This lists them, so a
+
+        caller can report on a project''s stages without knowing any name. That matters
+
+        because a Protect invoke call with an unknown stage name creates that stage, so a
+
+        project can hold stages nobody configured.
+
+
+        Args:
+
+        project_id: Project to list stages for, resolved from the URL.
+
+        request: Pagination, taken from the query string.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        One page of the project''s stages, oldest first.'
+      operationId: list_stages_paginated_projects__project_id__stages_paginated_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000000
+          minimum: 0
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListStageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /projects/{project_id}/stages/{stage_id}:
     post:
       tags:
       - Stage
       summary: Update Stage
+      description: 'Create a new centralized-ruleset version for a central stage and set it as current.
+
+
+        Args:
+
+        project_id: Project the stage belongs to, resolved from the URL.
+
+        stage_id: Stage to update.
+
+        stage_version_rulesets: The new rulesets for the version.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The updated stage, defaulted to the new version.
+
+
+        Raises:
+
+        GalileoServerException: 404 if the stage belongs to a different project.
+
+        HTTPException: 422 if the stage isn''t a central stage.'
       operationId: update_stage_projects__project_id__stages__stage_id__post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -143,20 +285,35 @@ paths:
       tags:
       - Stage
       summary: Pause Stage
+      description: 'Pause or unpause a stage.
+
+
+        Args:
+
+        project_id: Project the stage belongs to, resolved from the URL.
+
+        stage_id: Stage to update.
+
+        pause: New paused state.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The updated stage.
+
+
+        Raises:
+
+        GalileoServerException: 404 if the stage belongs to a different project.'
       operationId: pause_stage_projects__project_id__stages__stage_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
-      - name: stage_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Stage Id
       - name: project_id
         in: path
         required: true
@@ -164,6 +321,13 @@ paths:
           type: string
           format: uuid4
           title: Project Id
+      - name: stage_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Stage Id
       - name: pause
         in: query
         required: false
@@ -186,198 +350,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SubscriptionConfig:
-      properties:
-        statuses:
-          items:
-            $ref: '#/components/schemas/ExecutionStatus'
-          type: array
-          title: Statuses
-          description: List of statuses that will cause a notification to be sent to the configured URL.
-          default:
-          - triggered
-        url:
-          type: string
-          minLength: 1
-          format: uri
-          title: Url
-          description: URL to send the event to. This can be a webhook URL, a message queue URL, an event bus or a custom endpoint that can receive an HTTP POST request.
-      type: object
-      required:
-      - url
-      title: SubscriptionConfig
-    PassthroughAction:
-      properties:
-        type:
-          type: string
-          const: PASSTHROUGH
-          title: Type
-          default: PASSTHROUGH
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/SubscriptionConfig'
-          type: array
-          title: Subscriptions
-          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
-      type: object
-      title: PassthroughAction
-    StageWithRulesets:
-      properties:
-        prioritized_rulesets:
-          items:
-            $ref: '#/components/schemas/Ruleset'
-          type: array
-          title: Prioritized Rulesets
-          description: Rulesets to be applied to the payload.
-        name:
-          type: string
-          title: Name
-          description: Name of the stage. Must be unique within the project.
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-          description: ID of the project to which this stage belongs.
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Optional human-readable description of the goals of this guardrail.
-        type:
-          $ref: '#/components/schemas/StageType'
-          description: Type of the stage.
-          default: local
-        paused:
-          type: boolean
-          title: Paused
-          description: Whether the action is enabled. If False, the action will not be applied.
-          default: false
-      type: object
-      required:
-      - name
-      - project_id
-      title: StageWithRulesets
-    RuleOperator:
-      type: string
-      enum:
-      - gt
-      - lt
-      - gte
-      - lte
-      - eq
-      - neq
-      - contains
-      - all
-      - any
-      - empty
-      - not_empty
-      title: RuleOperator
-    OverrideAction:
-      properties:
-        type:
-          type: string
-          const: OVERRIDE
-          title: Type
-          default: OVERRIDE
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/SubscriptionConfig'
-          type: array
-          title: Subscriptions
-          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
-        choices:
-          items:
-            type: string
-          type: array
-          minItems: 1
-          title: Choices
-          description: List of choices to override the response with. If there are multiple choices, one will be chosen at random when applying this action.
-      type: object
-      required:
-      - choices
-      title: OverrideAction
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    StageType:
-      type: string
-      enum:
-      - local
-      - central
-      title: StageType
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    Ruleset:
-      properties:
-        rules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-          minItems: 1
-          title: Rules
-          description: List of rules to evaluate. Atleast 1 rule is required.
-        action:
-          oneOf:
-          - $ref: '#/components/schemas/OverrideAction'
-          - $ref: '#/components/schemas/PassthroughAction'
-          title: Action
-          description: Action to take if all the rules are met.
-          discriminator:
-            propertyName: type
-            mapping:
-              OVERRIDE: '#/components/schemas/OverrideAction'
-              PASSTHROUGH: '#/components/schemas/PassthroughAction'
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Description of the ruleset.
-      type: object
-      title: Ruleset
-    ExecutionStatus:
-      type: string
-      enum:
-      - triggered
-      - failed
-      - error
-      - timeout
-      - paused
-      - not_triggered
-      - skipped
-      title: ExecutionStatus
-      description: Status of the execution.
     StageDB:
       properties:
         name:
@@ -459,15 +431,235 @@ components:
           description: Rulesets to be applied to the payload.
       type: object
       title: RulesetsMixin
+    SubscriptionConfig:
+      properties:
+        statuses:
+          items:
+            $ref: '#/components/schemas/ExecutionStatus'
+          type: array
+          title: Statuses
+          description: List of statuses that will cause a notification to be sent to the configured URL.
+          default:
+          - triggered
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: URL to send the event to. This can be a webhook URL, a message queue URL, an event bus or a custom endpoint that can receive an HTTP POST request.
+      type: object
+      required:
+      - url
+      title: SubscriptionConfig
+    RuleOperator:
+      type: string
+      enum:
+      - gt
+      - lt
+      - gte
+      - lte
+      - eq
+      - neq
+      - contains
+      - all
+      - any
+      - empty
+      - not_empty
+      title: RuleOperator
+    StageWithRulesets:
+      properties:
+        prioritized_rulesets:
+          items:
+            $ref: '#/components/schemas/Ruleset'
+          type: array
+          title: Prioritized Rulesets
+          description: Rulesets to be applied to the payload.
+        name:
+          type: string
+          title: Name
+          description: Name of the stage. Must be unique within the project.
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+          description: ID of the project to which this stage belongs.
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional human-readable description of the goals of this guardrail.
+        type:
+          $ref: '#/components/schemas/StageType'
+          description: Type of the stage.
+          default: local
+        paused:
+          type: boolean
+          title: Paused
+          description: Whether the action is enabled. If False, the action will not be applied.
+          default: false
+      type: object
+      required:
+      - name
+      - project_id
+      title: StageWithRulesets
+    Ruleset:
+      properties:
+        rules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+          minItems: 1
+          title: Rules
+          description: List of rules to evaluate. Atleast 1 rule is required.
+        action:
+          oneOf:
+          - $ref: '#/components/schemas/OverrideAction'
+          - $ref: '#/components/schemas/PassthroughAction'
+          title: Action
+          description: Action to take if all the rules are met.
+          discriminator:
+            propertyName: type
+            mapping:
+              OVERRIDE: '#/components/schemas/OverrideAction'
+              PASSTHROUGH: '#/components/schemas/PassthroughAction'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Description of the ruleset.
+      type: object
+      title: Ruleset
+    PassthroughAction:
+      properties:
+        type:
+          type: string
+          const: PASSTHROUGH
+          title: Type
+          default: PASSTHROUGH
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/SubscriptionConfig'
+          type: array
+          title: Subscriptions
+          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
+      type: object
+      title: PassthroughAction
+    StageType:
+      type: string
+      enum:
+      - local
+      - central
+      title: StageType
+    ListStageResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        stages:
+          items:
+            $ref: '#/components/schemas/StageDB'
+          type: array
+          title: Stages
+      type: object
+      required:
+      - stages
+      title: ListStageResponse
+    OverrideAction:
+      properties:
+        type:
+          type: string
+          const: OVERRIDE
+          title: Type
+          default: OVERRIDE
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/SubscriptionConfig'
+          type: array
+          title: Subscriptions
+          description: List of subscriptions to send a notification to when this action is applied and the ruleset status matches any of the configured statuses.
+        choices:
+          items:
+            type: string
+          type: array
+          minItems: 1
+          title: Choices
+          description: List of choices to override the response with. If there are multiple choices, one will be chosen at random when applying this action.
+      type: object
+      required:
+      - choices
+      title: OverrideAction
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ExecutionStatus:
+      type: string
+      enum:
+      - triggered
+      - failed
+      - error
+      - timeout
+      - paused
+      - not_triggered
+      - skipped
+      title: ExecutionStatus
+      description: Status of the execution.
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

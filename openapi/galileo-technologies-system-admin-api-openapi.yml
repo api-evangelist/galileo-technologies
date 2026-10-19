@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server System Admin API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,10 +13,34 @@ paths:
       tags:
       - system_admin
       summary: Join Organization
+      description: 'Add the calling system user to an organization.
+
+
+        Args:
+
+        organization_id: Organization to join, resolved from the URL.
+
+        join_request: The role to join with.
+
+        ctx: Async system user context for the caller.
+
+
+        Returns:
+
+        The newly created membership.
+
+
+        Raises:
+
+        GalileoServerException: 404 if the organization doesn''t exist.
+
+        HTTPException: 400 if the calling system user already has a membership in the
+
+        organization.'
       operationId: join_organization_system_admin_organizations__organization_id__join_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -45,8 +69,88 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /system_admin/organization-provisioning/components/exhausted:
+    get:
+      tags:
+      - system_admin
+      summary: List Exhausted Organization Provisioning Components
+      description: List provisioning components that require an explicit retry.
+      operationId: list_exhausted_organization_provisioning_components_system_admin_organization_provisioning_components_exhausted_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationProvisioningSweepResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /system_admin/organization-provisioning/components/{component_id}/retry:
+    post:
+      tags:
+      - system_admin
+      summary: Retry Exhausted Organization Provisioning Component
+      description: Reopen one exhausted provisioning component for another bounded retry cycle.
+      operationId: retry_exhausted_organization_provisioning_component_system_admin_organization_provisioning_components__component_id__retry_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: component_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Component Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationProvisioningRetryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    OrganizationProvisioningSweepResponse:
+      properties:
+        component_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Component Ids
+      type: object
+      required:
+      - component_ids
+      title: OrganizationProvisioningSweepResponse
     OrganizationMember:
       properties:
         id:
@@ -60,22 +164,24 @@ components:
       - id
       - role
       title: OrganizationMember
-    JoinOrganizationRequest:
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      - capability_based
+      title: UserRole
+    OrganizationProvisioningRetryResponse:
       properties:
-        role:
-          $ref: '#/components/schemas/UserRole'
-          default: user
+        reopened:
+          type: boolean
+          title: Reopened
       type: object
-      title: JoinOrganizationRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      required:
+      - reopened
+      title: OrganizationProvisioningRetryResponse
     ValidationError:
       properties:
         loc:
@@ -102,23 +208,31 @@ components:
       - msg
       - type
       title: ValidationError
-    UserRole:
-      type: string
-      enum:
-      - admin
-      - manager
-      - user
-      - read_only
-      title: UserRole
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    JoinOrganizationRequest:
+      properties:
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: user
+      type: object
+      title: JoinOrganizationRequest
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

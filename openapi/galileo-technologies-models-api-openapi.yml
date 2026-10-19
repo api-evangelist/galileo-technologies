@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Models API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,10 +13,25 @@ paths:
       tags:
       - Models
       summary: Get All Models
+      description: 'List the models available for querying, optionally including the caller''s custom models.
+
+
+        Args:
+
+        with_custom_models: Whether to append models from the caller''s SageMaker and custom
+
+        integrations. A caller without either integration simply gets the supported list.
+
+        ctx: Async request context supplying the read session and current user.
+
+
+        Returns:
+
+        The supported query models, followed by any custom models the caller has configured.'
       operationId: get_all_models_prompts_models_all_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -61,8 +76,8 @@ paths:
                 type: array
                 title: Response List Price Overrides Models Price Overrides Get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /models:
@@ -80,8 +95,8 @@ paths:
         - All models with price overrides are listed, even if they have not been used.'
       operationId: list_models_models_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -120,8 +135,8 @@ paths:
       description: Retrieve prices for a specific model.
       operationId: get_model_prices_models__model_name__prices_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -155,8 +170,8 @@ paths:
       description: Create or update pricing for a model.
       operationId: upsert_model_prices_models__model_name__price_overrides_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -195,8 +210,8 @@ paths:
       description: Remove pricing for a model.
       operationId: delete_model_prices_models__model_name__price_overrides_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -220,61 +235,41 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ModelPricesResponse:
-      properties:
-        override:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
-          - type: 'null'
-        default:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
-          - type: 'null'
-      type: object
-      title: ModelPricesResponse
-      description: Response for GET /models/{model_name}/prices.
-    LLMIntegration:
-      type: string
-      enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: LLMIntegration
-    ModelPriceEntry:
-      properties:
-        input_price:
-          type: number
-          minimum: 0.0
-          title: Input Price
-          description: Price in USD per 1M tokens
-        output_price:
-          type: number
-          minimum: 0.0
-          title: Output Price
-          description: Price in USD per 1M tokens
-      type: object
-      required:
-      - input_price
-      - output_price
-      title: ModelPriceEntry
-      description: A pair of input/output prices — used for requests and responses.
     ModelInfo:
       properties:
+        lifecycle_state:
+          $ref: '#/components/schemas/ModelLifecycleState'
+          default: active
+        replacement_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Replacement Alias
+        deprecation_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Deprecation Date
+        retirement_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Retirement Date
         name:
           type: string
           title: Name
+          description: Provider model identifier used to match the model to its configured provider deployment or profile.
         alias:
           type: string
           title: Alias
+          description: Galileo model identifier used in settings and API requests to select this model.
+        display_name:
+          type: string
+          title: Display Name
+          description: Human-readable model name shown in the UI. Defaults to the alias for legacy registrations.
+          default: ''
         integration:
           $ref: '#/components/schemas/LLMIntegration'
           default: openai
@@ -311,15 +306,6 @@ components:
         information to actually execute requests against the model, but that is not necessary
 
         to surface to the user.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ModelWithPrices:
       properties:
         name:
@@ -334,6 +320,62 @@ components:
       - name
       title: ModelWithPrices
       description: Single item in GET /models response.
+    ModelPriceEntry:
+      properties:
+        input_price:
+          type: number
+          minimum: 0.0
+          title: Input Price
+          description: Price in USD per 1M tokens
+        output_price:
+          type: number
+          minimum: 0.0
+          title: Output Price
+          description: Price in USD per 1M tokens
+      type: object
+      required:
+      - input_price
+      - output_price
+      title: ModelPriceEntry
+      description: A pair of input/output prices — used for requests and responses.
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    ModelWithPriceOverrides:
+      properties:
+        name:
+          type: string
+          title: Name
+        price_overrides:
+          $ref: '#/components/schemas/ModelPriceEntry'
+      type: object
+      required:
+      - name
+      - price_overrides
+      title: ModelWithPriceOverrides
+      description: Single item in GET /models/price_overrides response.
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
     ValidationError:
       properties:
         loc:
@@ -360,38 +402,44 @@ components:
       - msg
       - type
       title: ValidationError
-    ContentModality:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ModelPricesResponse:
+      properties:
+        override:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+        default:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+      type: object
+      title: ModelPricesResponse
+      description: Response for GET /models/{model_name}/prices.
+    ModelLifecycleState:
       type: string
       enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
-    ModelWithPriceOverrides:
-      properties:
-        name:
-          type: string
-          title: Name
-        price_overrides:
-          $ref: '#/components/schemas/ModelPriceEntry'
-      type: object
-      required:
-      - name
-      - price_overrides
-      title: ModelWithPriceOverrides
-      description: Single item in GET /models/price_overrides response.
+      - active
+      - deprecated
+      - retired
+      title: ModelLifecycleState
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

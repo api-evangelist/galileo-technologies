@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Annotation API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,10 +13,32 @@ paths:
       tags:
       - Annotation
       summary: Create Annotation Template
+      description: 'Create an annotation template for a GenAI project.
+
+
+        Args:
+
+        project: The project to create the template in, resolved from the URL.
+
+        annotation_template_create: Name, criteria, and rating constraints for the template.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The created annotation template.
+
+
+        Raises:
+
+        HTTPException: 400 if the project is not a GenAI project, or if a template with this
+
+        name already exists for the project.'
       operationId: create_annotation_template_v2_projects__project_id__annotation_templates_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -57,10 +79,23 @@ paths:
       tags:
       - Annotation
       summary: List Annotation Templates
+      description: 'List all annotation templates for a project, each with its usage count.
+
+
+        Args:
+
+        project_id: Project to list templates for, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The project''s annotation templates, including how many ratings reference each one.'
       operationId: list_annotation_templates_v2_projects__project_id__annotation_templates_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -92,10 +127,32 @@ paths:
       tags:
       - Annotation
       summary: Update Annotation Template
+      description: 'Update an annotation template''s name and/or rating constraints.
+
+
+        Args:
+
+        annotation_template_update: Fields to update.
+
+        project: The project the template belongs to, resolved from the URL.
+
+        template: The template to update, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The updated annotation template.
+
+
+        Raises:
+
+        HTTPException: 400 if renaming to a name already used by another template in the project.'
       operationId: update_annotation_template_v2_projects__project_id__annotation_templates__template_id__patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -136,10 +193,25 @@ paths:
       tags:
       - Annotation
       summary: Get Annotation Template
+      description: 'Get an annotation template by ID, with its usage count.
+
+
+        Args:
+
+        project_id: Project the template belongs to, resolved from the URL.
+
+        template_id: The template to return.
+
+        template: The template to return, resolved from the URL.
+
+
+        Returns:
+
+        The annotation template, including how many ratings reference it.'
       operationId: get_annotation_template_v2_projects__project_id__annotation_templates__template_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -174,10 +246,27 @@ paths:
       tags:
       - Annotation
       summary: Delete Annotation Template
+      description: 'Delete an annotation template.
+
+
+        Args:
+
+        project: The project the template belongs to, resolved from the URL. Unused directly;
+
+        present so the permission dependency and 404 scoping run against the right project.
+
+        template: The template to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_annotation_template_v2_projects__project_id__annotation_templates__template_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -212,10 +301,30 @@ paths:
       tags:
       - Annotation
       summary: Reorder Annotation Templates
+      description: 'Reorder all annotation templates within a project.
+
+
+        Args:
+
+        project_id: Project whose templates are being reordered, resolved from the URL.
+
+        annotation_template_reorder: The full, new ordering of template IDs.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.
+
+
+        Raises:
+
+        GalileoServerException: 400 if the ordering omits or adds templates relative to the project''s current set.'
       operationId: reorder_annotation_templates_v2_projects__project_id__annotation_templates_reorder_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -249,10 +358,34 @@ paths:
       tags:
       - Annotation
       summary: Create Annotation Rating
+      description: 'Record an annotation rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        annotation_rating_create: The rating value, validated against the template''s constraints.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        template: The template the rating is validated and stored against, resolved from the URL.
+
+
+        Returns:
+
+        The stored annotation rating.
+
+
+        Raises:
+
+        HTTPException: 422 if the rating value is invalid for the template''s constraints.'
       operationId: create_annotation_rating_v2_projects__project_id__annotation_templates__template_id__traces__trace_id__rating_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -300,10 +433,23 @@ paths:
       tags:
       - Annotation
       summary: Get Annotation Rating
+      description: 'Get an annotation rating for a trace.
+
+
+        Args:
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+        rating: The rating row, resolved from the URL.
+
+
+        Returns:
+
+        The annotation rating.'
       operationId: get_annotation_rating_v2_projects__project_id__annotation_templates__template_id__traces__trace_id__rating_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -345,10 +491,27 @@ paths:
       tags:
       - Annotation
       summary: Delete Annotation Rating
+      description: 'Delete an annotation rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_annotation_rating_v2_projects__project_id__annotation_templates__template_id__traces__trace_id__rating_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -390,10 +553,34 @@ paths:
       tags:
       - Annotation
       summary: Create Log Record Annotation Rating
+      description: 'Record an annotation rating for a log record.
+
+
+        Args:
+
+        annotation_rating_create: The rating value, validated against the template''s constraints.
+
+        project: The project the record belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        record: The record the rating is for, resolved from the URL.
+
+        template: The template the rating is validated and stored against, resolved from the URL.
+
+
+        Returns:
+
+        The stored annotation rating.
+
+
+        Raises:
+
+        HTTPException: 422 if the rating value is invalid for the template''s constraints.'
       operationId: create_log_record_annotation_rating_v2_projects__project_id__annotation_templates__template_id__records__record_id__rating_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -441,10 +628,23 @@ paths:
       tags:
       - Annotation
       summary: Get Log Record Annotation Rating
+      description: 'Get an annotation rating for a log record.
+
+
+        Args:
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+        rating: The rating row, resolved from the URL.
+
+
+        Returns:
+
+        The annotation rating.'
       operationId: get_log_record_annotation_rating_v2_projects__project_id__annotation_templates__template_id__records__record_id__rating_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -486,10 +686,27 @@ paths:
       tags:
       - Annotation
       summary: Delete Log Record Annotation Rating
+      description: 'Delete an annotation rating for a log record.
+
+
+        Args:
+
+        project: The project the record belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+        record: The record the rating is for, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_log_record_annotation_rating_v2_projects__project_id__annotation_templates__template_id__records__record_id__rating_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -531,10 +748,25 @@ paths:
       tags:
       - Annotation
       summary: Apply Bulk Annotation
+      description: 'Record multiple annotation ratings across traces in one request.
+
+
+        Args:
+
+        request: The set of rating operations (create or delete) to apply, and which traces.
+
+        project: The project the traces belong to, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        One status per requested trace/operation pair, indicating success or the reason for failure.'
       operationId: apply_bulk_annotation_v2_projects__project_id__annotation_ratings_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -572,10 +804,32 @@ paths:
       tags:
       - Annotation
       summary: Create Annotation Template
+      description: 'Create an annotation template for a GenAI project.
+
+
+        Args:
+
+        project: The project to create the template in, resolved from the URL.
+
+        annotation_template_create: Name, criteria, and rating constraints for the template.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The created annotation template.
+
+
+        Raises:
+
+        HTTPException: 400 if the project is not a GenAI project, or if a template with this
+
+        name already exists for the project.'
       operationId: create_annotation_template_public_v2_projects__project_id__annotation_templates_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -616,10 +870,23 @@ paths:
       tags:
       - Annotation
       summary: List Annotation Templates
+      description: 'List all annotation templates for a project, each with its usage count.
+
+
+        Args:
+
+        project_id: Project to list templates for, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The project''s annotation templates, including how many ratings reference each one.'
       operationId: list_annotation_templates_public_v2_projects__project_id__annotation_templates_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -651,10 +918,32 @@ paths:
       tags:
       - Annotation
       summary: Update Annotation Template
+      description: 'Update an annotation template''s name and/or rating constraints.
+
+
+        Args:
+
+        annotation_template_update: Fields to update.
+
+        project: The project the template belongs to, resolved from the URL.
+
+        template: The template to update, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The updated annotation template.
+
+
+        Raises:
+
+        HTTPException: 400 if renaming to a name already used by another template in the project.'
       operationId: update_annotation_template_public_v2_projects__project_id__annotation_templates__template_id__patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -695,10 +984,25 @@ paths:
       tags:
       - Annotation
       summary: Get Annotation Template
+      description: 'Get an annotation template by ID, with its usage count.
+
+
+        Args:
+
+        project_id: Project the template belongs to, resolved from the URL.
+
+        template_id: The template to return.
+
+        template: The template to return, resolved from the URL.
+
+
+        Returns:
+
+        The annotation template, including how many ratings reference it.'
       operationId: get_annotation_template_public_v2_projects__project_id__annotation_templates__template_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -733,10 +1037,27 @@ paths:
       tags:
       - Annotation
       summary: Delete Annotation Template
+      description: 'Delete an annotation template.
+
+
+        Args:
+
+        project: The project the template belongs to, resolved from the URL. Unused directly;
+
+        present so the permission dependency and 404 scoping run against the right project.
+
+        template: The template to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_annotation_template_public_v2_projects__project_id__annotation_templates__template_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -771,10 +1092,30 @@ paths:
       tags:
       - Annotation
       summary: Reorder Annotation Templates
+      description: 'Reorder all annotation templates within a project.
+
+
+        Args:
+
+        project_id: Project whose templates are being reordered, resolved from the URL.
+
+        annotation_template_reorder: The full, new ordering of template IDs.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.
+
+
+        Raises:
+
+        GalileoServerException: 400 if the ordering omits or adds templates relative to the project''s current set.'
       operationId: reorder_annotation_templates_public_v2_projects__project_id__annotation_templates_reorder_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -808,10 +1149,34 @@ paths:
       tags:
       - Annotation
       summary: Create Annotation Rating
+      description: 'Record an annotation rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        annotation_rating_create: The rating value, validated against the template''s constraints.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        template: The template the rating is validated and stored against, resolved from the URL.
+
+
+        Returns:
+
+        The stored annotation rating.
+
+
+        Raises:
+
+        HTTPException: 422 if the rating value is invalid for the template''s constraints.'
       operationId: create_annotation_rating_public_v2_projects__project_id__annotation_templates__template_id__traces__trace_id__rating_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -859,10 +1224,23 @@ paths:
       tags:
       - Annotation
       summary: Get Annotation Rating
+      description: 'Get an annotation rating for a trace.
+
+
+        Args:
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+        rating: The rating row, resolved from the URL.
+
+
+        Returns:
+
+        The annotation rating.'
       operationId: get_annotation_rating_public_v2_projects__project_id__annotation_templates__template_id__traces__trace_id__rating_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -904,10 +1282,27 @@ paths:
       tags:
       - Annotation
       summary: Delete Annotation Rating
+      description: 'Delete an annotation rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_annotation_rating_public_v2_projects__project_id__annotation_templates__template_id__traces__trace_id__rating_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -949,10 +1344,34 @@ paths:
       tags:
       - Annotation
       summary: Create Log Record Annotation Rating
+      description: 'Record an annotation rating for a log record.
+
+
+        Args:
+
+        annotation_rating_create: The rating value, validated against the template''s constraints.
+
+        project: The project the record belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        record: The record the rating is for, resolved from the URL.
+
+        template: The template the rating is validated and stored against, resolved from the URL.
+
+
+        Returns:
+
+        The stored annotation rating.
+
+
+        Raises:
+
+        HTTPException: 422 if the rating value is invalid for the template''s constraints.'
       operationId: create_log_record_annotation_rating_public_v2_projects__project_id__annotation_templates__template_id__records__record_id__rating_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1000,10 +1419,23 @@ paths:
       tags:
       - Annotation
       summary: Get Log Record Annotation Rating
+      description: 'Get an annotation rating for a log record.
+
+
+        Args:
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+        rating: The rating row, resolved from the URL.
+
+
+        Returns:
+
+        The annotation rating.'
       operationId: get_log_record_annotation_rating_public_v2_projects__project_id__annotation_templates__template_id__records__record_id__rating_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1045,10 +1477,27 @@ paths:
       tags:
       - Annotation
       summary: Delete Log Record Annotation Rating
+      description: 'Delete an annotation rating for a log record.
+
+
+        Args:
+
+        project: The project the record belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        template: The template the rating was recorded against, resolved from the URL.
+
+        record: The record the rating is for, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_log_record_annotation_rating_public_v2_projects__project_id__annotation_templates__template_id__records__record_id__rating_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1090,10 +1539,25 @@ paths:
       tags:
       - Annotation
       summary: Apply Bulk Annotation
+      description: 'Record multiple annotation ratings across traces in one request.
+
+
+        Args:
+
+        request: The set of rating operations (create or delete) to apply, and which traces.
+
+        project: The project the traces belong to, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        One status per requested trace/operation pair, indicating success or the reason for failure.'
       operationId: apply_bulk_annotation_public_v2_projects__project_id__annotation_ratings_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1128,51 +1592,362 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    api__schemas__annotation__ScoreConstraints:
+    AnnotationRatingCreate:
+      properties:
+        explanation:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Explanation
+        rating:
+          oneOf:
+          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__StarRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__ScoreRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TagsRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TextRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
+          title: Rating
+          discriminator:
+            propertyName: annotation_type
+            mapping:
+              choice: '#/components/schemas/api__schemas__annotation__ChoiceRating'
+              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
+              score: '#/components/schemas/api__schemas__annotation__ScoreRating'
+              star: '#/components/schemas/api__schemas__annotation__StarRating'
+              tags: '#/components/schemas/api__schemas__annotation__TagsRating'
+              text: '#/components/schemas/api__schemas__annotation__TextRating'
+              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
+      type: object
+      required:
+      - rating
+      title: AnnotationRatingCreate
+    api__schemas__annotation__LikeDislikeConstraints:
       properties:
         annotation_type:
           type: string
-          const: score
+          const: like_dislike
           title: Annotation Type
-        min:
-          type: integer
-          minimum: 0.0
-          title: Min
-        max:
-          type: integer
-          minimum: 0.0
-          title: Max
       type: object
       required:
       - annotation_type
-      - min
-      - max
-      title: ScoreConstraints
-    AnnotationRatingOperationType:
-      type: string
-      enum:
-      - create
-      - delete
-      title: AnnotationRatingOperationType
-      description: Operation type for bulk annotation rating operations.
-    AnnotationTraceSelector:
+      title: LikeDislikeConstraints
+    HTTPValidationError:
       properties:
-        selector_type:
-          type: string
-          const: traces
-          title: Selector Type
-          default: traces
-        traces:
+        detail:
           items:
-            type: string
-            format: uuid4
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Traces
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AnnotationTemplateUpdate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
       type: object
       required:
-      - traces
-      title: AnnotationTraceSelector
-      description: Choose specific traces to apply the bulk operation to.
+      - name
+      - criteria
+      title: AnnotationTemplateUpdate
+    BulkAnnotationRatingStatus:
+      properties:
+        selector:
+          $ref: '#/components/schemas/AnnotationSelectorType'
+          default: traces
+        index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Index
+        trace:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Trace
+        operation:
+          $ref: '#/components/schemas/AnnotationRatingOperationType'
+        success:
+          type: boolean
+          title: Success
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - operation
+      - success
+      - message
+      title: BulkAnnotationRatingStatus
+    api__schemas__annotation__TreeChoiceRating:
+      properties:
+        annotation_type:
+          type: string
+          const: tree_choice
+          title: Annotation Type
+          default: tree_choice
+        value:
+          type: string
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: TreeChoiceRating
+    BulkAnnotationRequest:
+      properties:
+        operations:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/BulkAnnotationRatingCreate'
+            - $ref: '#/components/schemas/BulkAnnotationRatingDelete'
+            discriminator:
+              propertyName: operation_type
+              mapping:
+                create: '#/components/schemas/BulkAnnotationRatingCreate'
+                delete: '#/components/schemas/BulkAnnotationRatingDelete'
+          type: array
+          title: Operations
+        selector:
+          oneOf:
+          - $ref: '#/components/schemas/AnnotationTraceSelector'
+          title: Selector
+          discriminator:
+            propertyName: selector_type
+            mapping:
+              traces: '#/components/schemas/AnnotationTraceSelector'
+      type: object
+      required:
+      - operations
+      - selector
+      title: BulkAnnotationRequest
+    api__schemas__annotation__TagsRating:
+      properties:
+        annotation_type:
+          type: string
+          const: tags
+          title: Annotation Type
+          default: tags
+        value:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          title: Value
+      type: object
+      required:
+      - value
+      title: TagsRating
+    AnnotationTemplateCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        include_explanation:
+          type: boolean
+          title: Include Explanation
+          default: false
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
+        constraints:
+          oneOf:
+          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__StarConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TagsConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TextConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
+          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
+          title: Constraints
+          discriminator:
+            propertyName: annotation_type
+            mapping:
+              choice: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
+              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
+              score: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
+              star: '#/components/schemas/api__schemas__annotation__StarConstraints'
+              tags: '#/components/schemas/api__schemas__annotation__TagsConstraints'
+              text: '#/components/schemas/api__schemas__annotation__TextConstraints'
+              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
+      type: object
+      required:
+      - name
+      - constraints
+      title: AnnotationTemplateCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TreeChoiceDBConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: tree_choice
+          title: Annotation Type
+        choices_tree:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
+          type: array
+          maxItems: 50
+          title: Choices Tree
+        choices_tree_yaml:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Choices Tree Yaml
+      type: object
+      required:
+      - annotation_type
+      - choices_tree
+      - choices_tree_yaml
+      title: TreeChoiceDBConstraints
+    api__schemas__annotation__TreeChoiceConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: tree_choice
+          title: Annotation Type
+        choices_tree:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Choices Tree
+        choices_tree_yaml:
+          anyOf:
+          - type: string
+            maxLength: 10000
+            minLength: 1
+          - type: 'null'
+          title: Choices Tree Yaml
+      type: object
+      required:
+      - annotation_type
+      title: TreeChoiceConstraints
+    BulkAnnotationRatingCreate:
+      properties:
+        explanation:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Explanation
+        rating:
+          oneOf:
+          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__StarRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__ScoreRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TagsRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TextRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceRating'
+          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
+          title: Rating
+          discriminator:
+            propertyName: annotation_type
+            mapping:
+              choice: '#/components/schemas/api__schemas__annotation__ChoiceRating'
+              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
+              score: '#/components/schemas/api__schemas__annotation__ScoreRating'
+              star: '#/components/schemas/api__schemas__annotation__StarRating'
+              tags: '#/components/schemas/api__schemas__annotation__TagsRating'
+              text: '#/components/schemas/api__schemas__annotation__TextRating'
+              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
+        annotation_template_id:
+          type: string
+          format: uuid4
+          title: Annotation Template Id
+        operation_type:
+          type: string
+          const: create
+          title: Operation Type
+          default: create
+      type: object
+      required:
+      - rating
+      - annotation_template_id
+      title: BulkAnnotationRatingCreate
+    api__schemas__annotation__TreeChoiceNode-Output:
+      properties:
+        label:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Label
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Id
+        children:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
+          type: array
+          maxItems: 50
+          title: Children
+      type: object
+      required:
+      - label
+      - id
+      title: TreeChoiceNode
+    api__schemas__annotation__LikeDislikeRating:
+      properties:
+        annotation_type:
+          type: string
+          const: like_dislike
+          title: Annotation Type
+          default: like_dislike
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: LikeDislikeRating
     AnnotationRatingDB:
       properties:
         explanation:
@@ -1217,227 +1992,6 @@ components:
       - created_at
       - created_by
       title: AnnotationRatingDB
-    TreeChoiceDBConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-        choices_tree:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
-          type: array
-          maxItems: 50
-          title: Choices Tree
-        choices_tree_yaml:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Choices Tree Yaml
-      type: object
-      required:
-      - annotation_type
-      - choices_tree
-      - choices_tree_yaml
-      title: TreeChoiceDBConstraints
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    api__schemas__annotation__TextRating:
-      properties:
-        annotation_type:
-          type: string
-          const: text
-          title: Annotation Type
-          default: text
-        value:
-          type: string
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: TextRating
-    AnnotationTemplateCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        include_explanation:
-          type: boolean
-          title: Include Explanation
-          default: false
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-        constraints:
-          oneOf:
-          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__StarConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TagsConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TextConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
-          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
-          title: Constraints
-          discriminator:
-            propertyName: annotation_type
-            mapping:
-              choice: '#/components/schemas/api__schemas__annotation__ChoiceConstraints'
-              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeConstraints'
-              score: '#/components/schemas/api__schemas__annotation__ScoreConstraints'
-              star: '#/components/schemas/api__schemas__annotation__StarConstraints'
-              tags: '#/components/schemas/api__schemas__annotation__TagsConstraints'
-              text: '#/components/schemas/api__schemas__annotation__TextConstraints'
-              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceConstraints'
-      type: object
-      required:
-      - name
-      - constraints
-      title: AnnotationTemplateCreate
-    api__schemas__annotation__LikeDislikeConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: like_dislike
-          title: Annotation Type
-      type: object
-      required:
-      - annotation_type
-      title: LikeDislikeConstraints
-    api__schemas__annotation__TreeChoiceNode-Output:
-      properties:
-        label:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Label
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Id
-        children:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Output'
-          type: array
-          maxItems: 50
-          title: Children
-      type: object
-      required:
-      - label
-      - id
-      title: TreeChoiceNode
-    api__schemas__annotation__ChoiceRating:
-      properties:
-        annotation_type:
-          type: string
-          const: choice
-          title: Annotation Type
-          default: choice
-        value:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: ChoiceRating
-    api__schemas__annotation__StarConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: star
-          title: Annotation Type
-      type: object
-      required:
-      - annotation_type
-      title: StarConstraints
-    api__schemas__annotation__TreeChoiceNode-Input:
-      properties:
-        label:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Label
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Id
-        children:
-          items:
-            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
-          type: array
-          maxItems: 50
-          title: Children
-      type: object
-      required:
-      - label
-      - id
-      title: TreeChoiceNode
-    api__schemas__annotation__TreeChoiceConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-        choices_tree:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
-            type: array
-            maxItems: 50
-          - type: 'null'
-          title: Choices Tree
-        choices_tree_yaml:
-          anyOf:
-          - type: string
-            maxLength: 10000
-            minLength: 1
-          - type: 'null'
-          title: Choices Tree Yaml
-      type: object
-      required:
-      - annotation_type
-      title: TreeChoiceConstraints
-    AnnotationTemplateReorder:
-      properties:
-        ordering:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Ordering
-      type: object
-      required:
-      - ordering
-      title: AnnotationTemplateReorder
-      description: 'Request to re-order the annotation templates of a project.
-
-
-        - Expects a list of strings where each string is the ID of a template in the project in the order
-
-        we want the templates to appear in.
-
-        - Expects the list to be complete list of all template IDs.'
-    AnnotationSelectorType:
-      type: string
-      enum:
-      - traces
-      title: AnnotationSelectorType
     api__schemas__annotation__TagsConstraints:
       properties:
         annotation_type:
@@ -1460,282 +2014,57 @@ components:
       - annotation_type
       - tags
       title: TagsConstraints
-    AnnotationRatingCreate:
+    BulkAnnotationRatingDelete:
       properties:
-        explanation:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Explanation
-        rating:
-          oneOf:
-          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__StarRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__ScoreRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TagsRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TextRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
-          title: Rating
-          discriminator:
-            propertyName: annotation_type
-            mapping:
-              choice: '#/components/schemas/api__schemas__annotation__ChoiceRating'
-              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
-              score: '#/components/schemas/api__schemas__annotation__ScoreRating'
-              star: '#/components/schemas/api__schemas__annotation__StarRating'
-              tags: '#/components/schemas/api__schemas__annotation__TagsRating'
-              text: '#/components/schemas/api__schemas__annotation__TextRating'
-              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
-      type: object
-      required:
-      - rating
-      title: AnnotationRatingCreate
-    AnnotationTemplateUpdate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-      type: object
-      required:
-      - name
-      - criteria
-      title: AnnotationTemplateUpdate
-    api__schemas__annotation__TagsRating:
-      properties:
-        annotation_type:
-          type: string
-          const: tags
-          title: Annotation Type
-          default: tags
-        value:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          title: Value
-      type: object
-      required:
-      - value
-      title: TagsRating
-    api__schemas__annotation__ChoiceConstraints:
-      properties:
-        annotation_type:
-          type: string
-          const: choice
-          title: Annotation Type
-        choices:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          title: Choices
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
-      type: object
-      required:
-      - annotation_type
-      - choices
-      title: ChoiceConstraints
-    BulkAnnotationRatingStatus:
-      properties:
-        selector:
-          $ref: '#/components/schemas/AnnotationSelectorType'
-          default: traces
-        index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Index
-        trace:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Trace
-        operation:
-          $ref: '#/components/schemas/AnnotationRatingOperationType'
-        success:
-          type: boolean
-          title: Success
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-      type: object
-      required:
-      - operation
-      - success
-      - message
-      title: BulkAnnotationRatingStatus
-    BulkAnnotationRequest:
-      properties:
-        operations:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/BulkAnnotationRatingCreate'
-            - $ref: '#/components/schemas/BulkAnnotationRatingDelete'
-            discriminator:
-              propertyName: operation_type
-              mapping:
-                create: '#/components/schemas/BulkAnnotationRatingCreate'
-                delete: '#/components/schemas/BulkAnnotationRatingDelete'
-          type: array
-          title: Operations
-        selector:
-          oneOf:
-          - $ref: '#/components/schemas/AnnotationTraceSelector'
-          title: Selector
-          discriminator:
-            propertyName: selector_type
-            mapping:
-              traces: '#/components/schemas/AnnotationTraceSelector'
-      type: object
-      required:
-      - operations
-      - selector
-      title: BulkAnnotationRequest
-    BulkAnnotationRatingCreate:
-      properties:
-        explanation:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Explanation
-        rating:
-          oneOf:
-          - $ref: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__StarRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__ScoreRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TagsRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TextRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__ChoiceRating'
-          - $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
-          title: Rating
-          discriminator:
-            propertyName: annotation_type
-            mapping:
-              choice: '#/components/schemas/api__schemas__annotation__ChoiceRating'
-              like_dislike: '#/components/schemas/api__schemas__annotation__LikeDislikeRating'
-              score: '#/components/schemas/api__schemas__annotation__ScoreRating'
-              star: '#/components/schemas/api__schemas__annotation__StarRating'
-              tags: '#/components/schemas/api__schemas__annotation__TagsRating'
-              text: '#/components/schemas/api__schemas__annotation__TextRating'
-              tree_choice: '#/components/schemas/api__schemas__annotation__TreeChoiceRating'
         annotation_template_id:
           type: string
           format: uuid4
           title: Annotation Template Id
         operation_type:
           type: string
-          const: create
+          const: delete
           title: Operation Type
-          default: create
+          default: delete
       type: object
       required:
-      - rating
       - annotation_template_id
-      title: BulkAnnotationRatingCreate
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    api__schemas__annotation__StarRating:
+      title: BulkAnnotationRatingDelete
+    api__schemas__annotation__ChoiceRating:
       properties:
         annotation_type:
           type: string
-          const: star
+          const: choice
           title: Annotation Type
-          default: star
-        value:
-          type: integer
-          maximum: 5.0
-          minimum: 1.0
-          title: Value
-      type: object
-      required:
-      - value
-      title: StarRating
-    api__schemas__annotation__LikeDislikeRating:
-      properties:
-        annotation_type:
-          type: string
-          const: like_dislike
-          title: Annotation Type
-          default: like_dislike
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: LikeDislikeRating
-    api__schemas__annotation__TreeChoiceRating:
-      properties:
-        annotation_type:
-          type: string
-          const: tree_choice
-          title: Annotation Type
-          default: tree_choice
+          default: choice
         value:
           type: string
+          maxLength: 255
           minLength: 1
           title: Value
       type: object
       required:
       - value
-      title: TreeChoiceRating
-    api__schemas__annotation__ScoreRating:
+      title: ChoiceRating
+    AnnotationTemplateReorder:
       properties:
-        annotation_type:
-          type: string
-          const: score
-          title: Annotation Type
-          default: score
-        value:
-          type: integer
-          title: Value
+        ordering:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Ordering
       type: object
       required:
-      - value
-      title: ScoreRating
+      - ordering
+      title: AnnotationTemplateReorder
+      description: 'Request to re-order the annotation templates of a project.
+
+
+        - Expects a list of strings where each string is the ID of a template in the project in the order
+
+        we want the templates to appear in.
+
+        - Expects the list to be complete list of all template IDs.'
     AnnotationTemplateDB:
       properties:
         name:
@@ -1804,21 +2133,124 @@ components:
       - position
       - usage_count
       title: AnnotationTemplateDB
-    BulkAnnotationRatingDelete:
+    AnnotationTraceSelector:
       properties:
-        annotation_template_id:
+        selector_type:
           type: string
-          format: uuid4
-          title: Annotation Template Id
-        operation_type:
-          type: string
-          const: delete
-          title: Operation Type
-          default: delete
+          const: traces
+          title: Selector Type
+          default: traces
+        traces:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Traces
       type: object
       required:
-      - annotation_template_id
-      title: BulkAnnotationRatingDelete
+      - traces
+      title: AnnotationTraceSelector
+      description: Choose specific traces to apply the bulk operation to.
+    api__schemas__annotation__ScoreRating:
+      properties:
+        annotation_type:
+          type: string
+          const: score
+          title: Annotation Type
+          default: score
+        value:
+          type: integer
+          title: Value
+      type: object
+      required:
+      - value
+      title: ScoreRating
+    AnnotationRatingOperationType:
+      type: string
+      enum:
+      - create
+      - delete
+      title: AnnotationRatingOperationType
+      description: Operation type for bulk annotation rating operations.
+    api__schemas__annotation__TreeChoiceNode-Input:
+      properties:
+        label:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Label
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Id
+        children:
+          items:
+            $ref: '#/components/schemas/api__schemas__annotation__TreeChoiceNode-Input'
+          type: array
+          maxItems: 50
+          title: Children
+      type: object
+      required:
+      - label
+      - id
+      title: TreeChoiceNode
+    api__schemas__annotation__StarRating:
+      properties:
+        annotation_type:
+          type: string
+          const: star
+          title: Annotation Type
+          default: star
+        value:
+          type: integer
+          maximum: 5.0
+          minimum: 1.0
+          title: Value
+      type: object
+      required:
+      - value
+      title: StarRating
+    api__schemas__annotation__ScoreConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: score
+          title: Annotation Type
+        min:
+          type: integer
+          minimum: 0.0
+          title: Min
+        max:
+          type: integer
+          minimum: 0.0
+          title: Max
+      type: object
+      required:
+      - annotation_type
+      - min
+      - max
+      title: ScoreConstraints
+    AnnotationSelectorType:
+      type: string
+      enum:
+      - traces
+      title: AnnotationSelectorType
+    api__schemas__annotation__TextRating:
+      properties:
+        annotation_type:
+          type: string
+          const: text
+          title: Annotation Type
+          default: text
+        value:
+          type: string
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: TextRating
     api__schemas__annotation__TextConstraints:
       properties:
         annotation_type:
@@ -1829,15 +2261,47 @@ components:
       required:
       - annotation_type
       title: TextConstraints
+    api__schemas__annotation__ChoiceConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: choice
+          title: Annotation Type
+        choices:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          title: Choices
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
+      type: object
+      required:
+      - annotation_type
+      - choices
+      title: ChoiceConstraints
+    api__schemas__annotation__StarConstraints:
+      properties:
+        annotation_type:
+          type: string
+          const: star
+          title: Annotation Type
+      type: object
+      required:
+      - annotation_type
+      title: StarConstraints
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

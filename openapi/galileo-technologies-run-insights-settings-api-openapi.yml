@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Run Insights Settings API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,10 +13,23 @@ paths:
       tags:
       - run_insights_settings
       summary: Upsert Insights Config
+      description: 'Create or update the insights settings for a run.
+
+
+        Args:
+
+        run: Run to set the insights settings for, resolved from the URL.
+
+        request: The insights settings to set.
+
+
+        Returns:
+
+        The upserted insights settings.'
       operationId: upsert_insights_config_projects__project_id__runs__run_id__insights_settings_patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -60,10 +73,21 @@ paths:
       tags:
       - run_insights_settings
       summary: Get Settings
+      description: 'Get the insights settings for a run.
+
+
+        Args:
+
+        run_insights_settings: The run''s insights settings, resolved from the URL.
+
+
+        Returns:
+
+        The run''s insights settings.'
       operationId: get_settings_projects__project_id__runs__run_id__insights_settings_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -99,10 +123,23 @@ paths:
       tags:
       - run_insights_settings
       summary: Upsert Insights Config
+      description: 'Create or update the insights settings for a run.
+
+
+        Args:
+
+        run: Run to set the insights settings for, resolved from the URL.
+
+        request: The insights settings to set.
+
+
+        Returns:
+
+        The upserted insights settings.'
       operationId: upsert_insights_config_v2_projects__project_id__runs__run_id__insights_settings_patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -146,10 +183,21 @@ paths:
       tags:
       - run_insights_settings
       summary: Get Settings
+      description: 'Get the insights settings for a run.
+
+
+        Args:
+
+        run_insights_settings: The run''s insights settings, resolved from the URL.
+
+
+        Returns:
+
+        The run''s insights settings.'
       operationId: get_settings_v2_projects__project_id__runs__run_id__insights_settings_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -185,10 +233,23 @@ paths:
       tags:
       - run_insights_settings
       summary: Upsert Insights Config
+      description: 'Create or update the insights settings for a run.
+
+
+        Args:
+
+        run: Run to set the insights settings for, resolved from the URL.
+
+        request: The insights settings to set.
+
+
+        Returns:
+
+        The upserted insights settings.'
       operationId: upsert_insights_config_public_v2_projects__project_id__runs__run_id__insights_settings_patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -232,10 +293,21 @@ paths:
       tags:
       - run_insights_settings
       summary: Get Settings
+      description: 'Get the insights settings for a run.
+
+
+        Args:
+
+        run_insights_settings: The run''s insights settings, resolved from the URL.
+
+
+        Returns:
+
+        The run''s insights settings.'
       operationId: get_settings_public_v2_projects__project_id__runs__run_id__insights_settings_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -268,6 +340,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    RunInsightsResponse:
+      properties:
+        insights:
+          $ref: '#/components/schemas/RunInsightsSettingsSchema'
+          description: The insights configuration for the run.
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+          description: The ID of the run this settings belong to.
+      type: object
+      required:
+      - run_id
+      title: RunInsightsResponse
     RunInsightsRequest:
       properties:
         insights:
@@ -275,38 +361,6 @@ components:
           description: The insights configuration for the run.
       type: object
       title: RunInsightsRequest
-    RunInsightsSettingsSchema:
-      properties:
-        logstream:
-          $ref: '#/components/schemas/LogstreamInsightConfig'
-          description: Logstream insights configuration.
-      type: object
-      title: RunInsightsSettingsSchema
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    LogstreamInsightConfig:
-      properties:
-        enabled:
-          type: boolean
-          title: Enabled
-          description: Whether logstream insights are enabled for this run.
-          default: false
-        start_time:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Start Time
-          description: Start time for generating logstream insights.
-      type: object
-      title: LogstreamInsightConfig
     ValidationError:
       properties:
         loc:
@@ -333,29 +387,47 @@ components:
       - msg
       - type
       title: ValidationError
-    RunInsightsResponse:
+    HTTPValidationError:
       properties:
-        insights:
-          $ref: '#/components/schemas/RunInsightsSettingsSchema'
-          description: The insights configuration for the run.
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-          description: The ID of the run this settings belong to.
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - run_id
-      title: RunInsightsResponse
+      title: HTTPValidationError
+    LogstreamInsightConfig:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Whether logstream insights are enabled for this run.
+          default: false
+        start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start Time
+          description: Start time for generating logstream insights.
+      type: object
+      title: LogstreamInsightConfig
+    RunInsightsSettingsSchema:
+      properties:
+        logstream:
+          $ref: '#/components/schemas/LogstreamInsightConfig'
+          description: Logstream insights configuration.
+      type: object
+      title: RunInsightsSettingsSchema
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

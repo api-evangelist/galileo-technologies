@@ -1,0 +1,731 @@
+openapi: 3.2.0
+info:
+  title: Galileo API Server Fiscal Calendar API
+  version: 0.0.0+orbit
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: fiscal-calendar
+paths:
+  /tokenomics/v1/fiscal-calendar:
+    get:
+      tags:
+      - fiscal-calendar
+      summary: Get Fiscal Calendar
+      operationId: get_fiscal_calendar_tokenomics_v1_fiscal_calendar_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: fiscal_year_number
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            maximum: 9999
+            minimum: 1
+          - type: 'null'
+          title: Fiscal Year Number
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - fiscal-calendar
+      summary: Update Fiscal Calendar
+      operationId: update_fiscal_calendar_tokenomics_v1_fiscal_calendar_put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/StructuredFiscalCalendarUpdate'
+              - $ref: '#/components/schemas/JsonFiscalCalendarUpdate'
+              discriminator:
+                propertyName: configuration_mode
+                mapping:
+                  structured: '#/components/schemas/StructuredFiscalCalendarUpdate'
+                  json: '#/components/schemas/JsonFiscalCalendarUpdate'
+              title: Request
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/fiscal-calendar/preview:
+    post:
+      tags:
+      - fiscal-calendar
+      summary: Preview Fiscal Calendar
+      operationId: preview_fiscal_calendar_tokenomics_v1_fiscal_calendar_preview_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/StructuredFiscalCalendarPreview'
+              - $ref: '#/components/schemas/JsonFiscalCalendarPreview'
+              title: Request
+              discriminator:
+                propertyName: configuration_mode
+                mapping:
+                  structured: '#/components/schemas/StructuredFiscalCalendarPreview'
+                  json: '#/components/schemas/JsonFiscalCalendarPreview'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarPreviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/fiscal-calendar/reset:
+    post:
+      tags:
+      - fiscal-calendar
+      summary: Reset Fiscal Calendar
+      operationId: reset_fiscal_calendar_tokenomics_v1_fiscal_calendar_reset_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FiscalCalendarReset'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /tokenomics/v1/fiscal-calendar/versions:
+    get:
+      tags:
+      - fiscal-calendar
+      summary: List Fiscal Calendar Versions
+      operationId: list_fiscal_calendar_versions_tokenomics_v1_fiscal_calendar_versions_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarVersionListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/fiscal-calendar/versions/{version_id}:
+    get:
+      tags:
+      - fiscal-calendar
+      summary: Get Fiscal Calendar Version
+      operationId: get_fiscal_calendar_version_tokenomics_v1_fiscal_calendar_versions__version_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Version Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiscalCalendarVersion'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    FiscalCatchUpMonth:
+      properties:
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+        fiscal_month_number:
+          type: integer
+          maximum: 12.0
+          minimum: 1.0
+          title: Fiscal Month Number
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_year_number
+      - fiscal_month_number
+      title: FiscalCatchUpMonth
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StructuredFiscalCalendarPreview:
+      properties:
+        configuration_mode:
+          type: string
+          const: structured
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/StructuredFiscalCalendarConfiguration'
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - fiscal_year_number
+      title: StructuredFiscalCalendarPreview
+    FiscalCalendarReset:
+      properties:
+        expected_fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Expected Fiscal Calendar Version Id
+      additionalProperties: false
+      type: object
+      required:
+      - expected_fiscal_calendar_version_id
+      title: FiscalCalendarReset
+    FiscalAutomaticMonthDefinition:
+      properties:
+        type:
+          type: string
+          const: automatic
+          title: Type
+          default: automatic
+      additionalProperties: false
+      type: object
+      title: FiscalAutomaticMonthDefinition
+    FiscalCalendarVersion:
+      properties:
+        fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Fiscal Calendar Version Id
+        configuration_mode:
+          type: string
+          enum:
+          - structured
+          - json
+          title: Configuration Mode
+        configuration:
+          anyOf:
+          - $ref: '#/components/schemas/StructuredFiscalCalendarConfiguration'
+          - $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+          title: Configuration
+        source:
+          type: string
+          enum:
+          - system_default
+          - user_defined
+          title: Source
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Created By
+        activated_at:
+          type: string
+          format: date-time
+          title: Activated At
+        deactivated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Deactivated At
+        is_active:
+          type: boolean
+          title: Is Active
+        resolved_calendar:
+          anyOf:
+          - $ref: '#/components/schemas/FiscalYear'
+          - type: 'null'
+        range_options:
+          items:
+            $ref: '#/components/schemas/FiscalRangeOption'
+          type: array
+          title: Range Options
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_calendar_version_id
+      - configuration_mode
+      - configuration
+      - source
+      - created_by
+      - activated_at
+      - deactivated_at
+      - is_active
+      - resolved_calendar
+      - range_options
+      title: FiscalCalendarVersion
+    JsonFiscalCalendarPreview:
+      properties:
+        configuration_mode:
+          type: string
+          const: json
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - fiscal_year_number
+      title: JsonFiscalCalendarPreview
+    FiscalQuarter:
+      properties:
+        fiscal_quarter_number:
+          type: integer
+          maximum: 4.0
+          minimum: 1.0
+          title: Fiscal Quarter Number
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_quarter_number
+      - start_date
+      - end_date
+      title: FiscalQuarter
+    FiscalYear:
+      properties:
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        quarters:
+          items:
+            $ref: '#/components/schemas/FiscalQuarter'
+          type: array
+          maxItems: 4
+          minItems: 4
+          title: Quarters
+        months:
+          items:
+            $ref: '#/components/schemas/FiscalMonth'
+          type: array
+          maxItems: 12
+          minItems: 12
+          title: Months
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_year_number
+      - start_date
+      - end_date
+      - quarters
+      - months
+      title: FiscalYear
+    FiscalCalendarVersionListResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/FiscalCalendarVersion'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        limit:
+          type: integer
+          title: Limit
+        offset:
+          type: integer
+          title: Offset
+      additionalProperties: false
+      type: object
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      title: FiscalCalendarVersionListResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    StructuredFiscalCalendarConfiguration:
+      properties:
+        timezone:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Timezone
+        fiscal_year_number:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: Fiscal Year Number
+        fiscal_year_start_date:
+          type: string
+          format: date
+          title: Fiscal Year Start Date
+        month_definition:
+          oneOf:
+          - $ref: '#/components/schemas/FiscalAutomaticMonthDefinition'
+          - $ref: '#/components/schemas/FiscalWeekPatternMonthDefinition'
+          title: Month Definition
+          discriminator:
+            propertyName: type
+            mapping:
+              automatic: '#/components/schemas/FiscalAutomaticMonthDefinition'
+              week_pattern: '#/components/schemas/FiscalWeekPatternMonthDefinition'
+      additionalProperties: false
+      type: object
+      required:
+      - timezone
+      - fiscal_year_number
+      - fiscal_year_start_date
+      - month_definition
+      title: StructuredFiscalCalendarConfiguration
+    StructuredFiscalCalendarUpdate:
+      properties:
+        configuration_mode:
+          type: string
+          const: structured
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/StructuredFiscalCalendarConfiguration'
+        expected_fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Expected Fiscal Calendar Version Id
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - expected_fiscal_calendar_version_id
+      title: StructuredFiscalCalendarUpdate
+    FiscalMonth:
+      properties:
+        fiscal_month_number:
+          type: integer
+          maximum: 12.0
+          minimum: 1.0
+          title: Fiscal Month Number
+        label:
+          type: string
+          maxLength: 32
+          minLength: 1
+          title: Label
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        is_catch_up_month:
+          type: boolean
+          title: Is Catch Up Month
+          default: false
+      additionalProperties: false
+      type: object
+      required:
+      - fiscal_month_number
+      - label
+      - start_date
+      - end_date
+      title: FiscalMonth
+    FiscalCalendarPreviewResponse:
+      properties:
+        resolved_calendar:
+          anyOf:
+          - $ref: '#/components/schemas/FiscalYear'
+          - type: 'null'
+        generated_json:
+          anyOf:
+          - $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+          - type: 'null'
+      additionalProperties: false
+      type: object
+      required:
+      - resolved_calendar
+      - generated_json
+      title: FiscalCalendarPreviewResponse
+    FiscalWeekPatternMonthDefinition:
+      properties:
+        type:
+          type: string
+          const: week_pattern
+          title: Type
+          default: week_pattern
+        pattern:
+          type: string
+          enum:
+          - four_four_five
+          - four_five_four
+          - five_four_four
+          title: Pattern
+        catch_up_months:
+          items:
+            $ref: '#/components/schemas/FiscalCatchUpMonth'
+          type: array
+          maxItems: 100
+          title: Catch Up Months
+      additionalProperties: false
+      type: object
+      required:
+      - pattern
+      title: FiscalWeekPatternMonthDefinition
+    FiscalRangeOption:
+      properties:
+        id:
+          type: string
+          enum:
+          - fiscal_month_to_date
+          - fiscal_quarter_to_date
+          - fiscal_year_to_date
+          title: Id
+        label:
+          type: string
+          title: Label
+        calendar_type:
+          type: string
+          const: fiscal
+          title: Calendar Type
+          default: fiscal
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - label
+      - start_date
+      - end_date
+      title: FiscalRangeOption
+    JsonFiscalCalendarConfiguration:
+      properties:
+        timezone:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Timezone
+        week_start_day:
+          type: string
+          enum:
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+          title: Week Start Day
+        fiscal_years:
+          items:
+            $ref: '#/components/schemas/FiscalYear'
+          type: array
+          maxItems: 25
+          minItems: 1
+          title: Fiscal Years
+      additionalProperties: false
+      type: object
+      required:
+      - timezone
+      - week_start_day
+      - fiscal_years
+      title: JsonFiscalCalendarConfiguration
+    FiscalCalendarResponse:
+      properties:
+        status:
+          type: string
+          const: active
+          title: Status
+          default: active
+        active:
+          $ref: '#/components/schemas/FiscalCalendarVersion'
+      additionalProperties: false
+      type: object
+      required:
+      - active
+      title: FiscalCalendarResponse
+    JsonFiscalCalendarUpdate:
+      properties:
+        configuration_mode:
+          type: string
+          const: json
+          title: Configuration Mode
+        configuration:
+          $ref: '#/components/schemas/JsonFiscalCalendarConfiguration'
+        expected_fiscal_calendar_version_id:
+          type: string
+          format: uuid
+          title: Expected Fiscal Calendar Version Id
+      additionalProperties: false
+      type: object
+      required:
+      - configuration_mode
+      - configuration
+      - expected_fiscal_calendar_version_id
+      title: JsonFiscalCalendarUpdate
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server System Users Authentication API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -109,18 +109,13 @@ paths:
       - OAuth2PasswordBearer: []
 components:
   schemas:
-    SystemUserStatus:
+    SystemUserAccountType:
       type: string
       enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
-    PasswordResetEmailResponse:
-      properties: {}
-      type: object
-      title: PasswordResetEmailResponse
+      - human
+      - service
+      - token
+      title: SystemUserAccountType
     SystemUserDB:
       properties:
         id:
@@ -155,6 +150,8 @@ components:
           title: Email Is Verified
         status:
           $ref: '#/components/schemas/SystemUserStatus'
+        account_type:
+          $ref: '#/components/schemas/SystemUserAccountType'
         role:
           $ref: '#/components/schemas/SystemRole'
         auth_method:
@@ -167,15 +164,10 @@ components:
       - updated_at
       - email
       - status
+      - account_type
       - role
       - auth_method
       title: SystemUserDB
-    SystemRole:
-      type: string
-      enum:
-      - system_admin
-      - system_user
-      title: SystemRole
     UserPasswordResetRequest:
       properties:
         email:
@@ -196,15 +188,38 @@ components:
       required:
       - email
       title: UserPasswordResetRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
+    PasswordResetEmailResponse:
+      properties: {}
       type: object
-      title: HTTPValidationError
+      title: PasswordResetEmailResponse
+    SystemRole:
+      type: string
+      enum:
+      - system_admin
+      - system_user
+      title: SystemRole
+    EmailVerificationRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - email
+      title: EmailVerificationRequest
+    ResendVerificationEmailResponse:
+      properties: {}
+      type: object
+      title: ResendVerificationEmailResponse
     ValidationError:
       properties:
         loc:
@@ -231,29 +246,24 @@ components:
       - msg
       - type
       title: ValidationError
-    ResendVerificationEmailResponse:
-      properties: {}
-      type: object
-      title: ResendVerificationEmailResponse
-    EmailVerificationRequest:
+    HTTPValidationError:
       properties:
-        email:
-          type: string
-          format: email
-          title: Email
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - email
-      title: EmailVerificationRequest
+      title: HTTPValidationError
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

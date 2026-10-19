@@ -1,101 +1,44 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Feedback API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
 tags:
 - name: Feedback
 paths:
-  /projects/{project_id}/feedback/templates:
-    post:
-      tags:
-      - Feedback
-      summary: Create Feedback Template
-      operationId: create_feedback_template_projects__project_id__feedback_templates_post
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FeedbackTemplateCreate'
-              examples:
-              - name: creativity
-                criteria: How creative was the response?
-                constraints:
-                  feedback_type: score
-                  min: 1
-                  max: 10
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FeedbackTemplateDB'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-    get:
-      tags:
-      - Feedback
-      summary: List Feedback Templates
-      operationId: list_feedback_templates_projects__project_id__feedback_templates_get
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/FeedbackTemplateDB'
-                title: Response List Feedback Templates Projects  Project Id  Feedback Templates Get
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /projects/{project_id}/feedback/templates/{template_id}:
     patch:
       tags:
       - Feedback
       summary: Update Feedback Template
+      description: 'Update a feedback template''s name and/or rating constraints.
+
+
+        Args:
+
+        feedback_template_update: Fields to update.
+
+        project: The project the template belongs to, resolved from the URL.
+
+        template: The template to update, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The updated feedback template.
+
+
+        Raises:
+
+        GalileoServerException: 400 if renaming to a name already used by another template in the project.'
       operationId: update_feedback_template_projects__project_id__feedback_templates__template_id__patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -136,10 +79,21 @@ paths:
       tags:
       - Feedback
       summary: Get Feedback Template
+      description: 'Get a feedback template by ID.
+
+
+        Args:
+
+        template: The template to return, resolved from the URL.
+
+
+        Returns:
+
+        The feedback template.'
       operationId: get_feedback_template_projects__project_id__feedback_templates__template_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -174,10 +128,27 @@ paths:
       tags:
       - Feedback
       summary: Delete Feedback Template
+      description: 'Delete a feedback template.
+
+
+        Args:
+
+        project: The project the template belongs to, resolved from the URL. Unused directly;
+
+        present so the permission dependency and 404 scoping run against the right project.
+
+        template: The template to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_feedback_template_projects__project_id__feedback_templates__template_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -207,6 +178,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/feedback/templates:
+    get:
+      tags:
+      - Feedback
+      summary: List Feedback Templates
+      description: 'List all feedback templates for a project, ordered by position.
+
+
+        Args:
+
+        project_id: Project to list templates for, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The project''s feedback templates.'
+      operationId: list_feedback_templates_projects__project_id__feedback_templates_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FeedbackTemplateDB'
+                title: Response List Feedback Templates Projects  Project Id  Feedback Templates Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /projects/{project_id}/runs/{run_id}/feedback/templates/{template_id}/index/{index}/rating:
     put:
       tags:
@@ -215,8 +234,8 @@ paths:
       description: Record a feedack rating for a specific sample in a run. For prompt chains, the index must be the root node.
       operationId: create_feedback_rating_projects__project_id__runs__run_id__feedback_templates__template_id__index__index__rating_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -270,10 +289,34 @@ paths:
       tags:
       - Feedback
       summary: Get Feedback Rating
+      description: 'Get a feedback rating by run, template, and sample index.
+
+
+        Args:
+
+        project_id: Project the run belongs to, resolved from the URL.
+
+        run_id: Run the rating is for.
+
+        index: Sample index within the run.
+
+        feedback_template: The template the rating was recorded against, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The feedback rating.
+
+
+        Raises:
+
+        GalileoServerException: 404 if the run does not belong to the project.'
       operationId: get_feedback_rating_projects__project_id__runs__run_id__feedback_templates__template_id__index__index__rating_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -321,10 +364,31 @@ paths:
       tags:
       - Feedback
       summary: Delete Feedback Rating
+      description: 'Delete a feedback rating by run, template, and sample index.
+
+
+        Args:
+
+        project_id: Project the run belongs to, resolved from the URL.
+
+        run_id: Run the rating is for.
+
+        template_id: Template the rating was recorded against; used only in the response message.
+
+        index: Sample index within the run.
+
+        ctx: Async request context.
+
+        feedback_template: The template the rating was recorded against, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_feedback_rating_projects__project_id__runs__run_id__feedback_templates__template_id__index__index__rating_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -375,8 +439,8 @@ paths:
       description: Record multiple feedback ratings
       operationId: apply_bulk_feedback_projects__project_id__runs__run_id__ratings_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -421,11 +485,33 @@ paths:
       tags:
       - Feedback
       summary: Create Feedback Template V2
+      description: 'Create a v2 feedback template for a GenAI project.
+
+
+        Args:
+
+        project: The project to create the template in, resolved from the URL.
+
+        feedback_template_create: Name, criteria, and rating constraints for the template.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The created feedback template.
+
+
+        Raises:
+
+        HTTPException: 400 if the project is not a GenAI project.
+
+        GalileoServerException: 400 if a template with this name already exists for the project.'
       operationId: create_feedback_template_v2_v2_projects__project_id__feedback_templates_post
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -466,11 +552,24 @@ paths:
       tags:
       - Feedback
       summary: List Feedback Templates V2
+      description: 'List all v2 feedback templates for a project, each with its usage count.
+
+
+        Args:
+
+        project_id: Project to list templates for, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The project''s feedback templates, including how many ratings reference each one.'
       operationId: list_feedback_templates_v2_v2_projects__project_id__feedback_templates_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -502,11 +601,33 @@ paths:
       tags:
       - Feedback
       summary: Update Feedback Template
+      description: 'Update a feedback template''s name and/or rating constraints.
+
+
+        Args:
+
+        feedback_template_update: Fields to update.
+
+        project: The project the template belongs to, resolved from the URL.
+
+        template: The template to update, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The updated feedback template.
+
+
+        Raises:
+
+        GalileoServerException: 400 if renaming to a name already used by another template in the project.'
       operationId: update_feedback_template_v2_projects__project_id__feedback_templates__template_id__patch
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -547,11 +668,24 @@ paths:
       tags:
       - Feedback
       summary: Get Feedback Template V2
+      description: 'Get a v2 feedback template with its usage count.
+
+
+        Args:
+
+        project: The project the template belongs to, resolved from the URL.
+
+        template: The template to return, resolved from the URL.
+
+
+        Returns:
+
+        The feedback template, including how many ratings reference it.'
       operationId: get_feedback_template_v2_v2_projects__project_id__feedback_templates__template_id__get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -586,11 +720,28 @@ paths:
       tags:
       - Feedback
       summary: Delete Feedback Template
+      description: 'Delete a feedback template.
+
+
+        Args:
+
+        project: The project the template belongs to, resolved from the URL. Unused directly;
+
+        present so the permission dependency and 404 scoping run against the right project.
+
+        template: The template to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_feedback_template_v2_projects__project_id__feedback_templates__template_id__delete
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -625,11 +776,31 @@ paths:
       tags:
       - Feedback
       summary: Reorder Feedback Templates
+      description: 'Reorder all feedback templates within a project.
+
+
+        Args:
+
+        project_id: Project whose templates are being reordered, resolved from the URL.
+
+        feedback_template_reorder: The full, new ordering of template IDs.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.
+
+
+        Raises:
+
+        GalileoServerException: 400 if the ordering omits or adds templates relative to the project''s current set.'
       operationId: reorder_feedback_templates_v2_projects__project_id__feedback_templates_reorder_post
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -663,11 +834,35 @@ paths:
       tags:
       - Feedback
       summary: Create Feedback Rating V2
+      description: 'Record a v2 feedback rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        feedback_rating_create: The rating value, validated against the template''s constraints.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        feedback_template: The template the rating is validated and stored against, resolved from the URL.
+
+
+        Returns:
+
+        The stored feedback rating.
+
+
+        Raises:
+
+        HTTPException: 422 if the rating value is invalid for the template''s constraints.'
       operationId: create_feedback_rating_v2_v2_projects__project_id__feedback_templates__template_id__traces__trace_id__rating_put
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -715,11 +910,26 @@ paths:
       tags:
       - Feedback
       summary: Get Feedback Rating V2
+      description: 'Get a v2 feedback rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        feedback_template: The template the rating was recorded against, resolved from the URL.
+
+
+        Returns:
+
+        The feedback rating.'
       operationId: get_feedback_rating_v2_v2_projects__project_id__feedback_templates__template_id__traces__trace_id__rating_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -761,11 +971,28 @@ paths:
       tags:
       - Feedback
       summary: Delete Feedback Rating V2
+      description: 'Delete a v2 feedback rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        feedback_template: The template the rating was recorded against, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_feedback_rating_v2_v2_projects__project_id__feedback_templates__template_id__traces__trace_id__rating_delete
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -807,11 +1034,26 @@ paths:
       tags:
       - Feedback
       summary: Apply Bulk Feedback V2
+      description: 'Record multiple v2 feedback ratings across traces in one request.
+
+
+        Args:
+
+        request: The set of rating operations (create or delete) to apply, and which traces.
+
+        project: The project the traces belong to, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        One status per requested trace/operation pair, indicating success or the reason for failure.'
       operationId: apply_bulk_feedback_v2_v2_projects__project_id__feedback_ratings_post
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -849,11 +1091,33 @@ paths:
       tags:
       - Feedback
       summary: Create Feedback Template V2
+      description: 'Create a v2 feedback template for a GenAI project.
+
+
+        Args:
+
+        project: The project to create the template in, resolved from the URL.
+
+        feedback_template_create: Name, criteria, and rating constraints for the template.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The created feedback template.
+
+
+        Raises:
+
+        HTTPException: 400 if the project is not a GenAI project.
+
+        GalileoServerException: 400 if a template with this name already exists for the project.'
       operationId: create_feedback_template_v2_public_v2_projects__project_id__feedback_templates_post
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -894,11 +1158,24 @@ paths:
       tags:
       - Feedback
       summary: List Feedback Templates V2
+      description: 'List all v2 feedback templates for a project, each with its usage count.
+
+
+        Args:
+
+        project_id: Project to list templates for, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The project''s feedback templates, including how many ratings reference each one.'
       operationId: list_feedback_templates_v2_public_v2_projects__project_id__feedback_templates_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -930,11 +1207,33 @@ paths:
       tags:
       - Feedback
       summary: Update Feedback Template
+      description: 'Update a feedback template''s name and/or rating constraints.
+
+
+        Args:
+
+        feedback_template_update: Fields to update.
+
+        project: The project the template belongs to, resolved from the URL.
+
+        template: The template to update, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The updated feedback template.
+
+
+        Raises:
+
+        GalileoServerException: 400 if renaming to a name already used by another template in the project.'
       operationId: update_feedback_template_public_v2_projects__project_id__feedback_templates__template_id__patch
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -975,11 +1274,24 @@ paths:
       tags:
       - Feedback
       summary: Get Feedback Template V2
+      description: 'Get a v2 feedback template with its usage count.
+
+
+        Args:
+
+        project: The project the template belongs to, resolved from the URL.
+
+        template: The template to return, resolved from the URL.
+
+
+        Returns:
+
+        The feedback template, including how many ratings reference it.'
       operationId: get_feedback_template_v2_public_v2_projects__project_id__feedback_templates__template_id__get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1014,11 +1326,28 @@ paths:
       tags:
       - Feedback
       summary: Delete Feedback Template
+      description: 'Delete a feedback template.
+
+
+        Args:
+
+        project: The project the template belongs to, resolved from the URL. Unused directly;
+
+        present so the permission dependency and 404 scoping run against the right project.
+
+        template: The template to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_feedback_template_public_v2_projects__project_id__feedback_templates__template_id__delete
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1053,11 +1382,31 @@ paths:
       tags:
       - Feedback
       summary: Reorder Feedback Templates
+      description: 'Reorder all feedback templates within a project.
+
+
+        Args:
+
+        project_id: Project whose templates are being reordered, resolved from the URL.
+
+        feedback_template_reorder: The full, new ordering of template IDs.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.
+
+
+        Raises:
+
+        GalileoServerException: 400 if the ordering omits or adds templates relative to the project''s current set.'
       operationId: reorder_feedback_templates_public_v2_projects__project_id__feedback_templates_reorder_post
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1091,11 +1440,35 @@ paths:
       tags:
       - Feedback
       summary: Create Feedback Rating V2
+      description: 'Record a v2 feedback rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        feedback_rating_create: The rating value, validated against the template''s constraints.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        feedback_template: The template the rating is validated and stored against, resolved from the URL.
+
+
+        Returns:
+
+        The stored feedback rating.
+
+
+        Raises:
+
+        HTTPException: 422 if the rating value is invalid for the template''s constraints.'
       operationId: create_feedback_rating_v2_public_v2_projects__project_id__feedback_templates__template_id__traces__trace_id__rating_put
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1143,11 +1516,26 @@ paths:
       tags:
       - Feedback
       summary: Get Feedback Rating V2
+      description: 'Get a v2 feedback rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        feedback_template: The template the rating was recorded against, resolved from the URL.
+
+
+        Returns:
+
+        The feedback rating.'
       operationId: get_feedback_rating_v2_public_v2_projects__project_id__feedback_templates__template_id__traces__trace_id__rating_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1189,11 +1577,28 @@ paths:
       tags:
       - Feedback
       summary: Delete Feedback Rating V2
+      description: 'Delete a v2 feedback rating for a trace.
+
+
+        Args:
+
+        trace_id: Trace the rating is for.
+
+        project: The project the trace belongs to, resolved from the URL.
+
+        ctx: Async request context.
+
+        feedback_template: The template the rating was recorded against, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_feedback_rating_v2_public_v2_projects__project_id__feedback_templates__template_id__traces__trace_id__rating_delete
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1235,11 +1640,26 @@ paths:
       tags:
       - Feedback
       summary: Apply Bulk Feedback V2
+      description: 'Record multiple v2 feedback ratings across traces in one request.
+
+
+        Args:
+
+        request: The set of rating operations (create or delete) to apply, and which traces.
+
+        project: The project the traces belong to, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        One status per requested trace/operation pair, indicating success or the reason for failure.'
       operationId: apply_bulk_feedback_v2_public_v2_projects__project_id__feedback_ratings_post
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1274,340 +1694,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    BulkFeedbackRatingDelete:
-      properties:
-        feedback_template_id:
-          type: string
-          format: uuid4
-          title: Feedback Template Id
-        operation_type:
-          type: string
-          const: delete
-          title: Operation Type
-          default: delete
-      type: object
-      required:
-      - feedback_template_id
-      title: BulkFeedbackRatingDelete
-    libs__python__schemas__log_records__feedback__ChoiceRating:
-      properties:
-        feedback_type:
-          type: string
-          const: choice
-          title: Feedback Type
-          default: choice
-        value:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: ChoiceRating
-    libs__python__schemas__log_records__feedback__LikeDislikeConstraints:
-      properties:
-        feedback_type:
-          type: string
-          const: like_dislike
-          title: Feedback Type
-      type: object
-      required:
-      - feedback_type
-      title: LikeDislikeConstraints
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TraceSelector:
-      properties:
-        selector_type:
-          type: string
-          const: traces
-          title: Selector Type
-          default: traces
-        traces:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Traces
-      type: object
-      required:
-      - traces
-      title: TraceSelector
-      description: Choose specific traces to apply the bulk operation to.
-    libs__python__schemas__log_records__feedback__TextRating:
-      properties:
-        feedback_type:
-          type: string
-          const: text
-          title: Feedback Type
-          default: text
-        value:
-          type: string
-          minLength: 1
-          title: Value
-      type: object
-      required:
-      - value
-      title: TextRating
-    libs__python__schemas__log_records__feedback__LikeDislikeRating:
-      properties:
-        feedback_type:
-          type: string
-          const: like_dislike
-          title: Feedback Type
-          default: like_dislike
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: LikeDislikeRating
-    FeedbackRatingOperationType:
-      type: string
-      enum:
-      - create
-      - delete
-      title: FeedbackRatingOperationType
-      description: Operation type for bulk feedback rating operations.
-    BulkFeedbackRatingCreate:
-      properties:
-        explanation:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Explanation
-        rating:
-          oneOf:
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-          title: Rating
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-        feedback_template_id:
-          type: string
-          format: uuid4
-          title: Feedback Template Id
-        operation_type:
-          type: string
-          const: create
-          title: Operation Type
-          default: create
-      type: object
-      required:
-      - rating
-      - feedback_template_id
-      title: BulkFeedbackRatingCreate
-    FeedbackRatingCreate:
-      properties:
-        explanation:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Explanation
-        rating:
-          oneOf:
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-          title: Rating
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
-              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
-              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
-              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
-              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
-              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
-              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
-      type: object
-      required:
-      - rating
-      title: FeedbackRatingCreate
-    FeedbackTemplateCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        include_explanation:
-          type: boolean
-          title: Include Explanation
-          default: false
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-        constraints:
-          oneOf:
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
-          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
-          title: Constraints
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
-              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
-              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
-              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
-              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
-              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
-              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
-      type: object
-      required:
-      - name
-      - constraints
-      title: FeedbackTemplateCreate
-    libs__python__schemas__log_records__feedback__ScoreRating:
-      properties:
-        feedback_type:
-          type: string
-          const: score
-          title: Feedback Type
-          default: score
-        value:
-          type: integer
-          title: Value
-      type: object
-      required:
-      - value
-      title: ScoreRating
-    libs__python__schemas__log_records__feedback__StarRating:
-      properties:
-        feedback_type:
-          type: string
-          const: star
-          title: Feedback Type
-          default: star
-        value:
-          type: integer
-          maximum: 5.0
-          minimum: 1.0
-          title: Value
-      type: object
-      required:
-      - value
-      title: StarRating
-    BulkFeedbackRatingStatus:
-      properties:
-        selector:
-          $ref: '#/components/schemas/SelectorType'
-          default: indexes
-        index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Index
-        trace:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Trace
-        operation:
-          $ref: '#/components/schemas/FeedbackRatingOperationType'
-        success:
-          type: boolean
-          title: Success
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-      type: object
-      required:
-      - operation
-      - success
-      - message
-      title: BulkFeedbackRatingStatus
-    libs__python__schemas__log_records__feedback__TreeChoiceNode-Input:
-      properties:
-        label:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Label
-        value:
-          type: string
-          minLength: 1
-          title: Value
-        children:
-          items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
-          type: array
-          title: Children
-      type: object
-      required:
-      - value
-      title: TreeChoiceNode
-    SelectorType:
-      type: string
-      enum:
-      - indexes
-      - traces
-      title: SelectorType
-    libs__python__schemas__log_records__feedback__ChoiceConstraints:
-      properties:
-        feedback_type:
-          type: string
-          const: choice
-          title: Feedback Type
-        choices:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          maxItems: 50
-          minItems: 2
-          title: Choices
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
-      type: object
-      required:
-      - feedback_type
-      - choices
-      title: ChoiceConstraints
     IndexSelector:
       properties:
         selector_type:
@@ -1625,26 +1711,24 @@ components:
       - indexes
       title: IndexSelector
       description: Choose specific indexes to apply the bulk operation to.
-    libs__python__schemas__log_records__feedback__ScoreConstraints:
+    FeedbackTemplateUpdate:
       properties:
-        feedback_type:
+        name:
           type: string
-          const: score
-          title: Feedback Type
-        min:
-          type: integer
-          minimum: 0.0
-          title: Min
-        max:
-          type: integer
-          minimum: 0.0
-          title: Max
+          maxLength: 255
+          minLength: 1
+          title: Name
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
       type: object
       required:
-      - feedback_type
-      - min
-      - max
-      title: ScoreConstraints
+      - name
+      - criteria
+      title: FeedbackTemplateUpdate
     BulkFeedbackRequest:
       properties:
         operations:
@@ -1743,28 +1827,47 @@ components:
       - created_by
       - position
       title: FeedbackTemplateDB
-    libs__python__schemas__log_records__feedback__TagsConstraints:
+    libs__python__schemas__log_records__feedback__TreeChoiceNode-Output:
+      properties:
+        label:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Label
+        value:
+          type: string
+          minLength: 1
+          title: Value
+        children:
+          items:
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
+          type: array
+          title: Children
+      type: object
+      required:
+      - value
+      title: TreeChoiceNode
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    libs__python__schemas__log_records__feedback__LikeDislikeConstraints:
       properties:
         feedback_type:
           type: string
-          const: tags
+          const: like_dislike
           title: Feedback Type
-        tags:
-          items:
-            type: string
-            maxLength: 255
-            minLength: 1
-          type: array
-          title: Tags
-        allow_other:
-          type: boolean
-          title: Allow Other
-          default: false
       type: object
       required:
       - feedback_type
-      - tags
-      title: TagsConstraints
+      title: LikeDislikeConstraints
     libs__python__schemas__log_records__feedback__TagsRating:
       properties:
         feedback_type:
@@ -1783,16 +1886,82 @@ components:
       required:
       - value
       title: TagsRating
-    libs__python__schemas__log_records__feedback__StarConstraints:
+    libs__python__schemas__log_records__feedback__ScoreConstraints:
       properties:
         feedback_type:
           type: string
-          const: star
+          const: score
           title: Feedback Type
+        min:
+          type: integer
+          minimum: 0.0
+          title: Min
+        max:
+          type: integer
+          minimum: 0.0
+          title: Max
       type: object
       required:
       - feedback_type
-      title: StarConstraints
+      - min
+      - max
+      title: ScoreConstraints
+    FeedbackRatingCreate:
+      properties:
+        explanation:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Explanation
+        rating:
+          oneOf:
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+          title: Rating
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+      type: object
+      required:
+      - rating
+      title: FeedbackRatingCreate
+    libs__python__schemas__log_records__feedback__ChoiceConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: choice
+          title: Feedback Type
+        choices:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          maxItems: 50
+          minItems: 2
+          title: Choices
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
+      type: object
+      required:
+      - feedback_type
+      - choices
+      title: ChoiceConstraints
     ValidationError:
       properties:
         loc:
@@ -1819,56 +1988,6 @@ components:
       - msg
       - type
       title: ValidationError
-    libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input:
-      properties:
-        feedback_type:
-          type: string
-          const: tree_choice
-          title: Feedback Type
-        choices_tree:
-          items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
-          type: array
-          minItems: 1
-          title: Choices Tree
-      type: object
-      required:
-      - feedback_type
-      - choices_tree
-      title: TreeChoiceConstraints
-      description: 'Tree-choice node values must be globally unique leaf-path values.
-
-
-        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
-
-        so duplicate ids or labels in different branches are converted to unambiguous
-
-        slash-delimited path values before model validation.'
-    TreeChoiceConstraints-Output:
-      properties:
-        feedback_type:
-          type: string
-          const: tree_choice
-          title: Feedback Type
-        choices_tree:
-          items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
-          type: array
-          minItems: 1
-          title: Choices Tree
-      type: object
-      required:
-      - feedback_type
-      - choices_tree
-      title: TreeChoiceConstraints
-      description: 'Tree-choice node values must be globally unique leaf-path values.
-
-
-        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
-
-        so duplicate ids or labels in different branches are converted to unambiguous
-
-        slash-delimited path values before model validation.'
     FeedbackRatingDB:
       properties:
         explanation:
@@ -1913,6 +2032,91 @@ components:
       - created_at
       - created_by
       title: FeedbackRatingDB
+    TreeChoiceConstraints-Output:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+        choices_tree:
+          items:
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
+          type: array
+          minItems: 1
+          title: Choices Tree
+      type: object
+      required:
+      - feedback_type
+      - choices_tree
+      title: TreeChoiceConstraints
+      description: 'Tree-choice node values must be globally unique leaf-path values.
+
+
+        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
+
+        so duplicate ids or labels in different branches are converted to unambiguous
+
+        slash-delimited path values before model validation.'
+    libs__python__schemas__log_records__feedback__TagsConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: tags
+          title: Feedback Type
+        tags:
+          items:
+            type: string
+            maxLength: 255
+            minLength: 1
+          type: array
+          title: Tags
+        allow_other:
+          type: boolean
+          title: Allow Other
+          default: false
+      type: object
+      required:
+      - feedback_type
+      - tags
+      title: TagsConstraints
+    SelectorType:
+      type: string
+      enum:
+      - indexes
+      - traces
+      title: SelectorType
+    libs__python__schemas__log_records__feedback__TextConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: text
+          title: Feedback Type
+      type: object
+      required:
+      - feedback_type
+      title: TextConstraints
+    libs__python__schemas__log_records__feedback__TreeChoiceRating:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+          default: tree_choice
+        value:
+          type: string
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: TreeChoiceRating
+    FeedbackRatingOperationType:
+      type: string
+      enum:
+      - create
+      - delete
+      title: FeedbackRatingOperationType
+      description: Operation type for bulk feedback rating operations.
     FeedbackTemplateReorder:
       properties:
         ordering:
@@ -1933,13 +2137,144 @@ components:
         we want the templates to appear in.
 
         - Expects the list to be complete list of all template IDs.'
-    libs__python__schemas__log_records__feedback__TreeChoiceRating:
+    FeedbackTemplateCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        include_explanation:
+          type: boolean
+          title: Include Explanation
+          default: false
+        criteria:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Criteria
+        constraints:
+          oneOf:
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
+          title: Constraints
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceConstraints'
+              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeConstraints'
+              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreConstraints'
+              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarConstraints'
+              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsConstraints'
+              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextConstraints'
+              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input'
+      type: object
+      required:
+      - name
+      - constraints
+      title: FeedbackTemplateCreate
+    BulkFeedbackRatingCreate:
+      properties:
+        explanation:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Explanation
+        rating:
+          oneOf:
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+          - $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+          title: Rating
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/libs__python__schemas__log_records__feedback__ChoiceRating'
+              like_dislike: '#/components/schemas/libs__python__schemas__log_records__feedback__LikeDislikeRating'
+              score: '#/components/schemas/libs__python__schemas__log_records__feedback__ScoreRating'
+              star: '#/components/schemas/libs__python__schemas__log_records__feedback__StarRating'
+              tags: '#/components/schemas/libs__python__schemas__log_records__feedback__TagsRating'
+              text: '#/components/schemas/libs__python__schemas__log_records__feedback__TextRating'
+              tree_choice: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceRating'
+        feedback_template_id:
+          type: string
+          format: uuid4
+          title: Feedback Template Id
+        operation_type:
+          type: string
+          const: create
+          title: Operation Type
+          default: create
+      type: object
+      required:
+      - rating
+      - feedback_template_id
+      title: BulkFeedbackRatingCreate
+    libs__python__schemas__log_records__feedback__LikeDislikeRating:
       properties:
         feedback_type:
           type: string
-          const: tree_choice
+          const: like_dislike
           title: Feedback Type
-          default: tree_choice
+          default: like_dislike
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: LikeDislikeRating
+    BulkFeedbackRatingDelete:
+      properties:
+        feedback_template_id:
+          type: string
+          format: uuid4
+          title: Feedback Template Id
+        operation_type:
+          type: string
+          const: delete
+          title: Operation Type
+          default: delete
+      type: object
+      required:
+      - feedback_template_id
+      title: BulkFeedbackRatingDelete
+    TraceSelector:
+      properties:
+        selector_type:
+          type: string
+          const: traces
+          title: Selector Type
+          default: traces
+        traces:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Traces
+      type: object
+      required:
+      - traces
+      title: TraceSelector
+      description: Choose specific traces to apply the bulk operation to.
+    libs__python__schemas__log_records__feedback__TextRating:
+      properties:
+        feedback_type:
+          type: string
+          const: text
+          title: Feedback Type
+          default: text
         value:
           type: string
           minLength: 1
@@ -1947,36 +2282,96 @@ components:
       type: object
       required:
       - value
-      title: TreeChoiceRating
-    FeedbackTemplateUpdate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-        criteria:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Criteria
-      type: object
-      required:
-      - name
-      - criteria
-      title: FeedbackTemplateUpdate
-    libs__python__schemas__log_records__feedback__TextConstraints:
+      title: TextRating
+    libs__python__schemas__log_records__feedback__StarRating:
       properties:
         feedback_type:
           type: string
-          const: text
+          const: star
+          title: Feedback Type
+          default: star
+        value:
+          type: integer
+          maximum: 5.0
+          minimum: 1.0
+          title: Value
+      type: object
+      required:
+      - value
+      title: StarRating
+    BulkFeedbackRatingStatus:
+      properties:
+        selector:
+          $ref: '#/components/schemas/SelectorType'
+          default: indexes
+        index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Index
+        trace:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Trace
+        operation:
+          $ref: '#/components/schemas/FeedbackRatingOperationType'
+        success:
+          type: boolean
+          title: Success
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - operation
+      - success
+      - message
+      title: BulkFeedbackRatingStatus
+    libs__python__schemas__log_records__feedback__ChoiceRating:
+      properties:
+        feedback_type:
+          type: string
+          const: choice
+          title: Feedback Type
+          default: choice
+        value:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Value
+      type: object
+      required:
+      - value
+      title: ChoiceRating
+    libs__python__schemas__log_records__feedback__ScoreRating:
+      properties:
+        feedback_type:
+          type: string
+          const: score
+          title: Feedback Type
+          default: score
+        value:
+          type: integer
+          title: Value
+      type: object
+      required:
+      - value
+      title: ScoreRating
+    libs__python__schemas__log_records__feedback__StarConstraints:
+      properties:
+        feedback_type:
+          type: string
+          const: star
           title: Feedback Type
       type: object
       required:
       - feedback_type
-      title: TextConstraints
-    libs__python__schemas__log_records__feedback__TreeChoiceNode-Output:
+      title: StarConstraints
+    libs__python__schemas__log_records__feedback__TreeChoiceNode-Input:
       properties:
         label:
           anyOf:
@@ -1991,22 +2386,47 @@ components:
           title: Value
         children:
           items:
-            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Output'
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
           type: array
           title: Children
       type: object
       required:
       - value
       title: TreeChoiceNode
+    libs__python__schemas__log_records__feedback__TreeChoiceConstraints-Input:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+        choices_tree:
+          items:
+            $ref: '#/components/schemas/libs__python__schemas__log_records__feedback__TreeChoiceNode-Input'
+          type: array
+          minItems: 1
+          title: Choices Tree
+      type: object
+      required:
+      - feedback_type
+      - choices_tree
+      title: TreeChoiceConstraints
+      description: 'Tree-choice node values must be globally unique leaf-path values.
+
+
+        Callers that start from nested YAML should use build_tree_choice_nodes_from_yaml
+
+        so duplicate ids or labels in different branches are converted to unambiguous
+
+        slash-delimited path values before model validation.'
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

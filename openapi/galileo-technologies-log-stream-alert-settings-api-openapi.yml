@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Log Stream Alert Settings API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -16,8 +16,8 @@ paths:
       description: Retrieve alert settings for a specific log stream.
       operationId: get_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -58,8 +58,8 @@ paths:
       description: Create or update alert settings for a specific log stream.
       operationId: create_or_update_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -103,8 +103,8 @@ paths:
       description: Update alert settings for a specific log stream.
       operationId: update_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -148,8 +148,8 @@ paths:
       description: Partially update alert settings. Only provided fields are written; absent fields preserve existing values.
       operationId: patch_alert_settings_projects__project_id__log_streams__log_stream_id__alert_settings_patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -199,8 +199,8 @@ paths:
         Used by the UI ''Send test event'' button.'
       operationId: send_test_generic_webhook_projects__project_id__log_streams__log_stream_id__alert_settings_test_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -256,50 +256,38 @@ components:
           title: Generic Webhooks
       type: object
       title: RunAlertSettingsBase
-    RunAlertSettingsPatch:
+    GenericWebhookResponse:
       properties:
-        emails:
-          anyOf:
-          - items:
-              type: string
-              format: email
-            type: array
-          - type: 'null'
-          title: Emails
-        webhooks:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/Webhook'
-            type: array
-          - type: 'null'
-          title: Webhooks
-        generic_webhooks:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/GenericWebhook'
-            type: array
-            maxItems: 10
-          - type: 'null'
-          title: Generic Webhooks
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+          default: untested
+        auth_type:
+          $ref: '#/components/schemas/GenericWebhookAuthType'
+          default: none
+        auth_username:
+          type: string
+          title: Auth Username
+          default: ''
+        name:
+          type: string
+          title: Name
+          default: ''
+        metadata:
+          additionalProperties:
+            type: string
+          type: object
+          title: Metadata
       type: object
-      title: RunAlertSettingsPatch
-      description: 'Partial update: only provided fields are written; absent fields preserve existing DB values.'
-    GenericWebhookAuthType:
-      type: string
-      enum:
-      - none
-      - header_token
-      - basic
-      title: GenericWebhookAuthType
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      required:
+      - url
+      title: GenericWebhookResponse
+      description: 'Read-only view of GenericWebhook: auth_value is omitted (write-only).'
     RunAlertSettingsResponse:
       properties:
         id:
@@ -342,84 +330,34 @@ components:
       - updated_at
       title: RunAlertSettingsResponse
       description: 'API response shape: identical to RunAlertSettingsDB but auth_value masked in generic_webhooks.'
-    GenericWebhookResponse:
+    RunAlertSettingsPatch:
       properties:
-        url:
-          type: string
-          maxLength: 2083
-          minLength: 1
-          format: uri
-          title: Url
-        status:
-          $ref: '#/components/schemas/WebhookStatus'
-          default: untested
-        auth_type:
-          $ref: '#/components/schemas/GenericWebhookAuthType'
-          default: none
-        auth_username:
-          type: string
-          title: Auth Username
-          default: ''
-        name:
-          type: string
-          title: Name
-          default: ''
-        metadata:
-          additionalProperties:
-            type: string
-          type: object
-          title: Metadata
+        emails:
+          anyOf:
+          - items:
+              type: string
+              format: email
+            type: array
+          - type: 'null'
+          title: Emails
+        webhooks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Webhook'
+            type: array
+          - type: 'null'
+          title: Webhooks
+        generic_webhooks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GenericWebhook'
+            type: array
+            maxItems: 10
+          - type: 'null'
+          title: Generic Webhooks
       type: object
-      required:
-      - url
-      title: GenericWebhookResponse
-      description: 'Read-only view of GenericWebhook: auth_value is omitted (write-only).'
-    Webhook:
-      properties:
-        url:
-          type: string
-          maxLength: 2083
-          minLength: 1
-          format: uri
-          title: Url
-        status:
-          $ref: '#/components/schemas/WebhookStatus'
-          default: untested
-        notes:
-          type: string
-          maxLength: 255
-          title: Notes
-          default: ''
-      type: object
-      required:
-      - url
-      title: Webhook
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      title: RunAlertSettingsPatch
+      description: 'Partial update: only provided fields are written; absent fields preserve existing DB values.'
     GenericWebhook:
       properties:
         url:
@@ -463,6 +401,61 @@ components:
       required:
       - url
       title: GenericWebhook
+    Webhook:
+      properties:
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+          default: untested
+        notes:
+          type: string
+          maxLength: 255
+          title: Notes
+          default: ''
+      type: object
+      required:
+      - url
+      title: Webhook
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     WebhookStatus:
       type: string
       enum:
@@ -471,15 +464,22 @@ components:
       - failed
       - paused
       title: WebhookStatus
+    GenericWebhookAuthType:
+      type: string
+      enum:
+      - none
+      - header_token
+      - basic
+      title: GenericWebhookAuthType
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

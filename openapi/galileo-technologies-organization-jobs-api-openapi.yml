@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Organization Jobs API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -24,8 +24,8 @@ paths:
         **Authorization**: The job''s organization_id must match the user''s organization.'
       operationId: get_org_job_status_v2_org_jobs__job_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -64,8 +64,8 @@ paths:
         organization.'
       operationId: delete_by_metadata_v2_org_jobs_delete_by_metadata_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -111,8 +111,8 @@ paths:
         **Authorization**: The job''s organization_id must match the user''s organization.'
       operationId: get_org_job_status_public_v2_org_jobs__job_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -151,8 +151,8 @@ paths:
         organization.'
       operationId: delete_by_metadata_public_v2_org_jobs_delete_by_metadata_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -200,6 +200,23 @@ components:
       - metadata_value
       title: OrgMetadataDeleteRequest
       description: Request body for organization-wide metadata-based deletion.
+    OrgMetadataDeleteResponse:
+      properties:
+        job_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Job Id
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - job_id
+      - message
+      title: OrgMetadataDeleteResponse
+      description: Response for organization-wide metadata-based deletion.
     OrgJobDB:
       properties:
         id:
@@ -250,32 +267,6 @@ components:
       - updated_at
       title: OrgJobDB
       description: Response schema for org jobs.
-    OrgMetadataDeleteResponse:
-      properties:
-        job_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Job Id
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - job_id
-      - message
-      title: OrgMetadataDeleteResponse
-      description: Response for organization-wide metadata-based deletion.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -302,15 +293,24 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Pricing API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -26,8 +26,8 @@ paths:
                 type: array
                 title: Response List Price Overrides Models Price Overrides Get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /models:
@@ -45,8 +45,8 @@ paths:
         - All models with price overrides are listed, even if they have not been used.'
       operationId: list_models_models_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -85,8 +85,8 @@ paths:
       description: Retrieve prices for a specific model.
       operationId: get_model_prices_models__model_name__prices_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -120,8 +120,8 @@ paths:
       description: Create or update pricing for a model.
       operationId: upsert_model_prices_models__model_name__price_overrides_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -160,8 +160,8 @@ paths:
       description: Remove pricing for a model.
       operationId: delete_model_prices_models__model_name__price_overrides_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -185,19 +185,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ModelPricesResponse:
+    ModelWithPrices:
       properties:
-        override:
+        name:
+          type: string
+          title: Name
+        prices:
           anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
-          - type: 'null'
-        default:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPriceEntry'
+          - $ref: '#/components/schemas/ModelPricesResponse'
           - type: 'null'
       type: object
-      title: ModelPricesResponse
-      description: Response for GET /models/{model_name}/prices.
+      required:
+      - name
+      title: ModelWithPrices
+      description: Single item in GET /models response.
     ModelPriceEntry:
       properties:
         input_price:
@@ -216,29 +217,19 @@ components:
       - output_price
       title: ModelPriceEntry
       description: A pair of input/output prices — used for requests and responses.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ModelWithPrices:
+    ModelWithPriceOverrides:
       properties:
         name:
           type: string
           title: Name
-        prices:
-          anyOf:
-          - $ref: '#/components/schemas/ModelPricesResponse'
-          - type: 'null'
+        price_overrides:
+          $ref: '#/components/schemas/ModelPriceEntry'
       type: object
       required:
       - name
-      title: ModelWithPrices
-      description: Single item in GET /models response.
+      - price_overrides
+      title: ModelWithPriceOverrides
+      description: Single item in GET /models/price_overrides response.
     ValidationError:
       properties:
         loc:
@@ -265,28 +256,37 @@ components:
       - msg
       - type
       title: ValidationError
-    ModelWithPriceOverrides:
+    HTTPValidationError:
       properties:
-        name:
-          type: string
-          title: Name
-        price_overrides:
-          $ref: '#/components/schemas/ModelPriceEntry'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - name
-      - price_overrides
-      title: ModelWithPriceOverrides
-      description: Single item in GET /models/price_overrides response.
+      title: HTTPValidationError
+    ModelPricesResponse:
+      properties:
+        override:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+        default:
+          anyOf:
+          - $ref: '#/components/schemas/ModelPriceEntry'
+          - type: 'null'
+      type: object
+      title: ModelPricesResponse
+      description: Response for GET /models/{model_name}/prices.
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

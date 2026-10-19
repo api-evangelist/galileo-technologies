@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server System Users API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,6 +13,7 @@ paths:
       tags:
       - system_users
       summary: Current System User
+      description: Return the authenticated system user.
       operationId: current_system_user_current_system_user_get
       responses:
         '200':
@@ -22,8 +23,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/SystemUserDB'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /current_system_user/organizations:
@@ -31,10 +32,11 @@ paths:
       tags:
       - system_users
       summary: Current System User Organizations
+      description: List the organizations the authenticated system user belongs to.
       operationId: current_system_user_organizations_current_system_user_organizations_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -70,10 +72,11 @@ paths:
       tags:
       - system_users
       summary: Delete System User
+      description: Delete a system user.
       operationId: delete_system_user_system_users__system_user_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -286,28 +289,44 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    IntegrationAction:
+    SocialProvider:
       type: string
       enum:
-      - update
-      - delete
-      - share
-      - read_secrets
-      title: IntegrationAction
-    SystemUserStatus:
-      type: string
-      enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
-    FineTunedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: FineTunedScorerAction
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      title: SocialProvider
+    ListOrganizationsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        organizations:
+          items:
+            $ref: '#/components/schemas/OrganizationResponse'
+          type: array
+          title: Organizations
+      type: object
+      required:
+      - organizations
+      title: ListOrganizationsResponse
     UserCreate:
       properties:
         email:
@@ -349,73 +368,13 @@ components:
       required:
       - email
       title: UserCreate
-    RegisteredScorerAction:
+    SystemUserAccountType:
       type: string
       enum:
-      - update
-      - delete
-      title: RegisteredScorerAction
-    ProjectAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - rename
-      - share
-      - create_run
-      - delete_run
-      - rename_run
-      - move_run
-      - export_data
-      - configure_human_feedback
-      - record_human_feedback
-      - log_data
-      - toggle_metric
-      - edit_alert
-      - create_stage
-      - edit_stage
-      - configure_crown_logic
-      - delete_data
-      - set_metric
-      - edit_run_tags
-      - dismiss_alert
-      - edit_slice
-      - edit_edit
-      - update_control_bindings
-      - use_control_runtime
-      title: ProjectAction
-    Permission:
-      properties:
-        action:
-          anyOf:
-          - $ref: '#/components/schemas/UserAction'
-          - $ref: '#/components/schemas/GroupAction'
-          - $ref: '#/components/schemas/GroupMemberAction'
-          - $ref: '#/components/schemas/ProjectAction'
-          - $ref: '#/components/schemas/ScorerAction'
-          - $ref: '#/components/schemas/RegisteredScorerAction'
-          - $ref: '#/components/schemas/ApiKeyAction'
-          - $ref: '#/components/schemas/GeneratedScorerAction'
-          - $ref: '#/components/schemas/FineTunedScorerAction'
-          - $ref: '#/components/schemas/DatasetAction'
-          - $ref: '#/components/schemas/IntegrationAction'
-          - $ref: '#/components/schemas/OrganizationAction'
-          - $ref: '#/components/schemas/AnnotationQueueAction'
-          - $ref: '#/components/schemas/ControlResourceAction'
-          title: Action
-        allowed:
-          type: boolean
-          title: Allowed
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-      type: object
-      required:
-      - action
-      - allowed
-      title: Permission
+      - human
+      - service
+      - token
+      title: SystemUserAccountType
     SystemUserDB:
       properties:
         id:
@@ -450,6 +409,8 @@ components:
           title: Email Is Verified
         status:
           $ref: '#/components/schemas/SystemUserStatus'
+        account_type:
+          $ref: '#/components/schemas/SystemUserAccountType'
         role:
           $ref: '#/components/schemas/SystemRole'
         auth_method:
@@ -462,29 +423,71 @@ components:
       - updated_at
       - email
       - status
+      - account_type
       - role
       - auth_method
       title: SystemUserDB
-    OrganizationAction:
+    AuthMethod:
       type: string
       enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
-    DatasetAction:
+      - email
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      - invite
+      title: AuthMethod
+    SystemUserStatus:
       type: string
       enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
+    SystemRole:
+      type: string
+      enum:
+      - system_admin
+      - system_user
+      title: SystemRole
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      - capability_based
+      title: UserRole
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -512,126 +515,12 @@ components:
       required:
       - provider
       title: SocialLoginRequest
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
-    ControlResourceAction:
-      type: string
-      enum:
-      - create
-      - read
-      - update
-      - delete
-      title: ControlResourceAction
-      description: Actions on Agent Control's org-scoped ``control`` resource.
-    UserRole:
-      type: string
-      enum:
-      - admin
-      - manager
-      - user
-      - read_only
-      title: UserRole
-    ScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - autotune_apply
-      title: ScorerAction
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
-    GroupAction:
-      type: string
-      enum:
-      - update
-      - list_members
-      - join
-      - request_to_join
-      title: GroupAction
-    SocialProvider:
-      type: string
-      enum:
-      - google
-      - github
-      - okta
-      - azure-ad
-      - custom
-      - saml
-      title: SocialProvider
-    AuthMethod:
-      type: string
-      enum:
-      - email
-      - google
-      - github
-      - okta
-      - azure-ad
-      - custom
-      - saml
-      - invite
-      title: AuthMethod
-    GeneratedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: GeneratedScorerAction
-    AnnotationQueueAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - record_annotation
-      title: AnnotationQueueAction
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    OrganizationDB:
+    OrganizationResponse:
       properties:
         id:
           type: string
           format: uuid4
           title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
         name:
           type: string
           title: Name
@@ -653,61 +542,16 @@ components:
       - slug
       - created_at
       - updated_at
-      title: OrganizationDB
-    UserAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - read_api_keys
-      - change_role_to_admin
-      - change_role_to_manager
-      - change_role_to_user
-      - change_role_to_read_only
-      title: UserAction
-    SystemRole:
-      type: string
-      enum:
-      - system_admin
-      - system_user
-      title: SystemRole
-    ListOrganizationsResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        organizations:
-          items:
-            $ref: '#/components/schemas/OrganizationDB'
-          type: array
-          title: Organizations
-      type: object
-      required:
-      - organizations
-      title: ListOrganizationsResponse
+      title: OrganizationResponse
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

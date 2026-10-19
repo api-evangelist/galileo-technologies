@@ -1,0 +1,767 @@
+openapi: 3.2.0
+info:
+  title: Galileo API Server Agent Observability API
+  version: 0.0.0+orbit
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: agent-observability
+paths:
+  /agent-observability/overview:
+    post:
+      tags:
+      - agent-observability
+      summary: Get Agent Observability Overview
+      description: Every section in one request. This is what the dashboard page loads with.
+      operationId: get_agent_observability_overview_agent_observability_overview_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorTrendsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /agent-observability/summary:
+    post:
+      tags:
+      - agent-observability
+      summary: Get Agent Observability Summary
+      operationId: get_agent_observability_summary_agent_observability_summary_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnvelope'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /agent-observability/trends/usage:
+    post:
+      tags:
+      - agent-observability
+      summary: Get Agent Observability Usage Trends
+      operationId: get_agent_observability_usage_trends_agent_observability_trends_usage_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnvelope'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /agent-observability/trends/performance:
+    post:
+      tags:
+      - agent-observability
+      summary: Get Agent Observability Performance Trends
+      operationId: get_agent_observability_performance_trends_agent_observability_trends_performance_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnvelope'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /agent-observability/trends/evaluators:
+    post:
+      tags:
+      - agent-observability
+      summary: Get Agent Observability Evaluator Trends
+      operationId: get_agent_observability_evaluator_trends_agent_observability_trends_evaluators_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorTrendsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnvelope'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /agent-observability/config:
+    post:
+      tags:
+      - agent-observability
+      summary: Get Agent Observability Config
+      description: 'Evaluator metrics present in the window, plus a deterministic default selection.
+
+
+        A POST because the discovery query is scoped by the same window and project filter as the trend
+
+        requests, and that scope does not belong in a query string.'
+      operationId: get_agent_observability_config_agent_observability_config_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+components:
+  schemas:
+    SummaryRequest:
+      properties:
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+        end_time:
+          type: string
+          format: date-time
+          title: End Time
+        interval:
+          $ref: '#/components/schemas/CostInterval'
+          default: daily
+        project_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid4
+            type: array
+            maxItems: 1000
+          - type: 'null'
+          title: Project Ids
+        log_stream_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid4
+            type: array
+            maxItems: 1000
+          - type: 'null'
+          title: Log Stream Ids
+      type: object
+      required:
+      - start_time
+      - end_time
+      title: SummaryRequest
+      description: 'Scope for a dashboard read.
+
+
+        `project_ids` and `log_stream_ids` are both optional: omitted means every project in the caller''s
+
+        org, and every dashboard-eligible run within it. Supplying either outside the caller''s org is
+
+        rejected rather than silently narrowed, so a wrong scope surfaces as an error instead of a
+
+        quietly smaller number.
+
+
+        Both are typed as UUIDs so a malformed ID is rejected here, at the edge. As plain strings they
+
+        reached Postgres as a comparison against a UUID column and surfaced as a 500.'
+    DataStatus:
+      type: string
+      enum:
+      - complete
+      - partial
+      - unavailable
+      title: DataStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ProjectOption:
+      properties:
+        project_id:
+          type: string
+          title: Project Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - project_id
+      - name
+      title: ProjectOption
+      description: One entry in the dashboard's project picker.
+    EvaluatorTrendsRequest:
+      properties:
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+        end_time:
+          type: string
+          format: date-time
+          title: End Time
+        interval:
+          $ref: '#/components/schemas/CostInterval'
+          default: daily
+        project_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid4
+            type: array
+            maxItems: 1000
+          - type: 'null'
+          title: Project Ids
+        log_stream_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid4
+            type: array
+            maxItems: 1000
+          - type: 'null'
+          title: Log Stream Ids
+        metric_keys:
+          anyOf:
+          - items:
+              type: string
+            type: array
+            maxItems: 5
+          - type: 'null'
+          title: Metric Keys
+      type: object
+      required:
+      - start_time
+      - end_time
+      title: EvaluatorTrendsRequest
+      description: Evaluator metrics to chart. Omitted means use the org's saved dashboard config.
+    LogStreamOption:
+      properties:
+        log_stream_id:
+          type: string
+          title: Log Stream Id
+        name:
+          type: string
+          title: Name
+        project_id:
+          type: string
+          title: Project Id
+      type: object
+      required:
+      - log_stream_id
+      - name
+      - project_id
+      title: LogStreamOption
+      description: One entry in the dashboard's agent-stream picker.
+    Headline:
+      properties:
+        value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Value
+        unit:
+          type: string
+          title: Unit
+        label:
+          type: string
+          title: Label
+      type: object
+      required:
+      - value
+      - unit
+      - label
+      title: Headline
+      description: 'The single number shown on the card.
+
+
+        `value` is `None` only when the card is degraded or genuinely has nothing to report.'
+    DashboardConfigResponse:
+      properties:
+        evaluator_metric_keys:
+          items:
+            type: string
+          type: array
+          title: Evaluator Metric Keys
+        available_evaluator_metrics:
+          items:
+            $ref: '#/components/schemas/EvaluatorMetricOption'
+          type: array
+          title: Available Evaluator Metrics
+        available_projects:
+          items:
+            $ref: '#/components/schemas/ProjectOption'
+          type: array
+          title: Available Projects
+        available_log_streams:
+          items:
+            $ref: '#/components/schemas/LogStreamOption'
+          type: array
+          title: Available Log Streams
+        available_log_streams_truncated:
+          type: boolean
+          title: Available Log Streams Truncated
+          default: false
+        degraded:
+          anyOf:
+          - $ref: '#/components/schemas/Degraded'
+          - type: 'null'
+        max_evaluator_metrics:
+          type: integer
+          title: Max Evaluator Metrics
+          default: 5
+      type: object
+      required:
+      - evaluator_metric_keys
+      - available_evaluator_metrics
+      title: DashboardConfigResponse
+      description: 'What the dashboard''s pickers can offer, and what to chart by default.
+
+
+        The selection is not persisted server-side: the client sends `metric_keys` on the trends request
+
+        and owns the user''s choice. `evaluator_metric_keys` is a deterministic default so a client with
+
+        no stored selection still renders a populated chart.
+
+
+        `available_evaluator_metrics` is the org''s whole scorer registry, deliberately *not* the set of
+
+        keys seen in the window — a window-derived list changes size with the time range, so the same org
+
+        offered 5 evaluators at 7 days and 45 at 90. The defaults stay window-derived, so they chart
+
+        evaluators that actually ran.
+
+
+        `available_log_streams` covers every stream in the selected projects and is deliberately *not*
+
+        narrowed by the request''s own `log_stream_ids` — otherwise picking a stream would collapse the
+
+        picker to that one entry and the user could never widen the selection again.
+
+
+        `available_projects` is the picker''s own source of truth rather than the host''s paginated project
+
+        list, which would silently omit projects past its first page — including ones holding data.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SectionEnvelope:
+      properties:
+        section:
+          $ref: '#/components/schemas/SectionId'
+        available:
+          type: boolean
+          title: Available
+        meta:
+          $ref: '#/components/schemas/SectionMeta'
+        cards:
+          items:
+            $ref: '#/components/schemas/Card'
+          type: array
+          title: Cards
+        degraded:
+          anyOf:
+          - $ref: '#/components/schemas/Degraded'
+          - type: 'null'
+      type: object
+      required:
+      - section
+      - available
+      - meta
+      title: SectionEnvelope
+      description: "One section's worth of cards plus the metadata describing how complete it is.\n\nAvailability semantics are frozen:\n\n- at least one card succeeded → `available=True`; `data_status` is `complete` when every card\n  succeeded and `partial` when some did not.\n- every card failed → `available=False`, `data_status=unavailable`, and section-level `degraded`\n  is set from the most common card failure. Cards remain in the payload with their own\n  `degraded` payloads."
+    ChartType:
+      type: string
+      enum:
+      - line
+      - bar
+      - stacked_bar
+      title: ChartType
+    SectionMeta:
+      properties:
+        as_of:
+          type: string
+          format: date-time
+          title: As Of
+        data_status:
+          $ref: '#/components/schemas/DataStatus'
+        mode:
+          $ref: '#/components/schemas/QueryMode'
+        window:
+          $ref: '#/components/schemas/Window'
+        project_count:
+          type: integer
+          title: Project Count
+        run_count:
+          type: integer
+          title: Run Count
+      type: object
+      required:
+      - as_of
+      - data_status
+      - mode
+      - window
+      - project_count
+      - run_count
+      title: SectionMeta
+    CostInterval:
+      type: string
+      enum:
+      - hourly
+      - daily
+      - weekly
+      - monthly
+      title: CostInterval
+    CardStatus:
+      type: string
+      enum:
+      - ok
+      - degraded
+      title: CardStatus
+    OverviewResponse:
+      properties:
+        sections:
+          items:
+            $ref: '#/components/schemas/SectionEnvelope'
+          type: array
+          title: Sections
+      type: object
+      required:
+      - sections
+      title: OverviewResponse
+      description: Every section, each independently degradable. Never fails as a whole.
+    Window:
+      properties:
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+        end_time:
+          type: string
+          format: date-time
+          title: End Time
+        interval:
+          $ref: '#/components/schemas/CostInterval'
+      type: object
+      required:
+      - start_time
+      - end_time
+      - interval
+      title: Window
+    CardId:
+      type: string
+      enum:
+      - requests
+      - spans
+      - eval_cost
+      - agent_cost
+      - total_tokens
+      - avg_latency
+      - api_failures
+      - input_tokens
+      - output_tokens
+      - evaluator
+      title: CardId
+    SeriesPoint:
+      properties:
+        bucket_start:
+          type: string
+          format: date-time
+          title: Bucket Start
+        value:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Value
+      type: object
+      required:
+      - bucket_start
+      - value
+      title: SeriesPoint
+    Aggregation:
+      type: string
+      enum:
+      - sum
+      - average
+      - count
+      title: Aggregation
+    DegradedReason:
+      type: string
+      enum:
+      - timeout
+      - memory_limit
+      - upstream_error
+      - range_too_large
+      - not_found
+      title: DegradedReason
+    Degraded:
+      properties:
+        ems_code:
+          type: integer
+          title: Ems Code
+        reason:
+          $ref: '#/components/schemas/DegradedReason'
+        message:
+          type: string
+          title: Message
+        retryable:
+          type: boolean
+          title: Retryable
+      type: object
+      required:
+      - ems_code
+      - reason
+      - message
+      - retryable
+      title: Degraded
+      description: Why a card or section has no value.
+    Card:
+      properties:
+        id:
+          $ref: '#/components/schemas/CardId'
+        label:
+          type: string
+          title: Label
+        metric_type:
+          $ref: '#/components/schemas/MetricType'
+        chart_type:
+          $ref: '#/components/schemas/ChartType'
+        aggregation:
+          $ref: '#/components/schemas/Aggregation'
+        status:
+          $ref: '#/components/schemas/CardStatus'
+        headline:
+          anyOf:
+          - $ref: '#/components/schemas/Headline'
+          - type: 'null'
+        degraded:
+          anyOf:
+          - $ref: '#/components/schemas/Degraded'
+          - type: 'null'
+        series:
+          items:
+            $ref: '#/components/schemas/Series'
+          type: array
+          title: Series
+        metric_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Key
+      type: object
+      required:
+      - id
+      - label
+      - metric_type
+      - chart_type
+      - aggregation
+      - status
+      title: Card
+    SectionId:
+      type: string
+      enum:
+      - summary
+      - usage_trends
+      - performance_trends
+      - evaluator_trends
+      title: SectionId
+    Series:
+      properties:
+        key:
+          type: string
+          title: Key
+        label:
+          type: string
+          title: Label
+        points:
+          items:
+            $ref: '#/components/schemas/SeriesPoint'
+          type: array
+          title: Points
+      type: object
+      required:
+      - key
+      - label
+      - points
+      title: Series
+    MetricType:
+      type: string
+      enum:
+      - count
+      - currency
+      - duration
+      - ratio
+      - score
+      title: MetricType
+      description: Drives value formatting in the host.
+    EvaluatorMetricOption:
+      properties:
+        metric_key:
+          type: string
+          title: Metric Key
+        label:
+          type: string
+          title: Label
+        group_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Label
+      type: object
+      required:
+      - metric_key
+      - label
+      title: EvaluatorMetricOption
+      description: 'One entry in the dashboard''s evaluator picker.
+
+
+        `group_label` is the metric''s category — "Output Quality", "Agent Quality" and so on — carried
+
+        straight from the shared column metadata so the picker can group 70+ options the same way the rest
+
+        of the product does. `None` for an evaluator whose definition sets no category.'
+    QueryMode:
+      type: string
+      enum:
+      - single_query
+      - run_batch
+      title: QueryMode
+      description: 'How the section''s scope was resolved.
+
+
+        `single_query` means one aggregation covered every run in scope. `run_batch` is reserved for the
+
+        batching fallback, which is not implemented in V1 but is part of the frozen contract so the UI
+
+        does not need a change when it lands.'
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

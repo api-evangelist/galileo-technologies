@@ -1,0 +1,274 @@
+openapi: 3.2.0
+info:
+  title: Galileo API Server Decision Models API
+  version: 0.0.0+orbit
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: decision_models
+paths:
+  /decision_models:
+    get:
+      tags:
+      - decision_models
+      summary: List Decision Models
+      description: List the decision models of every provider the user has a key for. Retired versions are left out.
+      operationId: list_decision_models_decision_models_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: integration
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/IntegrationProvider'
+          - type: 'null'
+          title: Integration
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DecisionModelInfo'
+                title: Response List Decision Models Decision Models Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /decision_models/projects/{project_id}/runs/{run_id}:
+    get:
+      tags:
+      - decision_models
+      summary: List Decision Models For Run
+      description: List the decision models the run owner's keys can call. Retired versions are left out.
+      operationId: list_decision_models_for_run_decision_models_projects__project_id__runs__run_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: integration
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/IntegrationProvider'
+          - type: 'null'
+          title: Integration
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DecisionModelInfo'
+                title: Response List Decision Models For Run Decision Models Projects  Project Id  Runs  Run Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    DecisionIntegration:
+      type: string
+      enum:
+      - typesafe
+      title: DecisionIntegration
+      description: Providers that serve decision models only. LLM providers keep their `LLMIntegration` value.
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vertex_ai
+      - writer
+      title: LLMIntegration
+    DecisionModelInfo:
+      properties:
+        lifecycle_state:
+          $ref: '#/components/schemas/ModelLifecycleState'
+          default: active
+        replacement_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Replacement Alias
+        deprecation_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Deprecation Date
+        retirement_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Retirement Date
+        integration:
+          anyOf:
+          - $ref: '#/components/schemas/LLMIntegration'
+          - $ref: '#/components/schemas/DecisionIntegration'
+          title: Integration
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        is_recommended:
+          type: boolean
+          title: Is Recommended
+        max_state_tokens:
+          type: integer
+          title: Max State Tokens
+        max_request_tokens:
+          type: integer
+          title: Max Request Tokens
+        max_questions:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Questions
+        modalities:
+          items:
+            type: string
+          type: array
+          title: Modalities
+        question_kinds:
+          items:
+            $ref: '#/components/schemas/DecisionQuestionKind'
+          type: array
+          title: Question Kinds
+      type: object
+      required:
+      - integration
+      - name
+      - display_name
+      - is_recommended
+      - max_state_tokens
+      - max_request_tokens
+      - max_questions
+      - modalities
+      - question_kinds
+      title: DecisionModelInfo
+      description: A decision model as the metric editor lists it. Prices stay out of this response.
+    DecisionQuestionKind:
+      type: string
+      enum:
+      - yes_no
+      - choice
+      - score
+      title: DecisionQuestionKind
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ModelLifecycleState:
+      type: string
+      enum:
+      - active
+      - deprecated
+      - retired
+      title: ModelLifecycleState
+    IntegrationProvider:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vertex_ai
+      - writer
+      - typesafe
+      title: IntegrationProvider
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

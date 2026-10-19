@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server API Keys API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,10 +13,25 @@ paths:
       tags:
       - API Keys
       summary: Get Api Keys
+      description: 'List a user''s API keys.
+
+
+        Args:
+
+        user_id: User whose keys are listed.
+
+        pagination: Pagination parameters.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The user''s API keys, paginated.'
       operationId: get_api_keys_users__user_id__api_keys_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -59,6 +74,19 @@ paths:
       tags:
       - API Keys
       summary: Create Api Key
+      description: 'Create an API key for the current user.
+
+
+        Args:
+
+        ctx: Async request context.
+
+        api_key_data: Requested key properties.
+
+
+        Returns:
+
+        The created API key, including its raw (unhashed) value.'
       operationId: create_api_key_users_api_keys_post
       requestBody:
         content:
@@ -83,8 +111,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /users/api_keys/{api_key_id}:
@@ -92,10 +120,23 @@ paths:
       tags:
       - API Keys
       summary: Delete Api Key
+      description: 'Delete an API key.
+
+
+        Args:
+
+        api_key: API key to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_api_key_users_api_keys__api_key_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -124,10 +165,25 @@ paths:
       tags:
       - API Keys
       summary: Get Api Keys
+      description: 'List a user''s API keys.
+
+
+        Args:
+
+        user_id: User whose keys are listed.
+
+        pagination: Pagination parameters.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The user''s API keys, paginated.'
       operationId: get_api_keys_v2_users__user_id__api_keys_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -170,6 +226,19 @@ paths:
       tags:
       - API Keys
       summary: Create Api Key
+      description: 'Create an API key for the current user.
+
+
+        Args:
+
+        ctx: Async request context.
+
+        api_key_data: Requested key properties.
+
+
+        Returns:
+
+        The created API key, including its raw (unhashed) value.'
       operationId: create_api_key_v2_users_api_keys_post
       requestBody:
         content:
@@ -194,8 +263,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /v2/users/api_keys/{api_key_id}:
@@ -203,10 +272,23 @@ paths:
       tags:
       - API Keys
       summary: Delete Api Key
+      description: 'Delete an API key.
+
+
+        Args:
+
+        api_key: API key to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_api_key_v2_users_api_keys__api_key_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -235,10 +317,25 @@ paths:
       tags:
       - API Keys
       summary: Get Api Keys
+      description: 'List a user''s API keys.
+
+
+        Args:
+
+        user_id: User whose keys are listed.
+
+        pagination: Pagination parameters.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The user''s API keys, paginated.'
       operationId: get_api_keys_public_v2_users__user_id__api_keys_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -281,6 +378,19 @@ paths:
       tags:
       - API Keys
       summary: Create Api Key
+      description: 'Create an API key for the current user.
+
+
+        Args:
+
+        ctx: Async request context.
+
+        api_key_data: Requested key properties.
+
+
+        Returns:
+
+        The created API key, including its raw (unhashed) value.'
       operationId: create_api_key_public_v2_users_api_keys_post
       requestBody:
         content:
@@ -305,8 +415,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /public/v2/users/api_keys/{api_key_id}:
@@ -314,10 +424,23 @@ paths:
       tags:
       - API Keys
       summary: Delete Api Key
+      description: 'Delete an API key.
+
+
+        Args:
+
+        api_key: API key to delete, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_api_key_public_v2_users_api_keys__api_key_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -343,123 +466,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CollaboratorRole:
-      type: string
-      enum:
-      - owner
-      - editor
-      - annotator
-      - viewer
-      title: CollaboratorRole
-    GetApiKeyResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        description:
-          type: string
-          title: Description
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        last_used:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Used
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Project Id
-        project_role:
-          anyOf:
-          - $ref: '#/components/schemas/CollaboratorRole'
-          - type: 'null'
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        truncated:
-          type: string
-          title: Truncated
-      type: object
-      required:
-      - id
-      - description
-      - created_at
-      - updated_at
-      - created_by
-      - truncated
-      title: GetApiKeyResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ListApiKeyResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        api_keys:
-          items:
-            $ref: '#/components/schemas/GetApiKeyResponse'
-          type: array
-          title: Api Keys
-      type: object
-      required:
-      - api_keys
-      title: ListApiKeyResponse
     CreateApiKeyResponse:
       properties:
         id:
@@ -519,15 +525,6 @@ components:
       - truncated
       - api_key
       title: CreateApiKeyResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ApiKeyDeleteResponse:
       properties:
         message:
@@ -537,6 +534,133 @@ components:
       required:
       - message
       title: ApiKeyDeleteResponse
+    CollaboratorRole:
+      type: string
+      enum:
+      - owner
+      - editor
+      - annotator
+      - viewer
+      - custom
+      title: CollaboratorRole
+    GetApiKeyResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        description:
+          type: string
+          title: Description
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        last_used:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Used
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Project Id
+        project_role:
+          anyOf:
+          - $ref: '#/components/schemas/CollaboratorRole'
+          - type: 'null'
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        truncated:
+          type: string
+          title: Truncated
+      type: object
+      required:
+      - id
+      - description
+      - created_at
+      - updated_at
+      - created_by
+      - truncated
+      title: GetApiKeyResponse
+    ListApiKeyResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        api_keys:
+          items:
+            $ref: '#/components/schemas/GetApiKeyResponse'
+          type: array
+          title: Api Keys
+      type: object
+      required:
+      - api_keys
+      title: ListApiKeyResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     CreateApiKeyRequest:
       properties:
         description:
@@ -570,14 +694,14 @@ components:
       - description
       title: CreateApiKeyRequest
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

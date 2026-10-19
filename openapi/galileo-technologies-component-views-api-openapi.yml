@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Component Views API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -28,8 +28,8 @@ paths:
         is automatically created. This ensures every user sees at least one shared view.'
       operationId: list_views_projects__project_id__views_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -99,8 +99,8 @@ paths:
         - Project views: Only owner/editor can create'
       operationId: create_view_projects__project_id__views_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -145,8 +145,8 @@ paths:
         - Project views: Any project collaborator can view'
       operationId: get_view_projects__project_id__views__view_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -200,8 +200,8 @@ paths:
         - Changing to PROJECT visibility: Requires editor+ permission'
       operationId: update_view_projects__project_id__views__view_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -232,12 +232,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComponentViewResponse'
+        '403':
+          description: 'Error 9011: sharing permission is required to change a linked access view filter.'
+        '409':
+          description: 'Error 9004: a view with this name already exists.'
         '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
+          description: 'Errors 9010, 9023, or 9024: filters must be supported and valid for the view and access level.'
     delete:
       tags:
       - component_views
@@ -252,8 +252,8 @@ paths:
         - Project views: Only owner/editor can delete'
       operationId: delete_view_projects__project_id__views__view_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -274,6 +274,10 @@ paths:
       responses:
         '204':
           description: Successful Response
+        '403':
+          description: 'Error 9012: sharing permission is required to delete a linked access view.'
+        '409':
+          description: 'Error 9009: deletion would remove the last view required by a restricted access level.'
         '422':
           description: Validation Error
           content:
@@ -298,8 +302,8 @@ paths:
         - Project views: Owner/editor can set as default'
       operationId: set_view_as_default_projects__project_id__views__view_id__set_default_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -348,8 +352,8 @@ paths:
         - If duplicating as project-visible, need owner/editor permission'
       operationId: duplicate_view_projects__project_id__views__view_id__duplicate_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -388,124 +392,78 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ComponentViewUpdate:
+    LogRecordsIDFilter:
       properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        view_data:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: View Data
-        visibility:
-          anyOf:
-          - $ref: '#/components/schemas/ViewVisibility'
-          - type: 'null'
-          description: Promote visibility from user to project. Project to user is not allowed.
-      type: object
-      title: ComponentViewUpdate
-      description: Schema for updating an existing component view.
-    ComponentViewResponse:
-      properties:
-        id:
+        column_id:
           type: string
-          format: uuid4
-          title: Id
-        created_by:
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
           type: string
-          format: uuid4
-          title: Created By
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
           anyOf:
           - type: string
             format: uuid4
-          - type: 'null'
-          title: Run Id
-        component:
-          $ref: '#/components/schemas/ComponentType'
-        visibility:
-          $ref: '#/components/schemas/ViewVisibility'
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
           - type: string
-          - type: 'null'
-          title: Description
-        view_data:
-          additionalProperties: true
-          type: object
-          title: View Data
-        is_default:
-          type: boolean
-          title: Is Default
-        can_edit:
-          type: boolean
-          title: Can Edit
-          default: false
-        created_at:
+          title: Value
+        type:
           type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
+          const: id
+          title: Type
+          default: id
       type: object
       required:
-      - id
-      - created_by
-      - project_id
-      - run_id
-      - component
-      - visibility
-      - name
-      - description
-      - view_data
-      - is_default
-      - created_at
-      - updated_at
-      title: ComponentViewResponse
-      description: Response schema for component view with computed fields.
-    ComponentViewDuplicate:
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-          description: Name for the duplicated view
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Optional description
-        visibility:
-          $ref: '#/components/schemas/ViewVisibility'
-          description: Visibility for the duplicated view (always creates as selected visibility)
-          default: user
+      - column_id
+      - value
+      title: LogRecordsIDFilter
+    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        or:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          type: array
+          title: Or
       type: object
       required:
-      - name
-      title: ComponentViewDuplicate
-      description: Schema for duplicating a view.
+      - or
+      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : anyOf:
+      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        not:
+          anyOf:
+          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          title: Not
+      type: object
+      required:
+      - not
+      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
     HTTPValidationError:
       properties:
         detail:
@@ -522,6 +480,154 @@ components:
       - project
       title: ViewVisibility
       description: Visibility levels for views.
+    LogRecordsBooleanFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+        type:
+          type: string
+          const: boolean
+          title: Type
+          default: boolean
+      type: object
+      required:
+      - column_id
+      - value
+      title: LogRecordsBooleanFilter
+    LogRecordsDateFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+        type:
+          type: string
+          const: date
+          title: Type
+          default: date
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsDateFilter
+    LogRecordsFullyAnnotatedFilter:
+      properties:
+        column_id:
+          type: string
+          const: fully_annotated
+          title: Column Id
+          description: Queue-scoped filter identifier. This filter only works for annotation-queue searches that provide queue context.
+          default: fully_annotated
+        type:
+          type: string
+          const: fully_annotated
+          title: Type
+          default: fully_annotated
+        user_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid4
+            type: array
+            minItems: 1
+          - type: 'null'
+          title: User Ids
+          description: Optional queue member IDs to require for full annotation in a queue-scoped search. If omitted, all tracked queue members visible to the requester are used.
+      type: object
+      title: LogRecordsFullyAnnotatedFilter
+      description: Queue-scoped filter for records rated across all queue templates.
+    LogRecordsNumberFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+        type:
+          type: string
+          const: number
+          title: Type
+          default: number
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsNumberFilter
+    ? FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____
+    : properties:
+        filter:
+          oneOf:
+          - $ref: '#/components/schemas/LogRecordsIDFilter'
+          - $ref: '#/components/schemas/LogRecordsDateFilter'
+          - $ref: '#/components/schemas/LogRecordsNumberFilter'
+          - $ref: '#/components/schemas/LogRecordsBooleanFilter'
+          - $ref: '#/components/schemas/LogRecordsCollectionFilter'
+          - $ref: '#/components/schemas/LogRecordsTextFilter'
+          - $ref: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+          title: Filter
+          discriminator:
+            propertyName: type
+            mapping:
+              boolean: '#/components/schemas/LogRecordsBooleanFilter'
+              collection: '#/components/schemas/LogRecordsCollectionFilter'
+              date: '#/components/schemas/LogRecordsDateFilter'
+              fully_annotated: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+              id: '#/components/schemas/LogRecordsIDFilter'
+              number: '#/components/schemas/LogRecordsNumberFilter'
+              text: '#/components/schemas/LogRecordsTextFilter'
+      type: object
+      required:
+      - filter
+      title: FilterLeaf[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
     ValidationError:
       properties:
         loc:
@@ -555,6 +661,209 @@ components:
       - experiments_table
       title: ComponentType
       description: Types of components that can have saved views.
+    ComponentViewResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Run Id
+        component:
+          $ref: '#/components/schemas/ComponentType'
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        view_data:
+          additionalProperties: true
+          type: object
+          title: View Data
+        filter_tree:
+          anyOf:
+          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - type: 'null'
+        filter_schema_version:
+          type: integer
+          title: Filter Schema Version
+        version:
+          type: integer
+          title: Version
+        used_by_custom_access_level:
+          type: boolean
+          title: Used By Custom Access Level
+          default: false
+        is_default:
+          type: boolean
+          title: Is Default
+        can_edit:
+          type: boolean
+          title: Can Edit
+          default: false
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - created_by
+      - project_id
+      - run_id
+      - component
+      - visibility
+      - name
+      - description
+      - view_data
+      - filter_tree
+      - filter_schema_version
+      - version
+      - is_default
+      - created_at
+      - updated_at
+      title: ComponentViewResponse
+      description: Response schema for component view with computed fields.
+    ComponentViewDuplicate:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: Name for the duplicated view
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        visibility:
+          $ref: '#/components/schemas/ViewVisibility'
+          description: Visibility for the duplicated view (always creates as selected visibility)
+          default: user
+      type: object
+      required:
+      - name
+      title: ComponentViewDuplicate
+      description: Schema for duplicating a view.
+    LogRecordsCollectionFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: collection
+          title: Type
+          default: collection
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsCollectionFilter
+    LogRecordsTextFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: text
+          title: Type
+          default: text
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsTextFilter
+    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : properties:
+        and:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          type: array
+          title: And
+      type: object
+      required:
+      - and
+      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    ? FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : anyOf:
+      - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+      - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+      - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+      - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
     ComponentViewCreate:
       properties:
         project_id:
@@ -590,6 +899,15 @@ components:
           type: object
           title: View Data
           description: JSON view configuration
+        filter_tree:
+          anyOf:
+          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - type: 'null'
+        filter_schema_version:
+          type: integer
+          const: 1
+          title: Filter Schema Version
+          default: 1
       type: object
       required:
       - project_id
@@ -598,15 +916,95 @@ components:
       - view_data
       title: ComponentViewCreate
       description: Schema for creating a new component view.
+    ? OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : properties:
+        or:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          type: array
+          title: Or
+      type: object
+      required:
+      - or
+      title: OrNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    ComponentViewUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        view_data:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: View Data
+        filter_tree:
+          anyOf:
+          - $ref: '#/components/schemas/FilterExpression_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          - type: 'null'
+        filter_schema_version:
+          type: integer
+          const: 1
+          title: Filter Schema Version
+          default: 1
+        visibility:
+          anyOf:
+          - $ref: '#/components/schemas/ViewVisibility'
+          - type: 'null'
+          description: Promote visibility from user to project. Project to user is not allowed.
+      type: object
+      title: ComponentViewUpdate
+      description: Schema for updating an existing component view.
+    ? AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input
+    : properties:
+        and:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+            - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+            - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Input'
+          type: array
+          title: And
+      type: object
+      required:
+      - and
+      title: AndNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
+    ? NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output
+    : properties:
+        not:
+          anyOf:
+          - $ref: '#/components/schemas/FilterLeaf_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____'
+          - $ref: '#/components/schemas/AndNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - $ref: '#/components/schemas/OrNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          - $ref: '#/components/schemas/NotNode_Annotated_Union_LogRecordsIDFilter__LogRecordsDateFilter__LogRecordsNumberFilter__LogRecordsBooleanFilter__LogRecordsCollectionFilter__LogRecordsTextFilter__LogRecordsFullyAnnotatedFilter___FieldInfo_annotation_NoneType__required_True__discriminator__type____-Output'
+          title: Not
+      type: object
+      required:
+      - not
+      title: NotNode[Annotated[Union[LogRecordsIDFilter, LogRecordsDateFilter, LogRecordsNumberFilter, LogRecordsBooleanFilter, LogRecordsCollectionFilter, LogRecordsTextFilter, LogRecordsFullyAnnotatedFilter], FieldInfo(annotation=NoneType, required=True, discriminator='type')]]
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

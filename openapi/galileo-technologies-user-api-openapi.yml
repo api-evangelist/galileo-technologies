@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server User API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,10 +13,18 @@ paths:
       tags:
       - User
       summary: Bookmark Project
+      description: 'Bookmark a project for the current user.
+
+
+        Args:
+
+        project: Project to bookmark, resolved from the URL.
+
+        ctx: Async request context.'
       operationId: bookmark_project_projects__project_id__bookmark_put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -43,10 +51,18 @@ paths:
       tags:
       - User
       summary: Unbookmark Project
+      description: 'Remove the current user''s bookmark for a project.
+
+
+        Args:
+
+        project: Project to unbookmark, resolved from the URL.
+
+        ctx: Async request context.'
       operationId: unbookmark_project_projects__project_id__bookmark_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -71,15 +87,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -106,15 +113,24 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

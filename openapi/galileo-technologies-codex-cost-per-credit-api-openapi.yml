@@ -1,0 +1,295 @@
+openapi: 3.2.0
+info:
+  title: Galileo API Server Codex Cost Per Credit API
+  version: 0.0.0+orbit
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: codex-cost-per-credit
+paths:
+  /codex-cost-per-credit:
+    get:
+      tags:
+      - codex-cost-per-credit
+      summary: List Codex Cost Per Credit
+      operationId: list_codex_cost_per_credit_codex_cost_per_credit_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CodexCostPerCreditResponse'
+                type: array
+                title: Response List Codex Cost Per Credit Codex Cost Per Credit Get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+    post:
+      tags:
+      - codex-cost-per-credit
+      summary: Create Codex Cost Per Credit
+      operationId: create_codex_cost_per_credit_codex_cost_per_credit_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodexCostPerCreditCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodexCostPerCreditResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /codex-cost-per-credit/{codex_cost_per_credit_id}:
+    get:
+      tags:
+      - codex-cost-per-credit
+      summary: Get Codex Cost Per Credit
+      operationId: get_codex_cost_per_credit_codex_cost_per_credit__codex_cost_per_credit_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: codex_cost_per_credit_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Codex Cost Per Credit Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodexCostPerCreditResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - codex-cost-per-credit
+      summary: Update Codex Cost Per Credit
+      operationId: update_codex_cost_per_credit_codex_cost_per_credit__codex_cost_per_credit_id__patch
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: codex_cost_per_credit_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Codex Cost Per Credit Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodexCostPerCreditUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodexCostPerCreditResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - codex-cost-per-credit
+      summary: Delete Codex Cost Per Credit
+      operationId: delete_codex_cost_per_credit_codex_cost_per_credit__codex_cost_per_credit_id__delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: codex_cost_per_credit_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Codex Cost Per Credit Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CodexCostPerCreditCreate:
+      properties:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        cost_per_credit:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: string
+          title: Cost Per Credit
+      type: object
+      required:
+      - start_date
+      - end_date
+      - cost_per_credit
+      title: CodexCostPerCreditCreate
+    CodexCostPerCreditResponse:
+      properties:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        cost_per_credit:
+          type: string
+          title: Cost Per Credit
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - start_date
+      - end_date
+      - cost_per_credit
+      - id
+      - organization_id
+      - created_at
+      - updated_at
+      title: CodexCostPerCreditResponse
+    CodexCostPerCreditUpdate:
+      properties:
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        cost_per_credit:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: string
+          - type: 'null'
+          title: Cost Per Credit
+      type: object
+      title: CodexCostPerCreditUpdate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

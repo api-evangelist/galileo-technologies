@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Experiment Tags API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -13,11 +13,23 @@ paths:
       tags:
       - experiment_tags
       summary: Get Experiment Tags
-      description: Gets tags for a given project_id/experiment_id.
+      description: 'Get all tags for an experiment.
+
+
+        Args:
+
+        run: The experiment to list tags for, resolved from the URL.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The experiment''s tags, ordered by key.'
       operationId: get_experiment_tags_projects__project_id__experiments__experiment_id__tags_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -55,11 +67,32 @@ paths:
       tags:
       - experiment_tags
       summary: Set Tag For Experiment
-      description: Sets a tag for an experiment.
+      description: 'Set a tag for an experiment.
+
+
+        Args:
+
+        project_id: Project the experiment belongs to, resolved from the URL.
+
+        run: The experiment to tag, resolved from the URL.
+
+        tag_create: The tag''s key, value, and type.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The created tag.
+
+
+        Raises:
+
+        HTTPException: 400 if a tag with this key already exists on the experiment.'
       operationId: set_tag_for_experiment_projects__project_id__experiments__experiment_id__tags_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -105,11 +138,21 @@ paths:
       tags:
       - experiment_tags
       summary: Get Experiment Tag
-      description: Gets a tag for a given project_id/experiment_id.
+      description: 'Get a tag by ID for an experiment.
+
+
+        Args:
+
+        tag: The tag to return, resolved from the URL.
+
+
+        Returns:
+
+        The tag.'
       operationId: get_experiment_tag_projects__project_id__experiments__experiment_id__tags__tag_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -151,11 +194,27 @@ paths:
       tags:
       - experiment_tags
       summary: Update Tag For Experiment
-      description: Sets or updates a tag for an experiment.
+      description: 'Set or update a tag for an experiment.
+
+
+        Args:
+
+        project_id: Project the experiment belongs to, resolved from the URL.
+
+        run: The experiment to tag, resolved from the URL.
+
+        tag_create: The tag''s key, value, and type.
+
+        ctx: Async request context.
+
+
+        Returns:
+
+        The created or updated tag.'
       operationId: update_tag_for_experiment_projects__project_id__experiments__experiment_id__tags__tag_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -207,10 +266,23 @@ paths:
       tags:
       - experiment_tags
       summary: Delete Experiment Tag
+      description: 'Delete a tag from an experiment.
+
+
+        Args:
+
+        tag: The tag to delete, resolved from the URL.
+
+        run: The experiment the tag belongs to, resolved from the URL.
+
+
+        Returns:
+
+        A confirmation message.'
       operationId: delete_experiment_tag_projects__project_id__experiments__experiment_id__tags__tag_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -250,6 +322,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    DeleteRunResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: DeleteRunResponse
     RunTagCreateRequest:
       properties:
         key:
@@ -269,15 +350,41 @@ components:
       - value
       - tag_type
       title: RunTagCreateRequest
-    DeleteRunResponse:
+    ValidationError:
       properties:
-        message:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
           title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - message
-      title: DeleteRunResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     RunTagDB:
       properties:
         key:
@@ -327,50 +434,15 @@ components:
       - created_at
       - updated_at
       title: RunTagDB
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

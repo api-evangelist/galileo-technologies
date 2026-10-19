@@ -1,0 +1,3446 @@
+openapi: 3.2.0
+info:
+  title: Galileo API Server Signals V2 API
+  version: 0.0.0+orbit
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: signals-v2
+paths:
+  /v2/projects/{project_id}/runs/{run_id}/signals:
+    get:
+      tags:
+      - signals-v2
+      summary: List Signals
+      description: 'List top-level Signals for one log stream or experiment run.
+
+
+        Results are ordered by internal priority and last seen time. Open Signals whose notifications
+
+        are not muted are returned by default. A cursor may be reused only with the same filters.'
+      operationId: list_signals_v2_projects__project_id__runs__run_id__signals_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+          description: Case-insensitive title and problem search. An exact SIG-N value also matches the display key.
+          title: Search
+        description: Case-insensitive title and problem search. An exact SIG-N value also matches the display key.
+      - name: labels
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 255
+          maxItems: 20
+          description: Match Signals containing any selected label.
+          title: Labels
+        description: Match Signals containing any selected label.
+      - name: severities
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignalSeverityLevel'
+          maxItems: 3
+          description: Severity levels to include.
+          title: Severities
+        description: Severity levels to include.
+      - name: statuses
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignalStatus'
+          maxItems: 2
+          description: User-marked states to include. Defaults to open Signals.
+          title: Statuses
+        description: User-marked states to include. Defaults to open Signals.
+      - name: notification_state
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SignalNotificationStateFilter'
+          description: Notification state to include. Defaults to Signals whose notifications are not muted.
+          default: UNMUTED
+        description: Notification state to include. Defaults to Signals whose notifications are not muted.
+      - name: view
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/SignalListView'
+          - type: 'null'
+          description: ACTIVE or ARCHIVED tab. When set, this replaces statuses and notification_state filters.
+          title: View
+        description: ACTIVE or ARCHIVED tab. When set, this replaces statuses and notification_state filters.
+      - name: last_seen_after
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Include Signals last seen at or after this timestamp.
+          title: Last Seen After
+        description: Include Signals last seen at or after this timestamp.
+      - name: last_seen_before
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Include Signals last seen before this timestamp.
+          title: Last Seen Before
+        description: Include Signals last seen before this timestamp.
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2048
+          - type: 'null'
+          description: Cursor returned by the previous page with the same filters.
+          title: Cursor
+        description: Cursor returned by the previous page with the same filters.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Maximum Signals returned in one page.
+          default: 50
+          title: Limit
+        description: Maximum Signals returned in one page.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/archive:
+    patch:
+      tags:
+      - signals-v2
+      summary: Archive Selected Signals
+      description: Archive or restore selected Signals in one run.
+      operationId: archive_selected_signals_v2_projects__project_id__runs__run_id__signals_archive_patch
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalBulkArchiveUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalArchiveResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/archive:
+    patch:
+      tags:
+      - signals-v2
+      summary: Archive Signal
+      description: Archive one Signal with feedback or restore its notifications.
+      operationId: archive_signal_v2_projects__project_id__runs__run_id__signals__signal_id__archive_patch
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalArchiveUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalArchiveResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/merge:
+    post:
+      tags:
+      - signals-v2
+      summary: Merge Signals
+      description: Merge selected Signals into a target without combining their records.
+      operationId: merge_signals_v2_projects__project_id__runs__run_id__signals__signal_id__merge_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalMergeUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalMergeResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/unmerge:
+    post:
+      tags:
+      - signals-v2
+      summary: Unmerge Signals
+      description: Remove selected Signals from a target's presentation group.
+      operationId: unmerge_signals_v2_projects__project_id__runs__run_id__signals__signal_id__unmerge_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalMergeUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalMergeResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/scans:
+    get:
+      tags:
+      - signals-v2
+      summary: List Signal Scans
+      description: List Signal scans for one log stream or experiment run, newest first.
+      operationId: list_signal_scans_v2_projects__project_id__runs__run_id__signals_scans_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2048
+          - type: 'null'
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 25
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - signals-v2
+      summary: Start Manual Signal Scan
+      description: Start one manual Signal scan for a log stream and fixed telemetry window.
+      operationId: start_manual_signal_scan_v2_projects__project_id__runs__run_id__signals_scans_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalScanStartRequest'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/scans/preview:
+    get:
+      tags:
+      - signals-v2
+      summary: Preview Manual Signal Scan
+      description: Check for completed sessions before submitting a manual Signal scan.
+      operationId: preview_manual_signal_scan_v2_projects__project_id__runs__run_id__signals_scans_preview_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: window_start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Window Start
+      - name: window_end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Window End
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanPreviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/scans/{scan_id}:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signal Scan
+      description: Read status, coverage, usage, and any terminal error for one Signal scan.
+      operationId: get_signal_scan_v2_projects__project_id__runs__run_id__signals_scans__scan_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: scan_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Scan Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/configuration:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signals Configuration
+      description: Read the Signals configuration for one log stream or experiment run.
+      operationId: get_signals_configuration_v2_projects__project_id__runs__run_id__signals_configuration_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalsConfigurationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - signals-v2
+      summary: Put Signals Configuration
+      description: Create or replace the Signals configuration for one log stream or experiment run.
+      operationId: put_signals_configuration_v2_projects__project_id__runs__run_id__signals_configuration_put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/ExperimentSignalsConfigurationPut'
+              - $ref: '#/components/schemas/LogStreamSignalsConfigurationPut'
+              title: Request
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalsConfigurationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - signals-v2
+      summary: Delete Signals Configuration
+      description: Delete the Signals configuration for one log stream or experiment run.
+      operationId: delete_signals_configuration_v2_projects__project_id__runs__run_id__signals_configuration_delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signal
+      description: Read one Signal with its impact history, remediations, and merge relationships.
+      operationId: get_signal_v2_projects__project_id__runs__run_id__signals__signal_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api__schemas__signals__SignalDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/feedback:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signal Feedback
+      description: Read the current user's assessment of one Signal.
+      operationId: get_signal_feedback_v2_projects__project_id__runs__run_id__signals__signal_id__feedback_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalFeedbackResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - signals-v2
+      summary: Put Signal Feedback
+      description: Replace or clear the current user's assessment of one Signal.
+      operationId: put_signal_feedback_v2_projects__project_id__runs__run_id__signals__signal_id__feedback_put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalFeedbackPut'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalFeedbackResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/affected-sessions:
+    get:
+      tags:
+      - signals-v2
+      summary: List Signal Affected Sessions
+      description: List affected sessions and stored evidence for one Signal and its merged Signals.
+      operationId: list_signal_affected_sessions_v2_projects__project_id__runs__run_id__signals__signal_id__affected_sessions_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: last_seen_after
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Seen After
+      - name: last_seen_before
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Seen Before
+      - name: scan_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Scan Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2048
+          - type: 'null'
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 25
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalAffectedSessionListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals:
+    get:
+      tags:
+      - signals-v2
+      summary: List Signals
+      description: 'List top-level Signals for one log stream or experiment run.
+
+
+        Results are ordered by internal priority and last seen time. Open Signals whose notifications
+
+        are not muted are returned by default. A cursor may be reused only with the same filters.'
+      operationId: list_signals_public_v2_projects__project_id__runs__run_id__signals_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+          description: Case-insensitive title and problem search. An exact SIG-N value also matches the display key.
+          title: Search
+        description: Case-insensitive title and problem search. An exact SIG-N value also matches the display key.
+      - name: labels
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 255
+          maxItems: 20
+          description: Match Signals containing any selected label.
+          title: Labels
+        description: Match Signals containing any selected label.
+      - name: severities
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignalSeverityLevel'
+          maxItems: 3
+          description: Severity levels to include.
+          title: Severities
+        description: Severity levels to include.
+      - name: statuses
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignalStatus'
+          maxItems: 2
+          description: User-marked states to include. Defaults to open Signals.
+          title: Statuses
+        description: User-marked states to include. Defaults to open Signals.
+      - name: notification_state
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SignalNotificationStateFilter'
+          description: Notification state to include. Defaults to Signals whose notifications are not muted.
+          default: UNMUTED
+        description: Notification state to include. Defaults to Signals whose notifications are not muted.
+      - name: view
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/SignalListView'
+          - type: 'null'
+          description: ACTIVE or ARCHIVED tab. When set, this replaces statuses and notification_state filters.
+          title: View
+        description: ACTIVE or ARCHIVED tab. When set, this replaces statuses and notification_state filters.
+      - name: last_seen_after
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Include Signals last seen at or after this timestamp.
+          title: Last Seen After
+        description: Include Signals last seen at or after this timestamp.
+      - name: last_seen_before
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Include Signals last seen before this timestamp.
+          title: Last Seen Before
+        description: Include Signals last seen before this timestamp.
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2048
+          - type: 'null'
+          description: Cursor returned by the previous page with the same filters.
+          title: Cursor
+        description: Cursor returned by the previous page with the same filters.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Maximum Signals returned in one page.
+          default: 50
+          title: Limit
+        description: Maximum Signals returned in one page.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/archive:
+    patch:
+      tags:
+      - signals-v2
+      summary: Archive Selected Signals
+      description: Archive or restore selected Signals in one run.
+      operationId: archive_selected_signals_public_v2_projects__project_id__runs__run_id__signals_archive_patch
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalBulkArchiveUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalArchiveResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/archive:
+    patch:
+      tags:
+      - signals-v2
+      summary: Archive Signal
+      description: Archive one Signal with feedback or restore its notifications.
+      operationId: archive_signal_public_v2_projects__project_id__runs__run_id__signals__signal_id__archive_patch
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalArchiveUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalArchiveResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/merge:
+    post:
+      tags:
+      - signals-v2
+      summary: Merge Signals
+      description: Merge selected Signals into a target without combining their records.
+      operationId: merge_signals_public_v2_projects__project_id__runs__run_id__signals__signal_id__merge_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalMergeUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalMergeResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/unmerge:
+    post:
+      tags:
+      - signals-v2
+      summary: Unmerge Signals
+      description: Remove selected Signals from a target's presentation group.
+      operationId: unmerge_signals_public_v2_projects__project_id__runs__run_id__signals__signal_id__unmerge_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalMergeUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalMergeResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/scans:
+    get:
+      tags:
+      - signals-v2
+      summary: List Signal Scans
+      description: List Signal scans for one log stream or experiment run, newest first.
+      operationId: list_signal_scans_public_v2_projects__project_id__runs__run_id__signals_scans_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2048
+          - type: 'null'
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 25
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - signals-v2
+      summary: Start Manual Signal Scan
+      description: Start one manual Signal scan for a log stream and fixed telemetry window.
+      operationId: start_manual_signal_scan_public_v2_projects__project_id__runs__run_id__signals_scans_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalScanStartRequest'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/scans/preview:
+    get:
+      tags:
+      - signals-v2
+      summary: Preview Manual Signal Scan
+      description: Check for completed sessions before submitting a manual Signal scan.
+      operationId: preview_manual_signal_scan_public_v2_projects__project_id__runs__run_id__signals_scans_preview_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: window_start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Window Start
+      - name: window_end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Window End
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanPreviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/scans/{scan_id}:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signal Scan
+      description: Read status, coverage, usage, and any terminal error for one Signal scan.
+      operationId: get_signal_scan_public_v2_projects__project_id__runs__run_id__signals_scans__scan_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: scan_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Scan Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalScanDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/configuration:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signals Configuration
+      description: Read the Signals configuration for one log stream or experiment run.
+      operationId: get_signals_configuration_public_v2_projects__project_id__runs__run_id__signals_configuration_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalsConfigurationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - signals-v2
+      summary: Put Signals Configuration
+      description: Create or replace the Signals configuration for one log stream or experiment run.
+      operationId: put_signals_configuration_public_v2_projects__project_id__runs__run_id__signals_configuration_put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/ExperimentSignalsConfigurationPut'
+              - $ref: '#/components/schemas/LogStreamSignalsConfigurationPut'
+              title: Request
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalsConfigurationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - signals-v2
+      summary: Delete Signals Configuration
+      description: Delete the Signals configuration for one log stream or experiment run.
+      operationId: delete_signals_configuration_public_v2_projects__project_id__runs__run_id__signals_configuration_delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signal
+      description: Read one Signal with its impact history, remediations, and merge relationships.
+      operationId: get_signal_public_v2_projects__project_id__runs__run_id__signals__signal_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api__schemas__signals__SignalDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/feedback:
+    get:
+      tags:
+      - signals-v2
+      summary: Get Signal Feedback
+      description: Read the current user's assessment of one Signal.
+      operationId: get_signal_feedback_public_v2_projects__project_id__runs__run_id__signals__signal_id__feedback_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalFeedbackResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - signals-v2
+      summary: Put Signal Feedback
+      description: Replace or clear the current user's assessment of one Signal.
+      operationId: put_signal_feedback_public_v2_projects__project_id__runs__run_id__signals__signal_id__feedback_put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignalFeedbackPut'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalFeedbackResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /public/v2/projects/{project_id}/runs/{run_id}/signals/{signal_id}/affected-sessions:
+    get:
+      tags:
+      - signals-v2
+      summary: List Signal Affected Sessions
+      description: List affected sessions and stored evidence for one Signal and its merged Signals.
+      operationId: list_signal_affected_sessions_public_v2_projects__project_id__runs__run_id__signals__signal_id__affected_sessions_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      - name: signal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Signal Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Run Id
+      - name: last_seen_after
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Seen After
+      - name: last_seen_before
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Seen Before
+      - name: scan_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Scan Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2048
+          - type: 'null'
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 25
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalAffectedSessionListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    SignalOccurrenceOutcome:
+      type: string
+      enum:
+      - SUCCEEDED
+      - PARTIALLY_SUCCEEDED
+      - FAILED
+      - UNKNOWN
+      title: SignalOccurrenceOutcome
+      description: Outcome of the session containing an occurrence.
+    SignalScanHistoryEntry:
+      properties:
+        affected_session_count:
+          type: integer
+          minimum: 0.0
+          title: Affected Session Count
+        analyzed_session_count:
+          type: integer
+          minimum: 0.0
+          title: Analyzed Session Count
+        exposed_session_count:
+          type: integer
+          minimum: 0.0
+          title: Exposed Session Count
+        scan_id:
+          type: string
+          format: uuid4
+          title: Scan Id
+        scan_number:
+          type: integer
+          minimum: 1.0
+          title: Scan Number
+        completed_at:
+          type: string
+          format: date-time
+          title: Completed At
+      additionalProperties: false
+      type: object
+      required:
+      - affected_session_count
+      - analyzed_session_count
+      - exposed_session_count
+      - scan_id
+      - scan_number
+      - completed_at
+      title: SignalScanHistoryEntry
+      description: Impact saved for the Signal by a finished scan.
+    SignalScanStatus:
+      type: string
+      enum:
+      - QUEUED
+      - RUNNING
+      - COMPLETED
+      - FAILED
+      title: SignalScanStatus
+      description: Execution state of a Signal scan.
+    SignalScanListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SignalScanSummary'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/SignalScanListMeta'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      - meta
+      title: SignalScanListResponse
+    SignalMergeResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignalMergeResult'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      title: SignalMergeResponse
+    SignalScanListMeta:
+      properties:
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+      additionalProperties: false
+      type: object
+      required:
+      - next_cursor
+      - total
+      title: SignalScanListMeta
+    SignalOccurrence:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        occurrence_ref:
+          type: string
+          title: Occurrence Ref
+        origin_signal:
+          $ref: '#/components/schemas/SignalReference'
+        scan_id:
+          type: string
+          format: uuid4
+          title: Scan Id
+        session_id:
+          type: string
+          format: uuid4
+          title: Session Id
+        observed_at:
+          type: string
+          format: date-time
+          title: Observed At
+        problem_type_id:
+          type: string
+          title: Problem Type Id
+        problem_nature:
+          $ref: '#/components/schemas/SignalProblemNature'
+        outcome:
+          $ref: '#/components/schemas/SignalOccurrenceOutcome'
+        component:
+          $ref: '#/components/schemas/SignalComponent'
+        description:
+          type: string
+          title: Description
+        classification_rationale:
+          type: string
+          title: Classification Rationale
+        evidence:
+          items:
+            $ref: '#/components/schemas/SignalEvidenceReference'
+          type: array
+          title: Evidence
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - occurrence_ref
+      - origin_signal
+      - scan_id
+      - session_id
+      - observed_at
+      - problem_type_id
+      - problem_nature
+      - outcome
+      - component
+      - description
+      - classification_rationale
+      - evidence
+      title: SignalOccurrence
+      description: One defect occurrence found in a completed session.
+    SignalScanStartRequest:
+      properties:
+        window_start:
+          type: string
+          format: date-time
+          title: Window Start
+        window_end:
+          type: string
+          format: date-time
+          title: Window End
+        model:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Model
+          description: Model alias for this scan. Required when the log stream has no saved configuration; otherwise the configured model is used.
+        integration_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Integration Id
+          description: Integration selected for this scan's model.
+      additionalProperties: false
+      type: object
+      required:
+      - window_start
+      - window_end
+      title: SignalScanStartRequest
+      description: Fixed telemetry window requested for one manual Signal scan.
+    SignalFeedbackRating:
+      type: string
+      enum:
+      - USEFUL
+      - NOT_USEFUL
+      title: SignalFeedbackRating
+      description: User assessment of a Signal or remediation.
+    SignalSeverityLevel:
+      type: string
+      enum:
+      - LOW
+      - HIGH
+      - CRITICAL
+      title: SignalSeverityLevel
+      description: Severity level shown to users and used for notification selection.
+    SignalMergeUpdate:
+      properties:
+        signal_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          maxItems: 20
+          minItems: 1
+          title: Signal Ids
+      additionalProperties: false
+      type: object
+      required:
+      - signal_ids
+      title: SignalMergeUpdate
+      description: Signals to merge into or unmerge from the Signal in the route.
+    StepType:
+      type: string
+      enum:
+      - http
+      - llm
+      - retriever
+      - tool
+      - workflow
+      - agent
+      - control
+      - trace
+      - session
+      title: StepType
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SignalDetail:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        display_key:
+          type: string
+          title: Display Key
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        details:
+          type: string
+          title: Details
+        grouping_rationale:
+          type: string
+          title: Grouping Rationale
+        problem_type_id:
+          type: string
+          title: Problem Type Id
+        labels:
+          items:
+            type: string
+          type: array
+          title: Labels
+        component:
+          $ref: '#/components/schemas/SignalComponent'
+        severity:
+          $ref: '#/components/schemas/api__schemas__signals__SignalSeverity'
+        status:
+          $ref: '#/components/schemas/SignalStatus'
+        notifications_muted:
+          type: boolean
+          title: Notifications Muted
+        last_seen_at:
+          type: string
+          format: date-time
+          title: Last Seen At
+        occurrence_count:
+          type: integer
+          minimum: 0.0
+          title: Occurrence Count
+          description: Stored occurrence observations, including repeat detections across scans.
+        affected_session_count:
+          type: integer
+          minimum: 0.0
+          title: Affected Session Count
+          description: Distinct affected sessions across the Signal and its merged Signals.
+        merged_signal_count:
+          type: integer
+          minimum: 0.0
+          title: Merged Signal Count
+          description: All Signals nested under this Signal through merges.
+        latest_impact:
+          anyOf:
+          - $ref: '#/components/schemas/SignalImpact'
+          - type: 'null'
+        scan_history:
+          items:
+            $ref: '#/components/schemas/SignalScanHistoryEntry'
+          type: array
+          title: Scan History
+        remediations:
+          items:
+            $ref: '#/components/schemas/SignalRemediationDetail'
+          type: array
+          title: Remediations
+        merged_signals:
+          items:
+            $ref: '#/components/schemas/SignalReference'
+          type: array
+          title: Merged Signals
+          description: Signals merged directly into this Signal.
+        merged_into:
+          anyOf:
+          - $ref: '#/components/schemas/SignalReference'
+          - type: 'null'
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - display_key
+      - title
+      - description
+      - details
+      - grouping_rationale
+      - problem_type_id
+      - labels
+      - component
+      - severity
+      - status
+      - notifications_muted
+      - last_seen_at
+      - occurrence_count
+      - affected_session_count
+      - merged_signal_count
+      - latest_impact
+      - scan_history
+      - remediations
+      - merged_signals
+      - merged_into
+      title: SignalDetail
+      description: Diagnosis, impact, history, and remediations for one Signal.
+    SignalComponent:
+      properties:
+        type:
+          $ref: '#/components/schemas/StepType'
+        name:
+          type: string
+          title: Name
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      - name
+      title: SignalComponent
+      description: Agent component associated with a Signal or occurrence.
+    CronSignalSchedule:
+      properties:
+        type:
+          type: string
+          const: CRON
+          title: Type
+          default: CRON
+        cron:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Cron
+          description: Five-field cron expression.
+        timezone:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Timezone
+          description: IANA time zone used to evaluate the cron expression.
+          default: UTC
+      additionalProperties: false
+      type: object
+      required:
+      - cron
+      title: CronSignalSchedule
+      description: Five-field cron schedule evaluated in an IANA time zone.
+    SignalListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SignalSummary'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/SignalListMeta'
+        facets:
+          $ref: '#/components/schemas/SignalFacets'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      - meta
+      - facets
+      title: SignalListResponse
+    SignalScanPreview:
+      properties:
+        has_eligible_sessions:
+          type: boolean
+          title: Has Eligible Sessions
+      additionalProperties: false
+      type: object
+      required:
+      - has_eligible_sessions
+      title: SignalScanPreview
+    SignalStatus:
+      type: string
+      enum:
+      - OPEN
+      - RESOLVED
+      title: SignalStatus
+      description: Signal state selected by a user.
+    SignalFacets:
+      properties:
+        labels:
+          items:
+            $ref: '#/components/schemas/SignalLabelFacet'
+          type: array
+          title: Labels
+        open_count:
+          type: integer
+          minimum: 0.0
+          title: Open Count
+        resolved_count:
+          type: integer
+          minimum: 0.0
+          title: Resolved Count
+        muted_count:
+          type: integer
+          minimum: 0.0
+          title: Muted Count
+        active_count:
+          type: integer
+          minimum: 0.0
+          title: Active Count
+          description: Open Signals with notifications enabled.
+        archived_count:
+          type: integer
+          minimum: 0.0
+          title: Archived Count
+          description: Resolved or archived Signals, counted once each.
+      additionalProperties: false
+      type: object
+      required:
+      - labels
+      - open_count
+      - resolved_count
+      - muted_count
+      - active_count
+      - archived_count
+      title: SignalFacets
+      description: 'Filter options and counts computed before pagination.
+
+
+        A facet ignores its own filter while applying the other active filters.'
+    SignalBulkArchiveUpdate:
+      properties:
+        archived:
+          type: boolean
+          title: Archived
+        reason:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Reason
+        comment:
+          anyOf:
+          - type: string
+            maxLength: 10000
+            minLength: 1
+          - type: 'null'
+          title: Comment
+        signal_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Signal Ids
+      additionalProperties: false
+      type: object
+      required:
+      - archived
+      - signal_ids
+      title: SignalBulkArchiveUpdate
+      description: Apply one archive choice to selected Signals in the same run.
+    SignalArchiveResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignalArchiveResult'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      title: SignalArchiveResponse
+    pydantic__types__JsonValue: {}
+    SignalRemediationSummary:
+      properties:
+        primary_recommendation:
+          anyOf:
+          - $ref: '#/components/schemas/SignalRecommendationSummary'
+          - type: 'null'
+          description: Highest-ranked remediation for the Signal.
+        latest_action:
+          anyOf:
+          - $ref: '#/components/schemas/SignalRecommendationSummary'
+          - type: 'null'
+          description: Most recently updated remediation that has moved beyond proposal.
+        recommendation_count:
+          type: integer
+          minimum: 0.0
+          title: Recommendation Count
+          description: Number of remediations generated for the Signal.
+        completed_action_count:
+          type: integer
+          minimum: 0.0
+          title: Completed Action Count
+          description: Number of remediations that were applied or validated.
+      additionalProperties: false
+      type: object
+      required:
+      - primary_recommendation
+      - latest_action
+      - recommendation_count
+      - completed_action_count
+      title: SignalRemediationSummary
+      description: Remediation counts and actions shown on one Signal row.
+    SignalRemediationState:
+      type: string
+      enum:
+      - PROPOSED
+      - IN_PROGRESS
+      - APPLIED
+      - VALIDATED
+      - DISMISSED
+      - FAILED
+      title: SignalRemediationState
+      description: Current state of a proposed remediation.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SignalScanDetail:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        scan_number:
+          type: integer
+          minimum: 1.0
+          title: Scan Number
+        trigger:
+          $ref: '#/components/schemas/SignalScanMode'
+        status:
+          $ref: '#/components/schemas/SignalScanStatus'
+        failure_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Reason
+          description: Reason the scan failed; absent for other statuses.
+        window_start:
+          type: string
+          format: date-time
+          title: Window Start
+        window_end:
+          type: string
+          format: date-time
+          title: Window End
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        completed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Completed At
+        eligible_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Eligible Session Count
+        sampled_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Sampled Session Count
+        analyzed_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Analyzed Session Count
+        skipped_oversized_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Skipped Oversized Session Count
+        sampled_span_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Sampled Span Count
+        signals_created:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Signals Created
+        signals_updated:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Signals Updated
+        sampling_strategy:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sampling Strategy
+        model:
+          type: string
+          title: Model
+        model_usage:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/pydantic__types__JsonValue'
+            type: object
+          - type: 'null'
+          title: Model Usage
+        error:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/pydantic__types__JsonValue'
+            type: object
+          - type: 'null'
+          title: Error
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - scan_number
+      - trigger
+      - status
+      - window_start
+      - window_end
+      - started_at
+      - completed_at
+      - sampling_strategy
+      - model
+      - model_usage
+      - error
+      title: SignalScanDetail
+      description: Complete persisted state for one Signal scan.
+    SignalNotificationStateFilter:
+      type: string
+      enum:
+      - UNMUTED
+      - MUTED
+      - ALL
+      title: SignalNotificationStateFilter
+      description: Whether a list includes Signals with muted notifications.
+    IntervalSignalSchedule:
+      properties:
+        type:
+          type: string
+          const: INTERVAL
+          title: Type
+          default: INTERVAL
+        interval_hours:
+          type: integer
+          maximum: 168.0
+          minimum: 1.0
+          title: Interval Hours
+          description: Hours between scheduled scans.
+        timezone:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Timezone
+          description: IANA time zone associated with the schedule.
+          default: UTC
+      additionalProperties: false
+      type: object
+      required:
+      - interval_hours
+      title: IntervalSignalSchedule
+      description: Fixed interval between scheduled Signal scans.
+    SignalsUserPreferences:
+      properties:
+        focus_on:
+          type: string
+          maxLength: 10000
+          title: Focus On
+          description: Problems the scan should prioritize.
+          default: ''
+        dont_focus_on:
+          type: string
+          maxLength: 10000
+          title: Dont Focus On
+          description: Expected behavior the scan should ignore.
+          default: ''
+      additionalProperties: false
+      type: object
+      title: SignalsUserPreferences
+      description: Customer guidance considered when Signals are generated.
+    SignalEvidenceReference:
+      properties:
+        trace_id:
+          type: string
+          format: uuid4
+          title: Trace Id
+        span_id:
+          type: string
+          format: uuid4
+          title: Span Id
+        explanation:
+          type: string
+          title: Explanation
+      additionalProperties: false
+      type: object
+      required:
+      - trace_id
+      - span_id
+      - explanation
+      title: SignalEvidenceReference
+      description: Trace span cited as evidence for one occurrence.
+    SignalScanDetailResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignalScanDetail'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      title: SignalScanDetailResponse
+    SignalImpact:
+      properties:
+        affected_session_count:
+          type: integer
+          minimum: 0.0
+          title: Affected Session Count
+        analyzed_session_count:
+          type: integer
+          minimum: 0.0
+          title: Analyzed Session Count
+        exposed_session_count:
+          type: integer
+          minimum: 0.0
+          title: Exposed Session Count
+      additionalProperties: false
+      type: object
+      required:
+      - affected_session_count
+      - analyzed_session_count
+      - exposed_session_count
+      title: SignalImpact
+      description: Session counts measured for one Signal in one scan.
+    SignalReference:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        display_key:
+          type: string
+          title: Display Key
+        title:
+          type: string
+          title: Title
+        last_seen_at:
+          type: string
+          format: date-time
+          title: Last Seen At
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - display_key
+      - title
+      - last_seen_at
+      title: SignalReference
+      description: Signal identity shown for a merge relationship.
+    SignalAffectedSession:
+      properties:
+        session_id:
+          type: string
+          format: uuid4
+          title: Session Id
+        last_seen_at:
+          type: string
+          format: date-time
+          title: Last Seen At
+        last_seen_scan_id:
+          type: string
+          format: uuid4
+          title: Last Seen Scan Id
+        occurrence_count:
+          type: integer
+          minimum: 1.0
+          title: Occurrence Count
+        trace_count:
+          type: integer
+          minimum: 0.0
+          title: Trace Count
+        span_count:
+          type: integer
+          minimum: 0.0
+          title: Span Count
+        occurrences:
+          items:
+            $ref: '#/components/schemas/SignalOccurrence'
+          type: array
+          title: Occurrences
+      additionalProperties: false
+      type: object
+      required:
+      - session_id
+      - last_seen_at
+      - last_seen_scan_id
+      - occurrence_count
+      - trace_count
+      - span_count
+      - occurrences
+      title: SignalAffectedSession
+      description: Occurrences grouped under one affected session.
+    SignalMergeResult:
+      properties:
+        target_signal_id:
+          type: string
+          format: uuid4
+          title: Target Signal Id
+        signal_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Signal Ids
+      additionalProperties: false
+      type: object
+      required:
+      - target_signal_id
+      - signal_ids
+      title: SignalMergeResult
+    SignalAffectedSessionListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SignalAffectedSession'
+          type: array
+          title: Data
+        meta:
+          $ref: '#/components/schemas/SignalAffectedSessionListMeta'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      - meta
+      title: SignalAffectedSessionListResponse
+    SignalFeedbackPut:
+      properties:
+        rating:
+          anyOf:
+          - $ref: '#/components/schemas/SignalFeedbackRating'
+          - type: 'null'
+        comment:
+          anyOf:
+          - type: string
+            maxLength: 10000
+            minLength: 1
+          - type: 'null'
+          title: Comment
+      additionalProperties: false
+      type: object
+      required:
+      - rating
+      title: SignalFeedbackPut
+      description: Replace or clear the current user's assessment of a Signal.
+    SignalScanMode:
+      type: string
+      enum:
+      - ON_DEMAND
+      - SCHEDULED
+      title: SignalScanMode
+      description: How a Signal scan starts.
+    api__schemas__signals__SignalDetailResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignalDetail'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      title: SignalDetailResponse
+    SignalListMeta:
+      properties:
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+          description: Cursor for the next page, or null on the last page.
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Signals matching all current filters before pagination.
+      additionalProperties: false
+      type: object
+      required:
+      - next_cursor
+      - total
+      title: SignalListMeta
+    SignalArchiveResult:
+      properties:
+        signal_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Signal Ids
+        archived:
+          type: boolean
+          title: Archived
+      additionalProperties: false
+      type: object
+      required:
+      - signal_ids
+      - archived
+      title: SignalArchiveResult
+    SignalScanSummary:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        scan_number:
+          type: integer
+          minimum: 1.0
+          title: Scan Number
+        trigger:
+          $ref: '#/components/schemas/SignalScanMode'
+        status:
+          $ref: '#/components/schemas/SignalScanStatus'
+        failure_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Reason
+          description: Reason the scan failed; absent for other statuses.
+        window_start:
+          type: string
+          format: date-time
+          title: Window Start
+        window_end:
+          type: string
+          format: date-time
+          title: Window End
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        completed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Completed At
+        eligible_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Eligible Session Count
+        sampled_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Sampled Session Count
+        analyzed_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Analyzed Session Count
+        skipped_oversized_session_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Skipped Oversized Session Count
+        sampled_span_count:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Sampled Span Count
+        signals_created:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Signals Created
+        signals_updated:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Signals Updated
+        sampling_strategy:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sampling Strategy
+        model:
+          type: string
+          title: Model
+        model_usage:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/pydantic__types__JsonValue'
+            type: object
+          - type: 'null'
+          title: Model Usage
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - scan_number
+      - trigger
+      - status
+      - window_start
+      - window_end
+      - started_at
+      - completed_at
+      - sampling_strategy
+      - model
+      - model_usage
+      title: SignalScanSummary
+      description: Status and coverage shown for one Signal scan.
+    SignalProblemNature:
+      type: string
+      enum:
+      - REALIZED_DEFECT
+      - INEFFICIENCY
+      - RISK_EXPOSURE
+      title: SignalProblemNature
+      description: Nature of one defect occurrence.
+    SignalScanPreviewResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignalScanPreview'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      title: SignalScanPreviewResponse
+    SignalsConfigurationResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SignalsConfiguration'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      title: SignalsConfigurationResponse
+    SignalsConfiguration:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        run_mode:
+          $ref: '#/components/schemas/SignalScanMode'
+        schedule:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/CronSignalSchedule'
+            - $ref: '#/components/schemas/IntervalSignalSchedule'
+            discriminator:
+              propertyName: type
+              mapping:
+                CRON: '#/components/schemas/CronSignalSchedule'
+                INTERVAL: '#/components/schemas/IntervalSignalSchedule'
+          - type: 'null'
+          title: Schedule
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        scheduled_runs_enabled:
+          type: boolean
+          title: Scheduled Runs Enabled
+        model:
+          type: string
+          title: Model
+        integration_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Integration Id
+        user_preferences:
+          $ref: '#/components/schemas/SignalsUserPreferences'
+        notification_severities:
+          items:
+            $ref: '#/components/schemas/SignalSeverityLevel'
+          type: array
+          title: Notification Severities
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - project_id
+      - run_id
+      - run_mode
+      - schedule
+      - start_date
+      - end_date
+      - scheduled_runs_enabled
+      - model
+      - integration_id
+      - user_preferences
+      - notification_severities
+      - created_at
+      - updated_at
+      title: SignalsConfiguration
+      description: Saved Signals configuration returned for one log stream or experiment run.
+    SignalFeedbackResponse:
+      properties:
+        data:
+          anyOf:
+          - $ref: '#/components/schemas/SignalFeedbackDetail'
+          - type: 'null'
+      additionalProperties: false
+      type: object
+      required:
+      - data
+      title: SignalFeedbackResponse
+    SignalListView:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: SignalListView
+      description: Product tab represented by a list request.
+    SignalLabelFacet:
+      properties:
+        label:
+          type: string
+          title: Label
+        count:
+          type: integer
+          minimum: 0.0
+          title: Count
+      additionalProperties: false
+      type: object
+      required:
+      - label
+      - count
+      title: SignalLabelFacet
+    SignalRecommendationSummary:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        type:
+          type: string
+          title: Type
+          description: Remediation type, such as evaluator.create or agent-control.create.
+        title:
+          type: string
+          title: Title
+        state:
+          $ref: '#/components/schemas/SignalRemediationState'
+          description: Current state of the proposed or applied remediation.
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - type
+      - title
+      - state
+      title: SignalRecommendationSummary
+      description: List-page representation of one remediation.
+    SignalRemediationResource:
+      properties:
+        type:
+          type: string
+          title: Type
+        id:
+          type: string
+          title: Id
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      - id
+      title: SignalRemediationResource
+      description: Platform object created or updated by a remediation.
+    SignalAffectedSessionListMeta:
+      properties:
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+      additionalProperties: false
+      type: object
+      required:
+      - next_cursor
+      - total
+      title: SignalAffectedSessionListMeta
+    SignalRemediationDetail:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        generated_in_scan_id:
+          type: string
+          format: uuid4
+          title: Generated In Scan Id
+        rank:
+          type: integer
+          minimum: 1.0
+          title: Rank
+        type:
+          type: string
+          title: Type
+        action:
+          type: string
+          title: Action
+        validation:
+          type: string
+          title: Validation
+        state:
+          $ref: '#/components/schemas/SignalRemediationState'
+        details:
+          additionalProperties:
+            $ref: '#/components/schemas/pydantic__types__JsonValue'
+          type: object
+          title: Details
+        resources:
+          items:
+            $ref: '#/components/schemas/SignalRemediationResource'
+          type: array
+          title: Resources
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - generated_in_scan_id
+      - rank
+      - type
+      - action
+      - validation
+      - state
+      - details
+      - resources
+      - updated_at
+      title: SignalRemediationDetail
+      description: One proposed or applied remediation for a Signal.
+    SignalArchiveUpdate:
+      properties:
+        archived:
+          type: boolean
+          title: Archived
+        reason:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Reason
+        comment:
+          anyOf:
+          - type: string
+            maxLength: 10000
+            minLength: 1
+          - type: 'null'
+          title: Comment
+      additionalProperties: false
+      type: object
+      required:
+      - archived
+      title: SignalArchiveUpdate
+      description: Archive a Signal with feedback, or restore its notifications.
+    SignalSummary:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        display_key:
+          type: string
+          title: Display Key
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        labels:
+          items:
+            type: string
+          type: array
+          title: Labels
+        severity_level:
+          $ref: '#/components/schemas/SignalSeverityLevel'
+        status:
+          $ref: '#/components/schemas/SignalStatus'
+          description: Whether the user has marked the Signal open or resolved.
+        notifications_muted:
+          type: boolean
+          title: Notifications Muted
+          description: Whether notifications are muted for this Signal.
+        affected_session_count:
+          type: integer
+          minimum: 0.0
+          title: Affected Session Count
+          description: Distinct affected sessions across the Signal and its merged Signals.
+        remediation_summary:
+          $ref: '#/components/schemas/SignalRemediationSummary'
+        merged_signal_count:
+          type: integer
+          minimum: 0.0
+          title: Merged Signal Count
+          description: All Signals nested under this Signal through merges.
+        last_seen_at:
+          type: string
+          format: date-time
+          title: Last Seen At
+          description: Latest occurrence time across the Signal and its merged Signals.
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - display_key
+      - title
+      - description
+      - labels
+      - severity_level
+      - status
+      - notifications_muted
+      - affected_session_count
+      - remediation_summary
+      - merged_signal_count
+      - last_seen_at
+      title: SignalSummary
+      description: Compact Signal representation used by the list page.
+    ExperimentSignalsConfigurationPut:
+      properties:
+        model:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Model
+          description: Model alias used for Signal generation.
+        integration_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Integration Id
+          description: Integration selected to run this model.
+        user_preferences:
+          $ref: '#/components/schemas/SignalsUserPreferences'
+      additionalProperties: false
+      type: object
+      required:
+      - model
+      title: ExperimentSignalsConfigurationPut
+      description: Signal generation settings available for one experiment run.
+    api__schemas__signals__SignalSeverity:
+      properties:
+        score:
+          type: integer
+          maximum: 100.0
+          minimum: 0.0
+          title: Score
+        level:
+          $ref: '#/components/schemas/SignalSeverityLevel'
+        rationale:
+          type: string
+          title: Rationale
+      additionalProperties: false
+      type: object
+      required:
+      - score
+      - level
+      - rationale
+      title: SignalSeverity
+      description: Severity assigned when the Signal was generated.
+    LogStreamSignalsConfigurationPut:
+      properties:
+        model:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Model
+          description: Model alias used for Signal generation.
+        integration_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Integration Id
+          description: Integration selected to run this model.
+        user_preferences:
+          $ref: '#/components/schemas/SignalsUserPreferences'
+        run_mode:
+          $ref: '#/components/schemas/SignalScanMode'
+          description: Whether scans run on demand or on a schedule.
+        schedule:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/CronSignalSchedule'
+            - $ref: '#/components/schemas/IntervalSignalSchedule'
+            discriminator:
+              propertyName: type
+              mapping:
+                CRON: '#/components/schemas/CronSignalSchedule'
+                INTERVAL: '#/components/schemas/IntervalSignalSchedule'
+          - type: 'null'
+          title: Schedule
+          description: Cadence for scheduled scans.
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+          description: Date from which scheduled scans may run.
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+          description: Date after which scheduled scans stop.
+        scheduled_runs_enabled:
+          type: boolean
+          title: Scheduled Runs Enabled
+          description: Whether the saved schedule currently submits scans.
+          default: false
+        notification_severities:
+          items:
+            $ref: '#/components/schemas/SignalSeverityLevel'
+          type: array
+          maxItems: 3
+          title: Notification Severities
+          description: Severity levels that send notifications when a Signal is created or updated.
+      additionalProperties: false
+      type: object
+      required:
+      - model
+      - run_mode
+      title: LogStreamSignalsConfigurationPut
+      description: Complete Signal generation and scheduling settings for one log stream.
+    SignalFeedbackDetail:
+      properties:
+        rating:
+          $ref: '#/components/schemas/SignalFeedbackRating'
+        comment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Comment
+        recorded_at:
+          type: string
+          format: date-time
+          title: Recorded At
+      additionalProperties: false
+      type: object
+      required:
+      - rating
+      - comment
+      - recorded_at
+      title: SignalFeedbackDetail
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

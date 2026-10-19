@@ -1,0 +1,608 @@
+openapi: 3.2.0
+info:
+  title: Galileo API Server Forecast Config API
+  version: 0.0.0+orbit
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: forecast_config
+paths:
+  /tokenomics/v1/forecast-configs:
+    post:
+      tags:
+      - forecast_config
+      summary: Create Forecast Config V1
+      operationId: create_forecast_config_v1_tokenomics_v1_forecast_configs_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - forecast_config
+      summary: List Forecast Configs V1
+      operationId: list_forecast_configs_v1_tokenomics_v1_forecast_configs_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListForecastConfigsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/forecast-configs:
+    post:
+      tags:
+      - forecast_config
+      summary: Create Forecast Config
+      operationId: create_forecast_config_tokenomics_forecast_configs_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegacyCreateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - forecast_config
+      summary: List Forecast Configs
+      operationId: list_forecast_configs_tokenomics_forecast_configs_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: starting_token
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Starting Token
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyListForecastConfigsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/v1/forecast-configs/{forecast_config_id}:
+    get:
+      tags:
+      - forecast_config
+      summary: Get Forecast Config V1
+      operationId: get_forecast_config_v1_tokenomics_v1_forecast_configs__forecast_config_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - forecast_config
+      summary: Update Forecast Config V1
+      operationId: update_forecast_config_v1_tokenomics_v1_forecast_configs__forecast_config_id__put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - forecast_config
+      summary: Delete Forecast Config V1
+      operationId: delete_forecast_config_v1_tokenomics_v1_forecast_configs__forecast_config_id__delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tokenomics/forecast-configs/{forecast_config_id}:
+    get:
+      tags:
+      - forecast_config
+      summary: Get Forecast Config
+      operationId: get_forecast_config_tokenomics_forecast_configs__forecast_config_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - forecast_config
+      summary: Update Forecast Config
+      operationId: update_forecast_config_tokenomics_forecast_configs__forecast_config_id__put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegacyUpdateForecastConfigRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyForecastConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - forecast_config
+      summary: Delete Forecast Config
+      operationId: delete_forecast_config_tokenomics_forecast_configs__forecast_config_id__delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: forecast_config_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Forecast Config Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    UpdateForecastConfigRequest:
+      properties:
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+      additionalProperties: false
+      type: object
+      title: UpdateForecastConfigRequest
+    ListForecastConfigsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        forecast_configs:
+          items:
+            $ref: '#/components/schemas/ForecastConfigResponse'
+          type: array
+          title: Forecast Configs
+      type: object
+      title: ListForecastConfigsResponse
+    LegacyUpdateForecastConfigRequest:
+      properties:
+        provider:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Provider
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Model Name
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+        forecast_metric:
+          anyOf:
+          - type: string
+            const: total_cost
+          - type: 'null'
+          title: Forecast Metric
+        forecast_to_day:
+          anyOf:
+          - type: integer
+            maximum: 31.0
+            minimum: 0.0
+          - type: 'null'
+          title: Forecast To Day
+      type: object
+      title: LegacyUpdateForecastConfigRequest
+    CreateForecastConfigRequest:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+      additionalProperties: false
+      type: object
+      title: CreateForecastConfigRequest
+    LegacyCreateForecastConfigRequest:
+      properties:
+        provider:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Provider
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Model Name
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        forecast_metric:
+          type: string
+          const: total_cost
+          title: Forecast Metric
+          default: total_cost
+        forecast_to_day:
+          type: integer
+          maximum: 31.0
+          minimum: 0.0
+          title: Forecast To Day
+          default: 0
+      type: object
+      title: LegacyCreateForecastConfigRequest
+    ForecastConfigResponse:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+      type: object
+      required:
+      - id
+      - organization_id
+      title: ForecastConfigResponse
+    LegacyListForecastConfigsResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        forecast_configs:
+          items:
+            $ref: '#/components/schemas/LegacyForecastConfigResponse'
+          type: array
+          title: Forecast Configs
+      type: object
+      title: LegacyListForecastConfigsResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LegacyForecastConfigResponse:
+      properties:
+        provider:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Provider
+        model_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Model Name
+        enabled:
+          type: boolean
+          title: Enabled
+          default: true
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        forecast_metric:
+          type: string
+          const: total_cost
+          title: Forecast Metric
+          default: total_cost
+        forecast_to_day:
+          type: integer
+          maximum: 31.0
+          minimum: 0.0
+          title: Forecast To Day
+          default: 0
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+      type: object
+      required:
+      - id
+      - organization_id
+      title: LegacyForecastConfigResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

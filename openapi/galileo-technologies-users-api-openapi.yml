@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Users API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -26,8 +26,8 @@ paths:
                 type: array
                 title: Response Get User Roles User Roles Get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /request_access:
@@ -89,8 +89,8 @@ paths:
         - POST /users/social'
       operationId: generate_signup_link_signup_link_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -139,8 +139,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /users:
@@ -202,8 +202,8 @@ paths:
       operationId: list_users_users_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -240,8 +240,8 @@ paths:
       summary: Delete User Self
       operationId: delete_user_self_users_delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       responses:
@@ -396,8 +396,8 @@ paths:
       summary: List Users Paginated
       operationId: list_users_paginated_users_all_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -452,8 +452,8 @@ paths:
       operationId: list_all_users_users_all_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       responses:
@@ -473,8 +473,8 @@ paths:
       summary: Get User
       operationId: get_user_users__user_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -504,8 +504,8 @@ paths:
       summary: Update User
       operationId: update_user_users__user_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -545,8 +545,8 @@ paths:
       summary: Delete User
       operationId: delete_user_users__user_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -578,8 +578,8 @@ paths:
       description: Gets the most recent run for a User, ordered by last updated.
       operationId: get_latest_user_run_users__user_id__runs_latest_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -628,14 +628,16 @@ paths:
       tags:
       - Users
       summary: Get Project Runs For User
-      description: 'Get all user created runs across all projects they can access.
+      description: 'Get runs created by a user across projects visible to the caller.
 
 
-        This returns a filtered list of projects with only runs created by this user.'
+        This returns caller-visible projects populated only with runs created by
+
+        the requested user.'
       operationId: get_project_runs_for_user_users__user_id__runs_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -677,8 +679,8 @@ paths:
       summary: Generate Password Reset Link
       operationId: generate_password_reset_link_generate_password_reset_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -709,8 +711,8 @@ paths:
       description: Transfers all projects, runs, and edits created by a user to another user.
       operationId: transfer_user_data_users__user_id__transfer_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -746,6 +748,7 @@ paths:
       tags:
       - Users
       summary: Current User
+      description: Return the authenticated user and their current organization permissions.
       operationId: current_user_current_user_get
       responses:
         '200':
@@ -755,8 +758,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/CurrentUserDB'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /v2/system_users:
@@ -871,8 +874,8 @@ paths:
                 type: array
                 title: Response Get User Roles V2 User Roles Get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /v2/invite_users:
@@ -900,8 +903,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /v2/users/all:
@@ -911,8 +914,8 @@ paths:
       summary: List Users Paginated
       operationId: list_users_paginated_v2_users_all_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -961,8 +964,8 @@ paths:
       summary: Get User
       operationId: get_user_v2_users__user_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -992,8 +995,8 @@ paths:
       summary: Update User
       operationId: update_user_v2_users__user_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1033,8 +1036,8 @@ paths:
       summary: Delete User
       operationId: delete_user_v2_users__user_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1063,6 +1066,7 @@ paths:
       tags:
       - Users
       summary: Current User
+      description: Return the authenticated user and their current organization permissions.
       operationId: current_user_v2_current_user_get
       responses:
         '200':
@@ -1072,8 +1076,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/CurrentUserDB'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /public/v2/system_users:
@@ -1188,8 +1192,8 @@ paths:
                 type: array
                 title: Response Get User Roles Public V2 User Roles Get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /public/v2/invite_users:
@@ -1217,8 +1221,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /public/v2/users/all:
@@ -1228,8 +1232,8 @@ paths:
       summary: List Users Paginated
       operationId: list_users_paginated_public_v2_users_all_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1278,8 +1282,8 @@ paths:
       summary: Get User
       operationId: get_user_public_v2_users__user_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1309,8 +1313,8 @@ paths:
       summary: Update User
       operationId: update_user_public_v2_users__user_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1350,8 +1354,8 @@ paths:
       summary: Delete User
       operationId: delete_user_public_v2_users__user_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1380,6 +1384,7 @@ paths:
       tags:
       - Users
       summary: Current User
+      description: Return the authenticated user and their current organization permissions.
       operationId: current_user_public_v2_current_user_get
       responses:
         '200':
@@ -1389,253 +1394,113 @@ paths:
               schema:
                 $ref: '#/components/schemas/CurrentUserDB'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
 components:
   schemas:
-    IntegrationAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - read_secrets
-      title: IntegrationAction
-    SystemUserStatus:
-      type: string
-      enum:
-      - requested
-      - invited
-      - enabled
-      - disabled
-      title: SystemUserStatus
-    FineTunedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: FineTunedScorerAction
-    UserCreate:
+    UserCreatedAtSort:
       properties:
-        email:
+        name:
           type: string
-          format: email
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-          default: ''
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-          default: ''
-        auth_method:
-          $ref: '#/components/schemas/AuthMethod'
-          default: email
-        role:
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: UserCreatedAtSort
+    UserRoleInfo:
+      properties:
+        name:
           $ref: '#/components/schemas/UserRole'
-          default: read_only
-        email_is_verified:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Email Is Verified
-          default: false
-        password:
-          anyOf:
-          - type: string
-            format: password
-            writeOnly: true
-          - type: 'null'
-          title: Password
+          examples:
+          - admin
+        display_name:
+          type: string
+          title: Display Name
+          examples:
+          - Admin
+        description:
+          type: string
+          title: Description
+          examples:
+          - Full access
       type: object
       required:
-      - email
-      title: UserCreate
-    RegisteredScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: RegisteredScorerAction
-    ProjectAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - rename
-      - share
-      - create_run
-      - delete_run
-      - rename_run
-      - move_run
-      - export_data
-      - configure_human_feedback
-      - record_human_feedback
-      - log_data
-      - toggle_metric
-      - edit_alert
-      - create_stage
-      - edit_stage
-      - configure_crown_logic
-      - delete_data
-      - set_metric
-      - edit_run_tags
-      - dismiss_alert
-      - edit_slice
-      - edit_edit
-      - update_control_bindings
-      - use_control_runtime
-      title: ProjectAction
-    Permission:
+      - name
+      - display_name
+      - description
+      title: UserRoleInfo
+    GetUserLatestRunsDB:
       properties:
-        action:
-          anyOf:
-          - $ref: '#/components/schemas/UserAction'
-          - $ref: '#/components/schemas/GroupAction'
-          - $ref: '#/components/schemas/GroupMemberAction'
-          - $ref: '#/components/schemas/ProjectAction'
-          - $ref: '#/components/schemas/ScorerAction'
-          - $ref: '#/components/schemas/RegisteredScorerAction'
-          - $ref: '#/components/schemas/ApiKeyAction'
-          - $ref: '#/components/schemas/GeneratedScorerAction'
-          - $ref: '#/components/schemas/FineTunedScorerAction'
-          - $ref: '#/components/schemas/DatasetAction'
-          - $ref: '#/components/schemas/IntegrationAction'
-          - $ref: '#/components/schemas/OrganizationAction'
-          - $ref: '#/components/schemas/AnnotationQueueAction'
-          - $ref: '#/components/schemas/ControlResourceAction'
-          title: Action
-        allowed:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
           type: boolean
-          title: Allowed
-        message:
+          title: Paginated
+          default: false
+        next_starting_token:
           anyOf:
-          - type: string
+          - type: integer
           - type: 'null'
+          title: Next Starting Token
+        runs:
+          items:
+            $ref: '#/components/schemas/RunDBThinWithProjectName'
+          type: array
+          title: Runs
+      type: object
+      title: GetUserLatestRunsDB
+    TransferUserResponse:
+      properties:
+        message:
+          type: string
           title: Message
       type: object
       required:
-      - action
-      - allowed
-      title: Permission
-    SystemUserDB:
+      - message
+      title: TransferUserResponse
+    UserCreatedAtFilter:
       properties:
-        id:
+        name:
           type: string
-          format: uuid4
-          title: Id
-        created_at:
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
           type: string
           format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        email:
-          type: string
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-        email_is_verified:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Email Is Verified
-        status:
-          $ref: '#/components/schemas/SystemUserStatus'
-        role:
-          $ref: '#/components/schemas/SystemRole'
-        auth_method:
-          type: string
-          title: Auth Method
+          title: Value
       type: object
       required:
-      - id
-      - created_at
-      - updated_at
-      - email
-      - status
-      - role
-      - auth_method
-      title: SystemUserDB
-    OrganizationAction:
-      type: string
-      enum:
-      - rename
-      - delete
-      - delete_log_data
-      - read_settings
-      - update_settings
-      - read_cost_settings
-      - read_ai_usage
-      title: OrganizationAction
-    DatasetAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - rename
-      title: DatasetAction
-    PasswordResetResponse:
-      properties:
-        pathname:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Pathname
-      type: object
-      title: PasswordResetResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SocialLoginRequest:
-      properties:
-        id_token:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Id Token
-        access_token:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Access Token
-        provider:
-          $ref: '#/components/schemas/SocialProvider'
-      type: object
-      required:
-      - provider
-      title: SocialLoginRequest
-    GroupMemberAction:
-      type: string
-      enum:
-      - update_role
-      - delete
-      title: GroupMemberAction
+      - operator
+      - value
+      title: UserCreatedAtFilter
     GetUserResponse:
       properties:
         id:
@@ -1706,102 +1571,97 @@ components:
       - projects_count
       - runs_count
       title: GetUserResponse
-    ResourceKind:
+    SystemRole:
       type: string
       enum:
-      - audit_log
+      - system_admin
       - system_user
-      - user
-      - group
-      - group_member
-      - project
-      - integration
-      - provider_management_api_integration
-      - scorer
-      - registered_scorer
-      - finetuned_scorer
-      - generated_scorer
-      - api_key
-      - dataset
-      - stage
-      - stage_version
-      - organization
-      - usage_limit
-      - prompt_template
-      - annotation_queue
-      - log_stream
-      - experiment
-      - experiment_group
-      - user_integration
-      - group_integration
-      - user_integration_selection
-      - trace
-      - control
-      title: ResourceKind
-    ControlResourceAction:
+      title: SystemRole
+    OrganizationAction:
       type: string
       enum:
-      - create
-      - read
+      - rename
+      - delete
+      - delete_log_data
+      - read_settings
+      - update_settings
+      - read_cost_settings
+      - read_ai_usage
+      - read_ai_usage_organization
+      - read_unredacted_data
+      title: OrganizationAction
+    ApiKeyAction:
+      type: string
+      enum:
       - update
       - delete
-      title: ControlResourceAction
-      description: Actions on Agent Control's org-scoped ``control`` resource.
-    UserFirstNameFilter:
+      title: ApiKeyAction
+    HTTPValidationError:
       properties:
-        name:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RunTagDB:
+      properties:
+        key:
           type: string
-          const: first_name
-          title: Name
-          default: first_name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
+          maxLength: 256
+          title: Key
         value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
+          type: string
+          maxLength: 256
           title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
+        tag_type:
+          type: string
+          title: Tag Type
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
       type: object
       required:
-      - operator
+      - key
       - value
-      title: UserFirstNameFilter
-    UserRole:
-      type: string
-      enum:
-      - admin
-      - manager
-      - user
-      - read_only
-      title: UserRole
-    ScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - export
-      - autotune_apply
-      title: ScorerAction
-    UserUpdate:
+      - tag_type
+      - project_id
+      - run_id
+      - created_by
+      - id
+      - created_at
+      - updated_at
+      title: RunTagDB
+    UserInfo:
       properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
         email:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Email
         first_name:
           anyOf:
@@ -1813,35 +1673,32 @@ components:
           - type: string
           - type: 'null'
           title: Last Name
-        role:
-          anyOf:
-          - $ref: '#/components/schemas/UserRole'
-          - type: 'null'
-        email_is_verified:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Email Is Verified
       type: object
-      title: UserUpdate
-    UserCreatedAtSort:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: UserCreatedAtSort
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    GenericAction:
+      type: string
+      enum:
+      - generic_create
+      - generic_read
+      - generic_update
+      - generic_delete
+      title: GenericAction
+    AuthMethod:
+      type: string
+      enum:
+      - email
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      - invite
+      title: AuthMethod
     CreateSignupLinkResponse:
       properties:
         message:
@@ -1856,104 +1713,46 @@ components:
       required:
       - message
       title: CreateSignupLinkResponse
-    ApiKeyAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: ApiKeyAction
-    UserVerifiedFilter:
+    QueryUserParams:
       properties:
-        name:
-          type: string
-          const: verified
-          title: Name
-          default: verified
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          title: Operator
-          default: eq
-        value:
-          type: boolean
-          title: Value
-      type: object
-      required:
-      - value
-      title: UserVerifiedFilter
-    TransferUserResponse:
-      properties:
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - message
-      title: TransferUserResponse
-    UpdateUserResponse:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        permissions:
+        filters:
           items:
-            $ref: '#/components/schemas/Permission'
+            oneOf:
+            - $ref: '#/components/schemas/UserFirstNameFilter'
+            - $ref: '#/components/schemas/UserLastNameFilter'
+            - $ref: '#/components/schemas/UserEmailFilter'
+            - $ref: '#/components/schemas/UserVerifiedFilter'
+            - $ref: '#/components/schemas/UserCreatedAtFilter'
+            - $ref: '#/components/schemas/UserUpdatedAtFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/UserCreatedAtFilter'
+                email: '#/components/schemas/UserEmailFilter'
+                first_name: '#/components/schemas/UserFirstNameFilter'
+                last_name: '#/components/schemas/UserLastNameFilter'
+                updated_at: '#/components/schemas/UserUpdatedAtFilter'
+                verified: '#/components/schemas/UserVerifiedFilter'
           type: array
-          title: Permissions
-          default: []
-        email:
-          type: string
-          title: Email
-        first_name:
+          title: Filters
+        sort:
           anyOf:
-          - type: string
+          - oneOf:
+            - $ref: '#/components/schemas/UserVerifiedSort'
+            - $ref: '#/components/schemas/UserCreatedAtSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/UserCreatedAtSort'
+                verified: '#/components/schemas/UserVerifiedSort'
           - type: 'null'
-          title: First Name
-          default: ''
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-          default: ''
-        auth_method:
-          $ref: '#/components/schemas/AuthMethod'
-          default: email
-        role:
-          $ref: '#/components/schemas/UserRole'
-          default: read_only
-        email_is_verified:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Email Is Verified
-        organization_id:
-          type: string
-          format: uuid4
-          title: Organization Id
-        organization_name:
-          type: string
-          title: Organization Name
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
       type: object
-      required:
-      - id
-      - email
-      - organization_id
-      - organization_name
-      - created_at
-      - updated_at
-      title: UpdateUserResponse
+      title: QueryUserParams
     CurrentUserDB:
       properties:
         id:
@@ -2007,12 +1806,20 @@ components:
           type: string
           format: date-time
           title: Updated At
+        organization:
+          $ref: '#/components/schemas/OrganizationWithPermissionsResponse'
         generic_permissions:
           items:
             $ref: '#/components/schemas/GenericPermission'
           type: array
           title: Generic Permissions
           default: []
+        capabilities:
+          items:
+            type: string
+          type: array
+          title: Capabilities
+          description: Capability keys carried by the authenticated request context. Only capability-based gateway sessions populate this field. Role-based sessions use generic_permissions and return an empty list.
       type: object
       required:
       - id
@@ -2021,48 +1828,105 @@ components:
       - organization_name
       - created_at
       - updated_at
+      - organization
       title: CurrentUserDB
-    UserVerifiedSort:
-      properties:
-        name:
-          type: string
-          const: verified
-          title: Name
-          default: verified
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: custom
-          title: Sort Type
-          default: custom
-      type: object
-      title: UserVerifiedSort
-    TaskType:
-      type: integer
+    SystemUserAccountType:
+      type: string
       enum:
-      - 7
-      - 9
-      - 12
-      - 13
-      - 15
-      - 16
-      - 17
-      - 18
-      title: TaskType
-      description: 'Valid task types for modeling.
-
-
-        We store these as ints instead of strings because we will be looking this up in the database frequently.'
-    UserEmailFilter:
+      - human
+      - service
+      - token
+      title: SystemUserAccountType
+    IntegrationAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - read_secrets
+      title: IntegrationAction
+    SystemUserDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        status:
+          $ref: '#/components/schemas/SystemUserStatus'
+        account_type:
+          $ref: '#/components/schemas/SystemUserAccountType'
+        role:
+          $ref: '#/components/schemas/SystemRole'
+        auth_method:
+          type: string
+          title: Auth Method
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - email
+      - status
+      - account_type
+      - role
+      - auth_method
+      title: SystemUserDB
+    RegisteredScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: RegisteredScorerAction
+    SystemUserStatus:
+      type: string
+      enum:
+      - requested
+      - invited
+      - enabled
+      - disabled
+      title: SystemUserStatus
+    UserRole:
+      type: string
+      enum:
+      - admin
+      - manager
+      - user
+      - read_only
+      - capability_based
+      title: UserRole
+    UserFirstNameFilter:
       properties:
         name:
           type: string
-          const: email
+          const: first_name
           title: Name
-          default: email
+          default: first_name
         operator:
           type: string
           enum:
@@ -2087,7 +1951,142 @@ components:
       required:
       - operator
       - value
-      title: UserEmailFilter
+      title: UserFirstNameFilter
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GetUsersResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        users:
+          items:
+            $ref: '#/components/schemas/GetUserResponse'
+          type: array
+          title: Users
+      type: object
+      required:
+      - users
+      title: GetUsersResponse
+    ProjectAction:
+      type: string
+      enum:
+      - read_all_logs
+      - read_filtered_logs
+      - delete
+      - rename
+      - share
+      - create_run
+      - delete_run
+      - rename_run
+      - move_run
+      - export_data
+      - configure_human_feedback
+      - record_human_feedback
+      - log_data
+      - toggle_metric
+      - edit_alert
+      - create_stage
+      - edit_stage
+      - configure_crown_logic
+      - configure_rate_limit
+      - delete_data
+      - set_metric
+      - edit_run_tags
+      - dismiss_alert
+      - edit_slice
+      - edit_edit
+      - update_control_bindings
+      - use_control_runtime
+      title: ProjectAction
+    SocialLoginRequest:
+      properties:
+        id_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id Token
+        access_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Access Token
+        provider:
+          $ref: '#/components/schemas/SocialProvider'
+      type: object
+      required:
+      - provider
+      title: SocialLoginRequest
+    UserLastNameFilter:
+      properties:
+        name:
+          type: string
+          const: last_name
+          title: Name
+          default: last_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: UserLastNameFilter
     RunDB:
       properties:
         name:
@@ -2182,12 +2181,6 @@ components:
       - last_updated_by
       - creator
       title: RunDB
-    ProjectLabels:
-      type: string
-      enum:
-      - sample
-      title: ProjectLabels
-      description: Enum for project labels used in the UI.
     GroupAction:
       type: string
       enum:
@@ -2196,14 +2189,37 @@ components:
       - join
       - request_to_join
       title: GroupAction
-    UserInfo:
+    SocialProvider:
+      type: string
+      enum:
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      title: SocialProvider
+    ControlResourceAction:
+      type: string
+      enum:
+      - create
+      - read
+      - update
+      - delete
+      title: ControlResourceAction
+      description: Actions on Agent Control's org-scoped ``control`` resource.
+    GeneratedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: GeneratedScorerAction
+    UserUpdate:
       properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
         email:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Email
         first_name:
           anyOf:
@@ -2215,262 +2231,22 @@ components:
           - type: string
           - type: 'null'
           title: Last Name
-      type: object
-      required:
-      - id
-      - email
-      title: UserInfo
-      description: A user's basic information, used for display purposes.
-    GetUserLatestRunsDB:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        runs:
-          items:
-            $ref: '#/components/schemas/RunDBThinWithProjectName'
-          type: array
-          title: Runs
-      type: object
-      title: GetUserLatestRunsDB
-    SocialProvider:
-      type: string
-      enum:
-      - google
-      - github
-      - okta
-      - azure-ad
-      - custom
-      - saml
-      title: SocialProvider
-    UserRoleInfo:
-      properties:
-        name:
-          $ref: '#/components/schemas/UserRole'
-          examples:
-          - admin
-        display_name:
-          type: string
-          title: Display Name
-          examples:
-          - Admin
-        description:
-          type: string
-          title: Description
-          examples:
-          - Full access
-      type: object
-      required:
-      - name
-      - display_name
-      - description
-      title: UserRoleInfo
-    InviteUsersRequest:
-      properties:
-        auth_method:
-          $ref: '#/components/schemas/AuthMethod'
-          default: email
-        emails:
-          items:
-            type: string
-          type: array
-          minItems: 1
-          title: Emails
         role:
-          $ref: '#/components/schemas/UserRole'
-          default: user
-        group_ids:
-          items:
-            type: string
-            format: uuid4
-          type: array
-          title: Group Ids
-          default: []
-        send_email:
-          type: boolean
-          title: Send Email
-          default: true
-      type: object
-      required:
-      - emails
-      title: InviteUsersRequest
-    QueryUserParams:
-      properties:
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/UserFirstNameFilter'
-            - $ref: '#/components/schemas/UserLastNameFilter'
-            - $ref: '#/components/schemas/UserEmailFilter'
-            - $ref: '#/components/schemas/UserVerifiedFilter'
-            - $ref: '#/components/schemas/UserCreatedAtFilter'
-            - $ref: '#/components/schemas/UserUpdatedAtFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/UserCreatedAtFilter'
-                email: '#/components/schemas/UserEmailFilter'
-                first_name: '#/components/schemas/UserFirstNameFilter'
-                last_name: '#/components/schemas/UserLastNameFilter'
-                updated_at: '#/components/schemas/UserUpdatedAtFilter'
-                verified: '#/components/schemas/UserVerifiedFilter'
-          type: array
-          title: Filters
-        sort:
           anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/UserVerifiedSort'
-            - $ref: '#/components/schemas/UserCreatedAtSort'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/UserCreatedAtSort'
-                verified: '#/components/schemas/UserVerifiedSort'
+          - $ref: '#/components/schemas/UserRole'
           - type: 'null'
-          title: Sort
-          default:
-            name: created_at
-            ascending: false
-            sort_type: column
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
       type: object
-      title: QueryUserParams
-    RunTagDB:
+      title: UserUpdate
+    UserCreate:
       properties:
-        key:
-          type: string
-          maxLength: 256
-          title: Key
-        value:
-          type: string
-          maxLength: 256
-          title: Value
-        tag_type:
-          type: string
-          title: Tag Type
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - key
-      - value
-      - tag_type
-      - project_id
-      - run_id
-      - created_by
-      - id
-      - created_at
-      - updated_at
-      title: RunTagDB
-    AuthMethod:
-      type: string
-      enum:
-      - email
-      - google
-      - github
-      - okta
-      - azure-ad
-      - custom
-      - saml
-      - invite
-      title: AuthMethod
-    UserCreatedAtFilter:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: UserCreatedAtFilter
-    GeneratedScorerAction:
-      type: string
-      enum:
-      - update
-      - delete
-      title: GeneratedScorerAction
-    AnnotationQueueAction:
-      type: string
-      enum:
-      - update
-      - delete
-      - share
-      - record_annotation
-      title: AnnotationQueueAction
-    ProjectType:
-      type: string
-      enum:
-      - prompt_evaluation
-      - llm_monitor
-      - protect
-      - gen_ai
-      title: ProjectType
-    UserDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        permissions:
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-          title: Permissions
-          default: []
         email:
           type: string
+          format: email
           title: Email
         first_name:
           anyOf:
@@ -2495,30 +2271,24 @@ components:
           - type: boolean
           - type: 'null'
           title: Email Is Verified
-        organization_id:
-          type: string
-          format: uuid4
-          title: Organization Id
-        organization_name:
-          type: string
-          title: Organization Name
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
+          default: false
+        password:
+          anyOf:
+          - type: string
+            format: password
+            writeOnly: true
+          - type: 'null'
+          title: Password
       type: object
       required:
-      - id
       - email
-      - organization_id
-      - organization_name
-      - created_at
-      - updated_at
-      title: UserDB
+      title: UserCreate
+    FineTunedScorerAction:
+      type: string
+      enum:
+      - update
+      - delete
+      title: FineTunedScorerAction
     GenericPermission:
       properties:
         resource:
@@ -2545,6 +2315,58 @@ components:
         The actions are not specific to a resource instance (e.g. create). More fine-grained permissions should also be set
 
         in the authorization policies.'
+    UserVerifiedSort:
+      properties:
+        name:
+          type: string
+          const: verified
+          title: Name
+          default: verified
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: custom
+          title: Sort Type
+          default: custom
+      type: object
+      title: UserVerifiedSort
+    ResourceKind:
+      type: string
+      enum:
+      - audit_log
+      - system_user
+      - user
+      - group
+      - group_member
+      - project
+      - integration
+      - provider_management_api_integration
+      - scorer
+      - registered_scorer
+      - finetuned_scorer
+      - generated_scorer
+      - api_key
+      - dataset
+      - stage
+      - stage_version
+      - organization
+      - prompt_template
+      - annotation_queue
+      - log_stream
+      - experiment
+      - experiment_group
+      - user_integration
+      - group_integration
+      - user_integration_selection
+      - trace
+      - signal
+      - signal_scan
+      - control
+      - custom_dashboard
+      title: ResourceKind
     ProjectDB:
       properties:
         id:
@@ -2608,60 +2430,68 @@ components:
       - created_at
       - updated_at
       title: ProjectDB
-    ValidationError:
+    UserDB:
       properties:
-        loc:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/Permission'
           type: array
-          title: Location
-        msg:
+          title: Permissions
+          default: []
+        email:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    GetUsersResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
+          title: Email
+        first_name:
           anyOf:
-          - type: integer
+          - type: string
           - type: 'null'
-          title: Next Starting Token
-        users:
-          items:
-            $ref: '#/components/schemas/GetUserResponse'
-          type: array
-          title: Users
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
       type: object
       required:
-      - users
-      title: GetUsersResponse
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      title: UserDB
     UserUpdatedAtFilter:
       properties:
         name:
@@ -2688,6 +2518,32 @@ components:
       - operator
       - value
       title: UserUpdatedAtFilter
+    ScorerAction:
+      type: string
+      enum:
+      - create_shared
+      - create_global
+      - update
+      - delete
+      - share
+      - export
+      - autotune_apply
+      title: ScorerAction
+    ProjectLabels:
+      type: string
+      enum:
+      - sample
+      title: ProjectLabels
+      description: Enum for project labels used in the UI.
+    DeleteUserResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - message
+      title: DeleteUserResponse
     UserAction:
       type: string
       enum:
@@ -2698,6 +2554,7 @@ components:
       - change_role_to_manager
       - change_role_to_user
       - change_role_to_read_only
+      - change_role_to_capability_based
       title: UserAction
     RunDBThinWithProjectName:
       properties:
@@ -2797,28 +2654,202 @@ components:
       - creator
       - project_name
       title: RunDBThinWithProjectName
-    DeleteUserResponse:
+    InviteUsersRequest:
       properties:
-        message:
-          type: string
-          title: Message
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        emails:
+          items:
+            type: string
+          type: array
+          minItems: 1
+          title: Emails
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: user
+        group_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Group Ids
+          default: []
+        send_email:
+          type: boolean
+          title: Send Email
+          default: true
       type: object
       required:
-      - message
-      title: DeleteUserResponse
-    SystemRole:
+      - emails
+      title: InviteUsersRequest
+    TaskType:
+      type: integer
+      enum:
+      - 13
+      - 15
+      - 16
+      - 17
+      - 18
+      - 19
+      title: TaskType
+      description: 'Valid task types for modeling.
+
+
+        We store these as ints instead of strings because we will be looking this up in the database frequently.'
+    DatasetAction:
       type: string
       enum:
-      - system_admin
-      - system_user
-      title: SystemRole
-    UserLastNameFilter:
+      - update
+      - delete
+      - share
+      - export
+      - rename
+      title: DatasetAction
+    AnnotationQueueAction:
+      type: string
+      enum:
+      - update
+      - delete
+      - share
+      - record_annotation
+      title: AnnotationQueueAction
+    UserVerifiedFilter:
       properties:
         name:
           type: string
-          const: last_name
+          const: verified
           title: Name
-          default: last_name
+          default: verified
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+      type: object
+      required:
+      - value
+      title: UserVerifiedFilter
+    ProjectType:
+      type: string
+      enum:
+      - protect
+      - gen_ai
+      title: ProjectType
+    GroupMemberAction:
+      type: string
+      enum:
+      - update_role
+      - delete
+      title: GroupMemberAction
+    UpdateUserResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          default: ''
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          default: ''
+        auth_method:
+          $ref: '#/components/schemas/AuthMethod'
+          default: email
+        role:
+          $ref: '#/components/schemas/UserRole'
+          default: read_only
+        email_is_verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Email Is Verified
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        organization_name:
+          type: string
+          title: Organization Name
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - email
+      - organization_id
+      - organization_name
+      - created_at
+      - updated_at
+      title: UpdateUserResponse
+    OrganizationWithPermissionsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        permissions:
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+          title: Permissions
+          default: []
+        name:
+          type: string
+          title: Name
+        slug:
+          type: string
+          title: Slug
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - name
+      - slug
+      - created_at
+      - updated_at
+      title: OrganizationWithPermissionsResponse
+    UserEmailFilter:
+      properties:
+        name:
+          type: string
+          const: email
+          title: Name
+          default: email
         operator:
           type: string
           enum:
@@ -2843,24 +2874,57 @@ components:
       required:
       - operator
       - value
-      title: UserLastNameFilter
-    GenericAction:
-      type: string
-      enum:
-      - generic_create
-      - generic_read
-      - generic_update
-      - generic_delete
-      title: GenericAction
+      title: UserEmailFilter
+    Permission:
+      properties:
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/UserAction'
+          - $ref: '#/components/schemas/GroupAction'
+          - $ref: '#/components/schemas/GroupMemberAction'
+          - $ref: '#/components/schemas/ProjectAction'
+          - $ref: '#/components/schemas/ScorerAction'
+          - $ref: '#/components/schemas/RegisteredScorerAction'
+          - $ref: '#/components/schemas/ApiKeyAction'
+          - $ref: '#/components/schemas/GeneratedScorerAction'
+          - $ref: '#/components/schemas/FineTunedScorerAction'
+          - $ref: '#/components/schemas/DatasetAction'
+          - $ref: '#/components/schemas/IntegrationAction'
+          - $ref: '#/components/schemas/OrganizationAction'
+          - $ref: '#/components/schemas/AnnotationQueueAction'
+          - $ref: '#/components/schemas/ControlResourceAction'
+          title: Action
+        allowed:
+          type: boolean
+          title: Allowed
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - action
+      - allowed
+      title: Permission
+    PasswordResetResponse:
+      properties:
+        pathname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pathname
+      type: object
+      title: PasswordResetResponse
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

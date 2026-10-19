@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Audit Logs API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -19,8 +19,8 @@ paths:
         Use `cursor_id` from the previous response''s `next_cursor_id` to get the next page.'
       operationId: list_audit_logs_v2_audit_logs_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -127,23 +127,6 @@ components:
       - raw_event
       title: AuditLogRecord
       description: Single audit log record for query responses.
-    AuditLogListResponse:
-      properties:
-        records:
-          items:
-            $ref: '#/components/schemas/AuditLogRecord'
-          type: array
-          title: Records
-        next_cursor_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Cursor Id
-      type: object
-      required:
-      - records
-      title: AuditLogListResponse
-      description: Response for audit log list endpoint.
     AuditAction:
       type: string
       enum:
@@ -190,15 +173,32 @@ components:
       - msg
       - type
       title: ValidationError
+    AuditLogListResponse:
+      properties:
+        records:
+          items:
+            $ref: '#/components/schemas/AuditLogRecord'
+          type: array
+          title: Records
+        next_cursor_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Cursor Id
+      type: object
+      required:
+      - records
+      title: AuditLogListResponse
+      description: Response for audit log list endpoint.
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

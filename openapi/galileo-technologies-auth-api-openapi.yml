@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Auth API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -135,6 +135,7 @@ paths:
       tags:
       - Auth
       summary: Logout
+      description: Log the caller out by invalidating their refresh token and returning an already-expired token.
       operationId: logout_logout_post
       responses:
         '200':
@@ -144,8 +145,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Token'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /verify_email:
@@ -189,11 +190,17 @@ paths:
       tags:
       - Auth
       summary: Get Token
+      description: 'Issue an access token for the caller, optionally scoped to one of their organizations.
+
+
+        The organization may be named by id or by slug, but not both. When neither is given, the token is
+
+        scoped to whichever organization the caller is a member of.'
       operationId: get_token_token_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -232,6 +239,12 @@ paths:
       tags:
       - Auth
       summary: Refresh Token
+      description: 'Exchange a refresh token cookie for a fresh access token, rotating the refresh token.
+
+
+        Verification reads through the writer session: every exchange stamps a new jti on the system user,
+
+        and the next exchange has to observe that write to accept the token it just handed out.'
       operationId: refresh_token_refresh_token_post
       security:
       - OAuth2PasswordBearer: []
@@ -260,10 +273,16 @@ paths:
       tags:
       - Auth
       summary: Get Token
+      description: 'Issue an access token for the caller, optionally scoped to one of their organizations.
+
+
+        The organization may be named by id or by slug, but not both. When neither is given, the token is
+
+        scoped to whichever organization the caller is a member of.'
       operationId: get_token_v1_token_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -460,6 +479,12 @@ paths:
       tags:
       - Auth
       summary: Refresh Token
+      description: 'Exchange a refresh token cookie for a fresh access token, rotating the refresh token.
+
+
+        Verification reads through the writer session: every exchange stamps a new jti on the system user,
+
+        and the next exchange has to observe that write to accept the token it just handed out.'
       operationId: refresh_token_v1_refresh_token_post
       security:
       - OAuth2PasswordBearer: []
@@ -488,10 +513,16 @@ paths:
       tags:
       - Auth
       summary: Get Token
+      description: 'Issue an access token for the caller, optionally scoped to one of their organizations.
+
+
+        The organization may be named by id or by slug, but not both. When neither is given, the token is
+
+        scoped to whichever organization the caller is a member of.'
       operationId: get_token_v2_token_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -688,6 +719,12 @@ paths:
       tags:
       - Auth
       summary: Refresh Token
+      description: 'Exchange a refresh token cookie for a fresh access token, rotating the refresh token.
+
+
+        Verification reads through the writer session: every exchange stamps a new jti on the system user,
+
+        and the next exchange has to observe that write to accept the token it just handed out.'
       operationId: refresh_token_v2_refresh_token_post
       security:
       - OAuth2PasswordBearer: []
@@ -716,10 +753,16 @@ paths:
       tags:
       - Auth
       summary: Get Token
+      description: 'Issue an access token for the caller, optionally scoped to one of their organizations.
+
+
+        The organization may be named by id or by slug, but not both. When neither is given, the token is
+
+        scoped to whichever organization the caller is a member of.'
       operationId: get_token_public_v1_token_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -916,6 +959,12 @@ paths:
       tags:
       - Auth
       summary: Refresh Token
+      description: 'Exchange a refresh token cookie for a fresh access token, rotating the refresh token.
+
+
+        Verification reads through the writer session: every exchange stamps a new jti on the system user,
+
+        and the next exchange has to observe that write to accept the token it just handed out.'
       operationId: refresh_token_public_v1_refresh_token_post
       security:
       - OAuth2PasswordBearer: []
@@ -944,10 +993,16 @@ paths:
       tags:
       - Auth
       summary: Get Token
+      description: 'Issue an access token for the caller, optionally scoped to one of their organizations.
+
+
+        The organization may be named by id or by slug, but not both. When neither is given, the token is
+
+        scoped to whichever organization the caller is a member of.'
       operationId: get_token_public_v2_token_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1144,6 +1199,12 @@ paths:
       tags:
       - Auth
       summary: Refresh Token
+      description: 'Exchange a refresh token cookie for a fresh access token, rotating the refresh token.
+
+
+        Verification reads through the writer session: every exchange stamps a new jti on the system user,
+
+        and the next exchange has to observe that write to accept the token it just handed out.'
       operationId: refresh_token_public_v2_refresh_token_post
       security:
       - OAuth2PasswordBearer: []
@@ -1169,6 +1230,86 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    Body_login_email_v1_login_post:
+      properties:
+        grant_type:
+          anyOf:
+          - type: string
+            pattern: ^password$
+          - type: 'null'
+          title: Grant Type
+        username:
+          type: string
+          title: Username
+        password:
+          type: string
+          format: password
+          title: Password
+        scope:
+          type: string
+          title: Scope
+          default: ''
+        client_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Client Id
+        client_secret:
+          anyOf:
+          - type: string
+          - type: 'null'
+          format: password
+          title: Client Secret
+      type: object
+      required:
+      - username
+      - password
+      title: Body_login_email_v1_login_post
+    SocialProvider:
+      type: string
+      enum:
+      - google
+      - github
+      - okta
+      - azure-ad
+      - custom
+      - saml
+      title: SocialProvider
+    Body_login_email_public_v2_login_post:
+      properties:
+        grant_type:
+          anyOf:
+          - type: string
+            pattern: ^password$
+          - type: 'null'
+          title: Grant Type
+        username:
+          type: string
+          title: Username
+        password:
+          type: string
+          format: password
+          title: Password
+        scope:
+          type: string
+          title: Scope
+          default: ''
+        client_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Client Id
+        client_secret:
+          anyOf:
+          - type: string
+          - type: 'null'
+          format: password
+          title: Client Secret
+      type: object
+      required:
+      - username
+      - password
+      title: Body_login_email_public_v2_login_post
     Body_login_email_v2_login_post:
       properties:
         grant_type:
@@ -1248,104 +1389,6 @@ components:
       - username
       - password
       title: Body_login_email_login_post
-    Body_login_email_v1_login_post:
-      properties:
-        grant_type:
-          anyOf:
-          - type: string
-            pattern: ^password$
-          - type: 'null'
-          title: Grant Type
-        username:
-          type: string
-          title: Username
-        password:
-          type: string
-          format: password
-          title: Password
-        scope:
-          type: string
-          title: Scope
-          default: ''
-        client_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Client Id
-        client_secret:
-          anyOf:
-          - type: string
-          - type: 'null'
-          format: password
-          title: Client Secret
-      type: object
-      required:
-      - username
-      - password
-      title: Body_login_email_v1_login_post
-    SocialProvider:
-      type: string
-      enum:
-      - google
-      - github
-      - okta
-      - azure-ad
-      - custom
-      - saml
-      title: SocialProvider
-    GetTokenResponse:
-      properties:
-        access_token:
-          type: string
-          title: Access Token
-        token_type:
-          type: string
-          title: Token Type
-          default: bearer
-        expires_at:
-          type: string
-          format: date-time
-          title: Expires At
-      type: object
-      required:
-      - access_token
-      - expires_at
-      title: GetTokenResponse
-    Body_login_email_public_v2_login_post:
-      properties:
-        grant_type:
-          anyOf:
-          - type: string
-            pattern: ^password$
-          - type: 'null'
-          title: Grant Type
-        username:
-          type: string
-          title: Username
-        password:
-          type: string
-          format: password
-          title: Password
-        scope:
-          type: string
-          title: Scope
-          default: ''
-        client_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Client Id
-        client_secret:
-          anyOf:
-          - type: string
-          - type: 'null'
-          format: password
-          title: Client Secret
-      type: object
-      required:
-      - username
-      - password
-      title: Body_login_email_public_v2_login_post
     Body_login_email_public_v1_login_post:
       properties:
         grant_type:
@@ -1381,6 +1424,60 @@ components:
       - username
       - password
       title: Body_login_email_public_v1_login_post
+    GetTokenResponse:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        token_type:
+          type: string
+          title: Token Type
+          default: bearer
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+      type: object
+      required:
+      - access_token
+      - expires_at
+      title: GetTokenResponse
+    EmailVerificationRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - email
+      title: EmailVerificationRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -1408,32 +1505,6 @@ components:
       required:
       - provider
       title: SocialLoginRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     Token:
       properties:
         access_token:
@@ -1447,25 +1518,15 @@ components:
       required:
       - access_token
       title: Token
-    EmailVerificationRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-      type: object
-      required:
-      - email
-      title: EmailVerificationRequest
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

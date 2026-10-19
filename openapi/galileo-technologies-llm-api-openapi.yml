@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Llm API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -34,8 +34,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+  /luna3-scorers/weights/upload:
+    post:
+      tags:
+      - LLM
+      summary: Prepare Luna3 Scorer Weights Upload
+      description: Prepare object-store uploads for the two PEFT artifacts consumed by Wizard v2.
+      operationId: prepare_luna3_scorer_weights_upload_luna3_scorers_weights_upload_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Luna3ScorerWeightsUploadResponse'
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /generated-scorers/task-results/{task_result_id}:
@@ -45,8 +64,8 @@ paths:
       summary: Get Task Result
       operationId: get_task_result_generated_scorers_task_results__task_result_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -72,6 +91,14 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    GeneratedScorerTaskResultType:
+      type: string
+      enum:
+      - scorer_auto_gen
+      - scorer_auto_gen_v2
+      - scorer_validation
+      - decision_scorer_validation
+      title: GeneratedScorerTaskResultType
     GeneratedScorerTaskResultResponse:
       properties:
         id:
@@ -94,6 +121,7 @@ components:
           anyOf:
           - $ref: '#/components/schemas/ChainPollTemplate'
           - $ref: '#/components/schemas/GeneratedScorerValidationResult'
+          - $ref: '#/components/schemas/DecisionScorerValidationResult'
           - type: string
           - type: 'null'
           title: Result
@@ -105,6 +133,69 @@ components:
       - status
       - result_type
       title: GeneratedScorerTaskResultResponse
+    DecisionScorerValidationMetadata:
+      properties:
+        confidence:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Confidence
+        probabilities:
+          anyOf:
+          - additionalProperties:
+              type: number
+            type: object
+          - type: 'null'
+          title: Probabilities
+        model_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Alias
+        input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Input Tokens
+        total_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Tokens
+        metric_cost:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Metric Cost
+      type: object
+      title: DecisionScorerValidationMetadata
+      description: 'What a real decision result writes besides its rating, as the Test tab shows it.
+
+
+        ``confidence`` and ``probabilities`` are the fields of the ``{key}_metadata`` metric. The rest are the
+
+        values that the real scorer writes under their own metric keys (``_model_alias``, ``_input_tokens``,
+
+        ``_total_tokens`` and ``_metric_cost``).'
+    GeneratedScorerValidationResult:
+      properties:
+        rating:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Rating
+        explanation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Explanation
+      type: object
+      required:
+      - rating
+      - explanation
+      title: GeneratedScorerValidationResult
+      description: Result of a generated scorer validation job.
     TaskResultStatus:
       type: string
       enum:
@@ -123,6 +214,41 @@ components:
       required:
       - lora_task_id
       title: FineTunedScorerWeightsUploadRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     FineTunedScorerWeightsUploadResponse:
       properties:
         bucket:
@@ -152,81 +278,63 @@ components:
       - object_paths
       - presigned_url_expiry_seconds
       title: FineTunedScorerWeightsUploadResponse
-    HTTPValidationError:
+    Luna3ScorerWeightsUploadResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
+        adapter_id:
           type: string
-          title: Generation Prompt And Response
-        evaluating_response:
+          format: uuid4
+          title: Adapter Id
+        bucket:
           type: string
-          title: Evaluating Response
-      type: object
-      required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
-    GeneratedScorerTaskResultType:
-      type: string
-      enum:
-      - scorer_auto_gen
-      - scorer_auto_gen_v2
-      - scorer_validation
-      title: GeneratedScorerTaskResultType
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+          title: Bucket
+        adapter_path:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
+          title: Adapter Path
+        upload_urls:
+          additionalProperties:
+            type: string
           type: object
-          title: Context
+          title: Upload Urls
+        object_paths:
+          additionalProperties:
+            type: string
+          type: object
+          title: Object Paths
+        presigned_url_expiry_seconds:
+          type: integer
+          title: Presigned Url Expiry Seconds
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    GeneratedScorerValidationResult:
+      - adapter_id
+      - bucket
+      - adapter_path
+      - upload_urls
+      - object_paths
+      - presigned_url_expiry_seconds
+      title: Luna3ScorerWeightsUploadResponse
+    DecisionScorerValidationResult:
       properties:
         rating:
           anyOf:
           - type: number
           - type: string
-          - type: 'null'
+          - type: integer
           title: Rating
-        explanation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Explanation
+        metadata:
+          $ref: '#/components/schemas/DecisionScorerValidationMetadata'
       type: object
       required:
       - rating
-      - explanation
-      title: GeneratedScorerValidationResult
-      description: Result of a generated scorer validation job.
+      - metadata
+      title: DecisionScorerValidationResult
+      description: 'The task result of a successful manual decision test.
+
+
+        A decision evaluator has no rationale, so the result has a ``rating`` and ``metadata`` and no explanation.
+
+        ``rating`` is P(yes) for a boolean_probability output, the label for a categorical output, and the
+
+        most likely level for a discrete output.'
     ChainPollTemplate:
       properties:
         metric_system_prompt:
@@ -275,15 +383,29 @@ components:
       description: 'Template for a chainpoll metric prompt,
 
         containing all the info necessary to send a chainpoll prompt.'
+    FewShotExample:
+      properties:
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
+      type: object
+      required:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

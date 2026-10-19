@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Experiment API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -9,6 +9,46 @@ tags:
 - name: Experiment
 paths:
   /projects/{project_id}/experiments:
+    post:
+      tags:
+      - Experiment
+      summary: Create Experiment
+      description: Create a new experiment for a project.
+      operationId: create_experiment_projects__project_id__experiments_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCreateRequest'
+              examples:
+              - name: my_first_experiment
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
       - Experiment
@@ -17,8 +57,8 @@ paths:
       operationId: list_experiments_projects__project_id__experiments_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -52,46 +92,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-    post:
-      tags:
-      - Experiment
-      summary: Create Experiment
-      description: Create a new experiment for a project.
-      operationId: create_experiment_projects__project_id__experiments_post
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExperimentCreateRequest'
-              examples:
-              - name: my_first_experiment
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExperimentResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /projects/{project_id}/experiments/paginated:
     get:
       tags:
@@ -100,8 +100,8 @@ paths:
       description: Retrieve all experiments for a project with pagination.
       operationId: list_experiments_paginated_projects__project_id__experiments_paginated_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -154,8 +154,8 @@ paths:
       description: Search experiments for a project.
       operationId: search_experiments_projects__project_id__experiments_search_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -193,8 +193,8 @@ paths:
       description: Retrieve a specific experiment.
       operationId: get_experiment_projects__project_id__experiments__experiment_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -232,8 +232,8 @@ paths:
       description: Update a specific experiment.
       operationId: update_experiment_projects__project_id__experiments__experiment_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -279,8 +279,8 @@ paths:
       description: Delete a specific experiment.
       operationId: delete_experiment_projects__project_id__experiments__experiment_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -315,8 +315,8 @@ paths:
       description: Procures the column information for experiments.
       operationId: experiments_available_columns_projects__project_id__experiments_available_columns_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -340,89 +340,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /projects/{project_id}/experiments/{experiment_id}/metric_settings:
-    patch:
-      tags:
-      - Experiment
-      summary: Update Metric Settings
-      operationId: update_metric_settings_projects__project_id__experiments__experiment_id__metric_settings_patch
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      - name: experiment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Experiment Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MetricSettingsRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-    get:
-      tags:
-      - Experiment
-      summary: Get Metric Settings
-      operationId: get_metric_settings_projects__project_id__experiments__experiment_id__metric_settings_get
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: experiment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Experiment Id
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /projects/{project_id}/experiments/{experiment_id}/metrics:
     post:
       tags:
@@ -431,8 +348,8 @@ paths:
       description: Retrieve metrics for a specific experiment.
       operationId: get_experiment_metrics_projects__project_id__experiments__experiment_id__metrics_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -450,45 +367,6 @@ paths:
           type: string
           format: uuid4
           title: Experiment Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExperimentMetricsRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExperimentMetricsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /projects/{project_id}/experiments/metrics:
-    post:
-      tags:
-      - Experiment
-      summary: Get Experiments Metrics
-      description: Retrieve metrics for all experiments in a project.
-      operationId: get_experiments_metrics_projects__project_id__experiments_metrics_post
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
       requestBody:
         required: true
         content:
@@ -509,6 +387,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v2/projects/{project_id}/experiments:
+    post:
+      tags:
+      - Experiment
+      summary: Create Experiment
+      description: Create a new experiment for a project.
+      operationId: create_experiment_v2_projects__project_id__experiments_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCreateRequest'
+              examples:
+              - name: my_first_experiment
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
       - Experiment
@@ -517,8 +435,8 @@ paths:
       operationId: list_experiments_v2_projects__project_id__experiments_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -552,46 +470,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-    post:
-      tags:
-      - Experiment
-      summary: Create Experiment
-      description: Create a new experiment for a project.
-      operationId: create_experiment_v2_projects__project_id__experiments_post
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExperimentCreateRequest'
-              examples:
-              - name: my_first_experiment
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExperimentResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /v2/projects/{project_id}/experiments/paginated:
     get:
       tags:
@@ -600,8 +478,8 @@ paths:
       description: Retrieve all experiments for a project with pagination.
       operationId: list_experiments_paginated_v2_projects__project_id__experiments_paginated_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -654,8 +532,8 @@ paths:
       description: Search experiments for a project.
       operationId: search_experiments_v2_projects__project_id__experiments_search_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -693,8 +571,8 @@ paths:
       description: Retrieve a specific experiment.
       operationId: get_experiment_v2_projects__project_id__experiments__experiment_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -732,8 +610,8 @@ paths:
       description: Update a specific experiment.
       operationId: update_experiment_v2_projects__project_id__experiments__experiment_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -779,8 +657,8 @@ paths:
       description: Delete a specific experiment.
       operationId: delete_experiment_v2_projects__project_id__experiments__experiment_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -815,8 +693,8 @@ paths:
       description: Procures the column information for experiments.
       operationId: experiments_available_columns_v2_projects__project_id__experiments_available_columns_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -840,89 +718,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /v2/projects/{project_id}/experiments/{experiment_id}/metric_settings:
-    patch:
-      tags:
-      - Experiment
-      summary: Update Metric Settings
-      operationId: update_metric_settings_v2_projects__project_id__experiments__experiment_id__metric_settings_patch
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      - name: experiment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Experiment Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MetricSettingsRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-    get:
-      tags:
-      - Experiment
-      summary: Get Metric Settings
-      operationId: get_metric_settings_v2_projects__project_id__experiments__experiment_id__metric_settings_get
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: experiment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Experiment Id
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /v2/projects/{project_id}/experiments/{experiment_id}/metrics:
     post:
       tags:
@@ -931,8 +726,8 @@ paths:
       description: Retrieve metrics for a specific experiment.
       operationId: get_experiment_metrics_v2_projects__project_id__experiments__experiment_id__metrics_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -950,45 +745,6 @@ paths:
           type: string
           format: uuid4
           title: Experiment Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExperimentMetricsRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExperimentMetricsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /v2/projects/{project_id}/experiments/metrics:
-    post:
-      tags:
-      - Experiment
-      summary: Get Experiments Metrics
-      description: Retrieve metrics for all experiments in a project.
-      operationId: get_experiments_metrics_v2_projects__project_id__experiments_metrics_post
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
       requestBody:
         required: true
         content:
@@ -1009,6 +765,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
   /public/v2/projects/{project_id}/experiments:
+    post:
+      tags:
+      - Experiment
+      summary: Create Experiment
+      description: Create a new experiment for a project.
+      operationId: create_experiment_public_v2_projects__project_id__experiments_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCreateRequest'
+              examples:
+              - name: my_first_experiment
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
       - Experiment
@@ -1017,8 +813,8 @@ paths:
       operationId: list_experiments_public_v2_projects__project_id__experiments_get
       deprecated: true
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1052,46 +848,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-    post:
-      tags:
-      - Experiment
-      summary: Create Experiment
-      description: Create a new experiment for a project.
-      operationId: create_experiment_public_v2_projects__project_id__experiments_post
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExperimentCreateRequest'
-              examples:
-              - name: my_first_experiment
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExperimentResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /public/v2/projects/{project_id}/experiments/paginated:
     get:
       tags:
@@ -1100,8 +856,8 @@ paths:
       description: Retrieve all experiments for a project with pagination.
       operationId: list_experiments_paginated_public_v2_projects__project_id__experiments_paginated_get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1154,8 +910,8 @@ paths:
       description: Search experiments for a project.
       operationId: search_experiments_public_v2_projects__project_id__experiments_search_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1193,8 +949,8 @@ paths:
       description: Retrieve a specific experiment.
       operationId: get_experiment_public_v2_projects__project_id__experiments__experiment_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1232,8 +988,8 @@ paths:
       description: Update a specific experiment.
       operationId: update_experiment_public_v2_projects__project_id__experiments__experiment_id__put
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1279,8 +1035,8 @@ paths:
       description: Delete a specific experiment.
       operationId: delete_experiment_public_v2_projects__project_id__experiments__experiment_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1315,8 +1071,8 @@ paths:
       description: Procures the column information for experiments.
       operationId: experiments_available_columns_public_v2_projects__project_id__experiments_available_columns_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1340,89 +1096,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /public/v2/projects/{project_id}/experiments/{experiment_id}/metric_settings:
-    patch:
-      tags:
-      - Experiment
-      summary: Update Metric Settings
-      operationId: update_metric_settings_public_v2_projects__project_id__experiments__experiment_id__metric_settings_patch
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      - name: experiment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Experiment Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MetricSettingsRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-    get:
-      tags:
-      - Experiment
-      summary: Get Metric Settings
-      operationId: get_metric_settings_public_v2_projects__project_id__experiments__experiment_id__metric_settings_get
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: experiment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Experiment Id
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetricSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /public/v2/projects/{project_id}/experiments/{experiment_id}/metrics:
     post:
       tags:
@@ -1431,8 +1104,8 @@ paths:
       description: Retrieve metrics for a specific experiment.
       operationId: get_experiment_metrics_public_v2_projects__project_id__experiments__experiment_id__metrics_post
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -1450,45 +1123,6 @@ paths:
           type: string
           format: uuid4
           title: Experiment Id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExperimentMetricsRequest'
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExperimentMetricsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /public/v2/projects/{project_id}/experiments/metrics:
-    post:
-      tags:
-      - Experiment
-      summary: Get Experiments Metrics
-      description: Retrieve metrics for all experiments in a project.
-      operationId: get_experiments_metrics_public_v2_projects__project_id__experiments_metrics_post
-      security:
-      - ClassicAPIKeyHeader: []
-      - APIKeyHeader: []
-      - OAuth2PasswordBearer: []
-      - HTTPBasic: []
-      parameters:
-      - name: project_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid4
-          title: Project Id
       requestBody:
         required: true
         content:
@@ -1510,996 +1144,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    LogRecordsFullyAnnotatedFilter:
-      properties:
-        column_id:
-          type: string
-          const: fully_annotated
-          title: Column Id
-          description: Queue-scoped filter identifier. This filter only works for annotation-queue searches that provide queue context.
-          default: fully_annotated
-        type:
-          type: string
-          const: fully_annotated
-          title: Type
-          default: fully_annotated
-        user_ids:
-          anyOf:
-          - items:
-              type: string
-              format: uuid4
-            type: array
-            minItems: 1
-          - type: 'null'
-          title: User Ids
-          description: Optional queue member IDs to require for full annotation in a queue-scoped search. If omitted, all tracked queue members visible to the requester are used.
-      type: object
-      title: LogRecordsFullyAnnotatedFilter
-      description: Queue-scoped filter for records rated across all queue templates.
-    ListExperimentResponse:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        paginated:
-          type: boolean
-          title: Paginated
-          default: false
-        next_starting_token:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Next Starting Token
-        experiments:
-          items:
-            $ref: '#/components/schemas/ExperimentResponse'
-          type: array
-          title: Experiments
-      type: object
-      title: ListExperimentResponse
-    LLMIntegration:
-      type: string
-      enum:
-      - anthropic
-      - aws_bedrock
-      - aws_sagemaker
-      - azure
-      - custom
-      - databricks
-      - mistral
-      - nvidia
-      - openai
-      - vegas_gateway
-      - vertex_ai
-      - writer
-      title: LLMIntegration
-    MetricSettingsResponse:
-      properties:
-        scorers:
-          items:
-            $ref: '#/components/schemas/ScorerConfig'
-          type: array
-          title: Scorers
-        segment_filters:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/SegmentFilter'
-            type: array
-          - type: 'null'
-          title: Segment Filters
-          description: List of segment filters to apply to the run.
-      type: object
-      required:
-      - scorers
-      title: MetricSettingsResponse
-    ExperimentUpdatedAtFilter:
-      properties:
-        name:
-          type: string
-          const: updated_at
-          title: Name
-          default: updated_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: RunUpdatedAtFilter
-    ContentModality:
-      type: string
-      enum:
-      - text
-      - document
-      - image
-      - audio
-      - video
-      title: ContentModality
-      description: Classification of content modality
-    api__schemas__experiment__ExperimentGroupNameFilter:
-      properties:
-        name:
-          type: string
-          const: experiment_group_name
-          title: Name
-          default: experiment_group_name
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-      type: object
-      required:
-      - operator
-      - value
-      title: ExperimentGroupNameFilter
-    ColumnCategory:
-      type: string
-      enum:
-      - standard
-      - metric
-      - user_metadata
-      - metric_status
-      - dataset_metadata
-      - dataset
-      - feedback
-      - tags
-      title: ColumnCategory
-    LunaOutputTypeEnum:
-      type: string
-      enum:
-      - float
-      - string
-      - string_list
-      - bool_list
-      title: LunaOutputTypeEnum
-    OpenAIFunction:
-      properties:
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - name
-      title: OpenAIFunction
-    RunTagDB:
-      properties:
-        key:
-          type: string
-          maxLength: 256
-          title: Key
-        value:
-          type: string
-          maxLength: 256
-          title: Value
-        tag_type:
-          type: string
-          title: Tag Type
-        project_id:
-          type: string
-          format: uuid4
-          title: Project Id
-        run_id:
-          type: string
-          format: uuid4
-          title: Run Id
-        created_by:
-          type: string
-          format: uuid4
-          title: Created By
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - key
-      - value
-      - tag_type
-      - project_id
-      - run_id
-      - created_by
-      - id
-      - created_at
-      - updated_at
-      title: RunTagDB
-    ExperimentStatus:
-      properties:
-        log_generation:
-          $ref: '#/components/schemas/ExperimentPhaseStatus'
-      type: object
-      title: ExperimentStatus
-    ExperimentMetricsRequest:
-      properties:
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/LogRecordsIDFilter'
-            - $ref: '#/components/schemas/LogRecordsDateFilter'
-            - $ref: '#/components/schemas/LogRecordsNumberFilter'
-            - $ref: '#/components/schemas/LogRecordsBooleanFilter'
-            - $ref: '#/components/schemas/LogRecordsCollectionFilter'
-            - $ref: '#/components/schemas/LogRecordsTextFilter'
-            - $ref: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
-            discriminator:
-              propertyName: type
-              mapping:
-                boolean: '#/components/schemas/LogRecordsBooleanFilter'
-                collection: '#/components/schemas/LogRecordsCollectionFilter'
-                date: '#/components/schemas/LogRecordsDateFilter'
-                fully_annotated: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
-                id: '#/components/schemas/LogRecordsIDFilter'
-                number: '#/components/schemas/LogRecordsNumberFilter'
-                text: '#/components/schemas/LogRecordsTextFilter'
-          type: array
-          title: Filters
-      type: object
-      title: ExperimentMetricsRequest
-      examples:
-      - filters:
-        - case_sensitive: true
-          name: input
-          operator: eq
-          type: text
-          value: example input
-    BaseFinetunedScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        lora_task_id:
-          type: integer
-          title: Lora Task Id
-        lora_weights_path:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Lora Weights Path
-        prompt:
-          type: string
-          title: Prompt
-        luna_input_type:
-          anyOf:
-          - $ref: '#/components/schemas/LunaInputTypeEnum'
-          - type: 'null'
-        luna_output_type:
-          anyOf:
-          - $ref: '#/components/schemas/LunaOutputTypeEnum'
-          - type: 'null'
-        class_name_to_vocab_ix:
-          anyOf:
-          - additionalProperties:
-              items:
-                type: integer
-              type: array
-              uniqueItems: true
-            type: object
-          - additionalProperties:
-              type: integer
-            type: object
-          - type: 'null'
-          title: Class Name To Vocab Ix
-        executor:
-          anyOf:
-          - $ref: '#/components/schemas/galileo_core__schemas__shared__scorers__scorer_name__ScorerName'
-          - type: 'null'
-          description: Executor pipeline. Defaults to finetuned scorer pipeline but can run custom galileo score pipelines.
-      type: object
-      required:
-      - id
-      - name
-      - lora_task_id
-      - prompt
-      title: BaseFinetunedScorerDB
-    ChoiceAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: choice
-          title: Feedback Type
-          default: choice
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - counts
-      - unrated_count
-      title: ChoiceAggregate
-    ChainPollTemplate:
-      properties:
-        metric_system_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric System Prompt
-          description: System prompt for the metric.
-        metric_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric Description
-          description: Description of what the metric should do.
-        value_field_name:
-          type: string
-          title: Value Field Name
-          description: Field name to look for in the chainpoll response, for the rating.
-          default: rating
-        explanation_field_name:
-          type: string
-          title: Explanation Field Name
-          description: Field name to look for in the chainpoll response, for the explanation.
-          default: explanation
-        template:
-          type: string
-          title: Template
-          description: Chainpoll prompt template.
-        metric_few_shot_examples:
-          items:
-            $ref: '#/components/schemas/FewShotExample'
-          type: array
-          title: Metric Few Shot Examples
-          description: Few-shot examples for the metric.
-        response_schema:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Response Schema
-          description: Response schema for the output
-      type: object
-      required:
-      - template
-      title: ChainPollTemplate
-      description: 'Template for a chainpoll metric prompt,
-
-        containing all the info necessary to send a chainpoll prompt.'
-    StepType:
-      type: string
-      enum:
-      - llm
-      - retriever
-      - tool
-      - workflow
-      - agent
-      - control
-      - trace
-      - session
-      title: StepType
-    FewShotExample:
-      properties:
-        generation_prompt_and_response:
-          type: string
-          title: Generation Prompt And Response
-        evaluating_response:
-          type: string
-          title: Evaluating Response
-      type: object
-      required:
-      - generation_prompt_and_response
-      - evaluating_response
-      title: FewShotExample
-      description: Few-shot example for a chainpoll metric prompt.
-    ExperimentsAvailableColumnsResponse:
-      properties:
-        columns:
-          items:
-            $ref: '#/components/schemas/ColumnInfo'
-          type: array
-          title: Columns
-      type: object
-      title: ExperimentsAvailableColumnsResponse
-      examples:
-      - columns:
-        - applicable_types: []
-          category: standard
-          data_type: uuid
-          description: Galileo ID of the experiment
-          filterable: true
-          group_label: Standard
-          id: id
-          is_empty: false
-          is_optional: false
-          label: ID
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: timestamp
-          description: Timestamp of the experiment's creation
-          filterable: true
-          group_label: Standard
-          id: created_at
-          is_empty: false
-          is_optional: false
-          label: Created
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: timestamp
-          description: Timestamp of the trace or span's last update
-          filterable: true
-          group_label: Standard
-          id: updated_at
-          is_empty: false
-          is_optional: true
-          label: Last Updated
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: text
-          description: Name of the experiment
-          filterable: true
-          group_label: Standard
-          id: name
-          is_empty: false
-          is_optional: false
-          label: Name
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: uuid
-          description: Galileo ID of the project associated with this experiment
-          filterable: true
-          group_label: Standard
-          id: project_id
-          is_empty: false
-          is_optional: false
-          label: Project ID
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: floating_point
-          filterable: true
-          group_label: Standard
-          id: ranking_score
-          is_empty: false
-          is_optional: true
-          label: Ranking Score
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: uuid
-          filterable: true
-          group_label: Standard
-          id: playground_id
-          is_empty: false
-          is_optional: true
-          label: Playground Id
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: uuid
-          filterable: true
-          group_label: Standard
-          id: experiment_group_id
-          is_empty: false
-          is_optional: true
-          label: Experiment Group Id
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: text
-          filterable: true
-          group_label: Standard
-          id: experiment_group_name
-          is_empty: false
-          is_optional: true
-          label: Experiment Group Name
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: standard
-          data_type: boolean
-          filterable: true
-          group_label: Standard
-          id: experiment_group_is_system
-          is_empty: false
-          is_optional: true
-          label: Experiment Group Is System
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: metric
-          data_type: floating_point
-          filterable: true
-          id: metrics/average_cost
-          is_empty: false
-          is_optional: false
-          label: Average Cost
-          multi_valued: false
-          sortable: true
-        - applicable_types: []
-          category: metric
-          data_type: integer
-          filterable: true
-          id: metrics/total_responses
-          is_empty: false
-          is_optional: false
-          label: Total Responses
-          multi_valued: false
-          sortable: true
-    ExperimentIDFilter:
-      properties:
-        name:
-          type: string
-          const: id
-          title: Name
-          default: id
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
-          anyOf:
-          - type: string
-            format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
-          - type: string
-          title: Value
-      type: object
-      required:
-      - value
-      title: RunIDFilter
-    SegmentFilter:
-      properties:
-        filter:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/NodeNameFilter'
-            - $ref: '#/components/schemas/MetadataFilter'
-            - $ref: '#/components/schemas/ModalityFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                metadata: '#/components/schemas/MetadataFilter'
-                modality: '#/components/schemas/ModalityFilter'
-                node_name: '#/components/schemas/NodeNameFilter'
-          - type: 'null'
-          title: Filter
-          description: Filter to apply to the segment. By default sample on all data.
-        sample_rate:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Sample Rate
-          description: The fraction of the data to sample. Must be between 0 and 1, inclusive.
-        llm_scorers:
-          type: boolean
-          title: Llm Scorers
-          description: Whether to sample only on LLM scorers.
-          default: false
-        multimodal_scorers:
-          type: boolean
-          title: Multimodal Scorers
-          description: Whether to sample only on multimodal scorers.
-          default: false
-      type: object
-      required:
-      - sample_rate
-      title: SegmentFilter
-    ModelType:
-      type: string
-      enum:
-      - slm
-      - llm
-      - code
-      title: ModelType
-    ExperimentMetricsResponse:
-      properties:
-        metrics:
-          items:
-            $ref: '#/components/schemas/BucketedMetric'
-          type: array
-          title: Metrics
-          description: List of metrics for the experiment, including categorical and quartile metrics.
-      type: object
-      title: ExperimentMetricsResponse
-    LogRecordsBooleanFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          title: Operator
-          default: eq
-        value:
-          type: boolean
-          title: Value
-        type:
-          type: string
-          const: boolean
-          title: Type
-          default: boolean
-      type: object
-      required:
-      - column_id
-      - value
-      title: LogRecordsBooleanFilter
-    PromptRunSettings-Input:
-      properties:
-        logprobs:
-          type: boolean
-          title: Logprobs
-          default: true
-        top_logprobs:
-          type: integer
-          title: Top Logprobs
-          default: 5
-        echo:
-          type: boolean
-          title: Echo
-          default: false
-        n:
-          type: integer
-          title: N
-          default: 1
-        reasoning_effort:
-          type: string
-          title: Reasoning Effort
-          default: medium
-        verbosity:
-          type: string
-          title: Verbosity
-          default: medium
-        deployment_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Deployment Name
-        model_alias:
-          type: string
-          title: Model Alias
-          default: gpt-5.1
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-        max_tokens:
-          type: integer
-          title: Max Tokens
-          default: 4096
-        stop_sequences:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Stop Sequences
-        top_p:
-          type: number
-          title: Top P
-          default: 1.0
-        top_k:
-          type: integer
-          title: Top K
-          default: 40
-        frequency_penalty:
-          type: number
-          title: Frequency Penalty
-          default: 0.0
-        presence_penalty:
-          type: number
-          title: Presence Penalty
-          default: 0.0
-        tools:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Tools
-        tool_choice:
-          anyOf:
-          - type: string
-          - $ref: '#/components/schemas/OpenAIToolChoice'
-          - type: 'null'
-          title: Tool Choice
-        response_format:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Response Format
-        known_models:
-          items:
-            $ref: '#/components/schemas/Model'
-          type: array
-          title: Known Models
-      type: object
-      title: PromptRunSettings
-      description: Prompt run settings.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    RootType:
-      type: string
-      enum:
-      - session
-      - trace
-      - span
-      title: RootType
-      description: 'The root-level type of a logged step hierarchy.
-
-
-        Maps fine-grained StepType values to the three top-level categories
-
-        used throughout the platform: session, trace, and span.'
-    TextAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: text
-          title: Feedback Type
-          default: text
-        count:
-          type: integer
-          title: Count
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - count
-      - unrated_count
-      title: TextAggregate
-    galileo_core__schemas__shared__scorers__scorer_name__ScorerName:
-      type: string
-      enum:
-      - action_completion_luna
-      - action_advancement_luna
-      - agentic_session_success
-      - agentic_session_success
-      - action_completion_vision
-      - action_completion_audio
-      - agentic_workflow_success
-      - agentic_workflow_success
-      - agent_efficiency
-      - agent_flow
-      - chunk_attribution_utilization_luna
-      - chunk_attribution_utilization
-      - chunk_relevance
-      - chunk_relevance_luna
-      - context_precision
-      - precision_at_k
-      - completeness_luna
-      - completeness
-      - context_adherence
-      - context_adherence_luna
-      - context_adherence_vision
-      - context_adherence_audio
-      - context_relevance
-      - context_relevance_luna
-      - conversation_quality
-      - correctness
-      - correctness_vision
-      - correctness_audio
-      - ground_truth_adherence
-      - ground_truth_adherence_vision
-      - ground_truth_adherence_audio
-      - visual_fidelity
-      - visual_quality
-      - input_pii
-      - input_pii_gpt
-      - input_sexist
-      - input_sexist
-      - input_sexist_luna
-      - input_sexist_luna
-      - input_tone
-      - input_tone_gpt
-      - input_toxicity
-      - input_toxicity_luna
-      - input_toxicity_vision
-      - input_toxicity_audio
-      - instruction_adherence
-      - output_pii
-      - output_pii_gpt
-      - output_sexist
-      - output_sexist
-      - output_sexist_luna
-      - output_sexist_luna
-      - output_tone
-      - output_tone_gpt
-      - output_toxicity
-      - output_toxicity_luna
-      - output_toxicity_vision
-      - output_toxicity_audio
-      - prompt_injection
-      - prompt_injection_luna
-      - reasoning_coherence
-      - reasoning_coherence_vision
-      - reasoning_coherence_audio
-      - sql_efficiency
-      - sql_adherence
-      - sql_injection
-      - sql_correctness
-      - tool_error_rate
-      - tool_error_rate_luna
-      - tool_selection_quality
-      - tool_selection_quality_luna
-      - user_intent_change
-      - user_intent_change_vision
-      - user_intent_change_audio
-      - interruption_detection
-      title: ScorerName
-    LunaInputTypeEnum:
-      type: string
-      enum:
-      - span
-      - trace_object
-      - trace_input_output_only
-      title: LunaInputTypeEnum
-    LogRecordsIDFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
-          anyOf:
-          - type: string
-            format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
-          - type: string
-          title: Value
-        type:
-          type: string
-          const: id
-          title: Type
-          default: id
-      type: object
-      required:
-      - column_id
-      - value
-      title: LogRecordsIDFilter
-    InputMap:
-      properties:
-        prompt:
-          type: string
-          title: Prompt
-        prefix:
-          type: string
-          title: Prefix
-          default: ''
-        suffix:
-          type: string
-          title: Suffix
-          default: ''
-      type: object
-      required:
-      - prompt
-      title: InputMap
-    ScoreAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: score
-          title: Feedback Type
-          default: score
-        average:
-          type: number
-          title: Average
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - average
-      - unrated_count
-      title: ScoreAggregate
     MetricAggregates:
       properties:
         avg:
@@ -2563,82 +1207,14 @@ components:
       type: object
       title: MetricAggregates
       description: Structured aggregate values for a single metric, computed from ClickHouse row-level data.
-    ExperimentDatasetRequest:
-      properties:
-        dataset_id:
-          type: string
-          format: uuid4
-          title: Dataset Id
-        version_index:
-          type: integer
-          title: Version Index
-      type: object
-      required:
-      - dataset_id
-      - version_index
-      title: ExperimentDatasetRequest
-    LogRecordsDateFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-        type:
-          type: string
-          const: date
-          title: Type
-          default: date
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsDateFilter
-    TreeChoiceAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: tree_choice
-          title: Feedback Type
-          default: tree_choice
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - counts
-      - unrated_count
-      title: TreeChoiceAggregate
-    ExperimentPhaseStatus:
-      properties:
-        progress_percent:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Progress Percent
-          description: Progress percentage from 0.0 to 1.0
-          default: 0.0
-      type: object
-      title: ExperimentPhaseStatus
+    ModelType:
+      type: string
+      enum:
+      - slm
+      - llm
+      - code
+      - decision
+      title: ModelType
     BucketedMetric:
       properties:
         name:
@@ -2667,98 +1243,6 @@ components:
       - name
       - buckets
       title: BucketedMetric
-    MultimodalCapability:
-      type: string
-      enum:
-      - vision
-      - audio
-      title: MultimodalCapability
-    PromptRunSettings-Output:
-      properties:
-        logprobs:
-          type: boolean
-          title: Logprobs
-          default: true
-        top_logprobs:
-          type: integer
-          title: Top Logprobs
-          default: 5
-        echo:
-          type: boolean
-          title: Echo
-          default: false
-        n:
-          type: integer
-          title: N
-          default: 1
-        reasoning_effort:
-          type: string
-          title: Reasoning Effort
-          default: medium
-        verbosity:
-          type: string
-          title: Verbosity
-          default: medium
-        deployment_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Deployment Name
-        model_alias:
-          type: string
-          title: Model Alias
-          default: gpt-5.1
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-        max_tokens:
-          type: integer
-          title: Max Tokens
-          default: 4096
-        stop_sequences:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Stop Sequences
-        top_p:
-          type: number
-          title: Top P
-          default: 1.0
-        top_k:
-          type: integer
-          title: Top K
-          default: 40
-        frequency_penalty:
-          type: number
-          title: Frequency Penalty
-          default: 0.0
-        presence_penalty:
-          type: number
-          title: Presence Penalty
-          default: 0.0
-        tools:
-          type: string
-          title: Tools
-        tool_choice:
-          anyOf:
-          - type: string
-          - $ref: '#/components/schemas/OpenAIToolChoice'
-          - type: 'null'
-          title: Tool Choice
-        response_format:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Response Format
-      type: object
-      title: PromptRunSettings
-      description: Prompt run settings.
     NodeNameFilter:
       properties:
         name:
@@ -2792,1183 +1276,6 @@ components:
       - value
       title: NodeNameFilter
       description: Filters on node names in scorer jobs.
-    BaseRegisteredScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        score_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Score Type
-      type: object
-      required:
-      - id
-      - name
-      title: BaseRegisteredScorerDB
-    TaskType:
-      type: integer
-      enum:
-      - 7
-      - 9
-      - 12
-      - 13
-      - 15
-      - 16
-      - 17
-      - 18
-      title: TaskType
-      description: 'Valid task types for modeling.
-
-
-        We store these as ints instead of strings because we will be looking this up in the database frequently.'
-    LogRecordsCollectionFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-        type:
-          type: string
-          const: collection
-          title: Type
-          default: collection
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsCollectionFilter
-    BaseGeneratedScorerDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          type: string
-          title: Name
-        instructions:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Instructions
-        chain_poll_template:
-          $ref: '#/components/schemas/ChainPollTemplate'
-        user_prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Prompt
-      type: object
-      required:
-      - id
-      - name
-      - chain_poll_template
-      title: BaseGeneratedScorerDB
-    ExperimentNameSort:
-      properties:
-        name:
-          type: string
-          const: name
-          title: Name
-          default: name
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: RunNameSort
-    ModelCostBy:
-      type: string
-      enum:
-      - tokens
-      - characters
-      title: ModelCostBy
-    ExperimentCreatedAtFilter:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          title: Operator
-        value:
-          type: string
-          format: date-time
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: RunCreatedAtFilter
-    ExperimentSearchRequest:
-      properties:
-        starting_token:
-          type: integer
-          title: Starting Token
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 100
-        filters:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/ExperimentIDFilter'
-            - $ref: '#/components/schemas/ExperimentNameFilter'
-            - $ref: '#/components/schemas/ExperimentCreatedByFilter'
-            - $ref: '#/components/schemas/ExperimentCreatedAtFilter'
-            - $ref: '#/components/schemas/ExperimentUpdatedAtFilter'
-            - $ref: '#/components/schemas/api__schemas__experiment__ExperimentGroupIDFilter'
-            - $ref: '#/components/schemas/api__schemas__experiment__ExperimentGroupNameFilter'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/ExperimentCreatedAtFilter'
-                created_by: '#/components/schemas/ExperimentCreatedByFilter'
-                experiment_group_id: '#/components/schemas/api__schemas__experiment__ExperimentGroupIDFilter'
-                experiment_group_name: '#/components/schemas/api__schemas__experiment__ExperimentGroupNameFilter'
-                id: '#/components/schemas/ExperimentIDFilter'
-                name: '#/components/schemas/ExperimentNameFilter'
-                updated_at: '#/components/schemas/ExperimentUpdatedAtFilter'
-          type: array
-          title: Filters
-        sort:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/ExperimentNameSort'
-            - $ref: '#/components/schemas/ExperimentCreatedAtSort'
-            - $ref: '#/components/schemas/ExperimentUpdatedAtSort'
-            discriminator:
-              propertyName: name
-              mapping:
-                created_at: '#/components/schemas/ExperimentCreatedAtSort'
-                name: '#/components/schemas/ExperimentNameSort'
-                updated_at: '#/components/schemas/ExperimentUpdatedAtSort'
-          - type: 'null'
-          title: Sort
-          default:
-            name: created_at
-            ascending: false
-            sort_type: column
-        include_counts:
-          type: boolean
-          title: Include Counts
-          default: false
-      type: object
-      title: ExperimentSearchRequest
-    LogRecordsNumberFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - gt
-          - gte
-          - lt
-          - lte
-          - between
-          title: Operator
-        value:
-          anyOf:
-          - type: integer
-          - type: number
-          - items:
-              type: integer
-            type: array
-          - items:
-              type: number
-            type: array
-          title: Value
-        type:
-          type: string
-          const: number
-          title: Type
-          default: number
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsNumberFilter
-    OutputTypeEnum:
-      type: string
-      enum:
-      - boolean
-      - categorical
-      - count
-      - discrete
-      - freeform
-      - percentage
-      - multilabel
-      - retrieved_chunk_list_boolean
-      - boolean_multilabel
-      title: OutputTypeEnum
-      description: Enumeration of output types.
-    LogRecordsTextFilter:
-      properties:
-        column_id:
-          type: string
-          title: Column Id
-          description: ID of the column to filter.
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - contains
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
-        type:
-          type: string
-          const: text
-          title: Type
-          default: text
-      type: object
-      required:
-      - column_id
-      - operator
-      - value
-      title: LogRecordsTextFilter
-    DataUnit:
-      type: string
-      enum:
-      - percentage
-      - nano_seconds
-      - milli_seconds
-      - dollars
-      - count_and_total
-      title: DataUnit
-    OutputMap:
-      properties:
-        response:
-          type: string
-          title: Response
-        token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Token Count
-        input_token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Input Token Count
-        output_token_count:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output Token Count
-        completion_reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Completion Reason
-      type: object
-      required:
-      - response
-      title: OutputMap
-    FeedbackAggregate:
-      properties:
-        aggregate:
-          oneOf:
-          - $ref: '#/components/schemas/LikeDislikeAggregate'
-          - $ref: '#/components/schemas/StarAggregate'
-          - $ref: '#/components/schemas/ScoreAggregate'
-          - $ref: '#/components/schemas/TagsAggregate'
-          - $ref: '#/components/schemas/TextAggregate'
-          - $ref: '#/components/schemas/ChoiceAggregate'
-          - $ref: '#/components/schemas/TreeChoiceAggregate'
-          title: Aggregate
-          discriminator:
-            propertyName: feedback_type
-            mapping:
-              choice: '#/components/schemas/ChoiceAggregate'
-              like_dislike: '#/components/schemas/LikeDislikeAggregate'
-              score: '#/components/schemas/ScoreAggregate'
-              star: '#/components/schemas/StarAggregate'
-              tags: '#/components/schemas/TagsAggregate'
-              text: '#/components/schemas/TextAggregate'
-              tree_choice: '#/components/schemas/TreeChoiceAggregate'
-      type: object
-      required:
-      - aggregate
-      title: FeedbackAggregate
-    ScorerConfig:
-      properties:
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-        num_judges:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Num Judges
-        filters:
-          anyOf:
-          - items:
-              oneOf:
-              - $ref: '#/components/schemas/NodeNameFilter'
-              - $ref: '#/components/schemas/MetadataFilter'
-              - $ref: '#/components/schemas/ModalityFilter'
-              discriminator:
-                propertyName: name
-                mapping:
-                  metadata: '#/components/schemas/MetadataFilter'
-                  modality: '#/components/schemas/ModalityFilter'
-                  node_name: '#/components/schemas/NodeNameFilter'
-            type: array
-          - type: 'null'
-          title: Filters
-          description: List of filters to apply to the scorer.
-        scoreable_node_types:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Scoreable Node Types
-          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
-        cot_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Cot Enabled
-          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-          description: What type of output to use for model-based scorers (boolean, categorical, etc.).
-        input_type:
-          anyOf:
-          - $ref: '#/components/schemas/InputTypeEnum'
-          - type: 'null'
-          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc..).
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        scorer_type:
-          $ref: '#/components/schemas/ScorerTypes'
-        model_type:
-          anyOf:
-          - $ref: '#/components/schemas/ModelType'
-          - type: 'null'
-          description: Type of model to use for this scorer. slm maps to luna, and llm maps to plus
-        scorer_version:
-          anyOf:
-          - $ref: '#/components/schemas/BaseScorerVersionDB'
-          - type: 'null'
-          description: ScorerVersion to use for this scorer. If not provided, the latest version will be used.
-        multimodal_capabilities:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/MultimodalCapability'
-            type: array
-          - type: 'null'
-          title: Multimodal Capabilities
-          description: Multimodal capabilities which this scorer can utilize in its evaluation.
-        roll_up_method:
-          anyOf:
-          - $ref: '#/components/schemas/RollUpMethodDisplayOptions'
-          - type: 'null'
-        score_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Score Type
-          description: Return type of code scorers (e.g., 'bool', 'int', 'float', 'str').
-      type: object
-      required:
-      - id
-      - scorer_type
-      title: ScorerConfig
-      description: Used for configuring a scorer for a scorer job.
-    Model:
-      properties:
-        name:
-          type: string
-          title: Name
-        alias:
-          type: string
-          title: Alias
-        integration:
-          $ref: '#/components/schemas/LLMIntegration'
-          default: openai
-        user_role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User Role
-        assistant_role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Assistant Role
-        system_supported:
-          type: boolean
-          title: System Supported
-          default: false
-        input_modalities:
-          items:
-            $ref: '#/components/schemas/ContentModality'
-          type: array
-          title: Input Modalities
-          description: Input modalities that the model can accept.
-        alternative_names:
-          items:
-            type: string
-          type: array
-          title: Alternative Names
-          description: Alternative names for the model, used for matching with various current, versioned or legacy names.
-        input_token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Input Token Limit
-        output_token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Output Token Limit
-        token_limit:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Token Limit
-        cost_by:
-          $ref: '#/components/schemas/ModelCostBy'
-          default: tokens
-        is_chat:
-          type: boolean
-          title: Is Chat
-          default: false
-        provides_log_probs:
-          type: boolean
-          title: Provides Log Probs
-          default: false
-        formatting_tokens:
-          type: integer
-          title: Formatting Tokens
-          default: 0
-        response_prefix_tokens:
-          type: integer
-          title: Response Prefix Tokens
-          default: 0
-        api_version:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Api Version
-        legacy_mistral_prompt_format:
-          type: boolean
-          title: Legacy Mistral Prompt Format
-          default: false
-        requires_max_tokens:
-          type: boolean
-          title: Requires Max Tokens
-          default: false
-        max_top_p:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Max Top P
-        params_map:
-          $ref: '#/components/schemas/RunParamsMap'
-        output_map:
-          anyOf:
-          - $ref: '#/components/schemas/OutputMap'
-          - type: 'null'
-        input_map:
-          anyOf:
-          - $ref: '#/components/schemas/InputMap'
-          - type: 'null'
-      type: object
-      required:
-      - name
-      - alias
-      title: Model
-    TagsAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: tags
-          title: Feedback Type
-          default: tags
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - counts
-      - unrated_count
-      title: TagsAggregate
-    ExperimentCreatedByFilter:
-      properties:
-        name:
-          type: string
-          const: created_by
-          title: Name
-          default: created_by
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          - contains
-          title: Operator
-          default: eq
-        value:
-          anyOf:
-          - type: string
-            format: uuid4
-          - items:
-              anyOf:
-              - type: string
-                format: uuid4
-              - type: string
-            type: array
-          - type: string
-          title: Value
-      type: object
-      required:
-      - value
-      title: RunCreatedByFilter
-    MetadataFilter:
-      properties:
-        name:
-          type: string
-          const: metadata
-          title: Name
-          default: metadata
-        operator:
-          type: string
-          enum:
-          - one_of
-          - not_in
-          - eq
-          - ne
-          title: Operator
-        key:
-          type: string
-          title: Key
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-      type: object
-      required:
-      - operator
-      - key
-      - value
-      title: MetadataFilter
-      description: Filters on metadata key-value pairs in scorer jobs.
-    RollUpMethodDisplayOptions:
-      type: string
-      enum:
-      - average
-      - sum
-      - max
-      - min
-      - category_count
-      - percentage_true
-      - percentage_false
-      title: RollUpMethodDisplayOptions
-      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
-
-
-        Separates display intent from computation methods. The computation methods
-
-        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
-
-        This enum controls how the UI displays the selected roll-up value for a scorer.'
-    InputTypeEnum:
-      type: string
-      enum:
-      - basic
-      - llm_spans
-      - retriever_spans
-      - sessions_normalized
-      - sessions_trace_io_only
-      - tool_spans
-      - trace_input_only
-      - trace_io_only
-      - trace_normalized
-      - trace_output_only
-      - agent_spans
-      - workflow_spans
-      title: InputTypeEnum
-      description: Enumeration of input types.
-    LikeDislikeAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: like_dislike
-          title: Feedback Type
-          default: like_dislike
-        like_count:
-          type: integer
-          title: Like Count
-        dislike_count:
-          type: integer
-          title: Dislike Count
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - like_count
-      - dislike_count
-      - unrated_count
-      title: LikeDislikeAggregate
-    ScorerTypes:
-      type: string
-      enum:
-      - llm
-      - code
-      - luna
-      - preset
-      title: ScorerTypes
-    ModalityFilter:
-      properties:
-        name:
-          type: string
-          const: modality
-          title: Name
-          default: modality
-        operator:
-          type: string
-          enum:
-          - eq
-          - ne
-          - one_of
-          - not_in
-          title: Operator
-        value:
-          anyOf:
-          - type: string
-            description: Single enum value - specific options depend on the concrete enum type used
-            example: ENUM_VALUE
-          - items:
-              type: string
-              example: ENUM_VALUE
-            type: array
-            description: Array of enum values
-            example:
-            - ENUM_VALUE_1
-            - ENUM_VALUE_2
-          title: Value
-      type: object
-      required:
-      - operator
-      - value
-      title: ModalityFilter
-      description: 'Filters on content modalities in scorer jobs.
-
-        Matches if at least one of the specified modalities is present.'
-    ExperimentCreatedAtSort:
-      properties:
-        name:
-          type: string
-          const: created_at
-          title: Name
-          default: created_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: RunCreatedAtSort
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ExperimentCreateRequest:
-      properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-        task_type:
-          anyOf:
-          - type: integer
-            const: 16
-          - type: integer
-            const: 17
-          title: Task Type
-          default: 16
-        playground_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Playground Id
-        prompt_template_version_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Prompt Template Version Id
-        dataset:
-          anyOf:
-          - $ref: '#/components/schemas/ExperimentDatasetRequest'
-          - type: 'null'
-        playground_prompt_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Playground Prompt Id
-        prompt_settings:
-          anyOf:
-          - $ref: '#/components/schemas/PromptRunSettings-Input'
-          - type: 'null'
-        scorers:
-          items:
-            $ref: '#/components/schemas/ScorerConfig'
-          type: array
-          title: Scorers
-        trigger:
-          type: boolean
-          title: Trigger
-          default: false
-        experiment_group_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Experiment Group Id
-        experiment_group_name:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Experiment Group Name
-      type: object
-      required:
-      - name
-      title: ExperimentCreateRequest
-    BaseScorerVersionDB:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        version:
-          type: integer
-          title: Version
-        scorer_id:
-          type: string
-          format: uuid4
-          title: Scorer Id
-        generated_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseGeneratedScorerDB'
-          - type: 'null'
-        registered_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseRegisteredScorerDB'
-          - type: 'null'
-        finetuned_scorer:
-          anyOf:
-          - $ref: '#/components/schemas/BaseFinetunedScorerDB'
-          - type: 'null'
-        model_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Name
-        num_judges:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Num Judges
-        scoreable_node_types:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Scoreable Node Types
-          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
-        cot_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Cot Enabled
-          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
-        output_type:
-          anyOf:
-          - $ref: '#/components/schemas/OutputTypeEnum'
-          - type: 'null'
-          description: What type of output to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
-        input_type:
-          anyOf:
-          - $ref: '#/components/schemas/InputTypeEnum'
-          - type: 'null'
-          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc.).
-      type: object
-      required:
-      - id
-      - version
-      - scorer_id
-      title: BaseScorerVersionDB
-      description: Scorer version from the scorer_versions table.
-    ExperimentUpdateRequest:
-      properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-        task_type:
-          anyOf:
-          - type: integer
-            const: 16
-          - type: integer
-            const: 17
-          title: Task Type
-          default: 16
-        experiment_group_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Experiment Group Id
-        experiment_group_name:
-          anyOf:
-          - type: string
-            maxLength: 255
-            minLength: 1
-          - type: 'null'
-          title: Experiment Group Name
-      type: object
-      required:
-      - name
-      title: ExperimentUpdateRequest
-    ExperimentUpdatedAtSort:
-      properties:
-        name:
-          type: string
-          const: updated_at
-          title: Name
-          default: updated_at
-        ascending:
-          type: boolean
-          title: Ascending
-          default: true
-        sort_type:
-          type: string
-          const: column
-          title: Sort Type
-          default: column
-      type: object
-      title: RunUpdatedAtSort
-    UserInfo:
-      properties:
-        id:
-          type: string
-          format: uuid4
-          title: Id
-        email:
-          type: string
-          title: Email
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-      type: object
-      required:
-      - id
-      - email
-      title: UserInfo
-      description: A user's basic information, used for display purposes.
-    DataType:
-      type: string
-      enum:
-      - uuid
-      - text
-      - integer
-      - floating_point
-      - boolean
-      - timestamp
-      - string_list
-      - tag
-      - dataset
-      - prompt
-      - playground
-      - rank
-      - category_count
-      - score_rating_aggregate
-      - star_rating_aggregate
-      - thumb_rating_aggregate
-      - tags_rating_aggregate
-      - text_rating_aggregate
-      - annotation_agreement
-      - fully_annotated
-      title: DataType
-    ColumnInfo:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Column id.  Must be universally unique.
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-          description: Display label of the column in the UI.
-        category:
-          $ref: '#/components/schemas/ColumnCategory'
-          description: Category of the column.
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Description of the column.
-        group_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Group Label
-          description: Display label of the column group.
-        data_type:
-          anyOf:
-          - $ref: '#/components/schemas/DataType'
-          - type: 'null'
-          description: Data type of the column. This is used to determine how to format the data on the UI.
-        data_unit:
-          anyOf:
-          - $ref: '#/components/schemas/DataUnit'
-          - type: 'null'
-          description: Data unit of the column (optional).
-        multi_valued:
-          type: boolean
-          title: Multi Valued
-          description: Whether the column is multi-valued.
-          default: false
-        allowed_values:
-          anyOf:
-          - items: {}
-            type: array
-            uniqueItems: true
-          - type: 'null'
-          title: Allowed Values
-          description: Allowed values for this column.
-        sortable:
-          type: boolean
-          title: Sortable
-          description: Whether the column is sortable.
-        filterable:
-          type: boolean
-          title: Filterable
-          description: Whether the column is filterable.
-        is_empty:
-          type: boolean
-          title: Is Empty
-          description: Indicates whether the column is empty and should be hidden.
-          default: false
-        applicable_types:
-          items:
-            $ref: '#/components/schemas/StepType'
-          type: array
-          uniqueItems: true
-          title: Applicable Types
-          description: List of types applicable for this column.
-        is_optional:
-          type: boolean
-          title: Is Optional
-          description: Whether the column is optional.
-          default: false
-        roll_up_method:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Roll Up Method
-          description: Default roll-up aggregation method for this metric (e.g., 'sum', 'average').
-        metric_key_alias:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metric Key Alias
-          description: Alternate metric key for this column. When scorer UUIDs are used as column IDs, this holds the legacy metric_name string for dual-key ClickHouse query fallback.
-      type: object
-      required:
-      - id
-      - category
-      - data_type
-      title: ColumnInfo
-    MetricSettingsRequest:
-      properties:
-        scorers:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/ScorerConfig'
-            type: array
-          - type: 'null'
-          title: Scorers
-          description: List of Galileo scorers to enable.
-        segment_filters:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/SegmentFilter'
-            type: array
-          - type: 'null'
-          title: Segment Filters
-          description: List of segment filters to apply to the run.
-      type: object
-      title: MetricSettingsRequest
-    StarAggregate:
-      properties:
-        feedback_type:
-          type: string
-          const: star
-          title: Feedback Type
-          default: star
-        average:
-          type: number
-          title: Average
-        counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Counts
-        unrated_count:
-          type: integer
-          title: Unrated Count
-      type: object
-      required:
-      - average
-      - counts
-      - unrated_count
-      title: StarAggregate
-    api__schemas__experiment__ExperimentGroupIDFilter:
-      properties:
-        name:
-          type: string
-          const: experiment_group_id
-          title: Name
-          default: experiment_group_id
-        value:
-          type: string
-          format: uuid4
-          title: Value
-      type: object
-      required:
-      - value
-      title: ExperimentGroupIDFilter
-    ExperimentDataset:
-      properties:
-        dataset_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Dataset Id
-        version_index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Version Index
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-      type: object
-      title: ExperimentDataset
     RunParamsMap:
       properties:
         model:
@@ -4071,37 +1378,267 @@ components:
       description: 'Maps the internal settings parameters (left) to the serialized parameters (right) we want to send in the API
 
         requests.'
-    ExperimentPlayground:
+    ContentModality:
+      type: string
+      enum:
+      - text
+      - document
+      - image
+      - audio
+      - video
+      title: ContentModality
+      description: Classification of content modality
+    LogRecordsBooleanFilter:
       properties:
-        playground_id:
-          anyOf:
-          - type: string
-            format: uuid4
-          - type: 'null'
-          title: Playground Id
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-      type: object
-      title: ExperimentPlayground
-    ExperimentNameFilter:
-      properties:
-        name:
+        column_id:
           type: string
-          const: name
-          title: Name
-          default: name
+          title: Column Id
+          description: ID of the column to filter.
         operator:
           type: string
           enum:
           - eq
           - ne
-          - contains
+          title: Operator
+          default: eq
+        value:
+          type: boolean
+          title: Value
+        type:
+          type: string
+          const: boolean
+          title: Type
+          default: boolean
+      type: object
+      required:
+      - column_id
+      - value
+      title: LogRecordsBooleanFilter
+    ExperimentUpdatedAtSort:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: RunUpdatedAtSort
+    Model:
+      properties:
+        lifecycle_state:
+          $ref: '#/components/schemas/ModelLifecycleState'
+          default: active
+        replacement_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Replacement Alias
+        deprecation_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Deprecation Date
+        retirement_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Retirement Date
+        name:
+          type: string
+          title: Name
+          description: Provider model identifier used to match the model to its configured provider deployment or profile.
+        alias:
+          type: string
+          title: Alias
+          description: Galileo model identifier used in settings and API requests to select this model.
+        display_name:
+          type: string
+          title: Display Name
+          description: Human-readable model name shown in the UI. Defaults to the alias for legacy registrations.
+          default: ''
+        integration:
+          $ref: '#/components/schemas/LLMIntegration'
+          default: openai
+        user_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Role
+        assistant_role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Assistant Role
+        system_supported:
+          type: boolean
+          title: System Supported
+          default: false
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/ContentModality'
+          type: array
+          title: Input Modalities
+          description: Input modalities that the model can accept.
+        alternative_names:
+          items:
+            type: string
+          type: array
+          title: Alternative Names
+          description: Alternative names for the model, used for matching with various current, versioned or legacy names.
+        input_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Input Token Limit
+        output_token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Token Limit
+        token_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Token Limit
+        cost_by:
+          $ref: '#/components/schemas/ModelCostBy'
+          default: tokens
+        is_chat:
+          type: boolean
+          title: Is Chat
+          default: false
+        provides_log_probs:
+          type: boolean
+          title: Provides Log Probs
+          default: false
+        formatting_tokens:
+          type: integer
+          title: Formatting Tokens
+          default: 0
+        response_prefix_tokens:
+          type: integer
+          title: Response Prefix Tokens
+          default: 0
+        api_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Version
+        legacy_mistral_prompt_format:
+          type: boolean
+          title: Legacy Mistral Prompt Format
+          default: false
+        requires_max_tokens:
+          type: boolean
+          title: Requires Max Tokens
+          default: false
+        supports_structured_output:
+          type: boolean
+          title: Supports Structured Output
+          default: false
+        max_top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max Top P
+        params_map:
+          $ref: '#/components/schemas/RunParamsMap'
+        output_map:
+          anyOf:
+          - $ref: '#/components/schemas/OutputMap'
+          - type: 'null'
+        input_map:
+          anyOf:
+          - $ref: '#/components/schemas/InputMap'
+          - type: 'null'
+      type: object
+      required:
+      - name
+      - alias
+      title: Model
+    ExperimentCreatedByFilter:
+      properties:
+        name:
+          type: string
+          const: created_by
+          title: Name
+          default: created_by
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
           - one_of
           - not_in
+          - contains
           title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: RunCreatedByFilter
+    ExperimentDatasetRequest:
+      properties:
+        dataset_id:
+          type: string
+          format: uuid4
+          title: Dataset Id
+        version_index:
+          type: integer
+          title: Version Index
+      type: object
+      required:
+      - dataset_id
+      - version_index
+      title: ExperimentDatasetRequest
+    LunaInputTypeEnum:
+      type: string
+      enum:
+      - span
+      - trace_object
+      - trace_input_output_only
+      title: LunaInputTypeEnum
+    MetadataFilter:
+      properties:
+        name:
+          type: string
+          const: metadata
+          title: Name
+          default: metadata
+        operator:
+          type: string
+          enum:
+          - one_of
+          - not_in
+          - eq
+          - ne
+          title: Operator
+        key:
+          type: string
+          title: Key
         value:
           anyOf:
           - type: string
@@ -4109,15 +1646,216 @@ components:
               type: string
             type: array
           title: Value
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: true
       type: object
       required:
       - operator
+      - key
       - value
-      title: RunNameFilter
+      title: MetadataFilter
+      description: Filters on metadata key-value pairs in scorer jobs.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LikeDislikeAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: like_dislike
+          title: Feedback Type
+          default: like_dislike
+        like_count:
+          type: integer
+          title: Like Count
+        dislike_count:
+          type: integer
+          title: Dislike Count
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - like_count
+      - dislike_count
+      - unrated_count
+      title: LikeDislikeAggregate
+    ExperimentMetricsResponse:
+      properties:
+        metrics:
+          items:
+            $ref: '#/components/schemas/BucketedMetric'
+          type: array
+          title: Metrics
+          description: List of metrics for the experiment, including categorical and quartile metrics.
+      type: object
+      title: ExperimentMetricsResponse
+    MultimodalCapability:
+      type: string
+      enum:
+      - vision
+      - audio
+      title: MultimodalCapability
+    ListExperimentResponse:
+      properties:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        paginated:
+          type: boolean
+          title: Paginated
+          default: false
+        next_starting_token:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Starting Token
+        experiments:
+          items:
+            $ref: '#/components/schemas/ExperimentResponse'
+          type: array
+          title: Experiments
+      type: object
+      title: ListExperimentResponse
+    OpenAIToolChoice:
+      properties:
+        type:
+          type: string
+          title: Type
+          default: function
+        function:
+          $ref: '#/components/schemas/OpenAIFunction'
+      type: object
+      required:
+      - function
+      title: OpenAIToolChoice
+    CategoricalRollUpMethod:
+      type: string
+      enum:
+      - category_count
+      title: CategoricalRollUpMethod
+      description: Roll up methods for aggregating categorical metrics up the session/trace/span hierarchy.
+    ExperimentCreateRequest:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+        task_type:
+          anyOf:
+          - type: integer
+            const: 16
+          - type: integer
+            const: 17
+          title: Task Type
+          default: 16
+        playground_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Playground Id
+        prompt_template_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Prompt Template Version Id
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/ExperimentDatasetRequest'
+          - type: 'null'
+        playground_prompt_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Playground Prompt Id
+        prompt_settings:
+          anyOf:
+          - $ref: '#/components/schemas/PromptRunSettings-Input'
+          - type: 'null'
+        scorers:
+          items:
+            $ref: '#/components/schemas/RuntimeScorerConfig'
+          type: array
+          title: Scorers
+        trigger:
+          type: boolean
+          title: Trigger
+          default: false
+        experiment_group_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Experiment Group Id
+        experiment_group_name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Experiment Group Name
+      type: object
+      required:
+      - name
+      title: ExperimentCreateRequest
+    TaskType:
+      type: integer
+      enum:
+      - 13
+      - 15
+      - 16
+      - 17
+      - 18
+      - 19
+      title: TaskType
+      description: 'Valid task types for modeling.
+
+
+        We store these as ints instead of strings because we will be looking this up in the database frequently.'
+    LLMIntegration:
+      type: string
+      enum:
+      - anthropic
+      - aws_bedrock
+      - aws_sagemaker
+      - azure
+      - custom
+      - databricks
+      - mistral
+      - nvidia
+      - openai
+      - vertex_ai
+      - writer
+      title: LLMIntegration
     ExperimentResponse:
       properties:
         id:
@@ -4278,6 +2016,422 @@ components:
       - project_id
       - task_type
       title: ExperimentResponse
+    PromptRunSettings-Output:
+      properties:
+        logprobs:
+          type: boolean
+          title: Logprobs
+          default: true
+        top_logprobs:
+          type: integer
+          title: Top Logprobs
+          default: 5
+        echo:
+          type: boolean
+          title: Echo
+          default: false
+        n:
+          type: integer
+          title: N
+          default: 1
+        reasoning_effort:
+          type: string
+          title: Reasoning Effort
+          default: medium
+        verbosity:
+          type: string
+          title: Verbosity
+          default: medium
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+        model_alias:
+          type: string
+          title: Model Alias
+          default: gpt-5.1
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          type: integer
+          title: Max Tokens
+          default: 4096
+        stop_sequences:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          type: number
+          title: Top P
+          default: 1.0
+        top_k:
+          type: integer
+          title: Top K
+          default: 40
+        frequency_penalty:
+          type: number
+          title: Frequency Penalty
+          default: 0.0
+        presence_penalty:
+          type: number
+          title: Presence Penalty
+          default: 0.0
+        tools:
+          type: string
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/OpenAIToolChoice'
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Response Format
+      type: object
+      title: PromptRunSettings
+      description: Prompt run settings.
+    BaseScorerVersionDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        version:
+          type: integer
+          title: Version
+        scorer_id:
+          type: string
+          format: uuid4
+          title: Scorer Id
+        generated_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseGeneratedScorerDB'
+          - type: 'null'
+        registered_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseRegisteredScorerDB'
+          - type: 'null'
+        finetuned_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseFinetunedScorerDB'
+          - type: 'null'
+        luna3_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/BaseLuna3ScorerDB'
+          - type: 'null'
+        decision_scorer:
+          anyOf:
+          - $ref: '#/components/schemas/DecisionScorerDB'
+          - type: 'null'
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+        num_judges:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Judges
+        cot_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Cot Enabled
+          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
+        runtime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Runtime
+          description: The runtime a code metric version runs on, such as python3.14. Null for a version saved before runtimes were recorded, which runs on the legacy Python 3.12 runtime.
+      type: object
+      required:
+      - id
+      - version
+      - scorer_id
+      title: BaseScorerVersionDB
+      description: Scorer version from the scorer_versions table.
+    OutputMap:
+      properties:
+        response:
+          type: string
+          title: Response
+        token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token Count
+        input_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input Token Count
+        output_token_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Token Count
+        completion_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Completion Reason
+      type: object
+      required:
+      - response
+      title: OutputMap
+    DataUnit:
+      type: string
+      enum:
+      - percentage
+      - nano_seconds
+      - milli_seconds
+      - dollars
+      - count_and_total
+      title: DataUnit
+    ExperimentUpdatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: updated_at
+          title: Name
+          default: updated_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: RunUpdatedAtFilter
+    TextAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: text
+          title: Feedback Type
+          default: text
+        count:
+          type: integer
+          title: Count
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - count
+      - unrated_count
+      title: TextAggregate
+    StarAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: star
+          title: Feedback Type
+          default: star
+        average:
+          type: number
+          title: Average
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - average
+      - counts
+      - unrated_count
+      title: StarAggregate
+    ExperimentNameSort:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: RunNameSort
+    DecisionBooleanCriteria:
+      properties:
+        'true':
+          type: string
+          title: 'True'
+        'false':
+          type: string
+          title: 'False'
+      additionalProperties: false
+      type: object
+      required:
+      - 'true'
+      - 'false'
+      title: DecisionBooleanCriteria
+      description: What a true answer and a false answer mean, for a yes/no question. The two are set together.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LogRecordsFullyAnnotatedFilter:
+      properties:
+        column_id:
+          type: string
+          const: fully_annotated
+          title: Column Id
+          description: Queue-scoped filter identifier. This filter only works for annotation-queue searches that provide queue context.
+          default: fully_annotated
+        type:
+          type: string
+          const: fully_annotated
+          title: Type
+          default: fully_annotated
+        user_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid4
+            type: array
+            minItems: 1
+          - type: 'null'
+          title: User Ids
+          description: Optional queue member IDs to require for full annotation in a queue-scoped search. If omitted, all tracked queue members visible to the requester are used.
+      type: object
+      title: LogRecordsFullyAnnotatedFilter
+      description: Queue-scoped filter for records rated across all queue templates.
+    BaseGeneratedScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        chain_poll_template:
+          $ref: '#/components/schemas/ChainPollTemplate'
+        user_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Prompt
+      type: object
+      required:
+      - id
+      - name
+      - chain_poll_template
+      title: BaseGeneratedScorerDB
+    InputTypeEnum:
+      type: string
+      enum:
+      - basic
+      - llm_spans
+      - retriever_spans
+      - sessions_normalized
+      - sessions_trace_io_only
+      - tool_spans
+      - trace_input_only
+      - trace_io_only
+      - trace_normalized
+      - trace_output_only
+      - agent_spans
+      - workflow_spans
+      title: InputTypeEnum
+      description: Enumeration of input types.
+    LogRecordsNumberFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          - between
+          title: Operator
+        value:
+          anyOf:
+          - type: integer
+          - type: number
+          - items:
+              type: integer
+            type: array
+          - items:
+              type: number
+            type: array
+          title: Value
+        type:
+          type: string
+          const: number
+          title: Type
+          default: number
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsNumberFilter
+    ExperimentPhaseStatus:
+      properties:
+        progress_percent:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Progress Percent
+          description: Progress percentage from 0.0 to 1.0
+          default: 0.0
+      type: object
+      title: ExperimentPhaseStatus
     ExperimentPrompt:
       properties:
         prompt_template_id:
@@ -4303,27 +2457,1892 @@ components:
           title: Content
       type: object
       title: ExperimentPrompt
-    OpenAIToolChoice:
+    ExperimentSearchRequest:
       properties:
-        type:
+        starting_token:
+          type: integer
+          title: Starting Token
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 100
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ExperimentIDFilter'
+            - $ref: '#/components/schemas/ExperimentNameFilter'
+            - $ref: '#/components/schemas/ExperimentCreatedByFilter'
+            - $ref: '#/components/schemas/ExperimentCreatedAtFilter'
+            - $ref: '#/components/schemas/ExperimentUpdatedAtFilter'
+            - $ref: '#/components/schemas/api__schemas__experiment__ExperimentGroupIDFilter'
+            - $ref: '#/components/schemas/api__schemas__experiment__ExperimentGroupNameFilter'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/ExperimentCreatedAtFilter'
+                created_by: '#/components/schemas/ExperimentCreatedByFilter'
+                experiment_group_id: '#/components/schemas/api__schemas__experiment__ExperimentGroupIDFilter'
+                experiment_group_name: '#/components/schemas/api__schemas__experiment__ExperimentGroupNameFilter'
+                id: '#/components/schemas/ExperimentIDFilter'
+                name: '#/components/schemas/ExperimentNameFilter'
+                updated_at: '#/components/schemas/ExperimentUpdatedAtFilter'
+          type: array
+          title: Filters
+        sort:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/ExperimentNameSort'
+            - $ref: '#/components/schemas/ExperimentCreatedAtSort'
+            - $ref: '#/components/schemas/ExperimentUpdatedAtSort'
+            discriminator:
+              propertyName: name
+              mapping:
+                created_at: '#/components/schemas/ExperimentCreatedAtSort'
+                name: '#/components/schemas/ExperimentNameSort'
+                updated_at: '#/components/schemas/ExperimentUpdatedAtSort'
+          - type: 'null'
+          title: Sort
+          default:
+            name: created_at
+            ascending: false
+            sort_type: column
+        include_counts:
+          type: boolean
+          title: Include Counts
+          default: false
+      type: object
+      title: ExperimentSearchRequest
+    RuntimeScorerConfig:
+      properties:
+        id:
           type: string
-          title: Type
-          default: function
-        function:
-          $ref: '#/components/schemas/OpenAIFunction'
+          format: uuid4
+          title: Id
+        scorer_version_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Scorer Version Id
+        filters:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/NodeNameFilter'
+              - $ref: '#/components/schemas/MetadataFilter'
+              - $ref: '#/components/schemas/ModalityFilter'
+              discriminator:
+                propertyName: name
+                mapping:
+                  metadata: '#/components/schemas/MetadataFilter'
+                  modality: '#/components/schemas/ModalityFilter'
+                  node_name: '#/components/schemas/NodeNameFilter'
+            type: array
+          - type: 'null'
+          title: Filters
+          description: List of filters to apply to the scorer.
+        roll_up_method:
+          anyOf:
+          - $ref: '#/components/schemas/RollUpMethodDisplayOptions'
+          - type: 'null'
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        scorer_type:
+          anyOf:
+          - $ref: '#/components/schemas/ScorerTypes'
+          - type: 'null'
+        model_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Name
+        num_judges:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Judges
+        scorer_version:
+          anyOf:
+          - $ref: '#/components/schemas/BaseScorerVersionDB'
+          - type: 'null'
+          description: ScorerVersion to use for this scorer. If not provided, the latest version will be used.
+        scoreable_node_types:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Scoreable Node Types
+          description: List of node types that can be scored by this scorer. Defaults to llm/chat.
+        cot_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Cot Enabled
+          description: Whether to enable chain of thought for this scorer. Defaults to False for llm scorers.
+        output_type:
+          anyOf:
+          - $ref: '#/components/schemas/OutputTypeEnum'
+          - type: 'null'
+          description: What type of output to use for model-based scorers (boolean, categorical, etc.).
+        input_type:
+          anyOf:
+          - $ref: '#/components/schemas/InputTypeEnum'
+          - type: 'null'
+          description: What type of input to use for model-based scorers (sessions_normalized, trace_io_only, etc..).
+        multimodal_capabilities:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/MultimodalCapability'
+            type: array
+          - type: 'null'
+          title: Multimodal Capabilities
+          description: Multimodal capabilities which this scorer can utilize in its evaluation.
+        roll_up_config:
+          anyOf:
+          - $ref: '#/components/schemas/BaseMetricRollUpConfigDB'
+          - type: 'null'
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
+          description: Return type of code scorers (e.g., 'bool', 'int', 'float', 'str').
+        model_type:
+          anyOf:
+          - $ref: '#/components/schemas/ModelType'
+          - type: 'null'
+        invocation:
+          anyOf:
+          - $ref: '#/components/schemas/ScorerInvocationConfig'
+          - type: 'null'
+          description: Trusted intrinsic input requirements for synchronous direct invocation.
+        chainpoll_template:
+          anyOf:
+          - $ref: '#/components/schemas/ChainPollTemplate'
+          - type: 'null'
+        metric_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Name
+        scorer_path_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scorer Path Name
+        user_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Code
+        registered_scorer_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Registered Scorer Id
+        model_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Alias
+        ground_truth:
+          type: boolean
+          title: Ground Truth
+          default: false
+        requires_tools_in_llm_span:
+          type: boolean
+          title: Requires Tools In Llm Span
+          default: false
+        default_model_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Default Model Alias
+        roll_up_strategy:
+          anyOf:
+          - $ref: '#/components/schemas/RollUpStrategy'
+          - type: 'null'
+        required_scorers:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Required Scorers
+        required_metric_ids:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Required Metric Ids
+        instruction:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instruction
+        adapter:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Adapter
+        threshold:
+          type: number
+          title: Threshold
+          default: 0.5
+        prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt
+        lora_task_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Lora Task Id
+        lora_weights_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lora Weights Path
+        luna_input_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaInputTypeEnum'
+          - type: 'null'
+        luna_output_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaOutputTypeEnum'
+          - type: 'null'
+        class_name_to_vocab_ix:
+          anyOf:
+          - additionalProperties:
+              items:
+                type: integer
+              type: array
+              uniqueItems: true
+            type: object
+          - additionalProperties:
+              type: integer
+            type: object
+          - type: 'null'
+          title: Class Name To Vocab Ix
+        decision_question:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Decision Question
+        decision_answer_options:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - items:
+              $ref: '#/components/schemas/DecisionChoice'
+            type: array
+          - items:
+              $ref: '#/components/schemas/DecisionLevel'
+            type: array
+          - $ref: '#/components/schemas/DecisionBooleanCriteria'
+          - type: 'null'
+          title: Decision Answer Options
       type: object
       required:
-      - function
-      title: OpenAIToolChoice
+      - id
+      title: RuntimeScorerConfig
+      description: 'Hydrated scorer config used at runtime. Never persisted directly.
+
+
+        Produced by hydrate_scorer_config from a StoredScorerConfig + live DB rows.'
+    ExperimentPlayground:
+      properties:
+        playground_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Playground Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: ExperimentPlayground
+    ScorerInvocationPayloadFormat:
+      type: string
+      enum:
+      - query
+      - response
+      - pairwise
+      - node_input_output
+      title: ScorerInvocationPayloadFormat
+    ScorerName:
+      type: string
+      enum:
+      - action_completion_luna
+      - action_advancement_luna
+      - agentic_session_success
+      - agentic_session_success
+      - action_completion_vision
+      - action_completion_audio
+      - agentic_workflow_success
+      - agentic_workflow_success
+      - agent_efficiency
+      - agent_flow
+      - agent_flow_vision
+      - agent_flow_audio
+      - chunk_attribution_utilization_luna
+      - chunk_attribution_utilization
+      - chunk_relevance
+      - chunk_relevance_luna
+      - context_precision
+      - precision_at_k
+      - completeness_luna
+      - completeness
+      - context_adherence
+      - context_adherence_luna
+      - context_adherence_vision_luna
+      - context_adherence_vision
+      - context_adherence_audio
+      - context_relevance
+      - context_relevance_luna
+      - conversation_quality
+      - conversation_quality_vision
+      - conversation_quality_audio
+      - unsafe_output
+      - correctness
+      - correctness_vision
+      - correctness_audio
+      - ground_truth_adherence
+      - ground_truth_adherence_vision
+      - ground_truth_adherence_audio
+      - visual_fidelity
+      - visual_quality
+      - input_pii
+      - input_pii_vision_luna
+      - input_pii_gpt
+      - input_pii_vision
+      - input_pii_audio
+      - input_sexist
+      - input_sexist
+      - input_sexist_vision
+      - input_sexist_audio
+      - input_sexist_luna
+      - input_sexist_luna
+      - input_sexist_vision_luna
+      - input_tone
+      - input_tone_gpt
+      - input_toxicity
+      - input_toxicity_luna
+      - input_toxicity_vision_luna
+      - input_toxicity_vision
+      - input_toxicity_audio
+      - instruction_adherence
+      - instruction_adherence_vision
+      - instruction_adherence_audio
+      - output_pii
+      - output_pii_vision_luna
+      - output_pii_gpt
+      - output_pii_vision
+      - output_pii_audio
+      - output_sexist
+      - output_sexist
+      - output_sexist_vision
+      - output_sexist_audio
+      - output_sexist_luna
+      - output_sexist_luna
+      - output_sexist_vision_luna
+      - output_tone
+      - output_tone_gpt
+      - output_toxicity
+      - output_toxicity_luna
+      - output_toxicity_vision_luna
+      - output_toxicity_vision
+      - output_toxicity_audio
+      - prompt_injection
+      - prompt_injection_vision
+      - prompt_injection_audio
+      - prompt_injection_luna
+      - prompt_injection_vision_luna
+      - reasoning_coherence
+      - reasoning_coherence_vision
+      - reasoning_coherence_audio
+      - sql_efficiency
+      - sql_adherence
+      - sql_injection
+      - sql_correctness
+      - tool_error_rate
+      - tool_error_rate_luna
+      - tool_selection_quality
+      - tool_selection_quality_vision
+      - tool_selection_quality_audio
+      - tool_selection_quality_luna
+      - user_intent_change
+      - user_intent_change_vision
+      - user_intent_change_audio
+      - interruption_detection
+      title: ScorerName
+    TagsAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: tags
+          title: Feedback Type
+          default: tags
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - counts
+      - unrated_count
+      title: TagsAggregate
+    BaseLuna3ScorerDB:
+      properties:
+        instruction:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Instruction
+        adapter_path:
+          type: string
+          maxLength: 1024
+          minLength: 1
+          title: Adapter Path
+        class_name_to_vocab_ix:
+          additionalProperties:
+            items:
+              type: integer
+            type: array
+            uniqueItems: true
+          type: object
+          maxProperties: 256
+          minProperties: 1
+          title: Class Name To Vocab Ix
+        threshold:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Threshold
+        id:
+          type: string
+          format: uuid4
+          title: Id
+      type: object
+      required:
+      - instruction
+      - adapter_path
+      - class_name_to_vocab_ix
+      - id
+      title: BaseLuna3ScorerDB
+    DecisionScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        organization_id:
+          type: string
+          format: uuid4
+          title: Organization Id
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Created By
+        question:
+          type: string
+          title: Question
+        answer_options:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - items:
+              $ref: '#/components/schemas/DecisionChoice'
+            type: array
+          - items:
+              $ref: '#/components/schemas/DecisionLevel'
+            type: array
+          - $ref: '#/components/schemas/DecisionBooleanCriteria'
+          - type: 'null'
+          title: Answer Options
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - organization_id
+      - question
+      - created_at
+      title: DecisionScorerDB
+      description: 'A row of the decision_scorers table.
+
+
+        answer_options depends on the output type of the scorer:
+
+        - categorical: a list of DecisionChoice, or a list of labels (list[str]) for older versions.
+
+        - discrete: a list of DecisionLevel.
+
+        - boolean_probability: a DecisionBooleanCriteria, or None when the question has no criteria.'
+    ExperimentsAvailableColumnsResponse:
+      properties:
+        columns:
+          items:
+            $ref: '#/components/schemas/ColumnInfo'
+          type: array
+          title: Columns
+      type: object
+      title: ExperimentsAvailableColumnsResponse
+      examples:
+      - columns:
+        - applicable_types: []
+          category: standard
+          data_type: uuid
+          description: Galileo ID of the experiment
+          filterable: true
+          group_label: Standard
+          id: id
+          is_empty: false
+          is_optional: false
+          label: ID
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: timestamp
+          description: Timestamp of the experiment's creation
+          filterable: true
+          group_label: Standard
+          id: created_at
+          is_empty: false
+          is_optional: false
+          label: Created
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: timestamp
+          description: Timestamp of the trace or span's last update
+          filterable: true
+          group_label: Standard
+          id: updated_at
+          is_empty: false
+          is_optional: true
+          label: Last Updated
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: text
+          description: Name of the experiment
+          filterable: true
+          group_label: Standard
+          id: name
+          is_empty: false
+          is_optional: false
+          label: Name
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: uuid
+          description: Galileo ID of the project associated with this experiment
+          filterable: true
+          group_label: Standard
+          id: project_id
+          is_empty: false
+          is_optional: false
+          label: Project ID
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: floating_point
+          filterable: true
+          group_label: Standard
+          id: ranking_score
+          is_empty: false
+          is_optional: true
+          label: Ranking Score
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: uuid
+          filterable: true
+          group_label: Standard
+          id: playground_id
+          is_empty: false
+          is_optional: true
+          label: Playground Id
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: uuid
+          filterable: true
+          group_label: Standard
+          id: experiment_group_id
+          is_empty: false
+          is_optional: true
+          label: Experiment Group Id
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: text
+          filterable: true
+          group_label: Standard
+          id: experiment_group_name
+          is_empty: false
+          is_optional: true
+          label: Experiment Group Name
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: standard
+          data_type: boolean
+          filterable: true
+          group_label: Standard
+          id: experiment_group_is_system
+          is_empty: false
+          is_optional: true
+          label: Experiment Group Is System
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: metric
+          data_type: floating_point
+          filterable: true
+          id: metrics/average_cost
+          is_empty: false
+          is_optional: false
+          label: Average Cost
+          multi_valued: false
+          sortable: true
+        - applicable_types: []
+          category: metric
+          data_type: integer
+          filterable: true
+          id: metrics/total_responses
+          is_empty: false
+          is_optional: false
+          label: Total Responses
+          multi_valued: false
+          sortable: true
+    InputMap:
+      properties:
+        prompt:
+          type: string
+          title: Prompt
+        prefix:
+          type: string
+          title: Prefix
+          default: ''
+        suffix:
+          type: string
+          title: Suffix
+          default: ''
+      type: object
+      required:
+      - prompt
+      title: InputMap
+    LogRecordsIDFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+        type:
+          type: string
+          const: id
+          title: Type
+          default: id
+      type: object
+      required:
+      - column_id
+      - value
+      title: LogRecordsIDFilter
+    RollUpMethodDisplayOptions:
+      type: string
+      enum:
+      - average
+      - sum
+      - max
+      - min
+      - category_count
+      - percentage_true
+      - percentage_false
+      title: RollUpMethodDisplayOptions
+      description: 'Display options for roll up methods when showing rolled up metrics in the UI.
+
+
+        Separates display intent from computation methods. The computation methods
+
+        (NumericRollUpMethod, CategoricalRollUpMethod) control what aggregations are available.
+
+        This enum controls how the UI displays the selected roll-up value for a scorer.'
+    RootType:
+      type: string
+      enum:
+      - session
+      - trace
+      - span
+      title: RootType
+      description: 'The root-level type of a logged step hierarchy.
+
+
+        Maps fine-grained StepType values to the three top-level categories
+
+        used throughout the platform: session, trace, and span.'
+    BaseRegisteredScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        score_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Score Type
+      type: object
+      required:
+      - id
+      - name
+      title: BaseRegisteredScorerDB
+    ExperimentIDFilter:
+      properties:
+        name:
+          type: string
+          const: id
+          title: Name
+          default: id
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          - contains
+          title: Operator
+          default: eq
+        value:
+          anyOf:
+          - type: string
+            format: uuid4
+          - items:
+              anyOf:
+              - type: string
+                format: uuid4
+              - type: string
+            type: array
+          - type: string
+          title: Value
+      type: object
+      required:
+      - value
+      title: RunIDFilter
+    LunaOutputTypeEnum:
+      type: string
+      enum:
+      - float
+      - string
+      - string_list
+      - bool_list
+      title: LunaOutputTypeEnum
+    StepType:
+      type: string
+      enum:
+      - http
+      - llm
+      - retriever
+      - tool
+      - workflow
+      - agent
+      - control
+      - trace
+      - session
+      title: StepType
+    ChainPollTemplate:
+      properties:
+        metric_system_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric System Prompt
+          description: System prompt for the metric.
+        metric_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Description
+          description: Description of what the metric should do.
+        value_field_name:
+          type: string
+          title: Value Field Name
+          description: Field name to look for in the chainpoll response, for the rating.
+          default: rating
+        explanation_field_name:
+          type: string
+          title: Explanation Field Name
+          description: Field name to look for in the chainpoll response, for the explanation.
+          default: explanation
+        template:
+          type: string
+          title: Template
+          description: Chainpoll prompt template.
+        metric_few_shot_examples:
+          items:
+            $ref: '#/components/schemas/FewShotExample'
+          type: array
+          title: Metric Few Shot Examples
+          description: Few-shot examples for the metric.
+        response_schema:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Response Schema
+          description: Response schema for the output
+      type: object
+      required:
+      - template
+      title: ChainPollTemplate
+      description: 'Template for a chainpoll metric prompt,
+
+        containing all the info necessary to send a chainpoll prompt.'
+    TreeChoiceAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: tree_choice
+          title: Feedback Type
+          default: tree_choice
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - counts
+      - unrated_count
+      title: TreeChoiceAggregate
+    ModalityFilter:
+      properties:
+        name:
+          type: string
+          const: modality
+          title: Name
+          default: modality
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+            description: Single enum value - specific options depend on the concrete enum type used
+            example: ENUM_VALUE
+          - items:
+              type: string
+              example: ENUM_VALUE
+            type: array
+            description: Array of enum values
+            example:
+            - ENUM_VALUE_1
+            - ENUM_VALUE_2
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: ModalityFilter
+      description: 'Filters on content modalities in scorer jobs.
+
+        Matches if at least one of the specified modalities is present.'
+    ColumnCategory:
+      type: string
+      enum:
+      - standard
+      - metric
+      - user_metadata
+      - metric_status
+      - dataset_metadata
+      - dataset
+      - feedback
+      - tags
+      title: ColumnCategory
+    ExperimentDataset:
+      properties:
+        dataset_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Dataset Id
+        version_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Version Index
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: ExperimentDataset
+    ModelCostBy:
+      type: string
+      enum:
+      - tokens
+      - characters
+      title: ModelCostBy
+    ExperimentUpdateRequest:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+        task_type:
+          anyOf:
+          - type: integer
+            const: 16
+          - type: integer
+            const: 17
+          title: Task Type
+          default: 16
+        experiment_group_id:
+          anyOf:
+          - type: string
+            format: uuid4
+          - type: 'null'
+          title: Experiment Group Id
+        experiment_group_name:
+          anyOf:
+          - type: string
+            maxLength: 255
+            minLength: 1
+          - type: 'null'
+          title: Experiment Group Name
+      type: object
+      required:
+      - name
+      title: ExperimentUpdateRequest
+    NumericRollUpMethod:
+      type: string
+      enum:
+      - average
+      - sum
+      - max
+      - min
+      title: NumericRollUpMethod
+      description: Roll up methods for aggregating numeric metrics up the session/trace/span hierarchy.
+    api__schemas__experiment__ExperimentGroupIDFilter:
+      properties:
+        name:
+          type: string
+          const: experiment_group_id
+          title: Name
+          default: experiment_group_id
+        value:
+          type: string
+          format: uuid4
+          title: Value
+      type: object
+      required:
+      - value
+      title: ExperimentGroupIDFilter
+    ScoreAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: score
+          title: Feedback Type
+          default: score
+        average:
+          type: number
+          title: Average
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - average
+      - unrated_count
+      title: ScoreAggregate
+    DecisionChoice:
+      properties:
+        label:
+          type: string
+          title: Label
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      additionalProperties: false
+      type: object
+      required:
+      - label
+      title: DecisionChoice
+      description: 'One option of a choice question, with an optional description of when it applies.
+
+
+        Extra fields are forbidden, so a level, which has a ``level`` field, never validates as a choice.'
+    ScorerInvocationConfig:
+      properties:
+        required_inputs:
+          items:
+            type: string
+            enum:
+            - query
+            - response
+          type: array
+          uniqueItems: true
+          title: Required Inputs
+        payload_format:
+          $ref: '#/components/schemas/ScorerInvocationPayloadFormat'
+      type: object
+      required:
+      - payload_format
+      title: ScorerInvocationConfig
+      description: How the direct scorer-invoke API validates and serializes inputs.
+    DataType:
+      type: string
+      enum:
+      - uuid
+      - text
+      - integer
+      - floating_point
+      - boolean
+      - timestamp
+      - string_list
+      - tag
+      - dataset
+      - prompt
+      - playground
+      - rank
+      - category_count
+      - retrieved_chunk_list_boolean
+      - score_rating_aggregate
+      - star_rating_aggregate
+      - thumb_rating_aggregate
+      - tags_rating_aggregate
+      - text_rating_aggregate
+      - annotation_agreement
+      - fully_annotated
+      title: DataType
+    OutputTypeEnum:
+      type: string
+      enum:
+      - boolean
+      - categorical
+      - count
+      - discrete
+      - freeform
+      - percentage
+      - multilabel
+      - retrieved_chunk_list_boolean
+      - boolean_multilabel
+      - boolean_probability
+      title: OutputTypeEnum
+      description: Enumeration of output types.
+    FeedbackAggregate:
+      properties:
+        aggregate:
+          oneOf:
+          - $ref: '#/components/schemas/LikeDislikeAggregate'
+          - $ref: '#/components/schemas/StarAggregate'
+          - $ref: '#/components/schemas/ScoreAggregate'
+          - $ref: '#/components/schemas/TagsAggregate'
+          - $ref: '#/components/schemas/TextAggregate'
+          - $ref: '#/components/schemas/ChoiceAggregate'
+          - $ref: '#/components/schemas/TreeChoiceAggregate'
+          title: Aggregate
+          discriminator:
+            propertyName: feedback_type
+            mapping:
+              choice: '#/components/schemas/ChoiceAggregate'
+              like_dislike: '#/components/schemas/LikeDislikeAggregate'
+              score: '#/components/schemas/ScoreAggregate'
+              star: '#/components/schemas/StarAggregate'
+              tags: '#/components/schemas/TagsAggregate'
+              text: '#/components/schemas/TextAggregate'
+              tree_choice: '#/components/schemas/TreeChoiceAggregate'
+      type: object
+      required:
+      - aggregate
+      title: FeedbackAggregate
+    ExperimentStatus:
+      properties:
+        log_generation:
+          $ref: '#/components/schemas/ExperimentPhaseStatus'
+      type: object
+      title: ExperimentStatus
+    ExperimentNameFilter:
+      properties:
+        name:
+          type: string
+          const: name
+          title: Name
+          default: name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: RunNameFilter
+    DecisionLevel:
+      properties:
+        level:
+          type: integer
+          maximum: 9.0
+          minimum: 0.0
+          title: Level
+        label:
+          type: string
+          title: Label
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - level
+      - label
+      title: DecisionLevel
+      description: One level of a score question. A question's levels run 0, 1, 2 and so on, with no gaps.
+    RunTagDB:
+      properties:
+        key:
+          type: string
+          maxLength: 256
+          title: Key
+        value:
+          type: string
+          maxLength: 256
+          title: Value
+        tag_type:
+          type: string
+          title: Tag Type
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        run_id:
+          type: string
+          format: uuid4
+          title: Run Id
+        created_by:
+          type: string
+          format: uuid4
+          title: Created By
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - key
+      - value
+      - tag_type
+      - project_id
+      - run_id
+      - created_by
+      - id
+      - created_at
+      - updated_at
+      title: RunTagDB
+    UserInfo:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        email:
+          type: string
+          title: Email
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+      type: object
+      required:
+      - id
+      - email
+      title: UserInfo
+      description: A user's basic information, used for display purposes.
+    LogRecordsDateFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+        type:
+          type: string
+          const: date
+          title: Type
+          default: date
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsDateFilter
+    BaseFinetunedScorerDB:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        name:
+          type: string
+          title: Name
+        lora_task_id:
+          type: integer
+          title: Lora Task Id
+        lora_weights_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lora Weights Path
+        prompt:
+          type: string
+          title: Prompt
+        luna_input_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaInputTypeEnum'
+          - type: 'null'
+        luna_output_type:
+          anyOf:
+          - $ref: '#/components/schemas/LunaOutputTypeEnum'
+          - type: 'null'
+        class_name_to_vocab_ix:
+          anyOf:
+          - additionalProperties:
+              items:
+                type: integer
+              type: array
+              uniqueItems: true
+            type: object
+          - additionalProperties:
+              type: integer
+            type: object
+          - type: 'null'
+          title: Class Name To Vocab Ix
+        executor:
+          anyOf:
+          - $ref: '#/components/schemas/ScorerName'
+          - type: 'null'
+          description: Executor pipeline. Defaults to finetuned scorer pipeline but can run custom galileo score pipelines.
+      type: object
+      required:
+      - id
+      - name
+      - lora_task_id
+      - prompt
+      title: BaseFinetunedScorerDB
+    ChoiceAggregate:
+      properties:
+        feedback_type:
+          type: string
+          const: choice
+          title: Feedback Type
+          default: choice
+        counts:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Counts
+        unrated_count:
+          type: integer
+          title: Unrated Count
+      type: object
+      required:
+      - counts
+      - unrated_count
+      title: ChoiceAggregate
+    ExperimentMetricsRequest:
+      properties:
+        filters:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LogRecordsIDFilter'
+            - $ref: '#/components/schemas/LogRecordsDateFilter'
+            - $ref: '#/components/schemas/LogRecordsNumberFilter'
+            - $ref: '#/components/schemas/LogRecordsBooleanFilter'
+            - $ref: '#/components/schemas/LogRecordsCollectionFilter'
+            - $ref: '#/components/schemas/LogRecordsTextFilter'
+            - $ref: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+            discriminator:
+              propertyName: type
+              mapping:
+                boolean: '#/components/schemas/LogRecordsBooleanFilter'
+                collection: '#/components/schemas/LogRecordsCollectionFilter'
+                date: '#/components/schemas/LogRecordsDateFilter'
+                fully_annotated: '#/components/schemas/LogRecordsFullyAnnotatedFilter'
+                id: '#/components/schemas/LogRecordsIDFilter'
+                number: '#/components/schemas/LogRecordsNumberFilter'
+                text: '#/components/schemas/LogRecordsTextFilter'
+          type: array
+          title: Filters
+      type: object
+      title: ExperimentMetricsRequest
+      examples:
+      - filters:
+        - case_sensitive: true
+          name: input
+          operator: eq
+          type: text
+          value: example input
+    ModelLifecycleState:
+      type: string
+      enum:
+      - active
+      - deprecated
+      - retired
+      title: ModelLifecycleState
+    ColumnInfo:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Column id.  Must be universally unique.
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+          description: Display label of the column in the UI.
+        category:
+          $ref: '#/components/schemas/ColumnCategory'
+          description: Category of the column.
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Description of the column.
+        group_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Group Label
+          description: Display label of the column group.
+        data_type:
+          anyOf:
+          - $ref: '#/components/schemas/DataType'
+          - type: 'null'
+          description: Data type of the column. This is used to determine how to format the data on the UI.
+        data_unit:
+          anyOf:
+          - $ref: '#/components/schemas/DataUnit'
+          - type: 'null'
+          description: Data unit of the column (optional).
+        multi_valued:
+          type: boolean
+          title: Multi Valued
+          description: Whether the column is multi-valued.
+          default: false
+        allowed_values:
+          anyOf:
+          - items: {}
+            type: array
+            uniqueItems: true
+          - type: 'null'
+          title: Allowed Values
+          description: Allowed values for this column.
+        sortable:
+          type: boolean
+          title: Sortable
+          description: Whether the column is sortable.
+        filterable:
+          type: boolean
+          title: Filterable
+          description: Whether the column is filterable.
+        is_empty:
+          type: boolean
+          title: Is Empty
+          description: Indicates whether the column is empty and should be hidden.
+          default: false
+        applicable_types:
+          items:
+            $ref: '#/components/schemas/StepType'
+          type: array
+          uniqueItems: true
+          title: Applicable Types
+          description: List of types applicable for this column.
+        is_optional:
+          type: boolean
+          title: Is Optional
+          description: Whether the column is optional.
+          default: false
+        roll_up_method:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Roll Up Method
+          description: Default roll-up aggregation method for this metric (e.g., 'sum', 'average').
+        metric_key_alias:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metric Key Alias
+          description: Alternate metric key for this column. When scorer UUIDs are used as column IDs, this holds the legacy metric_name string for dual-key ClickHouse query fallback.
+        threshold:
+          anyOf:
+          - $ref: '#/components/schemas/MetricThreshold'
+          - type: 'null'
+          description: Thresholds for the column, if this is a metrics column.
+      type: object
+      required:
+      - id
+      - category
+      - data_type
+      title: ColumnInfo
+    FewShotExample:
+      properties:
+        generation_prompt_and_response:
+          type: string
+          title: Generation Prompt And Response
+        evaluating_response:
+          type: string
+          title: Evaluating Response
+      type: object
+      required:
+      - generation_prompt_and_response
+      - evaluating_response
+      title: FewShotExample
+      description: Few-shot example for a chainpoll metric prompt.
+    MetricThreshold:
+      properties:
+        inverted:
+          type: boolean
+          title: Inverted
+          description: Whether the column should be inverted for thresholds, i.e. if True, lower is better.
+          default: false
+        buckets:
+          items:
+            anyOf:
+            - type: integer
+            - type: number
+          type: array
+          title: Buckets
+          description: Threshold buckets for the column. If the column is a metric, these are the thresholds for the column.
+        display_value_levels:
+          items:
+            type: string
+          type: array
+          title: Display Value Levels
+          description: Ordered list of strings that raw values get transformed to for displaying.
+      type: object
+      title: MetricThreshold
+      description: 'Threshold configuration for metrics.
+
+
+        Defines how metric values are bucketed and displayed, including whether
+
+        lower or higher values are considered better.'
+    BaseMetricRollUpConfigDB:
+      properties:
+        roll_up_methods:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/NumericRollUpMethod'
+            type: array
+          - items:
+              $ref: '#/components/schemas/CategoricalRollUpMethod'
+            type: array
+          minLength: 1
+          title: Roll Up Methods
+          description: List of roll up methods to apply to the metric. For numeric scorers we support doing multiple roll up types per metric.
+      type: object
+      required:
+      - roll_up_methods
+      title: BaseMetricRollUpConfigDB
+      description: Configuration for rolling up metrics to parent/trace/session.
+    LogRecordsCollectionFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: collection
+          title: Type
+          default: collection
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsCollectionFilter
+    OpenAIFunction:
+      properties:
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - name
+      title: OpenAIFunction
+    LogRecordsTextFilter:
+      properties:
+        column_id:
+          type: string
+          title: Column Id
+          description: ID of the column to filter.
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+        type:
+          type: string
+          const: text
+          title: Type
+          default: text
+      type: object
+      required:
+      - column_id
+      - operator
+      - value
+      title: LogRecordsTextFilter
+    ExperimentCreatedAtSort:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        ascending:
+          type: boolean
+          title: Ascending
+          default: true
+        sort_type:
+          type: string
+          const: column
+          title: Sort Type
+          default: column
+      type: object
+      title: RunCreatedAtSort
+    RollUpStrategy:
+      type: string
+      enum:
+      - avg
+      - sum
+      - first
+      - last
+      - none
+      title: RollUpStrategy
+      description: Strategies for rolling metrics up the Session/Trace/Span hierarchy.
+    PromptRunSettings-Input:
+      properties:
+        logprobs:
+          type: boolean
+          title: Logprobs
+          default: true
+        top_logprobs:
+          type: integer
+          title: Top Logprobs
+          default: 5
+        echo:
+          type: boolean
+          title: Echo
+          default: false
+        n:
+          type: integer
+          title: N
+          default: 1
+        reasoning_effort:
+          type: string
+          title: Reasoning Effort
+          default: medium
+        verbosity:
+          type: string
+          title: Verbosity
+          default: medium
+        deployment_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployment Name
+        model_alias:
+          type: string
+          title: Model Alias
+          default: gpt-5.1
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        max_tokens:
+          type: integer
+          title: Max Tokens
+          default: 4096
+        stop_sequences:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop Sequences
+        top_p:
+          type: number
+          title: Top P
+          default: 1.0
+        top_k:
+          type: integer
+          title: Top K
+          default: 40
+        frequency_penalty:
+          type: number
+          title: Frequency Penalty
+          default: 0.0
+        presence_penalty:
+          type: number
+          title: Presence Penalty
+          default: 0.0
+        tools:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Tools
+        tool_choice:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/OpenAIToolChoice'
+          - type: 'null'
+          title: Tool Choice
+        response_format:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Response Format
+        known_models:
+          items:
+            $ref: '#/components/schemas/Model'
+          type: array
+          title: Known Models
+      type: object
+      title: PromptRunSettings
+      description: Prompt run settings.
+    ScorerTypes:
+      type: string
+      enum:
+      - llm
+      - code
+      - luna
+      - decision
+      - preset
+      title: ScorerTypes
+    api__schemas__experiment__ExperimentGroupNameFilter:
+      properties:
+        name:
+          type: string
+          const: experiment_group_name
+          title: Name
+          default: experiment_group_name
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - contains
+          - one_of
+          - not_in
+          title: Operator
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: true
+      type: object
+      required:
+      - operator
+      - value
+      title: ExperimentGroupNameFilter
+    ExperimentCreatedAtFilter:
+      properties:
+        name:
+          type: string
+          const: created_at
+          title: Name
+          default: created_at
+        operator:
+          type: string
+          enum:
+          - eq
+          - ne
+          - gt
+          - gte
+          - lt
+          - lte
+          title: Operator
+        value:
+          type: string
+          format: date-time
+          title: Value
+      type: object
+      required:
+      - operator
+      - value
+      title: RunCreatedAtFilter
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:

@@ -1,0 +1,475 @@
+openapi: 3.2.0
+info:
+  title: Galileo API Server Project Access Levels API
+  version: 0.0.0+orbit
+servers:
+- url: https://api.galileo.ai
+  description: Galileo API Server - galileo-v2
+tags:
+- name: project_access_levels
+paths:
+  /projects/{project_id}/access-context:
+    get:
+      tags:
+      - project_access_levels
+      summary: Get Project Access Context
+      description: Report the caller's project log grant when the project is accessible.
+      operationId: get_project_access_context_projects__project_id__access_context_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectAccessContextResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/custom-access-levels:
+    get:
+      tags:
+      - project_access_levels
+      summary: List Custom Access Levels
+      description: List custom access levels owned by the project.
+      operationId: list_custom_access_levels_projects__project_id__custom_access_levels_get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectCustomAccessLevelResponse'
+                title: Response List Custom Access Levels Projects  Project Id  Custom Access Levels Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - project_access_levels
+      summary: Create Custom Access Level
+      description: Create a custom access level and its typed feature grants.
+      operationId: create_custom_access_level_projects__project_id__custom_access_levels_post
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCustomAccessLevelWrite'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCustomAccessLevelResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/custom-access-levels/{level_id}:
+    get:
+      tags:
+      - project_access_levels
+      summary: Get Custom Access Level
+      description: Get one project custom access level.
+      operationId: get_custom_access_level_projects__project_id__custom_access_levels__level_id__get
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: level_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Level Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCustomAccessLevelResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - project_access_levels
+      summary: Replace Custom Access Level
+      description: Replace a custom access level and all its feature grants.
+      operationId: replace_custom_access_level_projects__project_id__custom_access_levels__level_id__put
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: level_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Level Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCustomAccessLevelWrite'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCustomAccessLevelResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - project_access_levels
+      summary: Delete Custom Access Level
+      description: Delete one unassigned custom access level.
+      operationId: delete_custom_access_level_projects__project_id__custom_access_levels__level_id__delete
+      security:
+      - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
+      - OAuth2PasswordBearer: []
+      - HTTPBasic: []
+      parameters:
+      - name: level_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Level Id
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid4
+          title: Project Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ProjectCustomAccessLevelResponse:
+      properties:
+        id:
+          type: string
+          format: uuid4
+          title: Id
+        project_id:
+          type: string
+          format: uuid4
+          title: Project Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        features:
+          items:
+            $ref: '#/components/schemas/ProjectAccessFeatureResponse'
+          type: array
+          title: Features
+        user_count:
+          type: integer
+          title: User Count
+        group_count:
+          type: integer
+          title: Group Count
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - project_id
+      - name
+      - description
+      - features
+      - user_count
+      - group_count
+      - created_at
+      - updated_at
+      title: ProjectCustomAccessLevelResponse
+    ProjectAccessFeature:
+      type: string
+      enum:
+      - logs
+      title: ProjectAccessFeature
+    ProjectLogsAccess:
+      type: string
+      enum:
+      - none
+      - restricted
+      - full
+      title: ProjectLogsAccess
+    ProjectCustomAccessLevelWrite:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Description
+        features:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/FullLogsFeatureGrant'
+            - $ref: '#/components/schemas/RestrictedLogsFeatureGrant'
+            discriminator:
+              propertyName: access
+              mapping:
+                full: '#/components/schemas/FullLogsFeatureGrant'
+                restricted: '#/components/schemas/RestrictedLogsFeatureGrant'
+          type: array
+          maxItems: 1
+          title: Features
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      title: ProjectCustomAccessLevelWrite
+      description: Create or replace one custom access level.
+    ProjectAccessContextResponse:
+      properties:
+        logs_access:
+          $ref: '#/components/schemas/ProjectLogsAccess'
+        allowed_log_view_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: Allowed Log View Ids
+        broader_access:
+          type: boolean
+          title: Broader Access
+        warning:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Warning
+      type: object
+      required:
+      - logs_access
+      - broader_access
+      title: ProjectAccessContextResponse
+      description: The caller's effective logs grant for one project.
+    FullLogsFeatureGrant:
+      properties:
+        feature:
+          type: string
+          const: logs
+          title: Feature
+          default: logs
+        access:
+          type: string
+          const: full
+          title: Access
+      additionalProperties: false
+      type: object
+      required:
+      - access
+      title: FullLogsFeatureGrant
+      description: A custom level grant that can read all project logs.
+    ProjectFeatureAccess:
+      type: string
+      enum:
+      - full
+      - restricted
+      title: ProjectFeatureAccess
+    RestrictedLogsFeatureGrant:
+      properties:
+        feature:
+          type: string
+          const: logs
+          title: Feature
+          default: logs
+        access:
+          type: string
+          const: restricted
+          title: Access
+        view_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: View Ids
+      additionalProperties: false
+      type: object
+      required:
+      - access
+      - view_ids
+      title: RestrictedLogsFeatureGrant
+      description: A custom level grant restricted to selected project log views.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ProjectAccessFeatureResponse:
+      properties:
+        feature:
+          $ref: '#/components/schemas/ProjectAccessFeature'
+        access:
+          $ref: '#/components/schemas/ProjectFeatureAccess'
+        view_ids:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          title: View Ids
+      type: object
+      required:
+      - feature
+      - access
+      title: ProjectAccessFeatureResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: https://api.galileo.ai/login
+    HTTPBasic:
+      type: http
+      scheme: basic

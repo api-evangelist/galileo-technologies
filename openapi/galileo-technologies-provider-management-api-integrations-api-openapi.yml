@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Galileo API Server Provider Management API Integrations API
-  version: 1.1085.0
+  version: 0.0.0+orbit
 servers:
 - url: https://api.galileo.ai
   description: Galileo API Server - galileo-v2
@@ -25,8 +25,8 @@ paths:
                 type: array
                 title: Response List Provider Management Api Integrations Provider Management Api Integrations Get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
     post:
@@ -68,8 +68,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
   /provider-management-api-integrations/{provider_management_api_id}:
@@ -79,8 +79,8 @@ paths:
       summary: Update Provider Management Api Integration Metadata
       operationId: update_provider_management_api_integration_metadata_provider_management_api_integrations__provider_management_api_id__patch
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -116,8 +116,8 @@ paths:
       summary: Get Provider Management Api Integration
       operationId: get_provider_management_api_integration_provider_management_api_integrations__provider_management_api_id__get
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -147,8 +147,8 @@ paths:
       summary: Delete Provider Management Api Integration
       operationId: delete_provider_management_api_integration_provider_management_api_integrations__provider_management_api_id__delete
       security:
-      - ClassicAPIKeyHeader: []
       - APIKeyHeader: []
+      - ClassicAPIKeyHeader: []
       - OAuth2PasswordBearer: []
       - HTTPBasic: []
       parameters:
@@ -170,6 +170,110 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ProviderManagementAPIProvider:
+      type: string
+      enum:
+      - cursor
+      - claude_code
+      - codex
+      - github_copilot
+      - windsurf
+      title: ProviderManagementAPIProvider
+    ClaudeCodeProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: claude_code
+          title: Provider
+        provider_organization_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Organization Id
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      - provider_organization_id
+      title: ClaudeCodeProviderManagementAPIIntegrationCreate
+    CodexProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: codex
+          title: Provider
+        provider_workspace_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Workspace Id
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      - provider_workspace_id
+      title: CodexProviderManagementAPIIntegrationCreate
+    CursorProviderManagementAPIIntegrationCreate:
+      properties:
+        provider_account_name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Provider Account Name
+        api_key:
+          type: string
+          maxLength: 8192
+          minLength: 1
+          title: Api Key
+        provider:
+          type: string
+          const: cursor
+          title: Provider
+        provider_organization_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Organization Id
+      additionalProperties: false
+      type: object
+      required:
+      - api_key
+      - provider
+      - provider_organization_id
+      title: CursorProviderManagementAPIIntegrationCreate
+    ProviderManagementAPIAuthenticationType:
+      type: string
+      enum:
+      - api_key
+      title: ProviderManagementAPIAuthenticationType
     WindsurfProviderManagementAPIIntegrationCreate:
       properties:
         provider_account_name:
@@ -188,12 +292,27 @@ components:
           type: string
           const: windsurf
           title: Provider
+        provider_team_id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Provider Team Id
       additionalProperties: false
       type: object
       required:
       - api_key
       - provider
+      - provider_team_id
       title: WindsurfProviderManagementAPIIntegrationCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     GitHubCopilotProviderManagementAPIIntegrationCreate:
       properties:
         provider_account_name:
@@ -232,15 +351,6 @@ components:
       - api_key
       - provider
       title: GitHubCopilotProviderManagementAPIIntegrationCreate
-    ProviderManagementAPIProvider:
-      type: string
-      enum:
-      - cursor
-      - claude_code
-      - codex
-      - github_copilot
-      - windsurf
-      title: ProviderManagementAPIProvider
     ValidationError:
       properties:
         loc:
@@ -267,50 +377,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ProviderManagementAPIAuthenticationType:
-      type: string
-      enum:
-      - api_key
-      title: ProviderManagementAPIAuthenticationType
-    CodexProviderManagementAPIIntegrationCreate:
-      properties:
-        provider_account_name:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Account Name
-        api_key:
-          type: string
-          maxLength: 8192
-          minLength: 1
-          title: Api Key
-        provider:
-          type: string
-          const: codex
-          title: Provider
-        provider_workspace_id:
-          type: string
-          maxLength: 256
-          minLength: 1
-          title: Provider Workspace Id
-      additionalProperties: false
-      type: object
-      required:
-      - api_key
-      - provider
-      - provider_workspace_id
-      title: CodexProviderManagementAPIIntegrationCreate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ProviderManagementAPIIntegrationMetadataUpdate:
       properties:
         provider_account_name:
@@ -320,69 +386,16 @@ components:
             minLength: 1
           - type: 'null'
           title: Provider Account Name
+        api_key:
+          anyOf:
+          - type: string
+            maxLength: 8192
+            minLength: 1
+          - type: 'null'
+          title: Api Key
       additionalProperties: false
       type: object
       title: ProviderManagementAPIIntegrationMetadataUpdate
-    ClaudeCodeProviderManagementAPIIntegrationCreate:
-      properties:
-        provider_account_name:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Account Name
-        api_key:
-          type: string
-          maxLength: 8192
-          minLength: 1
-          title: Api Key
-        provider:
-          type: string
-          const: claude_code
-          title: Provider
-        provider_organization_id:
-          type: string
-          maxLength: 256
-          minLength: 1
-          title: Provider Organization Id
-      additionalProperties: false
-      type: object
-      required:
-      - api_key
-      - provider
-      - provider_organization_id
-      title: ClaudeCodeProviderManagementAPIIntegrationCreate
-    CursorProviderManagementAPIIntegrationCreate:
-      properties:
-        provider_account_name:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Provider Account Name
-        api_key:
-          type: string
-          maxLength: 8192
-          minLength: 1
-          title: Api Key
-        provider:
-          type: string
-          const: cursor
-          title: Provider
-        provider_organization_id:
-          type: string
-          maxLength: 256
-          minLength: 1
-          title: Provider Organization Id
-      additionalProperties: false
-      type: object
-      required:
-      - api_key
-      - provider
-      - provider_organization_id
-      title: CursorProviderManagementAPIIntegrationCreate
     ProviderManagementAPIIntegrationResponse:
       properties:
         id:
@@ -450,14 +463,14 @@ components:
       - updated_at
       title: ProviderManagementAPIIntegrationResponse
   securitySchemes:
-    ClassicAPIKeyHeader:
-      type: apiKey
-      in: header
-      name: Galileo-API-Key
     APIKeyHeader:
       type: apiKey
       in: header
       name: Splunk-AO-API-Key
+    ClassicAPIKeyHeader:
+      type: apiKey
+      in: header
+      name: Galileo-API-Key
     OAuth2PasswordBearer:
       type: oauth2
       flows:
