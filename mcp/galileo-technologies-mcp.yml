@@ -12,23 +12,295 @@ server:
     note: Generate an API key at https://app.galileo.ai/settings/api-keys. Self-hosted deployments use
       a custom base URL.
 tools:
-- name: create_datasets
-  description: Generate synthetic datasets or upload custom data to test and evaluate AI applications
-    (general, prompt-injection, off-topic, and toxic-content scenarios).
-- name: check_dataset_status
-  description: Track dataset generation progress and preview content.
-- name: create_prompt_templates
-  description: Build reusable prompt templates with model configuration, temperature, and other parameters.
-- name: setup_experiments
-  description: Configure and run evaluation experiments.
-- name: get_signals
-  description: Analyze log streams for issues and improvement opportunities.
-- name: integrate_openai
-  description: Add Galileo observability to OpenAI applications.
-- name: integrate_langchain
-  description: Enable Galileo tracing for LangChain applications.
-- name: search_documentation
-  description: Query Galileo documentation for guides and examples.
+- name: integrate_galileo_with_langchain
+  description: 'Integrate Galileo observability into LangChain applications.
+
+
+    **Supported Languages:** python
+
+    **Parameters:**
+
+    - language (optional): Programming language for integration guide. Defaults to "python".
+
+
+    **Provides:**
+
+    - Complete integration code examples and setup instructions
+
+    - Automatic logging of prompts, responses, model parameters, and token usage
+
+    - Environment configuration templates
+
+    - Language-specific best practices
+
+
+    Returns working code snippets ready to copy and paste for robust LLM observability.'
+- name: integrate_galileo_with_openai
+  description: 'Integrate Galileo observability into OpenAI API applications.
+
+
+    **Supported Languages:** python, typescript
+
+
+    **Parameters:**
+
+    - language (optional): Programming language for integration guide. Defaults to "python".
+
+
+    **Provides:**
+
+    - Complete integration code examples and setup instructions
+
+    - Automatic logging of prompts, responses, model parameters, and token usage
+
+    - Environment configuration templates
+
+    - Language-specific best practices
+
+
+    Returns working code snippets ready to copy and paste for robust LLM observability.'
+- name: get_logstream_insights
+  description: "Get the insights (also known as signals) for a log stream in a specific project. This\
+    \ tool analyzes log streams and provides insights/signals that identify issues, patterns, and suggest\
+    \ improvements.\n\n**When to use this tool:**\n- User asks for \"insights\" or \"signals\" about a\
+    \ log stream\n- User mentions a project name and wants to analyze a log stream\n- User asks questions\
+    \ like: \"What's wrong with my application?\", \"Get insights about my log stream\", \"Show me signals\
+    \ for my logs\"\n\n**Parameters:**\n- project (required): The exact name of the Galileo project. Extract\
+    \ this from phrases like:\n  - \"in the {project} project\"\n  - \"for project {project}\"\n  - \"\
+    from {project}\"\n  Example: If user says \"in the customer-support project\", use project=\"customer-support\"\
+    \n\n- log_stream (required): The exact name of the log stream. Extract this from phrases like:\n \
+    \ - \"log stream {log_stream}\"\n  - \"logs from {log_stream}\"\n  - \"the {log_stream} log stream\"\
+    \n  - If user says \"my log stream\" without a name, ask them for the specific log stream name\n \
+    \ Example: If user says \"about my log stream in customer-support\", you may need to ask for the log\
+    \ stream name, or infer it from context\n\n**Example Natural Language Queries:**\n- \"Get insights\
+    \ about my log stream in the customer-support project\"\n  → project=\"customer-support\", log_stream={ask\
+    \ user or infer from context}\n\n- \"Get insights for the api-logs log stream in customer-support\"\
+    \n  → project=\"customer-support\", log_stream=\"api-logs\"\n\n- \"What insights do you have for my\
+    \ logs in project customer-support?\"\n  → project=\"customer-support\", log_stream={ask user for\
+    \ specific log stream name}\n\n**Returns:**\n- A list of insights/signals about the log stream, including:\n\
+    \  - Issues and anomalies detected\n  - Patterns and trends\n  - Suggested improvements\n  - Session\
+    \ notes and trace notes if available"
+- name: get_logstream_signals
+  description: "Get the signals (also known as insights) for a log stream in a specific project. This\
+    \ tool analyzes log streams and provides signals/insights that identify issues, patterns, and suggest\
+    \ improvements.\n\n**When to use this tool:**\n- User asks for \"signals\" or \"insights\" about a\
+    \ log stream\n- User mentions a project name and wants to analyze a log stream\n- User asks questions\
+    \ like: \"What's wrong with my application?\", \"Get signals about my log stream\", \"Show me insights\
+    \ for my logs\"\n\n**Parameters:**\n- project (required): The exact name of the Galileo project. Extract\
+    \ this from phrases like:\n  - \"in the {project} project\"\n  - \"for project {project}\"\n  - \"\
+    from {project}\"\n  Example: If user says \"in the customer-support project\", use project=\"customer-support\"\
+    \n\n- log_stream (required): The exact name of the log stream. Extract this from phrases like:\n \
+    \ - \"log stream {log_stream}\"\n  - \"logs from {log_stream}\"\n  - \"the {log_stream} log stream\"\
+    \n  - If user says \"my log stream\" without a name, ask them for the specific log stream name\n \
+    \ Example: If user says \"about my log stream in customer-support\", you may need to ask for the log\
+    \ stream name, or infer it from context\n\n**Example Natural Language Queries:**\n- \"Get signals\
+    \ about my log stream in the customer-support project\"\n  → project=\"customer-support\", log_stream={ask\
+    \ user or infer from context}\n\n- \"Get insights for the api-logs log stream in customer-support\"\
+    \n  → project=\"customer-support\", log_stream=\"api-logs\"\n\n- \"What signals do you have for my\
+    \ logs in project customer-support?\"\n  → project=\"customer-support\", log_stream={ask user for\
+    \ specific log stream name}\n\n**Returns:**\n- A list of signals/insights about the log stream, including:\n\
+    \  - Issues and anomalies detected\n  - Patterns and trends\n  - Suggested improvements\n  - Session\
+    \ notes and trace notes if available"
+- name: validate_dataset
+  description: 'Check the status of a synthetic dataset generation job and view dataset contents. This
+    tool allows the user to check the progress of a synthetic dataset generation job that was previously
+    started using the create_galileo_dataset tool. It always shows the first 10 rows of the dataset for
+    preview, regardless of generation status. Users can start by asking a question such as: Check the
+    status of my dataset generation job.
+
+
+    **Parameters:**
+
+    - dataset_id (required): The id of the dataset to check the generation status for.
+
+
+    **Returns:**
+
+    - The current status and progress of the synthetic dataset generation job, including progress message,
+    steps completed, and total steps.
+
+    - Always includes a preview of the first 10 rows of the dataset with column names and values, whether
+    generation is complete, in progress, or failed.
+
+    - Total number of rows in the dataset and how many are being shown.
+
+
+    **Example:**
+
+    After creating a dataset with create_galileo_dataset, use this tool to check if the generation is
+    complete and preview the generated data.'
+- name: create_galileo_dataset
+  description: "Create a new Galileo dataset with multiple data source options.\n\n    **Prerequisites:**\n\
+    \    - Requires a valid Galileo API key configured in your MCP settings\n    - You must have an active\
+    \ Galileo account with dataset creation permissions\n\n    **Creation Options:**\n        Ask the\
+    \ user which option they prefer:\n        1. Synthetic data generation: Automatically generate data\
+    \ based on description\n        2. CSV file: Provide CSV content to create dataset (columns: input,\
+    \ output, optional metadata)\n        3. JSON data: Provide structured JSON data\n\n    **Required\
+    \ User Inputs:**\n    Please ask the user to provide the following information:\n    - description:\
+    \ A description of the dataset they want to create. This will be used as instructions for the synthetic\
+    \ data generation if the user chooses to use the synthetic data source type.\n    - data_source_type:\
+    \ The type of data source to use for the dataset. Valid types: \"synthetic\", \"csv\", \"json\".\n\
+    \n    **Optional User Inputs:**\n    - model: The model to use for generating synthetic data (e.g.,\
+    \ \"gpt-4.1-mini\", \"claude-4-sonnet\").\n    - count: Number of synthetic samples to generate (must\
+    \ be between 1 and 100).\n    - data_types: Types of data to generate. Valid types: \"General Query\"\
+    , \"Prompt Injection\", \"Off-Topic Query\", \"Toxic Content in Query\", \"Multiple Questions in Query\"\
+    .\n    - sample_data: Sample data to use as reference during generation. Can be newline-separated\
+    \ examples.\n    - csv_content: CSV file content as string (for CSV data source type).\n    - json_data:\
+    \ JSON data as string or array of objects (for JSON data source type).\n    - name: Name for the dataset\
+    \ (optional, defaults to \"New Dataset\").\n\n    **Returns:**\n    - Dataset ID for the created dataset\n\
+    \    - Status of the generation job\n    - Parameters used for generation\n    - Next steps for accessing\
+    \ the dataset\n\n    **Example Tool Call:**\n    description=\"Generate customer service queries about\
+    \ product returns\",model=\"gpt-4o-mini\",count=20,data_types=\"General Query,Off-Topic Query\",sample_data=\"\
+    How do I return a defective product?\nWhat is your return policy?\"\n\n    **What this tool does:**\n\
+    \    1. Authenticates using your Galileo API key\n    2. Creates a new dataset in your Galileo organization\n\
+    \    3. Dispatches a background job to generate synthetic data or processes uploaded data\n    4.\
+    \ Returns the dataset ID for tracking progress\n    5. Generated data will be available in your Galileo\
+    \ console\n\n    **Instructions for Agent:**\n    Always ask the user to provide: description and\
+    \ data_source_type before making the tool call. These are required for successful dataset creation.\n\
+    \    Ask the user to wait for the dataset to be created before using the validate_dataset tool. Continue\
+    \ to ask the user if they want to validate the dataset that was just created."
+- name: create_prompt_template
+  description: 'Create a new global prompt template that can be used across all projects.
+
+
+    **Prerequisites:**
+
+    - Requires a valid Galileo API key configured in your MCP settings
+
+    - You must have an active Galileo account with prompt template creation permissions
+
+
+    **Required User Inputs:**
+
+    Please ask the user to provide the following information:
+
+    - name: A descriptive name for the prompt template.
+
+    - template: The actual prompt template content. Can be plain text or JSON format for chat templates.
+
+
+    **Optional User Inputs:**
+
+    - raw: Boolean flag indicating if this is a raw template (default: false).
+
+    - output_type: The expected output type for the template (optional).
+
+    - model_alias: The model to use with this template (default: "gpt-4.1-mini").
+
+    - temperature: Controls randomness in the output (0.0 to 2.0, default: 0.7).
+
+    - max_tokens: Maximum number of tokens in the response (default: 1000).
+
+    - top_p: Controls diversity of the output (0.0 to 1.0, default: 1.0).
+
+    - frequency_penalty: Penalty for frequent tokens (-2.0 to 2.0, default: 0.0).
+
+    - presence_penalty: Penalty for repeated tokens (-2.0 to 2.0, default: 0.0).
+
+
+    **Returns:**
+
+    - Template ID for the created template
+
+    - Template details including name, version, and settings
+
+    - Success confirmation with template metadata
+
+
+    **Example Tool Calls:**
+
+
+    Simple text template:
+
+    name="Customer Support Response",template="You are a helpful customer support agent. Please respond
+    to the following customer inquiry: {inquiry}",model_alias="gpt-4.1-mini",temperature=0.5
+
+
+    JSON chat template:
+
+    name="AI Coding Assistant",template="[{"role":"system","content":"You are an Extremely friendly and
+    helpful AI Coding assistant"}]",model_alias="gpt-4.1-mini",temperature=0.3
+
+
+    **What this tool does:**
+
+    1. Authenticates using your Galileo API key
+
+    2. Creates a new global prompt template in your Galileo organization
+
+    3. Sets up the template with the specified settings and configuration
+
+    4. Returns the template ID and details for future use
+
+    5. Template will be available globally across all projects
+
+
+    **Instructions for Agent:**
+
+    Always ask the user to provide: name and template before making the tool call. These are required
+    for successful template creation.
+
+    The template will be created as a global template, accessible across all projects in the organization.'
+- name: setup_galileo_experiment
+  description: 'Setup and create a Galileo experiment using the Galileo SDK.
+
+
+    **Supported Languages:** python
+
+    **Parameters:**
+
+    - language (optional): Programming language for experiment setup guide. Defaults to "python".
+
+
+    **Provides:**
+
+    - Complete experiment setup code examples and instructions
+
+    - Step-by-step guide for creating and running experiments
+
+    - Dataset preparation and metrics configuration
+
+    - Integration with existing application code
+
+    - Advanced usage patterns for agentic/RAG workflows
+
+
+    **What this tool helps you do:**
+
+    - Set up Galileo experiments with datasets (remote or inline)
+
+    - Create and configure prompts for experiments
+
+    - Define custom metrics and use built-in scorers
+
+    - Run experiments with proper logging and tracing
+
+    - Integrate experiment workflows into existing applications
+
+    - Inspect and analyze experiment results
+
+
+    Returns working code snippets ready to copy and paste for robust experiment setup and execution.'
+- name: search_docs
+  description: 'Search across the Galileo documentation to find relevant information, code examples, API
+    references, and guides. Use this tool when you need to answer questions about Galileo, find specific
+    documentation, understand how features work, or locate implementation details. The search returns
+    contextual content with titles and direct links to the documentation pages.
+
+
+    **Parameters:**
+
+    - query (required): The search query to find relevant documentation.
+
+
+    **Returns:**
+
+    - Relevant documentation content and links based on the search query.
+
+
+    **Example:**
+
+    search_docs(query="how to set up data logging")'
 deployment:
   mode: remote
   endpoint: https://api.galileo.ai/mcp/http/mcp
@@ -66,3 +338,4 @@ tool_quality:
   scored: false
   note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
     from Glimind's agent-readiness audit.
+tools_count: 9
