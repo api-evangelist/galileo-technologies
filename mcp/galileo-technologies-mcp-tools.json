@@ -1,0 +1,1091 @@
+{
+  "endpoint": "https://api.galileo.ai/mcp/http/mcp",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2025-06-18",
+  "server_info": {
+    "name": "EvalsInIDEServer",
+    "version": "1.29.0"
+  },
+  "result": {
+    "tools": [
+      {
+        "name": "integrate_galileo_with_langchain",
+        "description": "\nIntegrate Galileo observability into LangChain applications.\n\n**Supported Languages:** python\n**Parameters:**\n- language (optional): Programming language for integration guide. Defaults to \"python\".\n\n**Provides:**\n- Complete integration code examples and setup instructions\n- Automatic logging of prompts, responses, model parameters, and token usage\n- Environment configuration templates\n- Language-specific best practices\n\nReturns working code snippets ready to copy and paste for robust LLM observability.\n",
+        "inputSchema": {
+          "properties": {
+            "language": {
+              "title": "Language",
+              "type": "string"
+            }
+          },
+          "required": [
+            "language"
+          ],
+          "title": "integrate_galileo_with_langchainArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "integrate_galileo_with_openai",
+        "description": "\nIntegrate Galileo observability into OpenAI API applications.\n\n**Supported Languages:** python, typescript\n\n**Parameters:**\n- language (optional): Programming language for integration guide. Defaults to \"python\".\n\n**Provides:**\n- Complete integration code examples and setup instructions\n- Automatic logging of prompts, responses, model parameters, and token usage\n- Environment configuration templates\n- Language-specific best practices\n\nReturns working code snippets ready to copy and paste for robust LLM observability.\n",
+        "inputSchema": {
+          "properties": {
+            "language": {
+              "title": "Language",
+              "type": "string"
+            }
+          },
+          "required": [
+            "language"
+          ],
+          "title": "integrate_galileo_with_openaiArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "get_logstream_insights",
+        "description": "\nGet the insights (also known as signals) for a log stream in a specific project. This tool analyzes log streams and provides insights/signals that identify issues, patterns, and suggest improvements.\n\n**When to use this tool:**\n- User asks for \"insights\" or \"signals\" about a log stream\n- User mentions a project name and wants to analyze a log stream\n- User asks questions like: \"What's wrong with my application?\", \"Get insights about my log stream\", \"Show me signals for my logs\"\n\n**Parameters:**\n- project (required): The exact name of the Galileo project. Extract this from phrases like:\n  - \"in the {project} project\"\n  - \"for project {project}\"\n  - \"from {project}\"\n  Example: If user says \"in the customer-support project\", use project=\"customer-support\"\n\n- log_stream (required): The exact name of the log stream. Extract this from phrases like:\n  - \"log stream {log_stream}\"\n  - \"logs from {log_stream}\"\n  - \"the {log_stream} log stream\"\n  - If user says \"my log stream\" without a name, ask them for the specific log stream name\n  Example: If user says \"about my log stream in customer-support\", you may need to ask for the log stream name, or infer it from context\n\n**Example Natural Language Queries:**\n- \"Get insights about my log stream in the customer-support project\"\n  → project=\"customer-support\", log_stream={ask user or infer from context}\n\n- \"Get insights for the api-logs log stream in customer-support\"\n  → project=\"customer-support\", log_stream=\"api-logs\"\n\n- \"What insights do you have for my logs in project customer-support?\"\n  → project=\"customer-support\", log_stream={ask user for specific log stream name}\n\n**Returns:**\n- A list of insights/signals about the log stream, including:\n  - Issues and anomalies detected\n  - Patterns and trends\n  - Suggested improvements\n  - Session notes and trace notes if available\n",
+        "inputSchema": {
+          "properties": {
+            "project": {
+              "title": "Project",
+              "type": "string"
+            },
+            "log_stream": {
+              "title": "Log Stream",
+              "type": "string"
+            }
+          },
+          "required": [
+            "project",
+            "log_stream"
+          ],
+          "title": "get_logstream_insightsArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "get_logstream_signals",
+        "description": "\nGet the signals (also known as insights) for a log stream in a specific project. This tool analyzes log streams and provides signals/insights that identify issues, patterns, and suggest improvements.\n\n**When to use this tool:**\n- User asks for \"signals\" or \"insights\" about a log stream\n- User mentions a project name and wants to analyze a log stream\n- User asks questions like: \"What's wrong with my application?\", \"Get signals about my log stream\", \"Show me insights for my logs\"\n\n**Parameters:**\n- project (required): The exact name of the Galileo project. Extract this from phrases like:\n  - \"in the {project} project\"\n  - \"for project {project}\"\n  - \"from {project}\"\n  Example: If user says \"in the customer-support project\", use project=\"customer-support\"\n\n- log_stream (required): The exact name of the log stream. Extract this from phrases like:\n  - \"log stream {log_stream}\"\n  - \"logs from {log_stream}\"\n  - \"the {log_stream} log stream\"\n  - If user says \"my log stream\" without a name, ask them for the specific log stream name\n  Example: If user says \"about my log stream in customer-support\", you may need to ask for the log stream name, or infer it from context\n\n**Example Natural Language Queries:**\n- \"Get signals about my log stream in the customer-support project\"\n  → project=\"customer-support\", log_stream={ask user or infer from context}\n\n- \"Get insights for the api-logs log stream in customer-support\"\n  → project=\"customer-support\", log_stream=\"api-logs\"\n\n- \"What signals do you have for my logs in project customer-support?\"\n  → project=\"customer-support\", log_stream={ask user for specific log stream name}\n\n**Returns:**\n- A list of signals/insights about the log stream, including:\n  - Issues and anomalies detected\n  - Patterns and trends\n  - Suggested improvements\n  - Session notes and trace notes if available\n",
+        "inputSchema": {
+          "properties": {
+            "project": {
+              "title": "Project",
+              "type": "string"
+            },
+            "log_stream": {
+              "title": "Log Stream",
+              "type": "string"
+            }
+          },
+          "required": [
+            "project",
+            "log_stream"
+          ],
+          "title": "get_logstream_signalsArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "validate_dataset",
+        "description": "\nCheck the status of a synthetic dataset generation job and view dataset contents. This tool allows the user to check the progress of a synthetic dataset generation job that was previously started using the create_galileo_dataset tool. It always shows the first 10 rows of the dataset for preview, regardless of generation status. Users can start by asking a question such as: Check the status of my dataset generation job.\n\n**Parameters:**\n- dataset_id (required): The id of the dataset to check the generation status for.\n\n**Returns:**\n- The current status and progress of the synthetic dataset generation job, including progress message, steps completed, and total steps.\n- Always includes a preview of the first 10 rows of the dataset with column names and values, whether generation is complete, in progress, or failed.\n- Total number of rows in the dataset and how many are being shown.\n\n**Example:**\nAfter creating a dataset with create_galileo_dataset, use this tool to check if the generation is complete and preview the generated data.\n",
+        "inputSchema": {
+          "properties": {
+            "dataset_id": {
+              "title": "Dataset Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "dataset_id"
+          ],
+          "title": "validate_datasetArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "create_galileo_dataset",
+        "description": "\n    Create a new Galileo dataset with multiple data source options.\n\n    **Prerequisites:**\n    - Requires a valid Galileo API key configured in your MCP settings\n    - You must have an active Galileo account with dataset creation permissions\n\n    **Creation Options:**\n        Ask the user which option they prefer:\n        1. Synthetic data generation: Automatically generate data based on description\n        2. CSV file: Provide CSV content to create dataset (columns: input, output, optional metadata)\n        3. JSON data: Provide structured JSON data\n\n    **Required User Inputs:**\n    Please ask the user to provide the following information:\n    - description: A description of the dataset they want to create. This will be used as instructions for the synthetic data generation if the user chooses to use the synthetic data source type.\n    - data_source_type: The type of data source to use for the dataset. Valid types: \"synthetic\", \"csv\", \"json\".\n\n    **Optional User Inputs:**\n    - model: The model to use for generating synthetic data (e.g., \"gpt-4.1-mini\", \"claude-4-sonnet\").\n    - count: Number of synthetic samples to generate (must be between 1 and 100).\n    - data_types: Types of data to generate. Valid types: \"General Query\", \"Prompt Injection\", \"Off-Topic Query\", \"Toxic Content in Query\", \"Multiple Questions in Query\".\n    - sample_data: Sample data to use as reference during generation. Can be newline-separated examples.\n    - csv_content: CSV file content as string (for CSV data source type).\n    - json_data: JSON data as string or array of objects (for JSON data source type).\n    - name: Name for the dataset (optional, defaults to \"New Dataset\").\n\n    **Returns:**\n    - Dataset ID for the created dataset\n    - Status of the generation job\n    - Parameters used for generation\n    - Next steps for accessing the dataset\n\n    **Example Tool Call:**\n    description=\"Generate customer service queries about product returns\",model=\"gpt-4o-mini\",count=20,data_types=\"General Query,Off-Topic Query\",sample_data=\"How do I return a defective product?\nWhat is your return policy?\"\n\n    **What this tool does:**\n    1. Authenticates using your Galileo API key\n    2. Creates a new dataset in your Galileo organization\n    3. Dispatches a background job to generate synthetic data or processes uploaded data\n    4. Returns the dataset ID for tracking progress\n    5. Generated data will be available in your Galileo console\n\n    **Instructions for Agent:**\n    Always ask the user to provide: description and data_source_type before making the tool call. These are required for successful dataset creation.\n    Ask the user to wait for the dataset to be created before using the validate_dataset tool. Continue to ask the user if they want to validate the dataset that was just created.\n    ",
+        "inputSchema": {
+          "$defs": {
+            "SyntheticDataTypes": {
+              "enum": [
+                "General Query",
+                "Prompt Injection",
+                "Off-Topic Query",
+                "Toxic Content in Query",
+                "Multiple Questions in Query",
+                "Sexist Content in Query"
+              ],
+              "title": "SyntheticDataTypes",
+              "type": "string"
+            }
+          },
+          "properties": {
+            "description": {
+              "title": "Description",
+              "type": "string"
+            },
+            "model": {
+              "default": "gpt-4.1-mini",
+              "title": "Model",
+              "type": "string"
+            },
+            "count": {
+              "default": 10,
+              "title": "Count",
+              "type": "integer"
+            },
+            "data_types": {
+              "default": [],
+              "items": {
+                "$ref": "#/$defs/SyntheticDataTypes"
+              },
+              "title": "Data Types",
+              "type": "array"
+            },
+            "data_source_type": {
+              "default": "synthetic",
+              "title": "Data Source Type",
+              "type": "string"
+            },
+            "sample_data": {
+              "default": "",
+              "title": "Sample Data",
+              "type": "string"
+            },
+            "csv_content": {
+              "default": "",
+              "title": "Csv Content",
+              "type": "string"
+            },
+            "json_data": {
+              "default": "",
+              "title": "Json Data",
+              "type": "string"
+            },
+            "name": {
+              "default": "New Dataset",
+              "title": "Name",
+              "type": "string"
+            },
+            "project_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Project Id"
+            }
+          },
+          "required": [
+            "description"
+          ],
+          "title": "create_galileo_datasetArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "create_prompt_template",
+        "description": "\nCreate a new global prompt template that can be used across all projects.\n\n**Prerequisites:**\n- Requires a valid Galileo API key configured in your MCP settings\n- You must have an active Galileo account with prompt template creation permissions\n\n**Required User Inputs:**\nPlease ask the user to provide the following information:\n- name: A descriptive name for the prompt template.\n- template: The actual prompt template content. Can be plain text or JSON format for chat templates.\n\n**Optional User Inputs:**\n- raw: Boolean flag indicating if this is a raw template (default: false).\n- output_type: The expected output type for the template (optional).\n- model_alias: The model to use with this template (default: \"gpt-4.1-mini\").\n- temperature: Controls randomness in the output (0.0 to 2.0, default: 0.7).\n- max_tokens: Maximum number of tokens in the response (default: 1000).\n- top_p: Controls diversity of the output (0.0 to 1.0, default: 1.0).\n- frequency_penalty: Penalty for frequent tokens (-2.0 to 2.0, default: 0.0).\n- presence_penalty: Penalty for repeated tokens (-2.0 to 2.0, default: 0.0).\n\n**Returns:**\n- Template ID for the created template\n- Template details including name, version, and settings\n- Success confirmation with template metadata\n\n**Example Tool Calls:**\n\nSimple text template:\nname=\"Customer Support Response\",template=\"You are a helpful customer support agent. Please respond to the following customer inquiry: {inquiry}\",model_alias=\"gpt-4.1-mini\",temperature=0.5\n\nJSON chat template:\nname=\"AI Coding Assistant\",template=\"[{\"role\":\"system\",\"content\":\"You are an Extremely friendly and helpful AI Coding assistant\"}]\",model_alias=\"gpt-4.1-mini\",temperature=0.3\n\n**What this tool does:**\n1. Authenticates using your Galileo API key\n2. Creates a new global prompt template in your Galileo organization\n3. Sets up the template with the specified settings and configuration\n4. Returns the template ID and details for future use\n5. Template will be available globally across all projects\n\n**Instructions for Agent:**\nAlways ask the user to provide: name and template before making the tool call. These are required for successful template creation.\nThe template will be created as a global template, accessible across all projects in the organization.\n",
+        "inputSchema": {
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            },
+            "template": {
+              "title": "Template",
+              "type": "string"
+            },
+            "raw": {
+              "default": false,
+              "title": "Raw",
+              "type": "boolean"
+            },
+            "output_type": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Output Type"
+            },
+            "model_alias": {
+              "default": "gpt-4.1-mini",
+              "title": "Model Alias",
+              "type": "string"
+            },
+            "temperature": {
+              "default": 0.7,
+              "title": "Temperature",
+              "type": "number"
+            },
+            "max_tokens": {
+              "default": 1000,
+              "title": "Max Tokens",
+              "type": "integer"
+            },
+            "top_p": {
+              "default": 1.0,
+              "title": "Top P",
+              "type": "number"
+            },
+            "frequency_penalty": {
+              "default": 0.0,
+              "title": "Frequency Penalty",
+              "type": "number"
+            },
+            "presence_penalty": {
+              "default": 0.0,
+              "title": "Presence Penalty",
+              "type": "number"
+            },
+            "project_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Project Id"
+            }
+          },
+          "required": [
+            "name",
+            "template"
+          ],
+          "title": "create_prompt_templateArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "setup_galileo_experiment",
+        "description": "\nSetup and create a Galileo experiment using the Galileo SDK.\n\n**Supported Languages:** python\n**Parameters:**\n- language (optional): Programming language for experiment setup guide. Defaults to \"python\".\n\n**Provides:**\n- Complete experiment setup code examples and instructions\n- Step-by-step guide for creating and running experiments\n- Dataset preparation and metrics configuration\n- Integration with existing application code\n- Advanced usage patterns for agentic/RAG workflows\n\n**What this tool helps you do:**\n- Set up Galileo experiments with datasets (remote or inline)\n- Create and configure prompts for experiments\n- Define custom metrics and use built-in scorers\n- Run experiments with proper logging and tracing\n- Integrate experiment workflows into existing applications\n- Inspect and analyze experiment results\n\nReturns working code snippets ready to copy and paste for robust experiment setup and execution.\n",
+        "inputSchema": {
+          "properties": {
+            "language": {
+              "default": "python",
+              "title": "Language",
+              "type": "string"
+            }
+          },
+          "title": "setup_galileo_experimentArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      },
+      {
+        "name": "search_docs",
+        "description": "\nSearch across the Galileo documentation to find relevant information, code examples, API references, and guides. Use this tool when you need to answer questions about Galileo, find specific documentation, understand how features work, or locate implementation details. The search returns contextual content with titles and direct links to the documentation pages.\n\n**Parameters:**\n- query (required): The search query to find relevant documentation.\n\n**Returns:**\n- Relevant documentation content and links based on the search query.\n\n**Example:**\nsearch_docs(query=\"how to set up data logging\")\n",
+        "inputSchema": {
+          "properties": {
+            "query": {
+              "title": "Query",
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "title": "search_docsArguments",
+          "type": "object"
+        },
+        "outputSchema": {
+          "$defs": {
+            "Annotations": {
+              "additionalProperties": true,
+              "properties": {
+                "audience": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "enum": [
+                          "user",
+                          "assistant"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Audience"
+                },
+                "priority": {
+                  "anyOf": [
+                    {
+                      "maximum": 1.0,
+                      "minimum": 0.0,
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "default": null,
+                  "title": "Priority"
+                }
+              },
+              "title": "Annotations",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true,
+          "description": "Text content for a message.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "title": "Type",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "annotations": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Annotations"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "_meta": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Meta"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "title": "TextContent",
+          "type": "object"
+        }
+      }
+    ]
+  }
+}
